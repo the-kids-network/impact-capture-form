@@ -234,7 +234,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Zip' => ZanySoft\Zip\ZipFacade::class,
-        'Debugbar' => Barryvdh\Debugbar\Facade:class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 
