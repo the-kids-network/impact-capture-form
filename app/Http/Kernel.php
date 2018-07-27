@@ -4,7 +4,6 @@ namespace App\Http;
 
 use App\Http\Middleware\SetDevelopers;
 use App\Http\Middleware\VerifyManager;
-use App\Http\Middleware\VerifyAdmin;
 use App\Http\Middleware\VerifyUserIsFinance;
 use App\Http\Middleware\VerifyUserIsManagerOrFinance;
 use App\Http\Middleware\VerifyUserIsMentorOnly;
@@ -68,7 +67,6 @@ class Kernel extends HttpKernel
         'finance' => VerifyUserIsFinance::class,
         'managerOrFinance' => VerifyUserIsManagerOrFinance::class,
         'mentorOnly' => VerifyUserIsMentorOnly::class,
-        'admin' => VerifyAdmin::class,
 
     ];
 }

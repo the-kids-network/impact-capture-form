@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Laravel\Spark\Spark;
 use Closure;
-use Debugbar;
 
 class VerifyManager
 {
