@@ -11,6 +11,7 @@ use App\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Debugbar;
 
 class ReportController extends Controller
 {
@@ -25,6 +26,7 @@ class ReportController extends Controller
         $this->middleware('dev')->except('store','show');
         $this->middleware('manager')->only('show');
         $this->middleware('mentorOnly')->only('store');
+        $this->middleware('admin');
     }
 
     /**
@@ -100,6 +102,24 @@ class ReportController extends Controller
      */
     public function show($id)
     {
+        Debugbar::info($id);
+        //return view('report.show')->with('report',Report::find($id));
+        return view('report.show')
+            ->with('report',Report::orderBy('id','desc')->get()[0]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showReport($id)
+    {
+        Debugbar::info($id);
+        Debugbar::info(Report::find($id));
+        //return view('report.show')
+          //  ->with('report',Report::orderBy('id','desc')->get()[0]);
         return view('report.show')->with('report',Report::find($id));
     }
 

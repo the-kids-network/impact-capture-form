@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Laravel\Spark\Spark;
 use Closure;
-use Debugbar;
 
-class VerifyManager
+class VerifyAdmin
 {
     /**
      * Handle an incoming request.
@@ -17,7 +16,8 @@ class VerifyManager
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user() && ($request->user()->isManager() || $request->user()->isAdmin() || Spark::developer($request->user()->email)) ) {
+
+        if ($request->user() && ($request->user()->isAdmin()) ) {
             return $next($request);
         }
 
