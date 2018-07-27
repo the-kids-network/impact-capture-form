@@ -100,7 +100,6 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        Debugbar::info($id);
         return view('report.show')->with('report',Report::find($id));
     }
 
