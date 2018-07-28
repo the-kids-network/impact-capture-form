@@ -32,5 +32,8 @@ php artisan db:seed
 php artisan serve
 ```
 
+# Testing
 
+composer global require phpunit/phpunit
 
+https://codeception.com/for/laravel
