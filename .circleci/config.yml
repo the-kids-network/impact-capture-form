@@ -22,7 +22,7 @@ jobs:
           command: sudo apt-get update && sudo apt-get -y install git
       - run:
           name: Install PHP extensions
-          command: docker-php-ext-install pdo
+          command: sudo docker-php-ext-install pdo
       - checkout
       - run:
           name: Install Composer
