@@ -18,6 +18,9 @@ jobs:
 
     steps:
       - run:
+          name: Install system packages
+          command: sudo apt-get update && sudo apt-get -y install git
+      - run:
           name: Install PHP extensions
           command: docker-php-ext-install pdo
       - checkout
