@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // One Admin
-        $this->addUser('Admin Only','nikhil4@mit.edu', NULL, NULL);
+        $this->addUser('Admin Only','admin@admin.com', NULL, NULL);
         
         // Five Managers
         $this->addUser('Manager One','manager@one.com', NULL, NULL);
@@ -51,7 +51,7 @@ class UsersTableSeeder extends Seeder
             'last_read_announcements_at' => '2018-02-21 00:25:39',
             'created_at' => '2018-02-21 00:25:39',
             'updated_at' => '2018-02-21 00:25:39',
-            'role_id' => $role_id,
+            'role' => $role_id,
             'manager_id' => $manager_id
         ]);
     }
