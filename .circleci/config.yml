@@ -15,6 +15,7 @@ jobs:
           DB_DATABASE=homestead
           DB_USERNAME=homestead
           DB_PASSWORD=secret
+          APP_ENV=circleci
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
