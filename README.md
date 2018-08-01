@@ -1,5 +1,7 @@
 # Impact Capture Form
 
+[![CircleCI](https://circleci.com/gh/the-kids-network/impact-capture-form.svg?style=svg)](https://circleci.com/gh/the-kids-network/impact-capture-form)
+
 ## Local Setup
 
 ### Setup Local Database
