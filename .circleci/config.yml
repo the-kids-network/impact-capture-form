@@ -38,6 +38,10 @@ jobs:
             sudo docker-php-ext-install gd
       - checkout
       - run:
+          name: Copy .env file
+          command: |
+            cp .env.circleci .env
+      - run:
           name: Install Composer
           command: |
             php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
