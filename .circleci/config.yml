@@ -19,13 +19,12 @@ jobs:
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      - image: circleci/mysql:5.6
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_USER: homestead
-          MYSQL_DATABASE: homestead
-          MYSQL_PASSWORD: secret
-          MYSQL_PORT: 3307
+      #- image: circleci/mysql:5.6
+      #  environment:
+      #    MYSQL_ALLOW_EMPTY_PASSWORD: true
+      #    MYSQL_USER: homestead
+      #    MYSQL_DATABASE: homestead
+      #    MYSQL_PASSWORD: secret
 
     working_directory: ~/repo
 
