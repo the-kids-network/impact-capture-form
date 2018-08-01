@@ -10,21 +10,21 @@ jobs:
       - image: circleci/php:7.1-browsers
         environment:
           DB_CONNECTION=mysql
-          DB_HOST=127.0.0.1
-          DB_DATABASE=homestead
-          DB_USERNAME=homestead
-          DB_PASSWORD=secret
-          APP_ENV=circleci
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: homestead
+          DB_USERNAME: homestead
+          DB_PASSWORD: secret
+          APP_ENV: circleci
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      #- image: circleci/mysql:5.6
-      #  environment:
-      #    MYSQL_ALLOW_EMPTY_PASSWORD: true
-      #    MYSQL_USER: homestead
-      #    MYSQL_DATABASE: homestead
-      #    MYSQL_PASSWORD: secret
+      - image: circleci/mysql:5.6
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_USER: homestead
+          MYSQL_DATABASE: homestead
+          MYSQL_PASSWORD: secret
 
     working_directory: ~/repo
 
