@@ -21,6 +21,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       - image: circleci/mysql:5.6
         environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_USER: homestead
           MYSQL_DATABASE: homestead
           MYSQL_PASSWORD: secret
