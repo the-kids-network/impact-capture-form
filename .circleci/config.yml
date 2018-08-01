@@ -19,7 +19,7 @@ jobs:
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      - image: circleci/mysql:5.6
+      - image: circleci/mysql:8
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_USER: homestead

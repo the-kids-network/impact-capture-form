@@ -29,6 +29,8 @@ php composer.phar install
 php artisan key:generate
 php artisan config:cache
 composer dump-autoload
+#php artisan migrate
+#php artisan db:seed
 php artisan migrate:refresh --seed
 php artisan serve
 ```
