@@ -31,12 +31,13 @@ jobs:
     steps:
       - run:
           name: Install system packages
-          command: sudo apt-get update && sudo apt-get -y install git libpng-dev php5-mysql
+          command: sudo apt-get update && sudo apt-get -y install git libpng-dev
       - run:
           name: Install PHP extensions
           command: |
             sudo docker-php-ext-install pdo
             sudo docker-php-ext-install gd
+            sudo docker-php-ext-install pdo_mysql
       - checkout
       - run:
           name: Copy .env file
