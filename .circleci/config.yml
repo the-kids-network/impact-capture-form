@@ -51,6 +51,11 @@ jobs:
       - run:
           name: Install project dependencies
           command: php composer.phar install
+      - run:
+          name: PHP artisan commands
+          command: |
+            php artisan key:generate
+            php artisan config:cache
       # Download and cache dependencies
       - restore_cache:
           keys:
