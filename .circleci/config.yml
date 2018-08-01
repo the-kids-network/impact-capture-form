@@ -22,6 +22,7 @@ jobs:
       - image: circleci/mysql:5.6
         environment:
           MYSQL_USER: homestead
+          MYSQL_DATABASE: homestead
           MYSQL_PASSWORD: secret
 
     working_directory: ~/repo
