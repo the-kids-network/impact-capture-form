@@ -70,8 +70,3 @@ jobs:
       - run:
           name: Run Unit tests
           command: vendor/bin/phpunit
-
-  deploy:
-    machine:
-      environment:
-        APP_ENV: circleci
