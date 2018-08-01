@@ -46,7 +46,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([
             'name' => $name,
             'email' => $email,
-            'password' => '$2y$10$4Nnxd2kN1EC6x/nOr3oA8uimAvTS7zRw6NcXdag4S.KCFuj60u1m.',
+            'password' => bcrypt('secret'),
             'trial_ends_at' => '2018-02-21 00:25:39',
             'last_read_announcements_at' => '2018-02-21 00:25:39',
             'created_at' => '2018-02-21 00:25:39',

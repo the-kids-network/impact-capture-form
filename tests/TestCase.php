@@ -4,19 +4,38 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\User as AppUser;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Spark\Spark;
+
+class User extends AppUser
+{
+    function __construct($authId, $role) {
+        $this->authId = $authId;
+        $this->role=$role;
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->authId;
+    }
+
+}
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+
     function setUp() {
         parent::setUp();
 
-        $this->basicUser = factory(\App\User::class)->create();
-        $this->managerUser = factory(\App\User::class)->states('manager')->create();
-        $this->adminUser = factory(\App\User::class)->states('admin')->create();
+        $this->basicUser = new User(1892, NULL);
+        $this->managerUser = new User(1882, 'manager');
+        $this->adminUser = new User(1881, 'admin');
     }
-/**
+
+    /**
     * @runInSeparateProcess
     * @preserveGlobalState disabled
     */
