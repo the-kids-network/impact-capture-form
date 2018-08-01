@@ -8,11 +8,22 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/php:7.1.5-browsers
+        environment:
+          DB_CONNECTION=pgsql
+          DB_HOST=127.0.0.1
+          DB_PORT=5432
+          DB_DATABASE=homestead
+          DB_USERNAME=homestead
+          DB_PASSWORD=secret
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mysql:9.4
+      - image: circleci/mysql:9.4
+        environment:
+          MYSQL_USER: homestead
+          MYSQL_PASSWORD: secret
+
 
     working_directory: ~/repo
 
@@ -32,6 +43,7 @@ jobs:
           paths:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
-        
+
+      - run: php artisan migrate:refresh --seed
       # run tests!
       - run: phpunit

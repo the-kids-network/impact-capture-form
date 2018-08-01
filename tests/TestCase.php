@@ -30,9 +30,9 @@ abstract class TestCase extends BaseTestCase
     function setUp() {
         parent::setUp();
 
-        $this->basicUser = new User(1892, NULL);
-        $this->managerUser = new User(1882, 'manager');
-        $this->adminUser = new User(1881, 'admin');
+        $this->basicUser = new User(12, NULL);
+        $this->managerUser = new User(2, 'manager');
+        $this->adminUser = new User(1, 'admin');
     }
 
     /**
