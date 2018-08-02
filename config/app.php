@@ -181,6 +181,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         ZanySoft\Zip\ZipServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
 
     ],
@@ -233,6 +234,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Zip' => ZanySoft\Zip\ZipFacade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 
