@@ -89,4 +89,11 @@ jobs:
       # run tests!
       - run:
           name: Run Unit tests
-          command: vendor/bin/phpunit
+          command: |
+            mkdir -p ~/phpunit
+            vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
+          when: always
+      - store_test_results:
+          path: ~/phpunit
+      - store_artifacts:
+          path: ~/phpunit
