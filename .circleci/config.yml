@@ -103,3 +103,9 @@ jobs:
           - develop
         webhooks:
           - url: https://forge.laravel.com/servers/221686/sites/590178/deploy/http?token=ERc7OEgerd7WuPB59WRNAqk2mFBqGY1PgRQkmYfQ
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
