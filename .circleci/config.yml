@@ -97,13 +97,12 @@ jobs:
           path: ~/phpunit
       - store_artifacts:
           path: ~/phpunit
-
-  stagingDeploy:
-    steps:
-      - run echo 'Trigger staging deployment'
     notify:
-      webhooks:
-        - url: https://forge.laravel.com/servers/221686/sites/590178/deploy/http?token=ERc7OEgerd7WuPB59WRNAqk2mFBqGY1PgRQkmYfQ
+      branches:
+        only:
+          - develop
+        webhooks:
+          - url: https://forge.laravel.com/servers/221686/sites/590178/deploy/http?token=ERc7OEgerd7WuPB59WRNAqk2mFBqGY1PgRQkmYfQ
 
 workflows:
   version: 2
