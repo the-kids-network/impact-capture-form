@@ -31,7 +31,10 @@ jobs:
     steps:
       - run:
           name: Install system packages
-          command: sudo apt-get update && sudo apt-get -y install git libpng-dev
+          command: |
+            sudo apt-get update && sudo apt-get -y install git libpng-dev python-pip
+            sudo pip install awscli==1.15.68
+      - setup_remote_docker
       - run:
           name: Install PHP extensions
           command: |
@@ -84,7 +87,6 @@ jobs:
       - run:
           name: Wait for db
           command: dockerize -wait tcp://localhost:3306 -timeout 1m
-
       - run: php artisan migrate:refresh --seed
       # run tests!
       - run:
@@ -98,13 +100,8 @@ jobs:
       - store_artifacts:
           path: ~/phpunit
       - run:
-          name: Install deployment dependencies
-          working_directory: /
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get -y -qq install python-pip
-            sudo pip install awscli==1.15.68
-      - setup_remote_docker
+          name: PHP Install
+          command: docker build .
       - deploy:
           name: Push application Docker image
           command: |
@@ -113,5 +110,6 @@ jobs:
             $(aws ecr get-login --no-include-email)
 
             # Tag and push docker image
+            docker build tkn:$CIRCLE_SHA1 .
             docker tag app $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/tkn:$CIRCLE_SHA1
             docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/tkn:$CIRCLE_SHA1
