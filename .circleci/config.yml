@@ -97,15 +97,21 @@ jobs:
           path: ~/phpunit
       - store_artifacts:
           path: ~/phpunit
-    notify:
-      branches:
-        only:
-          - develop
-        webhooks:
-          - url: https://forge.laravel.com/servers/221686/sites/590178/deploy/http?token=ERc7OEgerd7WuPB59WRNAqk2mFBqGY1PgRQkmYfQ
+    deploy:
+      docker:
+        - image: 192167080104.dkr.ecr.eu-west-2.amazonaws.com/tkn
+          aws_auth:
+            aws_access_key_id: $AWS_ACCESS_KEY_ID
+            aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
 
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
+      - deploy:
+        requires:
+          - build
+#            filters:
+#              branches:
+#                only: develop
