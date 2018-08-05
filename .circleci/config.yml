@@ -102,8 +102,8 @@ jobs:
           working_directory: /
           command: |
             sudo apt-get -y -qq update
-            sudo apt install python-pip python-dev
-            pip install awscli --upgrade --user
+            sudo apt-get install -y awscli
+            #pip install awscli --upgrade --user
       - deploy:
           name: Push application Docker image
           command: |
