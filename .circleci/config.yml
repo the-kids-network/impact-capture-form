@@ -101,10 +101,8 @@ jobs:
           name: Install deployment dependencies
           working_directory: /
           command: |
-            apt-get -y -qq update
-            apt-get -y -qq install python3.4-dev
-            curl -O https://bootstrap.pypa.io/get-pip.py
-            python3.4 get-pip.py --user
+            sudo apt-get -y -qq update
+            sudo apt install python-pip python-dev
             pip install awscli --upgrade --user
       - deploy:
           name: Push application Docker image
