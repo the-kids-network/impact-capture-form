@@ -100,8 +100,8 @@ jobs:
       - store_artifacts:
           path: ~/phpunit
       - run:
-          name: PHP Install
-          command: docker build .
+          name: Docker Build
+          command: docker build -t tkn:$CIRCLE_SHA1 .
       - deploy:
           name: Push application Docker image
           command: |
@@ -110,6 +110,5 @@ jobs:
             $(aws ecr get-login --no-include-email)
 
             # Tag and push docker image
-            docker build tkn:$CIRCLE_SHA1 .
             docker tag tkn:$CIRCLE_SHA1 $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/tkn:$CIRCLE_SHA1
             docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/tkn:$CIRCLE_SHA1
