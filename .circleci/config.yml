@@ -97,12 +97,12 @@ jobs:
           path: ~/phpunit
       - store_artifacts:
           path: ~/phpunit
-    deploy:
-      docker:
-        - image: 192167080104.dkr.ecr.eu-west-2.amazonaws.com/tkn
-          aws_auth:
-            aws_access_key_id: $AWS_ACCESS_KEY_ID
-            aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+  deploy:
+    docker:
+      - image: 192167080104.dkr.ecr.eu-west-2.amazonaws.com/tkn
+        aws_auth:
+          aws_access_key_id: $AWS_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
 
 workflows:
   version: 2
