@@ -101,7 +101,7 @@ jobs:
           name: Install deployment dependencies
           working_directory: /
           command: |
-            sudo apk add --no-cache py-pip=9.0.0-r1
+            sudo apt-get -y -qq install python3.4-dev
             sudo pip install awscli==1.11.76
       - deploy:
           name: Push application Docker image
