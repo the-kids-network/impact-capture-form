@@ -12,33 +12,33 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // One Admin
-        $this->addUser(1, 'Admin Only','admin@admin.com', 'admin', NULL);
+        $this->addUser(1, 'Admin Only','admin@example.com', 'admin', NULL);
         
         // Five Managers
-        $this->addUser(2, 'Manager One','manager@one.com', 'manager', NULL);
-        $this->addUser(3, 'Manager Two','manager@two.com', 'manager', NULL);
-        $this->addUser(4, 'Manager Three','manager@three.com', 'manager', NULL);
-        $this->addUser(5, 'Manager Four','manager@four.com', 'manager', NULL);
-        $this->addUser(6, 'Manager Five','manager@five.com', 'manager', NULL);
+        $this->addUser(2, 'Manager One','manager1@example.com', 'manager', NULL);
+        $this->addUser(3, 'Manager Two','manager2@example.com', 'manager', NULL);
+        $this->addUser(4, 'Manager Three','manager3@example.com', 'manager', NULL);
+        $this->addUser(5, 'Manager Four','manager4@example.com', 'manager', NULL);
+        $this->addUser(6, 'Manager Five','manager5@example.com', 'manager', NULL);
 
         // Five Finance
-        $this->addUser(7, 'Finance One','finance@one.com', 'finance', NULL);
-        $this->addUser(8, 'Finance Two','finance@two.com', 'finance', NULL);
-        $this->addUser(9, 'Finance Three','finance@three.com', 'finance', NULL);
-        $this->addUser(10, 'Finance Four','finance@four.com', 'finance', NULL);
-        $this->addUser(11, 'Finance Five','finance@five.com', 'finance', NULL);
+        $this->addUser(7, 'Finance One','finance1@example.com', 'finance', NULL);
+        $this->addUser(8, 'Finance Two','finance2@example.com', 'finance', NULL);
+        $this->addUser(9, 'Finance Three','finance3@example.com', 'finance', NULL);
+        $this->addUser(10, 'Finance Four','finance4@example.com', 'finance', NULL);
+        $this->addUser(11, 'Finance Five','finance5@example.com', 'finance', NULL);
 
         // Ten Mentors
-        $this->addUser(12, 'Mentor One','mentor@one.com', NULL, NULL);
-        $this->addUser(13, 'Mentor Two','mentor@two.com', NULL, NULL);
-        $this->addUser(14, 'Mentor Three','mentor@three.com', NULL, NULL);
-        $this->addUser(15, 'Mentor Four','mentor@four.com', NULL, NULL);
-        $this->addUser(16, 'Mentor Five','mentor@five.com', NULL, NULL);
-        $this->addUser(17, 'Mentor Six','mentor@six.com', NULL, NULL);
-        $this->addUser(18, 'Mentor Seven','mentor@seven.com', NULL, NULL);
-        $this->addUser(19, 'Mentor Eight','mentor@eight.com', NULL, NULL);
-        $this->addUser(20, 'Mentor Nine','mentor@nine.com', NULL, NULL);
-        $this->addUser(21, 'Mentor Ten','mentor@ten.com', NULL, NULL);
+        $this->addUser(12, 'Mentor One','mentor1@example.com', NULL, NULL);
+        $this->addUser(13, 'Mentor Two','mentor2@example.com', NULL, NULL);
+        $this->addUser(14, 'Mentor Three','mentor3@example.com', NULL, NULL);
+        $this->addUser(15, 'Mentor Four','mentor4@example.com', NULL, NULL);
+        $this->addUser(16, 'Mentor Five','mentor5@example.com', NULL, NULL);
+        $this->addUser(17, 'Mentor Six','mentor6@example.com', NULL, NULL);
+        $this->addUser(18, 'Mentor Seven','mentor7@example.com', NULL, NULL);
+        $this->addUser(19, 'Mentor Eight','mentor8@example.com', NULL, NULL);
+        $this->addUser(20, 'Mentor Nine','mentor9@example.com', NULL, NULL);
+        $this->addUser(21, 'Mentor Ten','mentor10@example.com', NULL, NULL);
         
     }
 
