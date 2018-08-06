@@ -1,0 +1,20 @@
+version: "3"
+services:
+    ui:
+        build: .
+        environment:
+          - DB_CONNECTION = mysql
+          - DB_HOST = 127.0.0.1
+          - DB_DATABASE = homestead
+          - DB_USERNAME = homestead
+          - DB_PASSWORD = secret
+          - APP_ENV = circleci
+        command:
+
+    db:
+        image: circleci/mysql:5.7.23
+        environment:
+          - MYSQL_ALLOW_EMPTY_PASSWORD = true
+          - MYSQL_USER = homestead
+          - MYSQL_DATABASE = homestead
+          - MYSQL_PASSWORD = secret
