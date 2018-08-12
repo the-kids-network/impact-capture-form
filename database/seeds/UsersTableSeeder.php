@@ -1,5 +1,6 @@
 <?php
 
+use Laravel\Spark\User;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -11,48 +12,52 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        // One Admin
-        $this->addUser('Admin Only','nikhil4@mit.edu', NULL, NULL);
-        
-        // Five Managers
-        $this->addUser('Manager One','manager@one.com', NULL, NULL);
-        $this->addUser('Manager Two','manager@two.com', NULL, NULL);
-        $this->addUser('Manager Three','manager@three.com', NULL, NULL);
-        $this->addUser('Manager Four','manager@four.com', NULL, NULL);
-        $this->addUser('Manager Five','manager@five.com', NULL, NULL);
-                
-        // Five Finance
-        $this->addUser('Finance One','finance@one.com', NULL, NULL);
-        $this->addUser('Finance Two','finance@two.com', NULL, NULL);
-        $this->addUser('Finance Three','finance@three.com', NULL, NULL);
-        $this->addUser('Finance Four','finance@four.com', NULL, NULL);
-        $this->addUser('Finance Five','finance@five.com', NULL, NULL);
-        
-        // Ten Mentors
-        $this->addUser('Mentor One','mentor@one.com', NULL, NULL);
-        $this->addUser('Mentor Two','mentor@two.com', NULL, NULL);
-        $this->addUser('Mentor Three','mentor@three.com', NULL, NULL);
-        $this->addUser('Mentor Four','mentor@four.com', NULL, NULL);
-        $this->addUser('Mentor Five','mentor@five.com', NULL, NULL);
-        $this->addUser('Mentor Six','mentor@six.com', NULL, NULL);
-        $this->addUser('Mentor Seven','mentor@seven.com', NULL, NULL);
-        $this->addUser('Mentor Eight','mentor@eight.com', NULL, NULL);
-        $this->addUser('Mentor Nine','mentor@nine.com', NULL, NULL);
-        $this->addUser('Mentor Ten','mentor@ten.com', NULL, NULL);
-        
+        $this->command->info('Creating sample users...' . config('APP_ENV'));
+        if (config('APP_ENV') != 'production') {
+            // One Admin
+            $this->addUser(1, 'Admin Only','admin@example.com', 'admin', NULL);
+
+            // Five Managers
+            $this->addUser(2, 'Manager One','manager1@example.com', 'manager', NULL);
+            $this->addUser(3, 'Manager Two','manager2@example.com', 'manager', NULL);
+            $this->addUser(4, 'Manager Three','manager3@example.com', 'manager', NULL);
+            $this->addUser(5, 'Manager Four','manager4@example.com', 'manager', NULL);
+            $this->addUser(6, 'Manager Five','manager5@example.com', 'manager', NULL);
+
+            // Five Finance
+            $this->addUser(7, 'Finance One','finance1@example.com', 'finance', NULL);
+            $this->addUser(8, 'Finance Two','finance2@example.com', 'finance', NULL);
+            $this->addUser(9, 'Finance Three','finance3@example.com', 'finance', NULL);
+            $this->addUser(10, 'Finance Four','finance4@example.com', 'finance', NULL);
+            $this->addUser(11, 'Finance Five','finance5@example.com', 'finance', NULL);
+
+            // Ten Mentors
+            $this->addUser(12, 'Mentor One','mentor1@example.com', NULL, NULL);
+            $this->addUser(13, 'Mentor Two','mentor2@example.com', NULL, NULL);
+            $this->addUser(14, 'Mentor Three','mentor3@example.com', NULL, NULL);
+            $this->addUser(15, 'Mentor Four','mentor4@example.com', NULL, NULL);
+            $this->addUser(16, 'Mentor Five','mentor5@example.com', NULL, NULL);
+            $this->addUser(17, 'Mentor Six','mentor6@example.com', NULL, NULL);
+            $this->addUser(18, 'Mentor Seven','mentor7@example.com', NULL, NULL);
+            $this->addUser(19, 'Mentor Eight','mentor8@example.com', NULL, NULL);
+            $this->addUser(20, 'Mentor Nine','mentor9@example.com', NULL, NULL);
+            $this->addUser(21, 'Mentor Ten','mentor10@example.com', NULL, NULL);
+        }
     }
 
-    private function addUser($name, $email, $role_id, $manager_id){
-        DB::table('users')->insert([
+    private function addUser($id, $name, $email, $role, $manager_id) {
+        User::firstOrCreate([
+            'id' => $id
+        ], [
             'name' => $name,
             'email' => $email,
-            'password' => '$2y$10$4Nnxd2kN1EC6x/nOr3oA8uimAvTS7zRw6NcXdag4S.KCFuj60u1m.',
             'trial_ends_at' => '2018-02-21 00:25:39',
             'last_read_announcements_at' => '2018-02-21 00:25:39',
             'created_at' => '2018-02-21 00:25:39',
             'updated_at' => '2018-02-21 00:25:39',
-            'role_id' => $role_id,
-            'manager_id' => $manager_id
+            'role' => $role,
+            'manager_id' => $manager_id,
+            'password' => bcrypt('secret'),
         ]);
     }
 

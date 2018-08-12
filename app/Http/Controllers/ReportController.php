@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
+use Debugbar;
+
 class ReportController extends Controller
 {
     /**

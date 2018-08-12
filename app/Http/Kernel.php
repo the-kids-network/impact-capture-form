@@ -7,6 +7,7 @@ use App\Http\Middleware\VerifyManager;
 use App\Http\Middleware\VerifyUserIsFinance;
 use App\Http\Middleware\VerifyUserIsManagerOrFinance;
 use App\Http\Middleware\VerifyUserIsMentorOnly;
+use App\Http\Middleware\VerifyAdmin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,6 +68,7 @@ class Kernel extends HttpKernel
         'finance' => VerifyUserIsFinance::class,
         'managerOrFinance' => VerifyUserIsManagerOrFinance::class,
         'mentorOnly' => VerifyUserIsMentorOnly::class,
+        'admin' => VerifyAdmin::class
 
     ];
 }

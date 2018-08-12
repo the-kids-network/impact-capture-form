@@ -8,11 +8,23 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/php:7.1-browsers
+        environment:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: homestead
+          DB_USERNAME: homestead
+          DB_PASSWORD: secret
+          APP_ENV: circleci
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mysql:9.4
+      - image: circleci/mysql:5.7.23
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_USER: homestead
+          MYSQL_DATABASE: homestead
+          MYSQL_PASSWORD: secret
 
     working_directory: ~/repo
 
@@ -25,7 +37,12 @@ jobs:
           command: |
             sudo docker-php-ext-install pdo
             sudo docker-php-ext-install gd
+            sudo docker-php-ext-install pdo_mysql
       - checkout
+      - run:
+          name: Copy .env file
+          command: |
+            cp .env.circleci .env
       - run:
           name: Install Composer
           command: |
@@ -40,6 +57,11 @@ jobs:
       - run:
           name: Install project dependencies
           command: php composer.phar install
+      - run:
+          name: PHP artisan commands
+          command: |
+            php artisan key:generate
+            php artisan config:cache
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -53,8 +75,37 @@ jobs:
           paths:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
-        
+
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+
+      - run: php artisan migrate:refresh --seed
       # run tests!
       - run:
           name: Run Unit tests
-          command: vendor/bin/phpunit
+          command: |
+            mkdir -p ~/phpunit
+            vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
+          when: always
+      - store_test_results:
+          path: ~/phpunit
+      - store_artifacts:
+          path: ~/phpunit
+    notify:
+      branches:
+        only:
+          - develop
+        webhooks:
+          - url: https://forge.laravel.com/servers/221686/sites/590178/deploy/http?token=ERc7OEgerd7WuPB59WRNAqk2mFBqGY1PgRQkmYfQ
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
