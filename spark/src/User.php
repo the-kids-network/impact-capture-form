@@ -20,13 +20,17 @@ class User extends Authenticatable
      */
     public function redactPersonalDetails()
     {
-        $personalFields = ['name', 'email', 'password', 'remember_token', 'photo_url', 'country_code',
-                'phone', 'role'];
+        // Email address cannot repeat and cannot be empty. So we'll construct a new fake email address
+        $newEmail = $this['id'] . '@example.com';
+        $personalFields = ['name', 'password', 'remember_token', 'photo_url', 'country_code', 'phone'];
 
         foreach ($personalFields as $field)
         {
             $this[$field] = '_DELETED_';
         }
+
+        $this['email'] = $newEmail;
+        $this['deleted_at'] = now();
         $this->save();
     }
 

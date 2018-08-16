@@ -1,14 +1,23 @@
 @extends('spark::layouts.app')
 
+@section('page-js-script')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("form.delete").submit(function(event) {
+                return confirm("This will permanently delete the user.\nIt cannot be undone, although their reports will remain.");
+            });
+        });
+    </script>
+@endsection
+
 @section('content')
+
+    @yield('page-js-script')
 
     @include('roles.include.mentor_mentee_pairing_form')
 
-    <script>
-        $(".delete").on("submit", function(){
-            return confirm("Are you sure?");
-        });
-    </script>
 
     <div class="container">
         <div class="row">
@@ -21,11 +30,11 @@
                                 <li class="list-group-item list-group-item-info">
                                     {{$user->name}}
                                     <span class="pull-right">
-                                        <form action="/roles/mentor/{$user->id}" method="post">
+                                        <form action="/roles/mentor/{$user->id}" method="post" class="btn btn-xs btn-danger-outline delete">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
                                             <input type="hidden" name="mentor_id" value="{{$user->id}}">
-                                            <input type="submit" value="Delete" class="btn btn-xs btn-danger-outline delete">
+                                            <input type="submit" value="Delete" class="delete">
                                         </form>
                                     </span>
                                 </li>
@@ -44,16 +53,14 @@
                                 @endforeach
                             @endif
                         @endforeach
-
-                        <script>
-                            $("input").on("submit", function(){
-                                return confirm("This will permanently delete the user. It cannot be undone, although their reports will remain.");
-                            });
-                        </script>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
+@endsection
+
+
+@section('page-js-script2')
 @endsection
