@@ -90,6 +90,10 @@ jobs:
       - store_artifacts:
           path: ~/repo/storage
       - run:
+          name: Artisan Server
+          command: php artisan server
+          background: true
+      - run:
           name: Run Dusk tests
           command: php artisan dusk
     notify:
