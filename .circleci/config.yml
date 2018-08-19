@@ -91,7 +91,7 @@ jobs:
           path: ~/repo/storage
       - run:
           name: Artisan Server
-          command: php artisan server
+          command: php artisan serve
           background: true
       - run:
           name: Run Dusk tests
