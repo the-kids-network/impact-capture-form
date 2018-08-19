@@ -32,6 +32,7 @@ composer dump-autoload
 #php artisan migrate
 #php artisan db:seed
 php artisan migrate --seed
+php artisan vendor:publish --tag=public --force
 php artisan serve
 ```
 
@@ -40,3 +41,11 @@ php artisan serve
 composer global require phpunit/phpunit
 
 https://codeception.com/for/laravel
+
+To run tests: 
+
+```
+php composer.phar install
+php artisan config:cache
+php artisan migrate:refresh --seed && php artisan dusk
+```

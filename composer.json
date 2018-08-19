@@ -11,10 +11,11 @@
         "php": ">=7.0.0",
         "aws/aws-sdk-php": "~3.0",
         "barryvdh/laravel-debugbar": "^3.1",
-        "fideloper/proxy": "~3.3",
+        "components/font-awesome": "^5.0",
+        "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/cashier": "~7.0",
-        "laravel/framework": "5.5.*",
+        "laravel/framework": "5.6.*",
         "laravel/spark": "*@dev",
         "laravel/tinker": "~1.0",
         "zanysoft/laravel-zip": "^1.0"
@@ -23,6 +24,7 @@
         "codeception/aspect-mock": "*",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
+        "laravel/dusk": "^4.0",
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "~6.0",
         "symfony/thanks": "^1.0"

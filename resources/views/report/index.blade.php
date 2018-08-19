@@ -20,11 +20,11 @@
                         <tbody>
                             @foreach($reports as $report)
                                 <tr class="clickable-row" data-href="{{ url('/report/'.$report->id) }}">
-                                    <td>{{ $report->id }}</td>
-                                    <td>{{ $report->mentor->name }}</td>
-                                    <td>{{ $report->mentee->name }}</td>
-                                    <td>{{ $report->length_of_session }}</td>
-                                    <td>{{ $report->session_date->toFormattedDateString() }}</td>
+                                    <td class="report-id">{{ $report->id }}</td>
+                                    <td class="mentor-name">{{ $report->mentor->name }}</td>
+                                    <td class="mentee-name">{{ $report->mentee->name }}</td>
+                                    <td class="session-length">{{ $report->length_of_session }}</td>
+                                    <td class="session-date">{{ $report->session_date->toFormattedDateString() }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
