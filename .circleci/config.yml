@@ -88,16 +88,6 @@ jobs:
       - run: php artisan migrate:refresh --seed
       # run tests!
       - run:
-          name: Run Unit tests
-          command: echo "Unit Tests" |
-            #mkdir -p ~/phpunit
-            #vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
-          when: always
-      - store_test_results:
-          path: ~/phpunit
-      - store_artifacts:
-          path: ~/phpunit
-      - run:
           name: Run Dusk tests
           command: php artisan dusk
     notify:
