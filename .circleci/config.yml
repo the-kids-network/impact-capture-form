@@ -87,6 +87,8 @@ jobs:
 
       - run: php artisan migrate:refresh --seed
       # run tests!
+      - store_artifacts:
+          path: ~/repo/storage
       - run:
           name: Run Dusk tests
           command: php artisan dusk
