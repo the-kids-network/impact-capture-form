@@ -88,6 +88,9 @@ jobs:
       - run: php artisan migrate:refresh --seed
       # run tests!
       - run:
+          name: Run Unit tests
+          command: vendor/bin/phpunit
+      - run:
           name: Start Chrome Driver
           command: ./vendor/laravel/dusk/bin/chromedriver-linux
           background: true
