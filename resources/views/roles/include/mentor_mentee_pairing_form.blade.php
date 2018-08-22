@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label">Mentee Name</label>
                             <div class="col-md-6">
-                                <select class="form-control" name="mentee_id">
+                                <select class="form-control" name="mentee_id" dusk="mentee-list">
                                     @foreach($mentees as $mentee)
                                         <option value="{{ $mentee->id }}">{{ $mentee->name }}</option>
                                     @endforeach

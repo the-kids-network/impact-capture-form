@@ -63,18 +63,18 @@ jobs:
             php artisan key:generate
             php artisan config:cache
       # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "composer.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+#      - restore_cache:
+#          keys:
+#          - v1-dependencies-{{ checksum "composer.json" }}
+#          # fallback to using the latest cache if no exact match is found
+#          - v1-dependencies-
 
       - run: composer install -n --prefer-dist
 
-      - save_cache:
-          paths:
-            - ./vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
+#      - save_cache:
+#          paths:
+#            - ./vendor
+#          key: v1-dependencies-{{ checksum "composer.json" }}
 
       - run:
           name: install dockerize
@@ -89,14 +89,20 @@ jobs:
       # run tests!
       - run:
           name: Run Unit tests
-          command: |
-            mkdir -p ~/phpunit
-            vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
-          when: always
-      - store_test_results:
-          path: ~/phpunit
+          command: vendor/bin/phpunit
+      - run:
+          name: Start Chrome Driver
+          command: ./vendor/laravel/dusk/bin/chromedriver-linux
+          background: true
+      - run:
+          name: Artisan Server
+          command: php artisan serve
+          background: true
+      - run:
+          name: Run Dusk tests
+          command: php artisan dusk
       - store_artifacts:
-          path: ~/phpunit
+          path: ~/repo/storage
     notify:
       branches:
         only:

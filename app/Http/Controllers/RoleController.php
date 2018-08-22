@@ -77,12 +77,19 @@ class RoleController extends Controller
         return redirect('/roles/manager')->with('status', $manager->name . ' assigned to ' . $mentor->name );
     }
 
-    public function delete_mentor(Request $request){
+    public function disassociate_mentee(Request $request){
         $mentee = Mentee::find($request->mentee_id);
         $mentee->mentor_id = NULL;
         $mentee->save();
 
         return redirect('roles/mentor')->with('status', 'Mentor disassociated from Mentee');
+    }
+
+    public function delete_mentor(Request $request) {
+        $mentor = User::find($request->mentor_id);
+        $mentor->redactPersonalDetails();
+
+        return redirect('roles/mentor')->with('status', 'Deleted mentor');
     }
 
     public function delete_manager(Request $request){

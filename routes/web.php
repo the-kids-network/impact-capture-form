@@ -81,7 +81,10 @@ Route::post('/roles/assign-mentor','RoleController@assignMentor');
 Route::post('/roles/assign-manager','RoleController@assignManager');
 
 // Disassociate a Mentor and Mentee Pair
-Route::delete('/roles/mentor','RoleController@delete_mentor');
+Route::delete('/roles/mentor/{mentor_id}/mentee/{mentee_id}','RoleController@disassociate_mentee');
+
+// Disassociate a Mentor and Mentee Pair
+Route::delete('/roles/mentor/{mentor_id}','RoleController@delete_mentor');
 
 // Demote Manager. Disassociate all Mentees associated with the Manager.
 Route::delete('/roles/manager','RoleController@delete_manager');

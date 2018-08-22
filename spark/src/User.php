@@ -10,6 +10,30 @@ class User extends Authenticatable
 {
     use Billable, HasApiTokens, RoutesNotifications;
 
+    private static $REDACTED_STRING = '_DELETED_';
+
+    /**
+     * Redact all personal information from user object
+     *
+     * Idea is that we don't want to actually delete a user because it would corrupt reports.
+     * So instead we're removing all personal data from the user row.
+     */
+    public function redactPersonalDetails()
+    {
+        // Email address cannot repeat and cannot be empty. So we'll construct a new fake email address
+        $newEmail = $this['id'] . '@example.com';
+        $personalFields = ['name', 'password', 'remember_token', 'photo_url', 'country_code', 'phone'];
+
+        foreach ($personalFields as $field)
+        {
+            $this[$field] = '_DELETED_';
+        }
+
+        $this['email'] = $newEmail;
+        $this['deleted_at'] = now();
+        $this->save();
+    }
+
     /**
      * Get the profile photo URL attribute.
      *
