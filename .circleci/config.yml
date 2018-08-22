@@ -90,6 +90,10 @@ jobs:
       - store_artifacts:
           path: ~/repo/storage
       - run:
+          name: Start Chrome Driver
+          command: ./vendor/laravel/dusk/bin/chromedriver-linux
+          background: true
+      - run:
           name: Artisan Server
           command: php artisan serve
           background: true
