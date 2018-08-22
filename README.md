@@ -39,7 +39,7 @@ composer dump-autoload
 #php artisan migrate
 #php artisan db:seed
 php artisan migrate --seed
-php artisan vendor:publish --tag=public --force
+php artisan migrate:refresh --seed // Will WIPE the database
 php artisan serve
 ```
 
