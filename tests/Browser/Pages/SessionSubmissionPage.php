@@ -18,7 +18,7 @@ class SessionSubmissionPage extends Page
 
     public function name()
     {
-        return 'Weekly Session Report';
+        return 'Submit a Session Report';
     }
 
     /**

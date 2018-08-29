@@ -45,9 +45,7 @@ php artisan serve
 
 # Testing
 
-composer global require phpunit/phpunit
-
-https://codeception.com/for/laravel
+Note that the app needs to be running before you launch tests.
 
 To run tests: 
 
