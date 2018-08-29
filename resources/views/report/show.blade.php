@@ -28,6 +28,11 @@
                         </tr>
 
                         <tr>
+                            <td>Session Rating</td>
+                            <td>{{ $report->session_rating->value }}</td>
+                        </tr>
+
+                        <tr>
                             <td>Session Length</td>
                             <td>{{ $report->length_of_session }}</td>
                         </tr>

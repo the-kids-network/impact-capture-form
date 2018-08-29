@@ -41,4 +41,8 @@ class Report extends Model
         return $this->hasMany('App\ExpenseClaim');
     }
 
+    public function session_rating() {
+        return $this->belongsTo('App\SessionRating', 'rating_id');
+    }
+
 }

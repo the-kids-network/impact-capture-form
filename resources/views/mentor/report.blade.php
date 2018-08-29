@@ -34,6 +34,18 @@
                                 </div>
                             </div>
 
+                            <!-- Session Rating -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Please rate your session</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" name="rating_id">
+                                        @foreach($session_ratings as $rating)
+                                            <option value="{{ $rating->id }}">{{ $rating->value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Length of Session -->
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Length of Session (hours)</label>

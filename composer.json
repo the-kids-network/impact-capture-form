@@ -12,6 +12,7 @@
         "aws/aws-sdk-php": "~3.0",
         "barryvdh/laravel-debugbar": "^3.1",
         "components/font-awesome": "^5.0",
+        "doctrine/dbal": "^2.8",
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/cashier": "~7.0",
