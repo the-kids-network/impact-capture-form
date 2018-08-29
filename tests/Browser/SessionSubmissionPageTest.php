@@ -29,4 +29,35 @@ class SessionSubmissionPageTest extends DuskTestCase
         });
     }
 
+    public function testReportSubmission()
+    {
+        $this->browse(function (Browser $browser) {
+            $user = User::where('email', 'mentor2@example.com')->firstOrFail();
+
+            $browser->loginAs($user)->visit(new SessionSubmissionPage());
+
+            $browser->value('[name=session_date]', '08/29/2018');
+            $browser->value('[name=length_of_session]', '1');
+            $browser->value('[name=location]', 'Home');
+            $browser->value('[name=meeting_details]', 'Here are the meeting details');
+
+            $browser->element('[name=report_submit]')->click();
+
+            $adminUser = User::where('email', 'admin@example.com')->firstOrFail();
+            $browser->loginAs($adminUser)->visit("report/3");
+
+            $browser->assertSee('Mentor Two');
+            $browser->assertSee('Mentee Two Name');
+            $browser->assertSee('Aug 29, 2018');
+            $browser->assertSee('Poor');
+            $browser->assertSee('1');
+            $browser->assertSee('Basketball');
+            $browser->assertSee('Home');
+            $browser->assertSee('No');
+            $browser->assertSee('Strong');
+            $browser->assertSee('Happy');
+            $browser->assertSee('Here are the meeting details');
+        });
+    }
+
 }
