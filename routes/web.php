@@ -32,9 +32,6 @@ Route::post('/activity-type/restore/{id}','ActivityTypeController@restore');
 Route::post('/physical-appearance/restore/{id}','PhysicalAppearanceController@restore');
 Route::post('/emotional-state/restore/{id}','EmotionalStateController@restore');
 
-// Show saved report
-Route::get('/report/{id}', 'ReportController@show');
-
 // Export Report and Expense Claim data
 Route::get('/report/export','ReportController@export');
 Route::get('/expense-claim/export','ExpenseClaimController@export');
@@ -42,7 +39,6 @@ Route::get('/manager/report','ManagerController@reviewReports');
 Route::get('/manager/report/export','ManagerController@exportReports');
 Route::get('/manager/expense-claim/export','ManagerController@exportExpenseClaims');
 Route::get('/finance/expense-claim/export','FinanceController@exportExpenseClaims');
-
 
 // Download all Receipts
 Route::get('/receipt/download-all','ReceiptController@downloadAll');
