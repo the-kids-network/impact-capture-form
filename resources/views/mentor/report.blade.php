@@ -36,7 +36,7 @@
 
                             <!-- Session Rating -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Please rate your session</label>
+                                <label class="col-md-4 control-label" data-toggle="popover" data-trigger="hover" data-content="{!! 'These could relate to the chosen activity, your mentee’s emotional state during the session or the outcomes of the session.' !!}">Please rate your session <i class="fas fa-info-circle"></i></label>
                                 <div class="col-md-6">
                                     <select class="form-control" name="rating_id">
                                         @foreach($session_ratings as $rating)
@@ -174,6 +174,13 @@
         $( function() {
             $( ".datepicker" ).datepicker();
         } );
+
+        $(document).ready(function() {
+            $('[data-toggle="popover"]').popover({
+              html: true,
+              placement: 'auto left'
+            });
+          });
     </script>
 
 @endsection
