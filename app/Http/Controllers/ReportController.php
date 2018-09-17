@@ -60,19 +60,21 @@ class ReportController extends Controller
         $request->validate([
             'mentee_id' => 'required|exists:mentees,id',
             'session_date' => 'required|date|before_or_equal:today',
+            'rating_id' => 'required|exists:session_ratings,id',
             'length_of_session' => 'required|numeric|max:24',
             'activity_type_id' => 'required|exists:activity_types,id',
             'location' => 'required',
             'safeguarding_concern' => 'required|boolean',
             'physical_appearance_id' => 'required|exists:physical_appearances,id',
             'emotional_state_id' => 'required|exists:emotional_states,id',
-            'meeting_details' => 'required'
+            'meeting_details' => 'required',
         ]);
 
         $report = new Report();
         $report->mentor_id = $request->user()->id;
         $report->mentee_id = $request->mentee_id;
         $report->session_date = Carbon::createFromFormat('m/d/Y',$request->session_date)->format('Y-m-d H:i:s');
+        $report->rating_id = $request->rating_id;
         $report->length_of_session = $request->length_of_session;
         $report->activity_type_id = $request->activity_type_id;
         $report->location = $request->location;

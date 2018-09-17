@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ActivityType;
 use App\EmotionalState;
 use App\PhysicalAppearance;
+use App\SessionRating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -56,6 +57,7 @@ class HomeController extends Controller
             ->with('activity_types', ActivityType::all())
             ->with('physical_appearances',PhysicalAppearance::all())
             ->with('emotional_states',EmotionalState::all())
+            ->with('session_ratings',SessionRating::selectable())
             ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() );
     }
 
