@@ -11,6 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(ActivityTypeSeeder::class);
+        $this->call(EmotionalStateSeeder::class);
+        $this->call(PhysicalAppearanceSeeder::class);
         $this->call(UsersTableSeeder::class);
+        $this->call(MenteeTableSeeder::class);
+        $this->call(ReportTableSeeder::class);
     }
 }

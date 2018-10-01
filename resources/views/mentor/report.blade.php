@@ -34,6 +34,18 @@
                                 </div>
                             </div>
 
+                            <!-- Session Rating -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" data-toggle="popover" data-trigger="hover" data-content="{!! 'These could relate to the chosen activity, your mentee’s emotional state during the session or the outcomes of the session.' !!}">Please rate your session <i class="fas fa-info-circle"></i></label>
+                                <div class="col-md-6">
+                                    <select class="form-control" name="rating_id">
+                                        @foreach($session_ratings as $rating)
+                                            <option value="{{ $rating->id }}">{{ $rating->value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Length of Session -->
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Length of Session (hours)</label>
@@ -111,7 +123,7 @@
                             <!-- Submit Button -->
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" name="report_submit" class="btn btn-primary">
                                         <i class="fa m-r-xs fa-sign-in"></i>Submit
                                     </button>
                                 </div>
@@ -162,6 +174,13 @@
         $( function() {
             $( ".datepicker" ).datepicker();
         } );
+
+        $(document).ready(function() {
+            $('[data-toggle="popover"]').popover({
+              html: true,
+              placement: 'auto left'
+            });
+          });
     </script>
 
 @endsection

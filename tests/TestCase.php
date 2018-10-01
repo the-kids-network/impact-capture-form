@@ -4,23 +4,9 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use App\User as AppUser;
+use Tests\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Spark\Spark;
-
-class User extends AppUser
-{
-    function __construct($authId, $role) {
-        $this->authId = $authId;
-        $this->role=$role;
-    }
-
-    public function getAuthIdentifier()
-    {
-        return $this->authId;
-    }
-
-}
 
 abstract class TestCase extends BaseTestCase
 {

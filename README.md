@@ -15,6 +15,13 @@
 Stop it again with
 ```/usr/local/bin/pg_ctl -D /usr/local/var/postgres stop```
 
+### Setup Local MySql
+(Expects MySql to already be installed, OS X)
+```bash
+shell> cd /Library/LaunchDaemons
+shell> sudo launchctl load -F com.oracle.oss.mysql.mysqld.plist
+```
+
 ### Composer Setup
 
 Open a terminal in the source root directory (this one) and run the following commands (taken from https://getcomposer.org/download/):
@@ -32,11 +39,18 @@ composer dump-autoload
 #php artisan migrate
 #php artisan db:seed
 php artisan migrate --seed
+php artisan migrate:refresh --seed // Will WIPE the database
 php artisan serve
 ```
 
 # Testing
 
-composer global require phpunit/phpunit
+Note that the app needs to be running before you launch tests.
 
-https://codeception.com/for/laravel
+To run tests: 
+
+```
+php composer.phar install
+php artisan config:cache
+php artisan migrate:refresh --seed && php artisan dusk
+```
