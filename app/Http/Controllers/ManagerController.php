@@ -23,7 +23,12 @@ class ManagerController extends Controller
 
     public function reviewClaims(Request $request)
     {
-        $mentors = $request->user()->assignedMentors;
+        if ($request->user()->isAdmin()) {
+            $mentors = User::all();
+        } else {
+            //$mentors = User::all();
+            $mentors = $request->user()->assignedMentors;
+        }
 
         return view('manager.review-claims')
             ->with('mentors',$mentors);

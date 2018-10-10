@@ -16,7 +16,7 @@ class VerifyUserIsFinance
     public function handle($request, Closure $next)
     {
 
-        if ($request->user() && ($request->user()->isFinance() || Spark::developer($request->user()->email)) ) {
+        if ($request->user() && ($request->user()->isFinance() || Spark::developer($request->user()->email) || $request->user()->isAdmin())) {
             return $next($request);
         }
 
