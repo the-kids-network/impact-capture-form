@@ -16,7 +16,7 @@ class VerifyManager
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user() && ($request->user()->isManager() || $request->user()->isAdmin() || Spark::developer($request->user()->email)) || $request->user()->isAdmin()) {
+        if ($request->user() && ($request->user()->isManager() || $request->user()->isAdmin() || Spark::developer($request->user()->email) || $request->user()->isAdmin())) {
             return $next($request);
         }
 
