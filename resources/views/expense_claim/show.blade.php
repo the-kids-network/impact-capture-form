@@ -79,7 +79,7 @@
                         </div>
                     @endif
 
-                    @if($expense_claim->status == 'approved' && Auth::user()->isFinance() || Auth::user()->isAdmin())
+                    @if($expense_claim->status == 'approved' && (Auth::user()->isFinance() || Auth::user()->isAdmin()))
                         <div class="panel-body">
                             @include('spark::shared.errors')
 
