@@ -31,6 +31,7 @@
                         <th>Amount</th>
                         <th>Status</th>
                         <th>Finance Code</th>
+                        <th>Created On</th>
                     </tr>
 
                     @foreach($expense_claims as $expense_claim)
@@ -44,6 +45,7 @@
                                 <td>{{ $expense->amount }}</td>
                                 <td>{{ $expense_claim->status }}</td>
                                 <td>{{ $expense_claim->check_number }}</td>
+                                <td>{{ $expense_claim->created_at->toFormattedDateString() }}</td>
                             </tr>
                         @endforeach
                     @endforeach
