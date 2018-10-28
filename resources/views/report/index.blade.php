@@ -69,7 +69,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
 
     <script>
-        $(function () {
+        jQuery(document).ready(function($) {
             $(".table").on("click", ".clickable-row", function() {
                 window.location = $(this).data("href");
             });
