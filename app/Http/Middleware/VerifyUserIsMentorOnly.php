@@ -20,7 +20,7 @@ class VerifyUserIsMentorOnly
         // not a manager
         // not finance
         // not even admin
-        if ($request->user() && $request->user()->isMentorOnly() ) {
+        if ($request->user() && ($request->user()->isMentorOnly() || $request->user()->isAdmin())) {
             return $next($request);
         }
 

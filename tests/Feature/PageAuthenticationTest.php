@@ -32,8 +32,8 @@ class PageAuthenticationTest extends TestCase
                               ['/roles/finance'                 , 302   , 302   , 302       , 200],
                               ['/roles/admin'                   , 302   , 302   , 302       , 200],
                               ['/register'                      , 302   , 302   , 302       , 200],
-                              ['/my-reports'                    , 302   , 200   , 404       , 404],
-                              ['/my-expense-claims'             , 302   , 200   , 404       , 404],
+                              ['/my-reports'                    , 302   , 200   , 404       , 200],
+                              ['/my-expense-claims'             , 302   , 200   , 404       , 200],
                               ['/manager/review-claims'         , 404   , 404   , 200       , 200],
                               ['/manager/report/export'         , 404   , 404   , 200       , 200],
                               ['/manager/expense-claim/export'  , 404   , 404   , 200       , 200]

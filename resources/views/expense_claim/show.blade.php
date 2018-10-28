@@ -79,7 +79,7 @@
                         </div>
                     @endif
 
-                    @if($expense_claim->status == 'approved' && Auth::user()->isFinance())
+                    @if($expense_claim->status == 'approved' && (Auth::user()->isFinance() || Auth::user()->isAdmin()))
                         <div class="panel-body">
                             @include('spark::shared.errors')
 
@@ -113,7 +113,7 @@
                     <div class="panel-footer">
 
                         @if($expense_claim->status == 'pending')
-                            @if(Auth::user()->id == $expense_claim->mentor->manager_id)
+                            @if(Auth::user()->id == $expense_claim->mentor->manager_id || Auth::user()->isAdmin())
                                 <button class="btn btn-primary" onclick="$('#approve-form').submit()">Approve Expense Claim</button>
                                 <button class="btn btn-danger" onclick="$('#reject-form').submit()">Reject Expense Claim</button>
                             @else
