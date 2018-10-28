@@ -11,6 +11,7 @@ use App\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 use Debugbar;
 
@@ -24,9 +25,8 @@ class ReportController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('dev')->except('store','show');
-        $this->middleware('manager')->only('show');
-        $this->middleware('mentorOnly')->only('store');
+        $this->middleware('dev')->except('store','show','ownReports');
+        $this->middleware('mentorOnly')->only('store', 'ownReports');
     }
 
     /**
@@ -37,6 +37,14 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         return view('report.index')->with('reports', Report::orderBy('id','desc')->get() );
+    }
+
+    public function ownReports(Request $request)
+    {
+        return view('report.index')->with(
+            'reports',
+            Report::orderBy('id', 'desc')->whereMentorId($request->user()->id)->get()
+        );
     }
 
     /**
@@ -104,7 +112,16 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        return view('report.show')->with('report',Report::find($id));
+        $report = Report::find($id);
+        if (Auth::user() &&
+            (Auth::user()->id == $report->mentor()->first()->id || Auth::user()->isAdmin() || Auth::user()->isManager()))
+        {
+            return view('report.show')->with('report',$report);
+        }
+        else
+        {
+            return redirect()->guest('login');
+        }
     }
 
     /**
