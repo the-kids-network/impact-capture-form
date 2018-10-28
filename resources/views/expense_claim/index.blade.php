@@ -64,7 +64,7 @@
 
     <script>
         jQuery(document).ready(function($) {
-            $(".clickable-row").click(function() {
+            $(".table").on("click", ".clickable-row", function() {
                 window.location = $(this).data("href");
             });
         });
