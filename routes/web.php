@@ -61,6 +61,8 @@ Route::get('/roles/finance','RoleController@finance');
 // Options to manage admin. Allows admins to promote users to admin / demote users.
 Route::get('/roles/admin','RoleController@admin');
 
+Route::get('/own-reports','ReportController@ownReports');
+
 // Process a request to promote to manager
 Route::post('/roles/manager','RoleController@store_manager');
 
