@@ -43,6 +43,11 @@ php artisan migrate:refresh --seed // Will WIPE the database
 php artisan serve
 ```
 
+To rebuild less into css:
+```
+npm run dev
+```
+
 # Testing
 
 Note that the app needs to be running before you launch tests.

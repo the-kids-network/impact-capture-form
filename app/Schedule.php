@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Mentee extends Model
+class Schedule extends Model
 {
     use SoftDeletes;
 
@@ -27,18 +27,8 @@ class Mentee extends Model
      * @var array
      */
 
-    public function reports(){
-        return $this->hasMany('App\Report');
-    }
-
-    public function getNameAttribute()
-    {
-        return "{$this->first_name} {$this->last_name}";
-    }
-
-    public function mentor()
-    {
-        return $this->belongsTo('App\User','mentor_id');
+    public function mentee(){
+        return $this->belongsTo('App\Mentee');
     }
 
 }

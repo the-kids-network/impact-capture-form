@@ -7421,3 +7421,11 @@ body {
 .collapse:not(.in) {
   display: none;
 }
+.panel-subheading {
+  font-weight: 400;
+  font-size: 15px;
+  padding-bottom: 15px;
+}
+.panel-divider {
+  margin-bottom: 5px;
+}

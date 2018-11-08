@@ -30,6 +30,7 @@ class User extends SparkUser
     protected $fillable = [
         'name',
         'email',
+        'reminder_emails'
     ];
 
     /**
@@ -62,6 +63,7 @@ class User extends SparkUser
     protected $casts = [
         'trial_ends_at' => 'datetime',
         'uses_two_factor_auth' => 'boolean',
+        'reminder_emails' => 'datetime'
     ];
 
     /**
