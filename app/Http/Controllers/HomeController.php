@@ -6,9 +6,13 @@ use App\ActivityType;
 use App\EmotionalState;
 use App\PhysicalAppearance;
 use App\SessionRating;
+use App\Schedule;
+use App\Mentee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -59,6 +63,30 @@ class HomeController extends Controller
             ->with('emotional_states',EmotionalState::all())
             ->with('session_ratings',SessionRating::selectable())
             ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() );
+    }
+
+    public function calendar(Request $request)
+    {
+        Log::alert(Schedule::all());
+        $events = array();
+        foreach (Schedule::all() as $schedule)
+        {
+            $testing = $schedule->mentee()->first();
+            Log::alert($testing);
+            $mentee = Mentee::where("id", $schedule->mentee()->first()->id);
+            array_push($events, \Calendar::event(
+                  $mentee->first()->getNameAttribute(),
+                  true,
+                  new \DateTime($schedule['next_session_date']),
+                  new \DateTime($schedule['next_session_date'])
+              ));
+        }
+
+        Log::alert($events);
+        $calendar = \Calendar::addEvents($events);
+
+        return view('mentor.calendar')
+            ->with('calendar', $calendar);
     }
 
     /**

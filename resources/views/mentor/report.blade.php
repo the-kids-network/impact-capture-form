@@ -30,7 +30,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Session Date</label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control datepicker" name="session_date" value="{{ old('session_date') }}">
+                                    <input type="text" class="form-control datepicker" name="session_date" value="{{ old('session_date') }}" autocomplete="off">
                                 </div>
                             </div>
 
@@ -120,6 +120,30 @@
                                 </div>
                             </div>
 
+                            <hr class="panel-divider"/>
+
+                            <div class="panel-subheading">Next Session</div>
+
+                            <!-- Next Meeting Date -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Date of next session</label>
+
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control datepicker" name="next_session_date" value="{{ old('next_session_date') }}" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <!-- Next Location -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Location of next session</label>
+
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="next_session_location" value="{{ old('next_session_location') }}">
+                                </div>
+                            </div>
+
+                            <hr/>
+
                             <!-- Submit Button -->
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-4">
@@ -131,6 +155,7 @@
 
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
