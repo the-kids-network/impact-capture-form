@@ -26,7 +26,9 @@
 
                             <!-- Date of Session -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Scheduled Session Date</label>
+                                <label class="col-md-4 control-label" data-toggle="popover" data-trigger="hover" data-content="<?php echo 'Email reminders will be sent if a report has not been saved within three days of a scheduled session.'; ?>">
+                                    Scheduled Session Date <i class="fas fa-info-circle"></i>
+                                </label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control datepicker" name="next_session_date" value="{{ old('next_session_date', $session_date) }}" autocomplete="off">
                                 </div>
