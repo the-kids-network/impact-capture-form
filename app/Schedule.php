@@ -28,7 +28,7 @@ class Schedule extends Model
      */
 
     public function mentee(){
-        return $this->belongsTo('App\Mentee');
+        return $this->belongsTo('App\Mentee')->first();
     }
 
 }

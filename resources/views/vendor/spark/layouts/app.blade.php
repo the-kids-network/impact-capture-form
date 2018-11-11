@@ -78,7 +78,11 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <p>
-                        The Kids Network Mentor Sessions Database is a project created by <a href="https://nikhil-agarwal.com">Nikhil Agarwal</a> at <a href="https://bloggercasts.com">Bloggercasts</a>.
+                        @if( isset($_GET['ianr']) )
+                            The Kids Network Mentor Sessions Database is a project created by <a href="https://nikhil-agarwal.com" target="_blank">Nikhil Agarwal</a> at <a href="https://bloggercasts.com" target="_blank">Bloggercasts</a> and <a href="https://www.linkedin.com/in/ianrob/" target="_blank">Ian Robinson</a>.
+                        @else
+                            The Kids Network Mentor Sessions Database is a project created by <a href="https://nikhil-agarwal.com" target="_blank">Nikhil Agarwal</a> at <a href="https://bloggercasts.com" target="_blank">Bloggercasts</a>.
+                        @endif
                     </p>
                 </div>
             </div>

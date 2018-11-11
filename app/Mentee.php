@@ -41,4 +41,21 @@ class Mentee extends Model
         return $this->belongsTo('App\User','mentor_id');
     }
 
+    public function schedules()
+    {
+        return $this->hasMany('App\Schedule')->get();
+    }
+
+    public static function allForUser($user)
+    {
+        if ($user->isAdmin())
+        {
+            return Mentee::all();
+        }
+        else
+        {
+            return Mentee::where('mentor_id', $user->id)->get();
+        }
+    }
+
 }

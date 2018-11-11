@@ -68,25 +68,34 @@ class HomeController extends Controller
     public function calendar(Request $request)
     {
         Log::alert(Schedule::all());
+        $mentees = Mentee::allForUser($request->user());
         $events = array();
-        foreach (Schedule::all() as $schedule)
+        foreach ($mentees as $mentee)
         {
-            $testing = $schedule->mentee()->first();
-            Log::alert($testing);
-            $mentee = Mentee::where("id", $schedule->mentee()->first()->id);
-            array_push($events, \Calendar::event(
-                  $mentee->first()->getNameAttribute(),
+            Log::info($mentee->schedules());
+            foreach ($mentee->schedules() as $schedule)
+            {
+                array_push($events, \Calendar::event(
+                  $mentee->getNameAttribute(),
                   true,
                   new \DateTime($schedule['next_session_date']),
-                  new \DateTime($schedule['next_session_date'])
-              ));
+                  new \DateTime($schedule['next_session_date']),
+                  $schedule->id,
+                  ['url' => 'schedule/' . $schedule->id]
+                ));
+            }
         }
 
         Log::alert($events);
-        $calendar = \Calendar::addEvents($events);
+        $calendar = \Calendar::addEvents($events)
+            ->setOptions([
+                'header' => array('left' => 'prev,today,next', 'center' => 'title', 'right' => false),
+                'buttonText' => array('today' => 'Now')
+            ]);
 
-        return view('mentor.calendar')
-            ->with('calendar', $calendar);
+        return view('schedule.calendar')
+            ->with('calendar', $calendar)
+            ->with('user', $request->user());
     }
 
     /**

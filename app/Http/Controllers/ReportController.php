@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Log;
+
 use Debugbar;
 
 class ReportController extends Controller
@@ -95,11 +97,7 @@ class ReportController extends Controller
         $report->meeting_details = $request->meeting_details;
         $report->save();
 
-        $schedule = new Schedule();
-        $schedule->mentee_id = $request->mentee_id;
-        $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date)->format('Y-m-d H:i:s');
-        $schedule->next_session_location = $request->next_session_location;
-        $schedule->save();
+        $this->saveSchedule($request);
 
         // Send the Mentor an Email
         Mail::to($report->mentor)->send(new ReportSubmittedToMentor($report));
