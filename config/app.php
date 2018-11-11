@@ -183,7 +183,7 @@ return [
 
         ZanySoft\Zip\ZipServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-
+        Collective\Html\HtmlServiceProvider::class,
 
     ],
 
@@ -236,7 +236,6 @@ return [
 
         'Zip' => ZanySoft\Zip\ZipFacade::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-
     ],
 
 ];

@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\User;
 use App\Mentee;
+use App\Schedule;
 
 class MissingReportReminder extends Mailable implements ShouldQueue
 {
@@ -17,16 +18,18 @@ class MissingReportReminder extends Mailable implements ShouldQueue
 
     public $mentor;
     public $mentee;
+    public $schedule;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $mentor, Mentee $mentee)
+    public function __construct(User $mentor, Mentee $mentee, Schedule $schedule)
     {
         $this->mentor = $mentor;
         $this->mentee = $mentee;
+        $this->schedule = $schedule;
     }
 
     /**

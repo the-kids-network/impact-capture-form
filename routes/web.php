@@ -104,6 +104,7 @@ Route::delete('/delete-all','HomeController@deleteAll');
  * Resource Routes
  */
 Route::resource('/report','ReportController');
+Route::resource('/schedule','ScheduleController');
 Route::resource('/expense-claim','ExpenseClaimController');
 Route::resource('/mentee','MenteeController');
 Route::resource('/physical-appearance','PhysicalAppearanceController');

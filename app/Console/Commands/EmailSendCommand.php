@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Mail;
 
 use App\User;
 use App\Mentee;
+use App\Schedule;
+use App\Report;
 
 use App\Mail\MissingReportReminder;
 
@@ -45,20 +47,26 @@ class EmailSendCommand extends Command
      */
     public function handle()
     {
-        foreach (Mentee::where('last_email_reminder', '<', $this->daysAgo(6))->get() as $mentee) {
+        foreach (Schedule::where('next_session_date', '<', $this->daysAgo(4))->get() as $schedule) {
+            $report = Report::where('mentee_id', $schedule->mentee_id)
+                ->where('session_date', $schedule->next_session_date)
+                ->first();
 
-            $latest_report = $mentee->reports()->where('created_at', '>=', $this->daysAgo(7))->get();
+            // Only send reminder report if they've not been emailed about that mentee recently
+            if (!$report && (!$schedule->last_email_reminder || $schedule->last_email_reminder < $this->daysAgo(7))) {
+                $mentee = $schedule->mentee();
 
-            if ($latest_report->isEmpty()) {
-                $mentee->last_email_reminder = Carbon::now('Europe/London');
-                $mentee->save();
+                $schedule->last_email_reminder = Carbon::now('Europe/London');
+                $schedule->save();
 
-                Mail::to($mentee->mentor)->send(new MissingReportReminder($mentee->mentor, $mentee));
+                Mail::to($mentee->mentor)
+                    ->send(new MissingReportReminder($mentee->mentor, $mentee, $schedule));
             }
         }
     }
 
     private function daysAgo($days) {
-        return Carbon::now()->subDays($days);
+        // Add an extra hour to allow for slight changes in time triggered
+        return Carbon::now()->subDays($days)->addHour();
     }
 }

@@ -17,7 +17,8 @@ class Schedule extends Model
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
+        'next_session_date'
     ];
 
 
@@ -28,7 +29,7 @@ class Schedule extends Model
      */
 
     public function mentee(){
-        return $this->belongsTo('App\Mentee');
+        return $this->belongsTo('App\Mentee')->first();
     }
 
 }
