@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Log;
 
+use App\Http\Controllers\ScheduleController;
+
 use Debugbar;
 
 class ReportController extends Controller
@@ -109,6 +111,17 @@ class ReportController extends Controller
 
         return redirect('/my-reports')->with('status','Report Submitted');
 
+    }
+
+    public function saveSchedule(Request $request)
+    {
+        $schedule = new Schedule();
+
+        $schedule->id = $request->id;
+        $schedule->mentee_id = $request->mentee_id;
+        $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
+        $schedule->next_session_location = $request->next_session_location;
+        $schedule->save();
     }
 
     /**

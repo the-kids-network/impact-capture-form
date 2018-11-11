@@ -27,30 +27,22 @@ class ScheduleController extends Controller
     public function show($id)
     {
         $schedule = Schedule::find($id);
-        Log::alert($schedule);
-        Log::alert(Carbon::createFromFormat('Y-m-d',$schedule->next_session_date)->format('m/d/Y'));
+
         return view('schedule.show', compact('schedule'))
             ->with('schedule', $schedule)
-            ->with('session_date', Carbon::createFromFormat('Y-m-d',$schedule->next_session_date)->format('m/d/Y'));
+            ->with('session_date', $schedule->next_session_date->format('m/d/Y'));
     }
 
     public function destroy($id)
     {
         Schedule::destroy($id);
-        //$schedule = Schedule::find($id);
-        //$schedule->delete();
 
         return redirect('/calendar');
     }
 
     public function store(Request $request)
     {
-        Log::info('testing');
-        Log::alert($request);
-
         $schedule = Schedule::find($request->id);
-
-        Log::alert($schedule);
 
         if (!$schedule)
         {
@@ -59,7 +51,7 @@ class ScheduleController extends Controller
 
         $schedule->id = $request->id;
         $schedule->mentee_id = $request->mentee_id;
-        $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date)->format('Y-m-d H:i:s');
+        $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
         $schedule->next_session_location = $request->next_session_location;
         $schedule->save();
 

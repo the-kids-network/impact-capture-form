@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //$schedule->command('emails:send')->everyMinute()->onOneServer();
-        //$schedule->command('emails:send')->weekly()->sundays()->at('17:00')->onOneServer();
+        $schedule->command('emails:send')->daily()->at('11:00')->onOneServer();
     }
 
     /**
