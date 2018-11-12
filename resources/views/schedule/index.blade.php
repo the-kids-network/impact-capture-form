@@ -27,7 +27,6 @@
 
                             <!-- Date of Session -->
                             <div class="form-group">
-
                                 <label class="col-md-4 control-label" data-toggle="popover" data-trigger="hover" data-content="<?php echo 'Email reminders will be sent if a report has not been saved within three days of a scheduled session.'; ?>">
                                     Scheduled Session Date <i class="fas fa-info-circle"></i>
                                 </label>
