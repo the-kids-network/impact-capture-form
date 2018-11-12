@@ -43,6 +43,11 @@ php artisan migrate:refresh --seed // Will WIPE the database
 php artisan serve
 ```
 
+To rebuild less into css:
+```
+npm run dev
+```
+
 # Testing
 
 Note that the app needs to be running before you launch tests.
@@ -53,4 +58,15 @@ To run tests:
 php composer.phar install
 php artisan config:cache
 php artisan migrate:refresh --seed && php artisan dusk
+```
+
+# Debug
+
+I kept forgetting how to add debug lines. Start by adding the appropriate "use" line:
+```
+use Illuminate\Support\Facades\Log;
+```
+and then add the debug statement with something like
+```
+Log::info($message);
 ```

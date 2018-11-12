@@ -6,9 +6,13 @@ use App\ActivityType;
 use App\EmotionalState;
 use App\PhysicalAppearance;
 use App\SessionRating;
+use App\Schedule;
+use App\Mentee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -59,6 +63,39 @@ class HomeController extends Controller
             ->with('emotional_states',EmotionalState::all())
             ->with('session_ratings',SessionRating::selectable())
             ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() );
+    }
+
+    public function calendar(Request $request)
+    {
+        Log::alert(Schedule::all());
+        $mentees = Mentee::allForUser($request->user());
+        $events = array();
+        foreach ($mentees as $mentee)
+        {
+            Log::info($mentee->schedules());
+            foreach ($mentee->schedules() as $schedule)
+            {
+                array_push($events, \Calendar::event(
+                  $mentee->mentor()->first()->name,
+                  true,
+                  new \DateTime($schedule['next_session_date']),
+                  new \DateTime($schedule['next_session_date']),
+                  $schedule->id,
+                  ['url' => 'schedule/' . $schedule->id]
+                ));
+            }
+        }
+
+        Log::alert($events);
+        $calendar = \Calendar::addEvents($events)
+            ->setOptions([
+                'header' => array('left' => 'prev,today,next', 'center' => 'title', 'right' => false),
+                'buttonText' => array('today' => 'Now')
+            ]);
+
+        return view('schedule.calendar')
+            ->with('calendar', $calendar)
+            ->with('user', $request->user());
     }
 
     /**

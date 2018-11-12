@@ -20,6 +20,13 @@ class Mentee extends Model
         'deleted_at'
     ];
 
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+
     public function reports(){
         return $this->hasMany('App\Report');
     }
@@ -32,6 +39,23 @@ class Mentee extends Model
     public function mentor()
     {
         return $this->belongsTo('App\User','mentor_id');
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany('App\Schedule')->get();
+    }
+
+    public static function allForUser($user)
+    {
+        if ($user->isAdmin())
+        {
+            return Mentee::all();
+        }
+        else
+        {
+            return Mentee::where('mentor_id', $user->id)->get();
+        }
     }
 
 }

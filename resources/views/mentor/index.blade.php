@@ -31,6 +31,15 @@
                 </div>
             </div>
 
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-calendar-alt text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/calendar') }}">Calendar</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 

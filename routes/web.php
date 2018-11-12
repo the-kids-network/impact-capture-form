@@ -13,6 +13,9 @@ Route::get('/home', 'HomeController@show');
 // Show the Session Report Form
 Route::get('/my-reports','HomeController@reports');
 
+// Show the Session Report Form
+Route::get('/calendar','HomeController@calendar');
+
 // Show the Expense Claim Form
 Route::get('/my-expense-claims','HomeController@expense_claims');
 
@@ -100,9 +103,12 @@ Route::delete('/delete-all','HomeController@deleteAll');
  * Resource Routes
  */
 Route::resource('/report','ReportController');
+Route::resource('/schedule','ScheduleController');
 Route::resource('/expense-claim','ExpenseClaimController');
 Route::resource('/mentee','MenteeController');
 Route::resource('/physical-appearance','PhysicalAppearanceController');
 Route::resource('/emotional-state','EmotionalStateController');
 Route::resource('/activity-type','ActivityTypeController');
 Route::resource('/receipt','ReceiptController');
+
+Route::put('/settings/profile/details', 'ProfileDetailsController@update');

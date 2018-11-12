@@ -8,10 +8,15 @@ use App\Mail\ReportSubmittedToManager;
 use App\Mail\ReportSubmittedToMentor;
 use App\Mentee;
 use App\Report;
+use App\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Log;
+
+use App\Http\Controllers\ScheduleController;
 
 use Debugbar;
 
@@ -76,6 +81,8 @@ class ReportController extends Controller
             'physical_appearance_id' => 'required|exists:physical_appearances,id',
             'emotional_state_id' => 'required|exists:emotional_states,id',
             'meeting_details' => 'required',
+            'next_session_date' => 'required',
+            'next_session_location' => 'required'
         ]);
 
         $report = new Report();
@@ -92,6 +99,8 @@ class ReportController extends Controller
         $report->meeting_details = $request->meeting_details;
         $report->save();
 
+        $this->saveSchedule($request);
+
         // Send the Mentor an Email
         Mail::to($report->mentor)->send(new ReportSubmittedToMentor($report));
 
@@ -102,6 +111,17 @@ class ReportController extends Controller
 
         return redirect('/my-reports')->with('status','Report Submitted');
 
+    }
+
+    public function saveSchedule(Request $request)
+    {
+        $schedule = new Schedule();
+
+        $schedule->id = $request->id;
+        $schedule->mentee_id = $request->mentee_id;
+        $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
+        $schedule->next_session_location = $request->next_session_location;
+        $schedule->save();
     }
 
     /**
