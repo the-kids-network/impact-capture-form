@@ -15,6 +15,7 @@ class SessionRating extends Model
     }
 
     public static function selectable() {
-        return SessionRating::where('selectable', 1)->get();
+        // Add id==0 for the initial empty string. Will be validated against before submitting
+        return SessionRating::where('selectable', 1)->orWhere('id', 0)->get();
     }
 }
