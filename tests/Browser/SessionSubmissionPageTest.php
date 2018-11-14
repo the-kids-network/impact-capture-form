@@ -21,7 +21,7 @@ class SessionSubmissionPageTest extends DuskTestCase
 
             $browser->loginAs($user)->visit(new SessionSubmissionPage());
 
-            $browser->assertSelected('rating_id', 2); // Poor
+            $browser->assertSelected('rating_id', 0); // Empty String
             $browser->assertSelected('activity_type_id', 1); // Basketball
             $browser->assertSelected('safeguarding_concern', 0); // No
             $browser->assertSelected('physical_appearance_id', 1); // Strong
@@ -36,6 +36,7 @@ class SessionSubmissionPageTest extends DuskTestCase
 
             $browser->loginAs($user)->visit(new SessionSubmissionPage());
 
+            $browser->value('[name=rating_id]', '2'); // Poor
             $browser->value('[name=session_date]', '08/29/2018');
             $browser->value('[name=length_of_session]', '1');
             $browser->value('[name=location]', 'Home');
