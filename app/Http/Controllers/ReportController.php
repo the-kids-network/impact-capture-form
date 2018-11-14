@@ -70,10 +70,11 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $messages = ['rating_id.min' => 'The session rating field is required.'];
+        $this->validate($request, [
             'mentee_id' => 'required|exists:mentees,id',
             'session_date' => 'required|date|before_or_equal:today',
-            'rating_id' => 'required|exists:session_ratings,id',
+            'rating_id' => 'required|exists:session_ratings,id|numeric|min:2',
             'length_of_session' => 'required|numeric|max:24',
             'activity_type_id' => 'required|exists:activity_types,id',
             'location' => 'required',
@@ -83,7 +84,7 @@ class ReportController extends Controller
             'meeting_details' => 'required',
             'next_session_date' => 'required',
             'next_session_location' => 'required'
-        ]);
+        ], $messages);
 
         $report = new Report();
         $report->mentor_id = $request->user()->id;
@@ -182,6 +183,5 @@ class ReportController extends Controller
         return view('report.export')
             ->with('reports',Report::orderBy('id','desc')->get());
     }
-
 
 }
