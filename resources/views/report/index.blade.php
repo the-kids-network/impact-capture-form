@@ -24,7 +24,9 @@
                                     <td class="mentor-name">{{ $report->mentor->name }}</td>
                                     <td class="mentee-name">{{ $report->mentee->name }}</td>
                                     <td class="session-length">{{ $report->length_of_session }}</td>
-                                    <td class="session-date">{{ $report->session_date->toFormattedDateString() }}</td>
+                                    <td class="session-date"><span class="hidden">{{ $report->session_date->timestamp }}</span>
+                                        {{ $report->session_date->toFormattedDateString() }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
