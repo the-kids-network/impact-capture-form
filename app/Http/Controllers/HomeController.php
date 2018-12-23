@@ -76,7 +76,7 @@ class HomeController extends Controller
             foreach ($mentee->schedules() as $schedule)
             {
                 array_push($events, \Calendar::event(
-                  $mentee->mentor()->first()->name,
+                  is_null($mentee->mentor()->first()) ? 'NO MENTOR' : $mentee->mentor()->first()->name,
                   true,
                   new \DateTime($schedule['next_session_date']),
                   new \DateTime($schedule['next_session_date']),
