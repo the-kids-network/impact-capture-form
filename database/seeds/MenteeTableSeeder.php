@@ -11,8 +11,8 @@ class MenteeTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->addMentee(1, 'Mentee One', 'Name', NULL);
-        $this->addMentee(2, 'Mentee Two', 'Name', 13);
+        $this->addMentee(1, 'John', 'Smith', 6);
+        $this->addMentee(2, 'Jo', 'Bloggs', 7);
     }
 
     private function addMentee($id, $first_name, $last_name, $mentor_id){

@@ -118,7 +118,6 @@ class ReportController extends Controller
     {
         $schedule = new Schedule();
 
-        $schedule->id = $request->id;
         $schedule->mentee_id = $request->mentee_id;
         $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
         $schedule->next_session_location = $request->next_session_location;
