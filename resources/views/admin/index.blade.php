@@ -181,7 +181,7 @@
                 <h3>Delete</h3>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-trash-alt text-feature"></i>
@@ -190,7 +190,7 @@
                         <form action="/delete-all" method="post">
                             {{ csrf_field() }}
                             {{ method_field('delete') }}
-                            <input type="submit" value="Delete all Reports and Expense Claims" class="btn btn-lg m-t-lg btn-danger">
+                            <input type="submit" value="Delete all Session Reports and Expense Claims" class="btn btn-lg m-t-lg btn-danger">
                         </form>
 
                     </div>
