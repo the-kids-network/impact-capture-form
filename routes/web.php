@@ -13,7 +13,7 @@ Route::get('/home', 'HomeController@show');
 // Show the Session Report Form
 Route::get('/my-reports','HomeController@reports');
 
-// Show the Session Report Form
+// Show the Calendar
 Route::get('/calendar','HomeController@calendar');
 
 // Show the Expense Claim Form
@@ -36,7 +36,7 @@ Route::post('/physical-appearance/restore/{id}','PhysicalAppearanceController@re
 Route::post('/emotional-state/restore/{id}','EmotionalStateController@restore');
 
 // Export Report and Expense Claim data
-Route::get('/report/export','ReportController@export');
+Route::get('/report/export','SessionReportController@export');
 Route::get('/expense-claim/export','ExpenseClaimController@export');
 Route::get('/manager/report','ManagerController@reviewReports');
 Route::get('/manager/report/export','ManagerController@exportReports');
@@ -65,7 +65,7 @@ Route::get('/roles/finance','RoleController@finance');
 // Options to manage admin. Allows admins to promote users to admin / demote users.
 Route::get('/roles/admin','RoleController@admin');
 
-Route::get('/own-reports','ReportController@ownReports');
+Route::get('/own-reports','SessionReportController@ownReports');
 
 // Process a request to promote to manager
 Route::post('/roles/manager','RoleController@store_manager');
@@ -103,7 +103,7 @@ Route::delete('/delete-all','HomeController@deleteAll');
 /*
  * Resource Routes
  */
-Route::resource('/report','ReportController');
+Route::resource('/report','SessionReportController');
 Route::resource('/schedule','ScheduleController');
 Route::resource('/expense-claim','ExpenseClaimController');
 Route::resource('/mentee','MenteeController');

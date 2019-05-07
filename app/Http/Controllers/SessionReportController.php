@@ -20,7 +20,7 @@ use App\Http\Controllers\ScheduleController;
 
 use Debugbar;
 
-class ReportController extends Controller
+class SessionReportController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -41,12 +41,12 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
-        return view('report.index')->with('reports', Report::orderBy('id','desc')->get() );
+        return view('session_report.index')->with('reports', Report::orderBy('id','desc')->get() );
     }
 
     public function ownReports(Request $request)
     {
-        return view('report.index')->with(
+        return view('session_report.index')->with(
             'reports',
             Report::orderBy('id', 'desc')->whereMentorId($request->user()->id)->get()
         );
@@ -136,7 +136,7 @@ class ReportController extends Controller
         if (Auth::user() &&
             (Auth::user()->id == $report->mentor()->first()->id || Auth::user()->isAdmin() || Auth::user()->isManager()))
         {
-            return view('report.show')->with('report',$report);
+            return view('session_report.show')->with('report',$report);
         }
         else
         {
@@ -179,7 +179,7 @@ class ReportController extends Controller
     }
 
     public function export(){
-        return view('report.export')
+        return view('session_report.export')
             ->with('reports',Report::orderBy('id','desc')->get());
     }
 

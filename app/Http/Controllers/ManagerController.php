@@ -42,7 +42,7 @@ class ManagerController extends Controller
         }
 
         $reports = Report::whereIn('mentor_id', $ids )->get();
-        return view('report.index')->with('reports',$reports);
+        return view('session_report.index')->with('reports',$reports);
     }
 
     public function exportReports(Request $request)
@@ -53,7 +53,7 @@ class ManagerController extends Controller
         }
 
         $reports = Report::whereIn('mentor_id', $ids )->get();
-        return view('report.export')->with('reports',$reports);
+        return view('session_report.export')->with('reports',$reports);
     }
 
     public function exportExpenseClaims(Request $request)
