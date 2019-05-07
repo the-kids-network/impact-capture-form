@@ -48,6 +48,22 @@
         </div>
     </div>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Reporting</h3>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-chart-line text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/reporting') }}">Reporting</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <div class="row">

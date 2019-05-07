@@ -100,6 +100,11 @@ Route::delete('/roles/admin','RoleController@delete_admin');
 // Delete all Reports and Expense Claims
 Route::delete('/delete-all','HomeController@deleteAll');
 
+// BI Reporting Routes
+Route::get('/reporting','ReportingController@index');
+Route::get('/reporting/generate','ReportingController@generate')->name('reporting-generate');
+
+
 /*
  * Resource Routes
  */
