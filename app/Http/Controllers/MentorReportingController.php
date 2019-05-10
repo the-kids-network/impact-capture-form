@@ -31,7 +31,7 @@ class MentorReportingController extends Controller
     /**
      * Export the top level summary as CSV
      */
-    public function exportTopLevelReport(Request $request) 
+    public function generateExportableTopLevelReport(Request $request) 
     {
         return $this->generate($request, 'reporting.mentor.top_level.export');
     }
@@ -39,7 +39,7 @@ class MentorReportingController extends Controller
     /**
      * Export the expenses breakdown as CSV
      */
-    public function exportExpenseReport(Request $request) 
+    public function generateExportableExpenseReport(Request $request) 
     {
         return $this->generate($request, 'reporting.mentor.expenses.export');
     }
@@ -50,7 +50,7 @@ class MentorReportingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function generateStatsReport(Request $request)
+    public function generateIndexReport(Request $request)
     {   
         return $this->generate($request, 'reporting.mentor.index');
     }
@@ -66,7 +66,7 @@ class MentorReportingController extends Controller
         $report_end_date = ($request->end_date) ? Carbon::createFromFormat(self::REQUEST_DATE_FORMAT, $request->end_date) 
                                                 : Carbon::now('Europe/London');                                            
         if (!$request->start_date || !$request->end_date) {
-            return redirect()->route('mentor-reporting-stats-generate', 
+            return redirect()->route('mentor-reporting-index', 
                                     ['start_date' => $report_start_date->format(self::REQUEST_DATE_FORMAT),
                                      'end_date' => $report_end_date->format(self::REQUEST_DATE_FORMAT)]);
         }
@@ -74,7 +74,6 @@ class MentorReportingController extends Controller
         // Generate stats data
         $user = Auth::user();
         $manager_id = ($user && $user->isManager()) ? Auth::id() : null;
-        
         $mentors = $this->get_stats($report_start_date, $report_end_date, $manager_id);
 
         // Display results
