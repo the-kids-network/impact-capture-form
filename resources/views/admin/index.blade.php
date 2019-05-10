@@ -58,7 +58,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-chart-line text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/reporting') }}">Reporting</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/reporting/mentor') }}">Mentor Reporting</a>
                     </div>
                 </div>
             </div>

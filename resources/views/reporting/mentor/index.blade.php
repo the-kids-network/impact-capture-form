@@ -10,7 +10,7 @@
                     <div class="panel-body">
                         @include('spark::shared.errors')
 
-                        <form class="form-horizontal" role="form" method="GET" action="/reporting/generate">
+                        <form class="form-horizontal" role="form" method="GET" action="/reporting/mentor/generate">
                         {{ csrf_field() }}
 
                             <div class="form-group">
@@ -49,16 +49,19 @@
             </div>
             @isset($mentors)
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Result</div>
+                        <div class="panel-heading">Top Level Summary</div>
                         <table class="table" data-toggle="table" data-search="true" data-pagination="true">
                             <thead>
                                 <tr>
-                                    <th data-sortable="true">Mentor ID</th>
                                     <th data-sortable="true">Mentor Name</th>
-                                    <th data-sortable="true">Session Count</th>
-                                    <th data-sortable="true">Total Hours</th>
+                                    <th data-sortable="true">First Session Date</th>
+                                    <th data-sortable="true">Expected Sessions</th>
+                                    <th data-sortable="true">Actual Sessions</th>
+                                    <th data-sortable="true">Total Session Length (Hrs)</th>
+                                    <th data-sortable="true">Total Expense Claims (£)</th>
+
 
                                 </tr>
                             </thead>
@@ -66,10 +69,64 @@
                             <tbody>
                                 @foreach($mentors as $mentor)
                                     <tr>
-                                        <td class="mentor-id">{{ $mentor->mentor_id }}</td>
-                                        <td class="mentor-name">{{ $mentor->mentor_name }}</td>
-                                        <td class="session-count">{{ $mentor->session_count }}</td>
-                                        <td class="total-hours">{{ $mentor->total_hours }}</td>
+                                        <td class="mentor-name">{{ $mentor->user_name }}</td>
+                                        <td class="start-date">
+                                            @if (isset($mentor->first_session_date)) 
+                                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->first_session_date)->toFormattedDateString() }} 
+                                            @else 
+                                                Unknown 
+                                            @endif
+                                        </td>
+                                        <td class="expected-session-count">
+                                            @if (isset($mentor->expected_session_count)) {{ $mentor->expected_session_count }} 
+                                            @else Unknown 
+                                            @endif
+                                        </td>
+                                        <td class="total-session-count">{{ $mentor->session_count }}</td>
+                                        <td class="total-session-length">{{ $mentor->session_length }}</td>
+                                        <td class="expenses-total">{{ $mentor->expenses_total }}</td>
+
+                                    </tr>
+                                @endforeach
+                            </tbody>
+
+                        </table>
+
+                        <div class="panel-body">
+                                <a href="{{ url('reporting/export') }}">Download All Data as CSV</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Expenses Breakdown</div>
+                        <table class="table" data-toggle="table" data-search="true" data-pagination="true">
+                            <thead>
+                                <tr>
+                                    <th data-sortable="true">Mentor Name</th>
+                                    <th data-sortable="true">Total (£)</th>
+                                    <th data-sortable="true">Pending (£)</th>
+                                    <th data-sortable="true">Approved (£)</th>
+                                    <th data-sortable="true">Rejected (£)</th>
+
+
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach($mentors as $mentor)
+                                    <tr>
+                                        <td class="mentor-name">{{ $mentor->user_name }}</td>
+                                        <td class="expenses-total">{{ $mentor->expenses_total }}</td>
+                                        <td class="expenses-pending">{{ $mentor->expenses_pending }}</td>
+                                        <td class="expenses-approved">{{ $mentor->expenses_approved}}</td>
+                                        <td class="expenses-rejected">{{ $mentor->expenses_rejected}}</td>
+
+
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -100,7 +157,7 @@
 
     <script>
         $( function() {
-            $( ".datepicker" ).datepicker();
+            $( ".datepicker" ).datepicker({ dateFormat: 'dd-mm-yy' });
         } );
     </script>
 @endsection
