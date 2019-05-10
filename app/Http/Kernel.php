@@ -8,6 +8,7 @@ use App\Http\Middleware\VerifyUserIsFinance;
 use App\Http\Middleware\VerifyUserIsManagerOrFinance;
 use App\Http\Middleware\VerifyUserIsMentorOnly;
 use App\Http\Middleware\VerifyAdmin;
+use App\Http\Middleware\VerifyAnyOfRoles;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -64,11 +65,11 @@ class Kernel extends HttpKernel
         'subscribed' => \Laravel\Spark\Http\Middleware\VerifyUserIsSubscribed::class,
         'teamSubscribed' => \Laravel\Spark\Http\Middleware\VerifyTeamIsSubscribed::class,
 
+        'hasAnyOfRoles' => \App\Http\Middleware\VerifyAnyOfRoles::class,
         'manager' => VerifyManager::class,
         'finance' => VerifyUserIsFinance::class,
         'managerOrFinance' => VerifyUserIsManagerOrFinance::class,
         'mentorOnly' => VerifyUserIsMentorOnly::class,
         'admin' => VerifyAdmin::class
-
     ];
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ActivityType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class MentorReportingController extends Controller
@@ -14,7 +15,7 @@ class MentorReportingController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('dev');
+        $this->middleware('hasAnyOfRoles:admin,manager');
     }
 
     /**
@@ -28,7 +29,7 @@ class MentorReportingController extends Controller
     }
 
     /**
-     * 
+     * Export the top level summary as CSV
      */
     public function exportTopLevelReport(Request $request) 
     {
@@ -36,7 +37,7 @@ class MentorReportingController extends Controller
     }
 
     /**
-     * 
+     * Export the expenses breakdown as CSV
      */
     public function exportExpenseReport(Request $request) 
     {
@@ -71,20 +72,24 @@ class MentorReportingController extends Controller
         }
 
         // Generate stats data
-        $mentors = $this->get_stats($report_start_date, $report_end_date);
+        $user = Auth::user();
+        $manager_id = ($user && $user->isManager()) ? Auth::id() : null;
+        
+        $mentors = $this->get_stats($report_start_date, $report_end_date, $manager_id);
 
         // Display results
         return view($view_name)->with('mentors', $mentors);
     }
 
-    private function get_stats($report_start_date, $report_end_date) {
+    private function get_stats($report_start_date, $report_end_date, $manager_id) {
         $mentors_stats = DB::select("
                 WITH 
-                users AS (
+                mentors AS (
                     SELECT DISTINCT 
                         u.id as user_id, 
                         u.name as user_name,
-                        r.first_session_date
+                        r.first_session_date,
+                        u.manager_id
                     FROM users u
                     LEFT JOIN (
                         SELECT DISTINCT
@@ -93,31 +98,35 @@ class MentorReportingController extends Controller
                         FROM reporting_sessions
                         GROUP BY user_id
                     ) r ON r.user_id=u.id
-                    WHERE 1=1
+                    WHERE 1=1".
+                    ( $manager_id ? 'AND u.manager_id = '.$manager_id : '' )
+                    ."AND u.role IS NULL
                     AND u.role IS NULL
                     AND u.deleted_at IS NULL
                 )
                 SELECT DISTINCT
-                    u.user_id,
-                    u.user_name,
-                    u.first_session_date,
+                    m.user_id,
+                    m.user_name,
+                    m.first_session_date,
                     COALESCE(SUM(s.session_count), 0) AS session_count, 
                     COALESCE(SUM(s.session_length), 0) AS session_length, 
                     COALESCE(SUM(s.expenses_total), 0) AS expenses_total, 
                     COALESCE(SUM(s.expenses_pending), 0) AS expenses_pending,
                     COALESCE(SUM(s.expenses_approved), 0) AS expenses_approved,
                     COALESCE(SUM(s.expenses_rejected), 0) AS expenses_rejected 
-                FROM users u
+                FROM mentors m
                 LEFT JOIN (
                     SELECT DISTINCT * FROM reporting_sessions
                     WHERE 1=1
-                    AND session_date >= ?
-                    AND session_date <= ?
-                ) s ON s.user_id=u.user_id
+                    AND session_date >= :start_date
+                    AND session_date <= :end_date
+                ) s ON s.user_id=m.user_id
                 WHERE 1=1
-                GROUP BY u.user_id, u.user_name, u.first_session_date;
-            ", [$report_start_date->format('Y-m-d'), 
-                $report_end_date->format('Y-m-d')]);
+                GROUP BY m.user_id, m.user_name, m.first_session_date;
+            ", [ 
+                 'start_date' => $report_start_date->format('Y-m-d'), 
+                 'end_date' => $report_end_date->format('Y-m-d')
+               ]);
 
         $mentors_stats = $this->add_expected_session_count($mentors_stats, $report_start_date, $report_end_date);
 
