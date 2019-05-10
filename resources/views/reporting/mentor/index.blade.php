@@ -20,7 +20,7 @@
                                            class="form-control datepicker" 
                                            name="start_date" 
                                            autocomplete="off" 
-                                           value="{{ app('request')->input('start_date') }}">
+                                           value="{{ Request()->start_date }}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -29,7 +29,7 @@
                                     <input type="text" 
                                            class="form-control datepicker" 
                                            name="end_date" 
-                                           value="{{ app('request')->input('end_date') }}"
+                                           value="{{ Request()->end_date }}"
                                            autocomplete="off" >
                                 </div>
                             </div>
@@ -61,8 +61,6 @@
                                     <th data-sortable="true">Actual Sessions</th>
                                     <th data-sortable="true">Total Session Length (Hrs)</th>
                                     <th data-sortable="true">Total Expense Claims (£)</th>
-
-
                                 </tr>
                             </thead>
 
@@ -89,11 +87,14 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
 
                         <div class="panel-body">
-                                <a href="{{ url('reporting/export') }}">Download All Data as CSV</a>
+                                <a href="{{ route('mentor-reporting-tlr-export', 
+                                            [ 'start_date' => Request()->start_date,
+                                              'end_date' => Request()->end_date 
+                                            ]) 
+                                         }}">Download All Data as CSV</a>
                         </div>
 
                     </div>
@@ -111,9 +112,6 @@
                                     <th data-sortable="true">Pending (£)</th>
                                     <th data-sortable="true">Approved (£)</th>
                                     <th data-sortable="true">Rejected (£)</th>
-
-
-
                                 </tr>
                             </thead>
 
@@ -125,16 +123,17 @@
                                         <td class="expenses-pending">{{ $mentor->expenses_pending }}</td>
                                         <td class="expenses-approved">{{ $mentor->expenses_approved}}</td>
                                         <td class="expenses-rejected">{{ $mentor->expenses_rejected}}</td>
-
-
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
 
                         <div class="panel-body">
-                                <a href="{{ url('reporting/export') }}">Download All Data as CSV</a>
+                                <a href="{{ route('mentor-reporting-expenses-export', 
+                                            [ 'start_date' => Request()->start_date,
+                                              'end_date' => Request()->end_date 
+                                            ]) 
+                                         }}">Download All Data as CSV</a>
                         </div>
 
                     </div>

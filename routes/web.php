@@ -102,7 +102,10 @@ Route::delete('/delete-all','HomeController@deleteAll');
 
 // BI Reporting Routes
 Route::get('/reporting/mentor','MentorReportingController@index');
-Route::get('/reporting/mentor/generate','MentorReportingController@generate')->name('mentor-reporting-generate');
+Route::get('/reporting/mentor/generate','MentorReportingController@generateStatsReport')->name('mentor-reporting-stats-generate');
+Route::get('/reporting/mentor/top-level/export','MentorReportingController@exportTopLevelReport')->name('mentor-reporting-tlr-export');
+Route::get('/reporting/mentor/expenses/export','MentorReportingController@exportExpenseReport')->name('mentor-reporting-expenses-export');
+
 
 
 /*

@@ -28,12 +28,33 @@ class MentorReportingController extends Controller
     }
 
     /**
+     * 
+     */
+    public function exportTopLevelReport(Request $request) 
+    {
+        return $this->generate($request, 'reporting.mentor.top_level.export');
+    }
+
+    /**
+     * 
+     */
+    public function exportExpenseReport(Request $request) 
+    {
+        return $this->generate($request, 'reporting.mentor.expenses.export');
+    }
+    
+    /**
      * Generate the report from parameters supplied
      * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function generate(Request $request)
+    public function generateStatsReport(Request $request)
+    {   
+        return $this->generate($request, 'reporting.mentor.index');
+    }
+
+    public function generate(Request $request, $view_name)
     {   
         // Validate date parameters
         $this->validate_parameters($request);
@@ -44,21 +65,20 @@ class MentorReportingController extends Controller
         $report_end_date = ($request->end_date) ? Carbon::createFromFormat(self::REQUEST_DATE_FORMAT, $request->end_date) 
                                                 : Carbon::now('Europe/London');                                            
         if (!$request->start_date || !$request->end_date) {
-            return redirect()->route('mentor-reporting-generate', 
+            return redirect()->route('mentor-reporting-stats-generate', 
                                     ['start_date' => $report_start_date->format(self::REQUEST_DATE_FORMAT),
                                      'end_date' => $report_end_date->format(self::REQUEST_DATE_FORMAT)]);
         }
 
-        // Data collection chain
-        $mentors_stats = $this->get_stats($report_start_date, $report_end_date);
-        $mentors_stats = $this->add_expected_session_count($mentors_stats, $report_start_date, $report_end_date);
+        // Generate stats data
+        $mentors = $this->get_stats($report_start_date, $report_end_date);
 
         // Display results
-        return view('reporting.mentor.index')->with('mentors', $mentors_stats);
+        return view($view_name)->with('mentors', $mentors);
     }
 
     private function get_stats($report_start_date, $report_end_date) {
-        return DB::select("
+        $mentors_stats = DB::select("
                 WITH 
                 users AS (
                     SELECT DISTINCT 
@@ -98,6 +118,10 @@ class MentorReportingController extends Controller
                 GROUP BY u.user_id, u.user_name, u.first_session_date;
             ", [$report_start_date->format('Y-m-d'), 
                 $report_end_date->format('Y-m-d')]);
+
+        $mentors_stats = $this->add_expected_session_count($mentors_stats, $report_start_date, $report_end_date);
+
+        return $mentors_stats;
     }
 
     /**
