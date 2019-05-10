@@ -90,14 +90,14 @@ class ReportingController extends Controller
     private function date_defaulter(Request $request) {
         // default end date to today
         if (!$request->end_date) {
-            $end_date = Carbon::now();
+            $end_date = Carbon::now('Europe/London');
         } else {
             $end_date = Carbon::createFromFormat('m/d/Y',$request->end_date);
         }
 
         // default start date to 6 days back from end date
         if (!$request->start_date) {
-            $start_date = $end_date->copy()->subDays(6);
+            $start_date = Carbon::createFromTimestamp(0, 'Europe/London');
         } else {
             $start_date = Carbon::createFromFormat('m/d/Y',$request->start_date);
         }
