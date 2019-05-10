@@ -89,18 +89,12 @@ class ReportingController extends Controller
      */
     private function date_defaulter(Request $request) {
         // default end date to today
-        if (!$request->end_date) {
-            $end_date = Carbon::now('Europe/London');
-        } else {
-            $end_date = Carbon::createFromFormat('m/d/Y',$request->end_date);
-        }
+        $end_date =  (!$request->end_date) ? Carbon::now('Europe/London') 
+                                           : Carbon::createFromFormat('m/d/Y',$request->end_date);
 
-        // default start date to 6 days back from end date
-        if (!$request->start_date) {
-            $start_date = Carbon::createFromTimestamp(0, 'Europe/London');
-        } else {
-            $start_date = Carbon::createFromFormat('m/d/Y',$request->start_date);
-        }
+        // default start date to beginning of epoch time
+        $start_date = (!$request->start_date) ? Carbon::createFromTimestamp(0, 'Europe/London')
+                                              : $start_date = Carbon::createFromFormat('m/d/Y',$request->start_date);
 
         return ['start_date' => $start_date, 'end_date' => $end_date];
     }
