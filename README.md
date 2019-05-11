@@ -5,21 +5,31 @@
 ## Local Setup
 
 ### Setup Local Database
-(Expects postgres to already be installed)
+(Expects MySql 5.7 to be installed with the database created, OS X - simplest way is through Homebrew as follows)
+
+Install mysql 5.7
 ```bash
-/usr/local/bin/pg_ctl -D /usr/local/var/postgres start
-/usr/local/bin/createuser -P homestead # Set password to 'homestead'
-/usr/local/bin/createdb homestead
+brew install mysql@5.7
+brew tap homebrew/services
 ```
 
-Stop it again with
-```/usr/local/bin/pg_ctl -D /usr/local/var/postgres stop```
-
-### Setup Local MySql
-(Expects MySql to already be installed, OS X)
+Start/stop mysql service
 ```bash
-shell> cd /Library/LaunchDaemons
-shell> sudo launchctl load -F com.oracle.oss.mysql.mysqld.plist
+brew services start mysql@5.7
+brew services stop mysql@5.7
+```
+
+Create database and user for app
+```bash
+mysql -uroot
+mysql> CREATE DATABASE homestead;
+mysql> CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';
+mysql> GRANT ALL PRIVILEGES ON homestead.* TO 'homestead'@'localhost';
+```
+
+Connect to database as user so that you can explore
+```bash
+mysql -uhomestead -psecret -Dhomestead
 ```
 
 ### Composer Setup

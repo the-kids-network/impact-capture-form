@@ -34,27 +34,6 @@ class CreateReportingSessionsAggView extends Migration
     {
         return <<<SQL
 CREATE VIEW reporting_sessions AS
-WITH 
-expense_agg AS (
-    SELECT DISTINCT
-        ec.report_id AS report_id,
-        (SELECT SUM(amount) AS total_expenses) AS expenses_total,
-        (SELECT SUM(amount) AS total_expenses WHERE status = 'rejected') AS expenses_rejected,
-        (SELECT SUM(amount) AS total_expenses WHERE status = 'pending') AS expenses_pending,
-        (SELECT SUM(amount) AS total_expenses WHERE status = 'approved') AS expenses_approved
-    FROM expense_claims ec 
-    JOIN expenses e ON e.expense_claim_id=ec.id 
-    GROUP BY report_id, status
-),
-sessions AS (
-    SELECT DISTINCT
-        mentor_id AS mentor_id,
-        id AS report_id,
-        session_date AS session_date,
-        1 AS session_count,
-        length_of_session AS length_of_session
-    FROM reports
-)
 SELECT 
     u.id as user_id,
     s.report_id,
@@ -66,8 +45,28 @@ SELECT
     COALESCE(e.expenses_approved,0) AS expenses_approved,
     COALESCE(e.expenses_rejected,0) AS expenses_rejected
 FROM users u
-JOIN sessions s ON s.mentor_id=u.id 
-LEFT JOIN expense_agg e ON e.report_id=s.report_id
+JOIN (
+    /* join sessions */
+    SELECT DISTINCT
+        mentor_id AS mentor_id,
+        id AS report_id,
+        session_date AS session_date,
+        1 AS session_count,
+        length_of_session AS length_of_session
+    FROM reports
+) s ON s.mentor_id=u.id 
+LEFT JOIN (
+    /* join aggregated expense amounts to sessions */
+    SELECT DISTINCT
+        ec.report_id AS report_id,
+        (SELECT SUM(amount) AS total_expenses) AS expenses_total,
+        (SELECT SUM(amount) AS total_expenses WHERE status = 'rejected') AS expenses_rejected,
+        (SELECT SUM(amount) AS total_expenses WHERE status = 'pending') AS expenses_pending,
+        (SELECT SUM(amount) AS total_expenses WHERE status = 'approved') AS expenses_approved
+    FROM expense_claims ec 
+    JOIN expenses e ON e.expense_claim_id=ec.id 
+    GROUP BY report_id, status
+) e ON e.report_id=s.report_id
 SQL;
     }
 
