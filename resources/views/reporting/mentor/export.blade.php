@@ -15,19 +15,38 @@
                 <table id="data-table" class="table table-bordered table-responsive table-striped">
                     <tr>
                         <th>Mentor Name</th>
-                        <th>Total (£)</th>
-                        <th>Pending (£)</th>
-                        <th>Approved (£)</th>
-                        <th>Rejected (£)</th>
+                        <th>Start Date</th>
+                        <th>Expected Sessions</th>
+                        <th>Actual Sessions</th>
+                        <th>Total Session Length (Hrs)</th>
+                        <th>Expenses Total (£)</th>
+                        <th>Expenses Pending (£)</th>
+                        <th>Expenses Approved (£)</th>
+                        <th>Expenses Rejected (£)</th>
                     </tr>
 
                     @foreach($mentors as $mentor)
                     <tr>
                         <td class="mentor-name">{{ $mentor->user_name }}</td>
+                        <td class="start-date">
+                            @if (isset($mentor->first_session_date)) 
+                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->first_session_date)->format('d-m-y') }} 
+                            @else 
+                                Unknown 
+                            @endif
+                        </td>
+                        <td class="expected-session-count">
+                            @if (isset($mentor->expected_session_count)) {{ $mentor->expected_session_count }} 
+                            @else Unknown 
+                            @endif
+                        </td>
+                        <td class="actual-session-count">{{ $mentor->session_count }}</td>
+                        <td class="total-session-length">{{ $mentor->session_length }}</td>
                         <td class="expenses-total">{{ $mentor->expenses_total }}</td>
                         <td class="expenses-pending">{{ $mentor->expenses_pending }}</td>
                         <td class="expenses-approved">{{ $mentor->expenses_approved}}</td>
                         <td class="expenses-rejected">{{ $mentor->expenses_rejected}}</td>
+
                     </tr>
                     @endforeach
                 </table>

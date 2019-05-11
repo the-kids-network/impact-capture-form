@@ -51,16 +51,19 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Top Level Summary</div>
+                        <div class="panel-heading">Report Data</div>
                         <table class="table" data-toggle="table" data-search="true" data-pagination="true">
                             <thead>
                                 <tr>
                                     <th data-sortable="true">Mentor Name</th>
-                                    <th data-sortable="true">First Session Date</th>
+                                    <th data-sortable="true">Start Date</th>
                                     <th data-sortable="true">Expected Sessions</th>
                                     <th data-sortable="true">Actual Sessions</th>
                                     <th data-sortable="true">Total Session Length (Hrs)</th>
-                                    <th data-sortable="true">Total Expense Claims (£)</th>
+                                    <th data-sortable="true">Expenses Total (£)</th>
+                                    <th data-sortable="true">Expenses Pending (£)</th>
+                                    <th data-sortable="true">Expenses Approved (£)</th>
+                                    <th data-sortable="true">Expenses Rejected (£)</th>
                                 </tr>
                             </thead>
 
@@ -80,60 +83,24 @@
                                             @else Unknown 
                                             @endif
                                         </td>
-                                        <td class="total-session-count">{{ $mentor->session_count }}</td>
+                                        <td class="actual-session-count">{{ $mentor->session_count }}</td>
                                         <td class="total-session-length">{{ $mentor->session_length }}</td>
-                                        <td class="expenses-total">{{ $mentor->expenses_total }}</td>
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-
-                        <div class="panel-body">
-                                <a href="{{ route('mentor-reporting-tlr-export', 
-                                            [ 'start_date' => Request()->start_date,
-                                              'end_date' => Request()->end_date 
-                                            ]) 
-                                         }}">Download All Data as CSV</a>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Expenses Breakdown</div>
-                        <table class="table" data-toggle="table" data-search="true" data-pagination="true">
-                            <thead>
-                                <tr>
-                                    <th data-sortable="true">Mentor Name</th>
-                                    <th data-sortable="true">Total (£)</th>
-                                    <th data-sortable="true">Pending (£)</th>
-                                    <th data-sortable="true">Approved (£)</th>
-                                    <th data-sortable="true">Rejected (£)</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                @foreach($mentors as $mentor)
-                                    <tr>
-                                        <td class="mentor-name">{{ $mentor->user_name }}</td>
                                         <td class="expenses-total">{{ $mentor->expenses_total }}</td>
                                         <td class="expenses-pending">{{ $mentor->expenses_pending }}</td>
                                         <td class="expenses-approved">{{ $mentor->expenses_approved}}</td>
                                         <td class="expenses-rejected">{{ $mentor->expenses_rejected}}</td>
+
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
 
                         <div class="panel-body">
-                                <a href="{{ route('mentor-reporting-expenses-export', 
-                                            [ 'start_date' => Request()->start_date,
-                                              'end_date' => Request()->end_date 
-                                            ]) 
-                                         }}">Download All Data as CSV</a>
+                            <a href="{{ route('mentor-reporting-export', 
+                                        [ 'start_date' => Request()->start_date,
+                                            'end_date' => Request()->end_date 
+                                        ]) 
+                                        }}">Download All Data as CSV</a>
                         </div>
 
                     </div>

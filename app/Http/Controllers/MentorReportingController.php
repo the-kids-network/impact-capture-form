@@ -29,19 +29,11 @@ class MentorReportingController extends Controller
     }
 
     /**
-     * Export the top level summary as CSV
+     * Export the report as CSV
      */
-    public function generateExportableTopLevelReport(Request $request) 
+    public function generateExportableReport(Request $request) 
     {
-        return $this->generate($request, 'reporting.mentor.top_level.export');
-    }
-
-    /**
-     * Export the expenses breakdown as CSV
-     */
-    public function generateExportableExpenseReport(Request $request) 
-    {
-        return $this->generate($request, 'reporting.mentor.expenses.export');
+        return $this->generate($request, 'reporting.mentor.export');
     }
     
     /**
