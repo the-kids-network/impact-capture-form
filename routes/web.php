@@ -100,10 +100,8 @@ Route::delete('/roles/admin','RoleController@delete_admin');
 Route::delete('/delete-all','HomeController@deleteAll');
 
 // BI Reporting Routes
-Route::get('/reporting/mentor','MentorReportingController@index');
-Route::get('/reporting/mentor/generate','MentorReportingController@generateIndexReport')->name('mentor-reporting-index');
+Route::get('/reporting/mentor','MentorReportingController@generateIndexReport')->name('mentor-reporting-index');
 Route::get('/reporting/mentor/export','MentorReportingController@generateExportableReport')->name('mentor-reporting-export');
-
 
 /*
  * Resource Routes
