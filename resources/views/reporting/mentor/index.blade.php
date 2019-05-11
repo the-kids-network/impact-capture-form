@@ -56,6 +56,9 @@
                             <thead>
                                 <tr>
                                     <th data-sortable="true">Mentor Name</th>
+                                    @if( !Auth::user()->isManager() )
+                                    <th data-sortable="true">Manager Name</th>
+                                    @endif
                                     <th data-sortable="true">Start Date</th>
                                     <th data-sortable="true">Expected Sessions</th>
                                     <th data-sortable="true">Actual Sessions</th>
@@ -70,7 +73,10 @@
                             <tbody>
                                 @foreach($mentors as $mentor)
                                     <tr>
-                                        <td class="mentor-name">{{ $mentor->user_name }}</td>
+                                        <td class="mentor-name">{{ $mentor->mentor_name }}</td>
+                                        @if( !Auth::user()->isManager() )
+                                        <td class="manager-name">{{ $mentor->manager_name }}</td>
+                                        @endif
                                         <td class="start-date">
                                             @if (isset($mentor->first_session_date)) 
                                                 {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->first_session_date)->toFormattedDateString() }} 

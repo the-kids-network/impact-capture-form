@@ -75,8 +75,9 @@ class MentorReportingController extends Controller
     private function get_stats($report_start_date, $report_end_date, $manager_id) {
         $mentors_stats = DB::select("
                 SELECT DISTINCT 
-                    u.id as user_id, 
-                    u.name as user_name,
+                    u.id as mentor_id, 
+                    u.name as mentor_name,
+                    m.name as manager_name,
                     f.first_session_date,
                     COALESCE(SUM(s.session_count), 0) AS session_count, 
                     COALESCE(SUM(s.session_length), 0) AS session_length, 
@@ -85,6 +86,7 @@ class MentorReportingController extends Controller
                     COALESCE(SUM(s.expenses_approved), 0) AS expenses_approved,
                     COALESCE(SUM(s.expenses_rejected), 0) AS expenses_rejected
                 FROM users u
+                LEFT JOIN users m ON m.id = u.manager_id
                 LEFT JOIN (
                     /* Join first session date */
                     SELECT DISTINCT
@@ -92,7 +94,7 @@ class MentorReportingController extends Controller
                         MIN(session_date) AS first_session_date
                     FROM reporting_sessions
                     GROUP BY user_id
-                ) f ON f.user_id=u.id
+                ) f ON f.user_id = u.id
                 LEFT JOIN (
                     /* Join sessions */
                     SELECT DISTINCT * 
@@ -100,7 +102,7 @@ class MentorReportingController extends Controller
                     WHERE 1=1
                     AND session_date >= :start_date
                     AND session_date <= :end_date
-                ) s ON s.user_id=u.id
+                ) s ON s.user_id = u.id
                 WHERE 1=1
                 ".
                 ( $manager_id ? 'AND u.manager_id = '.$manager_id : '' )
