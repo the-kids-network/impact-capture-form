@@ -19,7 +19,7 @@ class MentorPageTest extends DuskTestCase
 
             $browser->loginAs($user)->visit(new MentorPage());
 
-            $this->assertMentorCount($browser, 10, 1);
+            $this->assertMentorCount($browser, 10);
 
             $browser->element('.expand-all')->click();
             $browser->waitFor('.mentor-table .mentee.name-row');
@@ -36,11 +36,11 @@ class MentorPageTest extends DuskTestCase
 
             $browser->loginAs($user)->visit(new MentorPage());
 
-            $this->assertMentorCount($browser, 10, 1);
-            $browser->element('.mentor-table .mentor.delete-row:nth-child(30) form input[type="submit"]')->click();
+            $this->assertMentorCount($browser, 10);
+            $browser->element('.mentor-table .mentor.delete-row:nth-child(odd) form input[type="submit"]')->click();
             $browser->dismissDialog();
 
-            $this->assertMentorCount($browser, 10, 1);
+            $this->assertMentorCount($browser, 10);
         });
     }
 
@@ -51,29 +51,23 @@ class MentorPageTest extends DuskTestCase
 
             $browser->loginAs($user)->visit(new MentorPage());
 
-            $this->assertMentorCount($browser, 10, 1);
-            $browser->element('.mentor-table .mentor.delete-row:nth-child(30) form input[type="submit"]')->click();
+            $this->assertMentorCount($browser, 10);
+            $browser->element('.mentor-table .mentor.delete-row:nth-child(odd) form input[type="submit"]')->click();
             $browser->acceptDialog();
 
-            $this->assertMentorCount($browser, 9, 1);
-
-            $browser->visit(new SessionReportsPage());
-            $this->assertSessionReportRow($browser, 2, 1, '_DELETED_', 'Mentee One Name');
-            $this->assertSessionReportRow($browser, 1, 2, 'Mentor Nine', 'Mentee One Name');
+            $this->assertMentorCount($browser, 9);
         });
     }
 
-    private function assertMentorCount($browser, $mentorCount, $menteeCount)
+    private function assertMentorCount($browser, $mentorCount)
     {
         $browser->pause(1000);
-        $browser->assertElementsCountIs($mentorCount, '.mentor-table .mentor.name-row')
-                ->assertElementsCountIs($menteeCount, '.mentor-table .mentee.name-row');
+        $browser->assertElementsCountIs($mentorCount, '.mentor-table .mentor.name-row');
     }
 
-    private function assertSessionReportRow($browser, $tableIndex, $reportId, $mentorName, $menteeName)
+    private function assertMenteeCount($browser, $menteeCount)
     {
-        $browser->assertSeeIn("tr:nth-child($tableIndex) td.report-id", $reportId);
-        $browser->assertSeeIn("tr:nth-child($tableIndex) td.mentor-name", $mentorName);
-        $browser->assertSeeIn("tr:nth-child($tableIndex) td.mentee-name", $menteeName);
+        $browser->pause(1000);
+        $browser->assertElementsCountIs($menteeCount, '.mentor-table .mentee.name-row');
     }
 }

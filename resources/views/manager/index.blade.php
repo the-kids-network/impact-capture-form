@@ -18,7 +18,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-book text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/manager/report') }}">View Reports</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/manager/report') }}">View Session Reports</a>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-download text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/manager/report/export') }}">Download Reports</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/manager/report/export') }}">Download Session Reports</a>
                     </div>
                 </div>
             </div>
@@ -41,6 +41,18 @@
                 </div>
             </div>
 
+            <div class="col-md-12">
+                <h3>Reporting</h3>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-chart-line text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/reporting/mentor') }}">Mentor Reporting</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

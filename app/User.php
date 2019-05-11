@@ -83,6 +83,9 @@ class User extends SparkUser
         return $this->hasMany('App\ExpenseClaim','mentor_id');
     }
 
+    public function hasRole($role) {
+        return ($this->role && $this->role == $role);
+    }
 
     public function isManager()
     {
@@ -106,7 +109,6 @@ class User extends SparkUser
     public function isAdmin(){
         return $this->isDeveloper();
     }
-
 
     public function manager(){
         return $this->belongsTo('App\User','manager_id');
