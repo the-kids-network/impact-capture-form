@@ -77,7 +77,7 @@ class MainMenuTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $actions = [new ActivityTypesPage(), new AdminPage(), new EmotionalStatePage(), new ExpenseClaimsPage(),
-                        new FinancePage(), new ManagerPage(), new MenteePage(), new MentorPage(), new PhysicalAppearancePage(),
+                        new FinancePage(), new ManagerPage(), new MenteePage(), new PhysicalAppearancePage(),
                         new RegisterUserPage(), new SessionReportsPage()];
 
             $user = User::where('email', 'admin@example.com')->firstOrFail();

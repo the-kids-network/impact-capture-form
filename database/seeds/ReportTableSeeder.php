@@ -11,8 +11,8 @@ class ReportTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->addReport(6, 1, 'Meeting 1 Details', 1);
-        $this->addReport(7, 2, 'Meeting 2 Details', 6);
+        $this->addReport(12, 1, 'Meeting 1 Details', 1);
+        $this->addReport(13, 1, 'Meeting 2 Details', 6);
     }
 
     private function addReport($mentor_id, $mentee_id, $meeting_details, $rating_id){

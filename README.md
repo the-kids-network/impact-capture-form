@@ -5,21 +5,22 @@
 ## Local Setup
 
 ### Setup Local Database
-(Expects MySql 5.7 to be installed with the database created, OS X - simplest way is through Homebrew as follows)
+(Expects MySql 5.7 to be installed with the database created.
+On OS X - simplest way is through Homebrew as follows)
 
-Install mysql 5.7
+Install mysql 5.7:
 ```bash
 brew install mysql@5.7
 brew tap homebrew/services
 ```
 
-Start/stop mysql service
+Start/stop mysql service:
 ```bash
 brew services start mysql@5.7
 brew services stop mysql@5.7
 ```
 
-Create database and user for app
+Create database and user for app:
 ```bash
 mysql -uroot
 mysql> CREATE DATABASE homestead;
@@ -27,7 +28,7 @@ mysql> CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';
 mysql> GRANT ALL PRIVILEGES ON homestead.* TO 'homestead'@'localhost';
 ```
 
-Connect to database as user so that you can explore
+Connect to database as user so that you can explore:
 ```bash
 mysql -uhomestead -psecret -Dhomestead
 ```
@@ -60,14 +61,21 @@ npm run dev
 
 # Testing
 
-Note that the app needs to be running before you launch tests.
+To run the unit test:
 
-To run tests: 
+```
+./vendor/bin/phpunit
+```
+
+To run the Dusk browser tests (Note that the app needs to be running before you launch these tests): 
+
+Turn off the php debug bar in the .env file, as it interferes with the browser tests.
+
+For debugging in the browser, disable headless in the DuskTestCase.
 
 ```
 php composer.phar install
-php artisan config:cache
-php artisan migrate:refresh --seed && php artisan dusk
+php artisan config:cache && php artisan migrate:refresh --seed && php artisan dusk
 ```
 
 # Debug
