@@ -17,15 +17,16 @@ class MentorReportingController extends Controller
         $this->middleware('auth');
         $this->middleware('hasAnyOfRoles:admin,manager');
     }
-
+    
     /**
-     * Display the reporting landing page
-     *
+     * Generate the report
+     * 
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('reporting.mentor.index');
+    public function generateIndexReport(Request $request)
+    {   
+        return $this->generate($request, 'reporting.mentor.index');
     }
 
     /**
@@ -34,17 +35,6 @@ class MentorReportingController extends Controller
     public function generateExportableReport(Request $request) 
     {
         return $this->generate($request, 'reporting.mentor.export');
-    }
-    
-    /**
-     * Generate the report from parameters supplied
-     * 
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function generateIndexReport(Request $request)
-    {   
-        return $this->generate($request, 'reporting.mentor.index');
     }
 
     public function generate(Request $request, $view_name)
