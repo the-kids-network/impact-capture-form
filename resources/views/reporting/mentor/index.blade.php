@@ -64,9 +64,6 @@
                                     <th data-sortable="true">Actual Sessions</th>
                                     <th data-sortable="true">Total Session Length (Hrs)</th>
                                     <th data-sortable="true">Expenses Total (£)</th>
-                                    <th data-sortable="true">Expenses Pending (£)</th>
-                                    <th data-sortable="true">Expenses Approved (£)</th>
-                                    <th data-sortable="true">Expenses Rejected (£)</th>
                                 </tr>
                             </thead>
 
@@ -92,10 +89,6 @@
                                         <td class="actual-session-count">{{ $mentor->session_count }}</td>
                                         <td class="total-session-length">{{ $mentor->session_length }}</td>
                                         <td class="expenses-total">{{ $mentor->expenses_total }}</td>
-                                        <td class="expenses-pending">{{ $mentor->expenses_pending }}</td>
-                                        <td class="expenses-approved">{{ $mentor->expenses_approved}}</td>
-                                        <td class="expenses-rejected">{{ $mentor->expenses_rejected}}</td>
-
                                     </tr>
                                 @endforeach
                             </tbody>

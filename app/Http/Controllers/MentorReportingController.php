@@ -71,10 +71,7 @@ class MentorReportingController extends Controller
                     f.first_session_date,
                     COALESCE(SUM(s.session_count), 0) AS session_count, 
                     COALESCE(SUM(s.session_length), 0) AS session_length, 
-                    COALESCE(SUM(s.expenses_total), 0) AS expenses_total, 
-                    COALESCE(SUM(s.expenses_pending), 0) AS expenses_pending,
-                    COALESCE(SUM(s.expenses_approved), 0) AS expenses_approved,
-                    COALESCE(SUM(s.expenses_rejected), 0) AS expenses_rejected
+                    COALESCE(SUM(s.expenses_total), 0) AS expenses_total
                 FROM users u
                 LEFT JOIN users m ON m.id = u.manager_id
                 LEFT JOIN (
