@@ -65,26 +65,17 @@ class MentorReportingController extends Controller
     private function get_stats($report_start_date, $report_end_date, $manager_id) {
         $mentors_stats = DB::select("
                 SELECT DISTINCT 
-                    u.id as mentor_id, 
-                    u.name as mentor_name,
-                    m.name as manager_name,
-                    f.first_session_date,
+                    m.mentor_id, 
+                    m.mentor_name,
+                    m.manager_name,
+                    m.start_date,
+                    m.last_session_date,
+                    m.days_since_last_session,
+                    m.next_scheduled_session,
                     COALESCE(SUM(s.session_count), 0) AS session_count, 
                     COALESCE(SUM(s.session_length), 0) AS session_length, 
-                    COALESCE(SUM(s.expenses_total), 0) AS expenses_total, 
-                    COALESCE(SUM(s.expenses_pending), 0) AS expenses_pending,
-                    COALESCE(SUM(s.expenses_approved), 0) AS expenses_approved,
-                    COALESCE(SUM(s.expenses_rejected), 0) AS expenses_rejected
-                FROM users u
-                LEFT JOIN users m ON m.id = u.manager_id
-                LEFT JOIN (
-                    /* Join first session date */
-                    SELECT DISTINCT
-                        user_id,
-                        MIN(session_date) AS first_session_date
-                    FROM reporting_sessions
-                    GROUP BY user_id
-                ) f ON f.user_id = u.id
+                    COALESCE(SUM(s.expenses_total), 0) AS expenses_total
+                FROM reporting_mentors m
                 LEFT JOIN (
                     /* Join sessions */
                     SELECT DISTINCT * 
@@ -92,15 +83,18 @@ class MentorReportingController extends Controller
                     WHERE 1=1
                     AND session_date >= :start_date
                     AND session_date <= :end_date
-                ) s ON s.user_id = u.id
+                ) s ON s.user_id = m.mentor_id
                 WHERE 1=1
                 ".
-                ( $manager_id ? 'AND u.manager_id = '.$manager_id : '' )
+                ( $manager_id ? 'AND m.manager_id = '.$manager_id : '' )
                 ."
-                AND u.role IS NULL
-                AND u.role IS NULL
-                AND u.deleted_at IS NULL  
-                GROUP BY u.id, u.name, f.first_session_date;", 
+                GROUP BY m.mentor_id, 
+                         m.mentor_name,
+                         m.manager_name,
+                         m.start_date,
+                         m.last_session_date,
+                         m.days_since_last_session,
+                         m.next_scheduled_session;", 
                 [ 
                     'start_date' => $report_start_date->format('Y-m-d'), 
                     'end_date' => $report_end_date->format('Y-m-d')
@@ -119,15 +113,15 @@ class MentorReportingController extends Controller
     private function add_expected_session_count($mentors_stats, $report_start_date, $report_end_date) {
         
         // pure function
-        $expected_sessions_func = function ($first_session_date, $report_start_date, $report_end_date) { 
-            if (!$first_session_date) return null;
+        $expected_sessions_func = function ($mentor_start_date, $report_start_date, $report_end_date) { 
+            if (!$mentor_start_date) return null;
 
-            $first_session_date = Carbon::createFromFormat('Y-m-d', $first_session_date);
+            $mentor_start_date = Carbon::createFromFormat('Y-m-d', $mentor_start_date);
 
-            if ($first_session_date->between($report_start_date, $report_end_date, true)) {
-                return $report_end_date->diffInWeeks($first_session_date);
+            if ($mentor_start_date->between($report_start_date, $report_end_date, true)) {
+                return $report_end_date->diffInWeeks($mentor_start_date);
             } 
-            else if ($first_session_date > $report_end_date) {
+            else if ($mentor_start_date > $report_end_date) {
                 return 0;
             }
             else {
@@ -138,7 +132,7 @@ class MentorReportingController extends Controller
         // mutating code
         foreach ($mentors_stats as $mentor) {
             $mentor->expected_session_count = $expected_sessions_func(
-                $mentor->first_session_date, 
+                $mentor->start_date, 
                 $report_start_date, 
                 $report_end_date
             );

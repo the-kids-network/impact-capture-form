@@ -19,24 +19,47 @@
                         <th data-sortable="true">Manager Name</th>
                         @endif
                         <th>Start Date</th>
+                        <th data-sortable="true">Last Session Date</th>
+                        <th data-sortable="true">Days Since Last Session</th>
+                        <th data-sortable="true">Next Scheduled Session</th>
                         <th>Expected Sessions</th>
                         <th>Actual Sessions</th>
                         <th>Total Session Length (Hrs)</th>
                         <th>Expenses Total (£)</th>
-                        <th>Expenses Pending (£)</th>
-                        <th>Expenses Approved (£)</th>
-                        <th>Expenses Rejected (£)</th>
                     </tr>
 
                     @foreach($mentors as $mentor)
                     <tr>
                         <td class="mentor-name">{{ $mentor->mentor_name }}</td>
                         @if( !Auth::user()->isManager() )
-                        <td class="manager-name">{{ $mentor->manager_name }}</td>
+                        <td class="manager-name">
+                            @if (isset($mentor->manager_name )) {{ $mentor->manager_name }}  @else Unassigned @endif
+                        </td>
                         @endif
                         <td class="start-date">
-                            @if (isset($mentor->first_session_date)) 
-                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->first_session_date)->format('d-m-y') }} 
+                            @if (isset($mentor->start_date)) 
+                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->start_date)->format('d-m-y') }} 
+                            @else 
+                                Unknown 
+                            @endif
+                        </td>
+                        <td class="last-session-date">
+                            @if (isset($mentor->last_session_date)) 
+                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->last_session_date)->format('d-m-y') }} 
+                            @else 
+                                Unknown 
+                            @endif
+                        </td>
+                        <td class="days-since-last-session">
+                            @if (isset($mentor->days_since_last_session)) 
+                                {{ $mentor->days_since_last_session}} 
+                            @else 
+                                Unknown 
+                            @endif
+                        </td>
+                        <td class="next-scheduled-session-date">
+                            @if (isset($mentor->next_scheduled_session)) 
+                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->next_scheduled_session)->format('d-m-y') }} 
                             @else 
                                 Unknown 
                             @endif
@@ -49,10 +72,6 @@
                         <td class="actual-session-count">{{ $mentor->session_count }}</td>
                         <td class="total-session-length">{{ $mentor->session_length }}</td>
                         <td class="expenses-total">{{ $mentor->expenses_total }}</td>
-                        <td class="expenses-pending">{{ $mentor->expenses_pending }}</td>
-                        <td class="expenses-approved">{{ $mentor->expenses_approved}}</td>
-                        <td class="expenses-rejected">{{ $mentor->expenses_rejected}}</td>
-
                     </tr>
                     @endforeach
                 </table>

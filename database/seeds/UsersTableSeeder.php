@@ -32,9 +32,9 @@ class UsersTableSeeder extends Seeder
             $this->addUser(11, 'Finance Five','finance5@example.com', 'finance', NULL);
 
             // Ten Mentors
-            $this->addUser(12, 'Mentor One','mentor1@example.com', NULL, NULL);
-            $this->addUser(13, 'Mentor Two','mentor2@example.com', NULL, NULL);
-            $this->addUser(14, 'Mentor Three','mentor3@example.com', NULL, NULL);
+            $this->addUser(12, 'Mentor One','mentor1@example.com', NULL, 2);
+            $this->addUser(13, 'Mentor Two','mentor2@example.com', NULL, 3);
+            $this->addUser(14, 'Mentor Three','mentor3@example.com', NULL, 3);
             $this->addUser(15, 'Mentor Four','mentor4@example.com', NULL, NULL);
             $this->addUser(16, 'Mentor Five','mentor5@example.com', NULL, NULL);
             $this->addUser(17, 'Mentor Six','mentor6@example.com', NULL, NULL);
