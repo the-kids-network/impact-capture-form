@@ -35,10 +35,6 @@ class HomeController extends Controller
             return view('admin.index');
         }
 
-        if($request->user()->isFinance()){
-            return view('finance.index');
-        }
-
         if($request->user()->isManager()){
             return view('manager.index');
         }

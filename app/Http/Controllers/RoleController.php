@@ -12,7 +12,7 @@ class RoleController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('dev');
+        $this->middleware('hasAnyOfRoles:admin');
     }
 
     public function index(){
@@ -29,10 +29,7 @@ class RoleController extends Controller
         return view('roles.manager')
             ->with('users', User::all() );
     }
-    public function finance(){
-        return view('roles.finance')
-            ->with('users', User::all() );
-    }
+
     public function admin(){
         return view('roles.admin')
             ->with('users', User::all() );
@@ -43,13 +40,6 @@ class RoleController extends Controller
         $user->role = 'manager' ;
         $user->save();
         return redirect('/roles/manager')->with('status','User promoted to Manager');
-    }
-
-    public function store_finance(Request $request){
-        $user = User::find($request->user_id);
-        $user->role = 'finance';
-        $user->save();
-        return redirect('/roles/finance')->with('status','User promoted to Finance');
     }
     
     public function store_admin(Request $request){
@@ -103,13 +93,6 @@ class RoleController extends Controller
         $user->role = NULL;
         $user->save();
         return redirect('/roles/manager')->with('status', $user->name . ' is no longer a manager.');
-    }
-
-    public function delete_finance(Request $request){
-        $user = User::find($request->finance_id);
-        $user->role = NULL;
-        $user->save();
-        return redirect('/roles/finance')->with('status',$user->name . ' is no longer in finance.');
     }
 
     public function delete_admin(Request $request){

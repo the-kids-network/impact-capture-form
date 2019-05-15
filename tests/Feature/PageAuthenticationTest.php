@@ -9,10 +9,6 @@ use App\User;
 
 class PageAuthenticationTest extends TestCase
 {
-    /**
-    * @runInSeparateProcess
-    * @preserveGlobalState disabled
-    */
     public function testBasicPageAuthentication()
     {
         // Test authentication via status codes on various pages:
@@ -21,7 +17,6 @@ class PageAuthenticationTest extends TestCase
                               ['/home'                          , 302   , 200   , 200       , 200],
                               ['/login'                         , 200   , 302   , 302       , 302],
                               ['/report'                        , 302   , 302   , 302       , 200],
-
                               ['/activity-type'                 , 302   , 302   , 302       , 200],
                               ['/mentee'                        , 302   , 302   , 302       , 200],
                               ['/physical-appearance'           , 302   , 302   , 302       , 200],
@@ -29,7 +24,6 @@ class PageAuthenticationTest extends TestCase
                               ['/expense-claim'                 , 302   , 302   , 302       , 200],
                               ['/roles/mentor'                  , 302   , 302   , 302       , 200],
                               ['/roles/manager'                 , 302   , 302   , 302       , 200],
-                              ['/roles/finance'                 , 302   , 302   , 302       , 200],
                               ['/roles/admin'                   , 302   , 302   , 302       , 200],
                               ['/register'                      , 302   , 302   , 302       , 200],
                               ['/my-reports'                    , 302   , 200   , 404       , 200],
@@ -43,3 +37,4 @@ class PageAuthenticationTest extends TestCase
                              ]);
     }
 }
+

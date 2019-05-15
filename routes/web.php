@@ -50,17 +50,11 @@ Route::get('/receipt/download-all','ReceiptController@downloadAll');
 /*
  * Role Management Routes
  */
-// Display the Different Roles and Links to manage them
-Route::get('/roles','RoleController@index');
-
 // Options to manage mentors. Allows admins to assign mentors to mentee
 Route::get('/roles/mentor','RoleController@mentor');
 
 // Options to manage managers. Allows admins to promote users to managers, demote users, assign managers to mentors
 Route::get('/roles/manager','RoleController@manager');
-
-// Options to manage finance. Allows admins to promote users to finance / demote users.
-Route::get('/roles/finance','RoleController@finance');
 
 // Options to manage admin. Allows admins to promote users to admin / demote users.
 Route::get('/roles/admin','RoleController@admin');
@@ -69,9 +63,6 @@ Route::get('/own-reports','SessionReportController@ownReports');
 
 // Process a request to promote to manager
 Route::post('/roles/manager','RoleController@store_manager');
-
-// Process a request to promote to finance
-Route::post('/roles/finance','RoleController@store_finance');
 
 // Process a request to promote to admin
 Route::post('/roles/admin','RoleController@store_admin');
@@ -90,9 +81,6 @@ Route::delete('/roles/mentor/{mentor_id}','RoleController@delete_mentor');
 
 // Demote Manager. Disassociate all Mentees associated with the Manager.
 Route::delete('/roles/manager','RoleController@delete_manager');
-
-// Demote from Finance role.
-Route::delete('/roles/finance','RoleController@delete_finance');
 
 // Demote from Admin role.
 Route::delete('/roles/admin','RoleController@delete_admin');

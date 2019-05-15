@@ -12,58 +12,52 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-
     function setUp() {
         parent::setUp();
 
-        $this->basicUser = new User(12, NULL);
-        $this->managerUser = new User(2, 'manager');
-        $this->adminUser = new User(1, 'admin');
+        $this->usersForRoles = [
+            'mentor'=>new User(12, NULL),
+            'manager'=>new User(13, 'manager'),
+            'admin'=>new User(14, 'admin')
+        ];
     }
 
-    /**
-    * @runInSeparateProcess
-    * @preserveGlobalState disabled
-    */
-    function allRoleTest($page, $guestStatusCode, $mentorStatusCode, $managerStatusCode, $adminStatusCode) {
-        $this->basicUserTest($page, [
-            array('user' => $this->basicUser    , 'status' => $mentorStatusCode),
-            array('user' => $this->managerUser  , 'status' => $managerStatusCode),
-            array('user' => $this->adminUser    , 'status' => $adminStatusCode)
-        ]);
-    }
-
-    function multiplePages($fullPageList) {
-        foreach ($fullPageList as $pageObject) {
-            $page = $pageObject[0];
-            $response = $this->get($page);
-            $this->assertEquals($pageObject[1], $response->getStatusCode(), "$page request failed for guest");
+    function multiplePages($testDataSet) {
+        // map to something easier to work with
+        $data = array();
+        foreach ($testDataSet as $testDataRow) {
+            array_push($data, [$testDataRow[0], 'guest', $testDataRow[1]]);
+            array_push($data, [$testDataRow[0], 'mentor', $testDataRow[2]]);
+            array_push($data, [$testDataRow[0], 'manager', $testDataRow[3]]);
+            array_push($data, [$testDataRow[0], 'admin', $testDataRow[4]]);
         }
 
-        foreach ($fullPageList as $pageObject) {
-            $this->allRoleTest(...$pageObject);
+        // check all pages as guest (unauthenticated)
+        // the framework needs to do this way as once authenticated, 
+        // in the next section, there is no way to log out
+        foreach ($data as $row) {
+            if ($row[1] == "guest") {
+                $this->check(...$row);
+            }
+        }
+
+        // check all pages non-guest
+        foreach ($data as $row) {
+            if ($row[1] != "guest") {
+                $this->check(...$row);
+            }
         }
     }
 
-    /**
-    * @runInSeparateProcess
-    * @preserveGlobalState disabled
-    */
-    function basicUserTest($page, $expectedStatusCodes)
-    {
-        foreach ($expectedStatusCodes as $expected) {
-            $user = $expected['user'];
-            if ($user)
-            {
-                $this->be($user);
-                $response = $this->actingAs($user)->get($page);
-            }
-            else
-            {
-                $response = $this->get($page);
-            }
-
-            $this->assertEquals($expected['status'], $response->getStatusCode(), "$page request failed for $user");
+    function check($pageUrl, $userRole, $expectedStatusCode) {
+        if ($userRole == 'guest') {
+            $response = $this->get($pageUrl);
+            $this->assertEquals($expectedStatusCode, $response->getStatusCode(), "$pageUrl request failed for guest");
+        } else {
+            $user = $this->usersForRoles[$userRole];
+            $this->be($user);
+            $response = $this->actingAs($user)->get($pageUrl);
+            $this->assertEquals($expectedStatusCode, $response->getStatusCode(), "$pageUrl request failed for $user");
         }
     }
 }

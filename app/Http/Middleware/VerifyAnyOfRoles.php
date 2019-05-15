@@ -11,12 +11,12 @@ class VerifyAnyOfRoles
         $user = $request->user();
 
         foreach($roles as $role) {
-            if($user->hasRole($role))
+            if($request->user() && $user->hasRole($role))
                 return $next($request);
         }
 
-        return $request->ajax() || $request->wantsJson()
+         return $request->ajax() || $request->wantsJson()
             ? response('Unauthorized.', 401)
-            : abort(404,'Unauthorized');
+            : redirect()->guest('login');
     }
 }
