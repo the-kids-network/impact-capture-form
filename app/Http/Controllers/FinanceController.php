@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 class FinanceController extends Controller
 {
-    public function reviewClaims()
+    public function processExpenseClaims()
     {
-        return view('finance.review-claims')
-            ->with('claims', ExpenseClaim::where('status','approved')->orderBy('created_at','desc')->get());
+        return view('finance.process-expense-claims')
+            ->with('claims', ExpenseClaim::where('status','pending')->orderBy('created_at','desc')->get());
 
     }
 

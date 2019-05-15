@@ -22,11 +22,11 @@ Route::get('/my-expense-claims','HomeController@expense_claims');
 // Manager Dashboard
 Route::get('/manager','ManagerController@index');
 
-// List all the claims that the manager can approve
-Route::get('/manager/review-claims','ManagerController@reviewClaims');
+// List all the claims for the manger's mentors
+Route::get('/manager/view-expense-claims','ManagerController@viewExpenseClaims');
 
-// List all the approved claims so finance can process it
-Route::get('/finance/review-claims','FinanceController@reviewClaims');
+// List all submitted claims ready to process
+Route::get('/finance/process-expense-claims','FinanceController@processExpenseClaims');
 
 // Process forms that restore soft deleted items
 // Mentees, Activity Type, Physical Appearances and Emotional State can be soft deleted

@@ -28,7 +28,6 @@ class PageAuthenticationTest extends TestCase
                               ['/register'                      , 302   , 302   , 302       , 200],
                               ['/my-reports'                    , 302   , 200   , 404       , 200],
                               ['/my-expense-claims'             , 302   , 200   , 404       , 200],
-                              ['/manager/review-claims'         , 404   , 404   , 200       , 200],
                               ['/manager/report/export'         , 404   , 404   , 200       , 200],
                               ['/manager/expense-claim/export'  , 404   , 404   , 200       , 200]
                               //TODO: Manager and mentor roles

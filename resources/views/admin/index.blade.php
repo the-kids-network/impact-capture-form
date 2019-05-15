@@ -155,16 +155,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-credit-card text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/manager/review-claims') }}">Approve Mentor Expense Claims</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
-                        <i class="fa fa-credit-card text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/finance/review-claims') }}">Process Expense Claims</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/finance/process-expense-claims') }}">Process Expense Claims</a>
                     </div>
                 </div>
             </div>

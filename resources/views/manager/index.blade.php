@@ -9,7 +9,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-credit-card text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/manager/review-claims') }}">Approve Mentor Expense Claims</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/manager/view-expense-claims') }}">View Expense Claims</a>
                     </div>
                 </div>
             </div>

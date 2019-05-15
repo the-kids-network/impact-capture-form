@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ClaimApprovedToMentor extends Mailable implements ShouldQueue
+class ClaimRejectedToFinance extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -32,7 +32,7 @@ class ClaimApprovedToMentor extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Expense Claim Approved')
-            ->markdown('emails.claim.approved_to_mentor');
+            ->subject('Expense Claim Rejected')
+            ->markdown('emails.claim.rejected_to_finance');
     }
 }

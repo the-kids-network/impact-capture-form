@@ -120,4 +120,10 @@ return [
         ],
     ],
 
+    /*
+    * For testing mail locally, creating db user seeds with the right
+    * email address mailbox defined below e.g. me+mentor1@gmail.com
+    */
+    'test' => env('MAIL_TEST', false),
+    'testMailbox' => env('MAIL_TEST_MAILBOX', null)
 ];

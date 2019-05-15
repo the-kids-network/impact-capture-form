@@ -9,8 +9,6 @@ use Illuminate\Http\Request;
 
 class ManagerController extends Controller
 {
-
-
     public function __construct()
     {
         $this->middleware('manager');
@@ -21,16 +19,15 @@ class ManagerController extends Controller
         return view('manager.index');
     }
 
-    public function reviewClaims(Request $request)
+    public function viewExpenseClaims(Request $request)
     {
         if ($request->user()->isAdmin()) {
             $mentors = User::all();
         } else {
-            //$mentors = User::all();
             $mentors = $request->user()->assignedMentors;
         }
 
-        return view('manager.review-claims')
+        return view('manager.view-expense-claims')
             ->with('mentors',$mentors);
     }
 
