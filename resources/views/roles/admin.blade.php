@@ -20,7 +20,7 @@
                                 <div class="col-md-6">
                                     <select class="form-control" name="user_id">
                                         @foreach($users as $user)
-                                            @if( $user->isMentorOnly() )
+                                            @if( $user->isMentor() )
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                                             @endif
                                         @endforeach
@@ -45,7 +45,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="container">
         <div class="row">

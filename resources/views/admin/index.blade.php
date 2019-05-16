@@ -12,8 +12,8 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
-                        <i class="fa fa-bicycle text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/activity-type') }}">Activity Types</a>
+                        <i class="fa fa-child text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/mentee') }}">Mentee</a>
                     </div>
                 </div>
             </div>
@@ -21,8 +21,8 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
-                        <i class="fa fa-child text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/mentee') }}">Mentee</a>
+                        <i class="fa fa-bicycle text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/activity-type') }}">Activity Types</a>
                     </div>
                 </div>
             </div>
@@ -141,7 +141,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 

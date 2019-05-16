@@ -3,20 +3,18 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Http\Middleware\VerifyUser;
 
-class VerifyAnyOfRoles
-{
-    public function handle($request, Closure $next, ... $roles)
-    {
+class VerifyAnyOfRoles extends VerifyUser {
+    
+    public function handle($request, Closure $next, ... $roles) {
         $user = $request->user();
-
         foreach($roles as $role) {
-            if($request->user() && $user->hasRole($role))
+            if($user && $user->hasRole($role)) {
                 return $next($request);
+            }
         }
 
-         return $request->ajax() || $request->wantsJson()
-            ? response('Unauthorized.', 401)
-            : redirect()->guest('login');
+        $this->handleFailure($request);
     }
 }

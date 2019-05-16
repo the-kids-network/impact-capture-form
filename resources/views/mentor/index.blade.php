@@ -8,7 +8,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-child text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/my-reports') }}">Submit a Session Report</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/report/new') }}">Submit a Session Report</a>
                     </div>
                 </div>
             </div>
@@ -17,7 +17,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-book text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/own-reports') }}">View Reports</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/report') }}">View Reports</a>
                     </div>
                 </div>
             </div>

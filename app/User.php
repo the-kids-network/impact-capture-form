@@ -84,7 +84,11 @@ class User extends SparkUser
     }
 
     public function hasRole($role) {
-        return $this->role && $this->role == $role;
+        if ($role == "mentor") {
+            return !$this->role;
+        } else {
+            return $this->role && $this->role == $role;
+        }
     }
 
     public function isManager() {
@@ -94,17 +98,9 @@ class User extends SparkUser
     public function isMentor() {
         return !$this->role;
     }
-    
-    public function isMentorOnly(){
-        return $this->isMentor() && !$this->isDeveloper();
-    }
-
-    public function isDeveloper() {
-        return $this->role == 'admin';
-    }
 
     public function isAdmin() {
-        return $this->isDeveloper();
+        return $this->role == 'admin';
     }
 
     public function manager() {

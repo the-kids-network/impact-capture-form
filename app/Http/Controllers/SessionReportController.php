@@ -20,18 +20,17 @@ use App\Http\Controllers\ScheduleController;
 
 use Debugbar;
 
-class SessionReportController extends Controller
-{
+class SessionReportController extends Controller {
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
-        $this->middleware('dev')->except('store','show','ownReports');
-        $this->middleware('mentorOnly')->only('store', 'ownReports');
+        $this->middleware('mentor')->only('store');
+        $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('index', 'show', 'export');
     }
 
     /**
@@ -39,27 +38,18 @@ class SessionReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        return view('session_report.index')->with('reports', Report::orderBy('id','desc')->get() );
-    }
+    public function index(Request $request) {
+        $reports = [];
+        if (Auth::user()->isAdmin()) {
+            $reports = Report::orderBy('id','desc')->get();
+        } else if (Auth::user()->isManager()) {
+            $ids = Auth::user()->assignedMentors->map(function($user) { return $user->id; });
+            $reports = Report::orderBy('id', 'desc')->whereIn('mentor_id', $ids)->get();
+        } else if (Auth::user()->isMentor()) {
+            $reports = Report::orderBy('id', 'desc')->whereMentorId($request->user()->id)->get();
+        }
 
-    public function ownReports(Request $request)
-    {
-        return view('session_report.index')->with(
-            'reports',
-            Report::orderBy('id', 'desc')->whereMentorId($request->user()->id)->get()
-        );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('session_report.index')->with('reports',  $reports);
     }
 
     /**
@@ -68,8 +58,7 @@ class SessionReportController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $messages = ['rating_id.min' => 'The session rating field is required.'];
         $this->validate($request, [
             'mentee_id' => 'required|exists:mentees,id',
@@ -110,77 +99,61 @@ class SessionReportController extends Controller
             Mail::to($report->mentor->manager)->send(new ReportSubmittedToManager($report));
         }
 
-        return redirect('/my-reports')->with('status','Report Submitted');
-
+        return redirect('/report')->with('status','Report Submitted');
     }
-
-    public function saveSchedule(Request $request)
-    {
-        $schedule = new Schedule();
-
-        $schedule->mentee_id = $request->mentee_id;
-        $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
-        $schedule->next_session_location = $request->next_session_location;
-        $schedule->save();
-    }
-
+   
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $report = Report::find($id);
-        if (Auth::user() &&
-            (Auth::user()->id == $report->mentor()->first()->id || Auth::user()->isAdmin() || Auth::user()->isManager()))
-        {
-            return view('session_report.show')->with('report',$report);
+        if (!$report) {
+            abort(404);
         }
-        else
-        {
-            return redirect()->guest('login');
+
+        if (!Auth::user()) {
+            abort(401,'Unauthorized');
         }
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $user = Auth::user();
+        $report_mentor = $report->mentor()->first();
+        $report_mentor_manager = $report_mentor->manager()->first();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if ($user == $report_mentor
+             || ($user ->isManager() && $user == $report_mentor_manager)
+             || $user ->isAdmin() ) {
+            return view('session_report.show')->with('report', $report);
+        } else {
+            abort(401,'Unauthorized');
+        }
     }
 
     public function export(){
-        return view('session_report.export')
-            ->with('reports',Report::orderBy('id','desc')->get());
+        if (!Auth::user()) {
+            abort(401,'Unauthorized');
+        }
+
+        if (Auth::user()->isAdmin()) {
+            $reports = Report::orderBy('id','desc')->get();
+        } else if (Auth::user()->isManager()) {
+            $ids = Auth::user()->assignedMentors->map(function($user) { return $user->id; });
+            $reports = Report::orderBy('id', 'desc')->whereIn('mentor_id', $ids)->get();
+        } else {
+            $reports = Report::orderBy('id', 'desc')->whereMentorId(Auth::user()->id)->get();
+        }
+
+        return view('session_report.export')->with('reports', $reports);
+    }
+
+    private function saveSchedule(Request $request) {
+        $schedule = new Schedule();
+        $schedule->mentee_id = $request->mentee_id;
+        $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
+        $schedule->next_session_location = $request->next_session_location;
+        $schedule->save();
     }
 
 }

@@ -1,7 +1,3 @@
-/**
- * Created by nikhilagarwal on 2/8/18.
- */
-
 function downloadCSV(csv, filename) {
     var csvFile;
     var downloadLink;

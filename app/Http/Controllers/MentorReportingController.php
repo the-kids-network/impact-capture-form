@@ -8,12 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class MentorReportingController extends Controller
-{
+class MentorReportingController extends Controller {
     private const REQUEST_DATE_FORMAT = 'd-m-Y';
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
         $this->middleware('hasAnyOfRoles:admin,manager');
     }
@@ -24,21 +22,18 @@ class MentorReportingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function generateIndexReport(Request $request)
-    {   
+    public function generateIndexReport(Request $request) {   
         return $this->generate($request, 'reporting.mentor.index');
     }
 
     /**
      * Export the report as CSV
      */
-    public function generateExportableReport(Request $request) 
-    {
+    public function generateExportableReport(Request $request)  {
         return $this->generate($request, 'reporting.mentor.export');
     }
 
-    public function generate(Request $request, $view_name)
-    {   
+    public function generate(Request $request, $view_name) {   
         // Validate date parameters
         $this->validate_parameters($request);
 
@@ -111,7 +106,6 @@ class MentorReportingController extends Controller
      * This mutates the supplied stats data structure - not ideal.
      */
     private function add_expected_session_count($mentors_stats, $report_start_date, $report_end_date) {
-        
         // pure function
         $expected_sessions_func = function ($mentor_start_date, $report_start_date, $report_end_date) { 
             if (!$mentor_start_date) return null;

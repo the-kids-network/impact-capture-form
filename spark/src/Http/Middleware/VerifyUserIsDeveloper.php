@@ -15,7 +15,6 @@ class VerifyUserIsDeveloper
      */
     public function handle($request, $next)
     {
-//        if ($request->user() && Spark::developer($request->user()->email)) {
         if ($request->user() && $request->user()->isAdmin() ) {
             return $next($request);
         }

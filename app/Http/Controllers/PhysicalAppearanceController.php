@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\PhysicalAppearance;
 use Illuminate\Http\Request;
 
-class PhysicalAppearanceController extends Controller
-{
+class PhysicalAppearanceController extends Controller {
 
-    public function __construct()
-    {
-        $this->middleware('dev');
+    public function __construct() {
+        $this->middleware('auth');
+        $this->middleware('admin');
     }
 
     /**
@@ -18,8 +17,7 @@ class PhysicalAppearanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         return view('physical_appearance.index')
             ->with('physical_appearances', PhysicalAppearance::withTrashed()->get());
     }
@@ -29,8 +27,7 @@ class PhysicalAppearanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return redirect('/physical-appearance');
     }
 
@@ -40,8 +37,7 @@ class PhysicalAppearanceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $request->validate([
             'name' => 'required|string'
         ]);
@@ -59,32 +55,8 @@ class PhysicalAppearanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         return redirect('/physical-appearance');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -93,13 +65,11 @@ class PhysicalAppearanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $physical_appearance = PhysicalAppearance::find($id);
         $physical_appearance->delete();
         return redirect('/physical-appearance')->with('status','Physical Appearance Deactivated');
     }
-
 
     /**
      * Restore a deleted physical appearance.
@@ -107,8 +77,7 @@ class PhysicalAppearanceController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function restore($id)
-    {
+    public function restore($id) {
         PhysicalAppearance::withTrashed()
             ->where('id', $id)
             ->restore();

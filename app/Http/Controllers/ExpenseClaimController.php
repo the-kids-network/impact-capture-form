@@ -18,20 +18,18 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
-class ExpenseClaimController extends Controller
-{
+class ExpenseClaimController extends Controller {
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
-        $this->middleware('dev')->only('export','index');
-        $this->middleware('manager')->except('store','show','update');
-        $this->middleware('mentorOnly')->only('store');
+        $this->middleware('admin')->only('index','export','update');
+        $this->middleware('hasAnyOfRoles:admin,manager')->only('show');
+        $this->middleware('mentor')->only('store');
     }
 
     /**
@@ -39,19 +37,8 @@ class ExpenseClaimController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         return view('expense_claim.index')->with('expense_claims',ExpenseClaim::orderBy('created_at','desc')->get());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -60,8 +47,7 @@ class ExpenseClaimController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $request->validate([
             'report_id' => 'required|exists:reports,id',
             'expenses.*.date' => 'required|date|before_or_equal:today',
@@ -114,20 +100,8 @@ class ExpenseClaimController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         return view('expense_claim.show')->with('expense_claim',ExpenseClaim::find($id));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -137,8 +111,7 @@ class ExpenseClaimController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $request->validate([
             'status' => 'required'
         ]);
@@ -185,17 +158,6 @@ class ExpenseClaimController extends Controller
             return redirect('/expense-claim')->with('status','Expense Claim Rejected');
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id) {
-        //
-    }
-
 
     public function export(){
         return view('expense_claim.export')->with('expense_claims',ExpenseClaim::orderBy('created_at','desc')->get());

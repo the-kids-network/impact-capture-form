@@ -4,7 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\SetDevelopers;
 use App\Http\Middleware\VerifyManager;
-use App\Http\Middleware\VerifyUserIsMentorOnly;
+use App\Http\Middleware\VerifyMentor;
 use App\Http\Middleware\VerifyAdmin;
 use App\Http\Middleware\VerifyAnyOfRoles;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -56,7 +56,6 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'dev' => \Laravel\Spark\Http\Middleware\VerifyUserIsDeveloper::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'hasTeam' => \Laravel\Spark\Http\Middleware\VerifyUserHasTeam::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
@@ -65,7 +64,7 @@ class Kernel extends HttpKernel
 
         'hasAnyOfRoles' => \App\Http\Middleware\VerifyAnyOfRoles::class,
         'manager' => VerifyManager::class,
-        'mentorOnly' => VerifyUserIsMentorOnly::class,
+        'mentor' => VerifyMentor::class,
         'admin' => VerifyAdmin::class
     ];
 }

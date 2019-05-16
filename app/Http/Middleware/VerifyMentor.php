@@ -5,11 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Http\Middleware\VerifyUser;
 
-class VerifyManager extends VerifyUser
+class VerifyMentor extends VerifyUser
 {
     public function handle($request, Closure $next)
     {
-        if ($request->user() && $request->user()->isManager()) {
+        if ($request->user() && $request->user()->isMentor()) {
             return $next($request);
         }
 

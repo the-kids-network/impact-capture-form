@@ -6,12 +6,11 @@ use App\Mentee;
 use App\User;
 use Illuminate\Http\Request;
 
-class MenteeController extends Controller
-{
+class MenteeController extends Controller {
 
-    public function __construct()
-    {
-        $this->middleware('dev');
+    public function __construct() {
+        $this->middleware('auth');
+        $this->middleware('admin');
     }
 
     /**
@@ -19,8 +18,7 @@ class MenteeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         return view('mentee.index')
             ->with('mentees', Mentee::withTrashed()->get())
             ->with('users',User::all());
@@ -31,8 +29,7 @@ class MenteeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return redirect('/mentee');
     }
 
@@ -42,8 +39,7 @@ class MenteeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string'
@@ -63,33 +59,9 @@ class MenteeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         return redirect('/mentee');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    } 
 
     /**
      * Remove the specified resource from storage.
@@ -97,26 +69,21 @@ class MenteeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
-    {
-
-        if($request->really_delete){
-
+    public function destroy(Request $request, $id) {
+        if ($request->really_delete){
             $mentee = Mentee::withTrashed()->withCount('reports')->where('id',$id)->first();
-            if( $mentee->reports_count > 0 ){
+            if ($mentee->reports_count > 0 ) {
                 return redirect('/mentee')->with('status','Mentee cannot be deleted.');
             }
 
             Mentee::withTrashed()->where('id',$id)->forceDelete();
             return redirect('/mentee')->with('status','Mentee Deleted');
 
-        }else{
+        } else{
             $mentee = Mentee::find($id);
             $mentee->delete();
             return redirect('/mentee')->with('status','Mentee Deactivated');
         }
-
-
     }
 
     /**
@@ -125,8 +92,7 @@ class MenteeController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function restore($id)
-    {
+    public function restore($id) {
         Mentee::withTrashed()
             ->where('id', $id)
             ->restore();

@@ -16,7 +16,7 @@ Thanks,<br>
 Scheduled Sessions Calendar
 @endcomponent
 
-@component('mail::button', ['url' => url('/my-reports' )])
+@component('mail::button', ['url' => url('/report/new' )])
 Submit a Report
 @endcomponent
 

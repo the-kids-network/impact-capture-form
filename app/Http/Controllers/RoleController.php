@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Mentee;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class RoleController extends Controller
-{
+class RoleController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin');
+        $this->middleware('admin');
     }
 
     public function index(){
@@ -99,8 +98,11 @@ class RoleController extends Controller
         $user = User::find($request->admin_id);
         $user->role = NULL;
         $user->save();
-        return redirect('/roles/admin')->with('status',$user->name . ' is no longer an admin.');
+
+        if (Auth::user()->id != $user->id) {
+            return redirect('/roles/admin')->with('status', $user->name . ' is no longer an admin.');
+        } else {
+            return redirect('/home')->with('status', $user->name . ' is no longer an admin.');
+        }
     }
-
-
 }

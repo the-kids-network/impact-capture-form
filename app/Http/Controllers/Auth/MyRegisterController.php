@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nikhilagarwal
- * Date: 3/19/18
- * Time: 8:48 PM
- */
 
 namespace App\Http\Controllers\Auth;
 
@@ -23,7 +17,8 @@ class MyRegisterController extends SparkRegisterController
 
     public function __construct()
     {
-        $this->middleware('dev');
+        $this->middleware('auth');
+        $this->middleware('admin');
         $this->redirectTo = Spark::afterLoginRedirect();
     }
 
