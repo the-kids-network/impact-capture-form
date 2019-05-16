@@ -8,5 +8,5 @@ View Report
 @endcomponent
 
 Thanks,<br>
-The Kids Network
+{{ config('app.name') }}
 @endcomponent

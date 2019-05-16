@@ -20,7 +20,7 @@
                                 <div class="col-md-6">
                                     <select class="form-control" name="user_id">
                                         @foreach($users as $user)
-                                            @if( $user->isMentorOnly() ))
+                                            @if( $user->isMentor() ))
                                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                                             @endif
                                         @endforeach
@@ -74,14 +74,13 @@
                                 </div>
                             </div>
 
-
                             <!-- Mentor's Name -->
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Mentor Name</label>
                                 <div class="col-md-6">
                                     <select class="form-control" name="mentor_id">
                                         @foreach($users as $user)
-                                            @if( $user->isMentorOnly() )
+                                            @if( $user->isMentor() )
                                                 <option value="{{ $user->id }}">{{ $user->name }}@if($user->manager), Current Manager: {{ $user->manager->name }}@endif </option>
                                             @endif
                                         @endforeach
@@ -105,7 +104,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="container">
         <div class="row">

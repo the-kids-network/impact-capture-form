@@ -84,49 +84,43 @@ class User extends SparkUser
     }
 
     public function hasRole($role) {
-        return ($this->role && $this->role == $role);
+        if ($role == "mentor") {
+            return !$this->role;
+        } else {
+            return $this->role && $this->role == $role;
+        }
     }
 
-    public function isManager()
-    {
-        return ($this->role && $this->role == 'manager');
-    }
-    public function isFinance()
-    {
-        return ($this->role && $this->role == 'finance');
-    }
-    public function isMentor()
-    {
-        return (!$this->role);
-    }
-    public function isMentorOnly()
-    {
-        return ($this->isMentor() && !$this->isDeveloper());
-    }
-    public function isDeveloper(){
-        return Spark::developer($this->email) || $this->role == 'admin';
-    }
-    public function isAdmin(){
-        return $this->isDeveloper();
+    public function isManager() {
+        return $this->role && $this->role == 'manager';
     }
 
-    public function manager(){
+    public function isMentor() {
+        return !$this->role;
+    }
+
+    public function isAdmin() {
+        return $this->role == 'admin';
+    }
+
+    public function manager() {
         return $this->belongsTo('App\User','manager_id');
     }
-    public function assignedMentors(){
+
+    public function assignedMentors() {
         return $this->hasMany('App\User','manager_id');
     }
-    public function mentees()
-    {
+
+    public function mentees() {
         return $this->hasMany('App\Mentee','mentor_id');
     }
 
-
-    public function approvedClaims(){
-        return $this->hasMany('App\ExpenseClaim','approved_by_id');
+    public function processedClaims() {
+        return $this->hasMany('App\ExpenseClaim', 'processed_by_id')->where('status', 'processed');
     }
-    public function processedClaims(){
-        return $this->hasMany('App\ExpenseClaim','processed_by_id');
+
+    public function rejectedClaims() {
+        return $this->hasMany('App\ExpenseClaim','processed_by_id')->where('status', 'rejected');
     }
 
 }

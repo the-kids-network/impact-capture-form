@@ -13,7 +13,7 @@ class SessionSubmissionPage extends Page
      */
     public function url()
     {
-        return '/my-reports';
+        return '/report/new';
     }
 
     public function name()

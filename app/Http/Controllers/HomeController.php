@@ -14,29 +14,23 @@ use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Log;
 
-class HomeController extends Controller
-{
+class HomeController extends Controller {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
-        $this->middleware('mentorOnly')->except('show','deleteAll');
-        $this->middleware('dev')->only('deleteAll');
+        $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('show');
+        $this->middleware('hasAnyOfRoles:admin,mentor')->only('calendar');
+        $this->middleware('admin')->only('deleteAll');
+        $this->middleware('mentor')->only('newReport', 'expense_claims');
     }
 
-
-    public function show(Request $request)
-    {
-        if($request->user()->isDeveloper()){
+    public function show(Request $request) {
+        if($request->user()->isAdmin()){
             return view('admin.index');
-        }
-
-        if($request->user()->isFinance()){
-            return view('finance.index');
         }
 
         if($request->user()->isManager()){
@@ -46,7 +40,6 @@ class HomeController extends Controller
         if($request->user()->isMentor()){
             return view('mentor.index');
         }
-
     }
 
     /**
@@ -54,8 +47,7 @@ class HomeController extends Controller
      *
      * @return Response
      */
-    public function reports(Request $request)
-    {
+    public function newReport(Request $request) {
         return view('mentor.report')
             ->with('mentees',$request->user()->mentees)
             ->with('activity_types', ActivityType::all())
@@ -65,16 +57,12 @@ class HomeController extends Controller
             ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() );
     }
 
-    public function calendar(Request $request)
-    {
+    public function calendar(Request $request) {
         Log::alert(Schedule::all());
         $mentees = Mentee::allForUser($request->user());
         $events = array();
-        foreach ($mentees as $mentee)
-        {
-            Log::info($mentee->schedules());
-            foreach ($mentee->schedules() as $schedule)
-            {
+        foreach ($mentees as $mentee) {
+            foreach ($mentee->schedules() as $schedule) {
                 array_push($events, \Calendar::event(
                   is_null($mentee->mentor()->first()) ? 'NO MENTOR' : $mentee->mentor()->first()->name,
                   true,
@@ -104,19 +92,16 @@ class HomeController extends Controller
      * @param Request $request
      * @return $this
      */
-    public function expense_claims(Request $request)
-    {
+    public function expense_claims(Request $request) {
         return view('mentor.expense-claim')
             ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() )
             ->with('claims', $request->user()->expense_claims()->orderBy('created_at','desc')->get() );
     }
 
-
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function deleteAll(){
-
+    public function deleteAll() {
         // Truncate Reports and Expense Claims Table
         DB::table('reports')->truncate();
         DB::table('expense_claims')->truncate();

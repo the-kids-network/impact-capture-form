@@ -34,25 +34,16 @@
                     </table>
 
                     <div class="panel-body">
-                        @if(Auth::user()->isDeveloper())
-                            <a href="{{ url('report/export') }}">Download All Data as CSV</a>
-                        @else
-                            <a href="{{ url('/manager/report/export') }}">Download All Data as CSV</a>
-                        @endif
+                        <a href="{{ url('report/export') }}">Download All Data as CSV</a>
                     </div>
 
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
 @endsection
 
 @section('scripts')
-
     <style>
         .clickable-row{
             cursor: pointer;
@@ -63,10 +54,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
 @endsection
 
-
-
 @section('body-scripts')
-
     <!-- Latest compiled and minified JavaScript -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
 

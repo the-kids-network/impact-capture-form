@@ -9,23 +9,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-class ScheduleController extends Controller
-{
-    public function __construct()
-    {
+class ScheduleController extends Controller {
+
+    public function __construct() {
         $this->middleware('auth');
+        $this->middleware('hasAnyOfRoles:admin,mentor');
     }
 
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $schedule = new Schedule();
-        Log::info(Mentee::allForUser($request->user()));
         return view('schedule.index')
             ->with('mentees', Mentee::allForUser($request->user()));
     }
 
-    public function show($id)
-    {
+    public function show($id) {
         $schedule = Schedule::find($id);
 
         return view('schedule.show', compact('schedule'))
@@ -33,19 +30,16 @@ class ScheduleController extends Controller
             ->with('session_date', $schedule->next_session_date->format('m/d/Y'));
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id) {
         Schedule::destroy($id);
 
         return redirect('/calendar');
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $schedule = Schedule::find($request->id);
 
-        if (!$schedule)
-        {
+        if (!$schedule) {
             $schedule = new Schedule();
         }
 

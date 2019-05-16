@@ -11,35 +11,26 @@
                             <th class="col-xs-4">Field</th>
                             <th class="col-xs-8">Value</th>
                         </tr>
-
                         <tr>
                             <td>Mentor Name</td>
                             <td>{{ $expense_claim->mentor->name }}</td>
                         </tr>
-
                         <tr>
                             <td>Session</td>
                             <td>
-                                @if(Auth::user()->isFinance())
-                                    With {{ $expense_claim->report->mentee->name }} on {{ $expense_claim->report->session_date->toFormattedDateString() }}
-                                @else
-                                    <a href="{{ url('/report/'.$expense_claim->report_id) }}">With {{ $expense_claim->report->mentee->name }} on {{ $expense_claim->report->session_date->toFormattedDateString() }}</a>
-                                @endif
+                                <a href="{{ url('/report/'.$expense_claim->report_id) }}">With {{ $expense_claim->report->mentee->name }} on {{ $expense_claim->report->session_date->toFormattedDateString() }}</a>
                             </td>
                         </tr>
-
                         @if( $expense_claim->check_number )
-                            <tr>
-                                <td>Finance Code</td>
-                                <td>{{ $expense_claim->check_number }}</td>
-                            </tr>
+                        <tr>
+                            <td>Finance Code</td>
+                            <td>{{ $expense_claim->check_number }}</td>
+                        </tr>
                         @endif
-
                         <tr>
                             <td>Status</td>
                             <td class="text-capitalize">{{ $expense_claim->status }}</td>
                         </tr>
-
                     </table>
 
                     <table class="table" id="expenses-table">
@@ -50,13 +41,12 @@
                         </tr>
 
                         @foreach($expense_claim->expenses as $expense)
-                            <tr>
-                                <td>{{ $expense->date->toFormattedDateString() }}</td>
-                                <td>{{ $expense->description }}</td>
-                                <td>{{ $expense->amount }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ $expense->date->toFormattedDateString() }}</td>
+                            <td>{{ $expense->description }}</td>
+                            <td>{{ $expense->amount }}</td>
+                        </tr>
                         @endforeach
-
                     </table>
 
                     @if( count($expense_claim->receipts) > 0)
@@ -64,7 +54,6 @@
                         <tr>
                             <th colspan="2">Receipts (Click on the Images to Download)</th>
                         </tr>
-
                         <tr>
                             <td colspan="2">
                                 @foreach($expense_claim->receipts as $receipt)
@@ -79,16 +68,13 @@
                         </div>
                     @endif
 
-                    @if($expense_claim->status == 'approved' && (Auth::user()->isFinance() || Auth::user()->isAdmin()))
+                    @if($expense_claim->status == 'pending' && Auth::user()->isAdmin())
                         <div class="panel-body">
                             @include('spark::shared.errors')
 
                             <form id="process-form" class="form-horizontal" role="form" method="post" action="{{url('/expense-claim/'.$expense_claim->id)}}">
-
-                            {{ csrf_field() }}
-                            {{ method_field('PATCH') }}
-
-                                <input type="hidden" name="status" value="processed">
+                                {{ csrf_field() }}
+                                {{ method_field('PATCH') }}
 
                                 <!-- Check Number -->
                                 <div class="form-group">
@@ -101,8 +87,11 @@
                                 <!-- Process Button -->
                                 <div class="form-group">
                                     <div class="col-md-8 col-md-offset-4">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary" name="status" value="processed">
                                             <i class="fa m-r-xs fa-credit-card"></i>Process Payment
+                                        </button>
+                                        <button type="submit" class="btn btn-danger" name="status" value="rejected">
+                                            Reject Expense Claim
                                         </button>
                                     </div>
                                 </div>
@@ -111,57 +100,15 @@
                     @endif
 
                     <div class="panel-footer">
-
-                        @if($expense_claim->status == 'pending')
-                            @if(Auth::user()->id == $expense_claim->mentor->manager_id || Auth::user()->isAdmin())
-                                <button class="btn btn-primary" onclick="$('#approve-form').submit()">Approve Expense Claim</button>
-                                <button class="btn btn-danger" onclick="$('#reject-form').submit()">Reject Expense Claim</button>
-                            @else
-                                @if($expense_claim->mentor->manager)
-                                    This claim is pending approval by {{ $expense_claim->mentor->manager->name }}.
-                                @else
-                                    No manager has been assigned to the mentor who submitted this claim.
-                                @endif
-                            @endif
+                        @if($expense_claim->status == 'rejected' || $expense_claim->status == 'processed')
+                            This claim has been {{$expense_claim->status}} by {{ $expense_claim->processedBy->name }}.
                         @endif
-
-                        @if($expense_claim->status == 'approved')
-                            This claim has been approved by {{ $expense_claim->approvedBy->name }}.
-                        @endif
-
-
-                        @if($expense_claim->status == 'rejected')
-                            This claim has been rejected by {{ $expense_claim->approvedBy->name }}.
-                        @endif
-
-
-                        @if($expense_claim->status == 'processed')
-                            This claim has been approved by {{ $expense_claim->approvedBy->name }} and processed by {{ $expense_claim->processedBy->name }}.
-                        @endif
-
                     </div>
 
                 </div>
             </div>
         </div>
     </div>
-
-    @if($expense_claim->status == 'pending')
-        <form id="approve-form" method="post" action="{{url('/expense-claim/'.$expense_claim->id)}}">
-            {{ csrf_field() }}
-            {{ method_field('PATCH') }}
-            <input type="hidden" name="status" value="approved">
-        </form>
-
-        <form id="reject-form" method="post" action="{{url('/expense-claim/'.$expense_claim->id)}}">
-            {{ csrf_field() }}
-            {{ method_field('PATCH') }}
-            <input type="hidden" name="status" value="rejected">
-        </form>
-    @endif
-
-
-
 @endsection
 
 @section('scripts')

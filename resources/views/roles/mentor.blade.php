@@ -29,8 +29,7 @@
                     <div class="panel-heading">Mentors<span class="pull-right"><a class="expand-all">Toggle All</a></span></div>
                     <div class="mentor-table">
                         @foreach($users as $user)
-                            @if( $user->isMentorOnly() )
-                                <!--<div class="mentor">-->
+                            @if( $user->isMentor() )
                                     <span class="mentor name-row list-group-item-info">{{$user->name}}</span>
                                     <span class="mentor delete-row list-group-item-info">
                                         <form action="/roles/mentor/{$user->id}" method="post" class="delete">
@@ -67,7 +66,6 @@
                                             </div>
                                         </div>
                                     @endif
-                                <!--</div>-->
                             @endif
                         @endforeach
                     </div>

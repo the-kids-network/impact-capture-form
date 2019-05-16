@@ -12,8 +12,8 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
-                        <i class="fa fa-bicycle text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/activity-type') }}">Activity Types</a>
+                        <i class="fa fa-child text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/mentee') }}">Mentee</a>
                     </div>
                 </div>
             </div>
@@ -21,8 +21,8 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
-                        <i class="fa fa-child text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/mentee') }}">Mentee</a>
+                        <i class="fa fa-bicycle text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/activity-type') }}">Activity Types</a>
                     </div>
                 </div>
             </div>
@@ -115,21 +115,11 @@
                 </div>
             </div>
 
-
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-male text-feature"></i>
                         <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/roles/manager') }}">Manager</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
-                        <i class="fa fa-credit-card text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/roles/finance') }}">Finance</a>
                     </div>
                 </div>
             </div>
@@ -151,7 +141,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -165,16 +154,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-credit-card text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/manager/review-claims') }}">Approve Mentor Expense Claims</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
-                        <i class="fa fa-credit-card text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/finance/review-claims') }}">Process Expense Claims</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/finance/process-expense-claims') }}">Process Expense Claims</a>
                     </div>
                 </div>
             </div>

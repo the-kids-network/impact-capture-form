@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Mentee;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class RoleController extends Controller
-{
+class RoleController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
-        $this->middleware('dev');
+        $this->middleware('admin');
     }
 
     public function index(){
@@ -29,10 +28,7 @@ class RoleController extends Controller
         return view('roles.manager')
             ->with('users', User::all() );
     }
-    public function finance(){
-        return view('roles.finance')
-            ->with('users', User::all() );
-    }
+
     public function admin(){
         return view('roles.admin')
             ->with('users', User::all() );
@@ -43,13 +39,6 @@ class RoleController extends Controller
         $user->role = 'manager' ;
         $user->save();
         return redirect('/roles/manager')->with('status','User promoted to Manager');
-    }
-
-    public function store_finance(Request $request){
-        $user = User::find($request->user_id);
-        $user->role = 'finance';
-        $user->save();
-        return redirect('/roles/finance')->with('status','User promoted to Finance');
     }
     
     public function store_admin(Request $request){
@@ -105,19 +94,15 @@ class RoleController extends Controller
         return redirect('/roles/manager')->with('status', $user->name . ' is no longer a manager.');
     }
 
-    public function delete_finance(Request $request){
-        $user = User::find($request->finance_id);
-        $user->role = NULL;
-        $user->save();
-        return redirect('/roles/finance')->with('status',$user->name . ' is no longer in finance.');
-    }
-
     public function delete_admin(Request $request){
         $user = User::find($request->admin_id);
         $user->role = NULL;
         $user->save();
-        return redirect('/roles/admin')->with('status',$user->name . ' is no longer an admin.');
+
+        if (Auth::user()->id != $user->id) {
+            return redirect('/roles/admin')->with('status', $user->name . ' is no longer an admin.');
+        } else {
+            return redirect('/home')->with('status', $user->name . ' is no longer an admin.');
+        }
     }
-
-
 }

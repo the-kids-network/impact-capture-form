@@ -13,7 +13,7 @@
         <span class="calendar-header">
             @unless ($user->isAdmin())
                 <div class="calendar-new-report">
-                    <a href="/my-reports"><i class="fas fa-plus-circle"></i> New Session Report</a>
+                    <a href="/report/new"><i class="fas fa-plus-circle"></i> New Session Report</a>
                 </div>
             @endunless
 

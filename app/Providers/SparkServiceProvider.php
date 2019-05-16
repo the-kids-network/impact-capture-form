@@ -25,7 +25,7 @@ class SparkServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $sendSupportEmailsTo = 'nikhil4@mit.edu';
+    protected $sendSupportEmailsTo = 's.woodcock@thekidsnetwork.org.uk';
 
     /**
      * All of the application developer e-mail addresses.
@@ -33,7 +33,6 @@ class SparkServiceProvider extends ServiceProvider
      * @var array
      */
     protected $developers = [
-        'nikhil4@mit.edu',
         's.woodcock@thekidsnetwork.org.uk'
     ];
 
@@ -49,19 +48,10 @@ class SparkServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function booted()
-    {
-//        Spark::useStripe()->noCardUpFront()->trialDays(10);
-
+    public function booted() {
         Spark::freePlan()
             ->features([
                 'Mentors'
             ]);
-
-//        Spark::plan('Basic', 'provider-id-1')
-//            ->price(10)
-//            ->features([
-//                'First', 'Second', 'Third'
-//            ]);
     }
 }

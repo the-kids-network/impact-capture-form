@@ -3,24 +3,15 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Http\Middleware\VerifyUser;
 
-class VerifyAdmin
+class VerifyAdmin extends VerifyUser
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
-    {
+    public function handle($request, Closure $next) {
         if ($request->user() && $request->user()->isAdmin() ) {
             return $next($request);
         }
 
-        return $request->ajax() || $request->wantsJson()
-            ? response('Unauthorized.', 401)
-            : abort(404,'Unauthorized');
+        $this->handleFailure($request);
     }
 }

@@ -10,13 +10,13 @@ As part of your role, this needs to be submitted within 3 days of each meeting w
 Please do get in touch if you need any further support in your role.
 
 Thanks,<br>
-The Kids Network
+{{ config('app.name') }}
 
 @component('mail::button', ['url' => url('/calendar' )])
 Scheduled Sessions Calendar
 @endcomponent
 
-@component('mail::button', ['url' => url('/my-reports' )])
+@component('mail::button', ['url' => url('/report/new' )])
 Submit a Report
 @endcomponent
 

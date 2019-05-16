@@ -12,20 +12,19 @@
                     <form class="form-horizontal" role="form" method="POST" action="/roles/assign-mentor">
                     {{ csrf_field() }}
 
-                    <!-- Mentor's Name -->
+                        <!-- Mentor's Name -->
                         <div class="form-group">
                             <label class="col-md-4 control-label">Mentor Name</label>
                             <div class="col-md-6">
                                 <select class="form-control" name="mentor_id">
                                     @foreach($users as $user)
-                                        @if($user->isMentorOnly())
+                                        @if($user->isMentor())
                                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                                         @endif
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-
 
                         <!-- Mentee's Name -->
                         <div class="form-group">
