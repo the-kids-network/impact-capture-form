@@ -11,11 +11,11 @@
 @section('content')
     <div>
         <span class="calendar-header">
-            @unless ($user->isAdmin())
+            @if (Auth::user()->isMentor())
                 <div class="calendar-new-report">
                     <a href="/report/new"><i class="fas fa-plus-circle"></i> New Session Report</a>
                 </div>
-            @endunless
+            @endif
 
             <div class="calendar-new-schedule">
                 <a href="/schedule"><i class="fas fa-plus-circle"></i> Schedule New Session</a>

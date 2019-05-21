@@ -22,22 +22,21 @@ class HomeController extends Controller {
      */
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('show');
-        $this->middleware('hasAnyOfRoles:admin,mentor')->only('calendar');
+        $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('show', 'calendar');
         $this->middleware('admin')->only('deleteAll');
         $this->middleware('mentor')->only('newReport', 'expense_claims');
     }
 
     public function show(Request $request) {
-        if($request->user()->isAdmin()){
+        if ($request->user()->isAdmin()){
             return view('admin.index');
         }
 
-        if($request->user()->isManager()){
+        if ($request->user()->isManager()){
             return view('manager.index');
         }
 
-        if($request->user()->isMentor()){
+        if ($request->user()->isMentor()){
             return view('mentor.index');
         }
     }
@@ -58,30 +57,11 @@ class HomeController extends Controller {
     }
 
     public function calendar(Request $request) {
-        $mentees = Mentee::allForUser($request->user());
-        $events = array();
-        foreach ($mentees as $mentee) {
-            foreach ($mentee->schedules() as $schedule) {
-                array_push($events, \Calendar::event(
-                  is_null($mentee->mentor()->first()) ? 'NO MENTOR' : $mentee->mentor()->first()->name,
-                  true,
-                  new \DateTime($schedule['next_session_date']),
-                  new \DateTime($schedule['next_session_date']),
-                  $schedule->id,
-                  ['url' => 'schedule/' . $schedule->id]
-                ));
-            }
-        }
+        $allowableMentees = Mentee::canSee()->get();
 
-        $calendar = \Calendar::addEvents($events)
-            ->setOptions([
-                'header' => array('left' => 'prev,today,next', 'center' => 'title', 'right' => false),
-                'buttonText' => array('today' => 'Now')
-            ]);
+        $calendar = $this->createCalendar($allowableMentees);
 
-        return view('schedule.calendar')
-            ->with('calendar', $calendar)
-            ->with('user', $request->user());
+        return view('schedule.calendar')->with('calendar', $calendar);
     }
 
     /**
@@ -112,6 +92,28 @@ class HomeController extends Controller {
 
         // Return Home
         return redirect('/home')->with('status','All Reports and Expense Claims Deleted');
+    }
+
+    private function createCalendar($mentees) {
+        $events = array();
+        foreach ($mentees as $mentee) {
+            foreach ($mentee->schedules() as $schedule) {
+                array_push($events, \Calendar::event(
+                  is_null($mentee->mentor()->first()) ? 'NO MENTOR' : $mentee->mentor()->first()->name,
+                  true,
+                  new \DateTime($schedule['next_session_date']),
+                  new \DateTime($schedule['next_session_date']),
+                  $schedule->id,
+                  ['url' => 'schedule/' . $schedule->id]
+                ));
+            }
+        }
+
+        return \Calendar::addEvents($events)
+            ->setOptions([
+                'header' => array('left' => 'prev,today,next', 'center' => 'title', 'right' => false),
+                'buttonText' => array('today' => 'Now')
+            ]);
     }
 
 }
