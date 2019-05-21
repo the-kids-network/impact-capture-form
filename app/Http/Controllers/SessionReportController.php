@@ -7,6 +7,7 @@ use App\ExpenseClaim;
 use App\Mail\ReportSubmittedToManager;
 use App\Mail\ReportSubmittedToMentor;
 use App\Mentee;
+use App\User;
 use App\Report;
 use App\Schedule;
 use Carbon\Carbon;
@@ -39,15 +40,16 @@ class SessionReportController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request) {
-        $reports = [];
-        if (Auth::user()->isAdmin()) {
-            $reports = Report::orderBy('id','desc')->get();
-        } else if (Auth::user()->isManager()) {
-            $ids = Auth::user()->assignedMentors->map(function($user) { return $user->id; });
-            $reports = Report::orderBy('id', 'desc')->whereIn('mentor_id', $ids)->get();
-        } else if (Auth::user()->isMentor()) {
-            $reports = Report::orderBy('id', 'desc')->whereMentorId($request->user()->id)->get();
+        // apply role permission scope
+        $builder = Report::canSee();
+
+        // apply user supplied filters
+        if ($request->mentor_id) {
+            $builder->whereMentorId($request->mentor_id);
         }
+
+        // get reports
+        $reports = $builder->get();
 
         return view('session_report.index')->with('reports',  $reports);
     }
@@ -131,19 +133,19 @@ class SessionReportController extends Controller {
         }
     }
 
-    public function export(){
+    public function export(Request $request){
         if (!Auth::user()) {
             abort(401,'Unauthorized');
         }
 
-        if (Auth::user()->isAdmin()) {
-            $reports = Report::orderBy('id','desc')->get();
-        } else if (Auth::user()->isManager()) {
-            $ids = Auth::user()->assignedMentors->map(function($user) { return $user->id; });
-            $reports = Report::orderBy('id', 'desc')->whereIn('mentor_id', $ids)->get();
-        } else {
-            $reports = Report::orderBy('id', 'desc')->whereMentorId(Auth::user()->id)->get();
+        $builder = Report::canSee();
+
+        if ($request->mentor_id) {
+            $builder->whereMentorId($request->mentor_id);
         }
+
+        // get reports
+        $reports = $builder->get();
 
         return view('session_report.export')->with('reports', $reports);
     }
