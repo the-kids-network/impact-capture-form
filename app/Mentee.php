@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Mentee extends Model
 {
@@ -46,16 +47,16 @@ class Mentee extends Model
         return $this->hasMany('App\Schedule')->get();
     }
 
-    public static function allForUser($user)
-    {
-        if ($user->isAdmin())
-        {
-            return Mentee::all();
+    public function scopeCanSee($query) {
+        if (Auth::user()->isManager()) {
+            $mentorIds = Auth::user()->assignedMentors
+                            ->map(function($u) { return $u->id; });
+            $query->whereIn('mentor_id', $mentorIds);
         }
-        else
-        {
-            return Mentee::where('mentor_id', $user->id)->get();
+        else if (Auth::user()->isMentor()) {
+            $query->where('mentor_id', Auth::user()->id);
         }
+        return $query;
     }
 
 }

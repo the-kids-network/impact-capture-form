@@ -13,17 +13,19 @@ class ScheduleController extends Controller {
 
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,mentor');
+        $this->middleware('hasAnyOfRoles:admin,manager,mentor');
     }
 
     public function index(Request $request) {
-        $schedule = new Schedule();
         return view('schedule.index')
-            ->with('mentees', Mentee::allForUser($request->user()));
+            ->with('mentees', Mentee::canSee()->get());
     }
 
     public function show($id) {
-        $schedule = Schedule::find($id);
+        $schedule = Schedule::canSee()->find($id);
+        if (!$schedule) {
+            abort(401, 'Unauthorized'); 
+        }
 
         return view('schedule.show', compact('schedule'))
             ->with('schedule', $schedule)
@@ -31,14 +33,24 @@ class ScheduleController extends Controller {
     }
 
     public function destroy($id) {
-        Schedule::destroy($id);
+        $allowableSchedules = Schedule::canSee();
+        $scheduleToDelete = $allowableSchedules->find($id);
+        if (!$scheduleToDelete) {
+            abort(401, 'Unauthorized'); 
+        }
+
+        Schedule::destroy($scheduleToDelete->id);
 
         return redirect('/calendar');
     }
 
     public function store(Request $request) {
+        $allowableMentees = Mentee::canSee();
+        if (!$allowableMentees->find($request->mentee_id)) {
+            abort(401,'Unauthorized'); 
+        }
+        
         $schedule = Schedule::find($request->id);
-
         if (!$schedule) {
             $schedule = new Schedule();
         }
