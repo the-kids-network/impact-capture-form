@@ -73,7 +73,11 @@
                             <tbody>
                                 @foreach($mentors as $mentor)
                                     <tr>
-                                        <td class="mentor-name">{{ $mentor->mentor_name }}</td>
+                                        <td class="mentor-name">
+                                            <a href={{ route('report.index', [ 'mentor_id'=>$mentor->mentor_id ]) }}>
+                                                    {{ $mentor->mentor_name }}
+                                            </a>
+                                        </td>
                                         @if( !Auth::user()->isManager() )
                                         <td class="manager-name">
                                             @if (isset($mentor->manager_name )) {{ $mentor->manager_name }}  @else Unassigned @endif

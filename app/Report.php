@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Report extends Model
 {
@@ -43,6 +44,23 @@ class Report extends Model
 
     public function session_rating() {
         return $this->belongsTo('App\SessionRating', 'rating_id');
+    }
+
+    public function scopeCanSee($query) {
+        $builder = Report::query();
+
+        if (Auth::user()->isAdmin()) {
+            // nothing to filter if admin
+        } else if (Auth::user()->isManager()) {
+            $ids = Auth::user()->assignedMentors->map(function($user) { return $user->id; });
+            $builder->whereIn('mentor_id', $ids);
+        } else if (Auth::user()->isMentor()) {
+            $builder->whereMentorId(Auth::user()->id);
+        } else {
+            return null;
+        }
+
+        return $builder;
     }
 
 }

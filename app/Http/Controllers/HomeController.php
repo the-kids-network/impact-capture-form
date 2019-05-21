@@ -58,7 +58,6 @@ class HomeController extends Controller {
     }
 
     public function calendar(Request $request) {
-        Log::alert(Schedule::all());
         $mentees = Mentee::allForUser($request->user());
         $events = array();
         foreach ($mentees as $mentee) {
@@ -74,7 +73,6 @@ class HomeController extends Controller {
             }
         }
 
-        Log::alert($events);
         $calendar = \Calendar::addEvents($events)
             ->setOptions([
                 'header' => array('left' => 'prev,today,next', 'center' => 'title', 'right' => false),

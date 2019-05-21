@@ -13,6 +13,11 @@
                         </tr>
 
                         <tr>
+                            <td>Session ID</td>
+                            <td>{{ $report->id }}</td>
+                        </tr>
+
+                        <tr>
                             <td>Mentor Name</td>
                             <td>{{ $report->mentor->name }}</td>
                         </tr>

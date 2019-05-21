@@ -51,7 +51,7 @@ Route::resource('/mentee','MenteeController');
 
 // Session reports
 Route::get('/report/new','HomeController@newReport');
-Route::get('/report/export','SessionReportController@export');
+Route::get('/report/export','SessionReportController@export')->name('report.export');
 Route::resource('/report','SessionReportController');
 
 // Expense claims

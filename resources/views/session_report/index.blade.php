@@ -2,6 +2,14 @@
 
 @section('content')
     <div class="container">
+        @if(Request()->mentor_id)
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <a href="{{ url('report') }}">Clear mentor filter</a>
+            </div>
+        </div>
+        <br/>
+        @endif
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default" id="report-list">
@@ -9,7 +17,7 @@
                     <table class="table" data-toggle="table" data-search="true" data-pagination="true">
                         <thead>
                             <tr>
-                                <th data-sortable="true">Report ID</th>
+                                <th data-sortable="true">Session ID</th>
                                 <th data-sortable="true">Mentor Name</th>
                                 <th data-sortable="true">Mentee Name</th>
                                 <th data-sortable="true">Session Length</th>
@@ -34,7 +42,7 @@
                     </table>
 
                     <div class="panel-body">
-                        <a href="{{ url('report/export') }}">Download All Data as CSV</a>
+                        <a href="{{ route('report.export', ['mentor_id'=>Request()->mentor_id]) }}">Download All Data as CSV</a>
                     </div>
 
                 </div>
