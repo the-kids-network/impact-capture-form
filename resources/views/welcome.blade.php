@@ -86,12 +86,6 @@
                     Login
                 </button>
             </a>
-
-            {{--<a href="/register">--}}
-                {{--<button>--}}
-                    {{--Register--}}
-                {{--</button>--}}
-            {{--</a>--}}
         </nav>
 
         <div class="flex-fill flex-center">
