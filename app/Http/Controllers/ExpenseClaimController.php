@@ -56,32 +56,7 @@ class ExpenseClaimController extends Controller {
             'receipts.*' => 'mimes:jpeg,png,gif,pdf,jpg|max:5000'
         ]);
 
-        $claim = new ExpenseClaim();
-        $claim->report_id = $request->report_id;
-        $claim->mentor_id = $request->user()->id;
-        $claim->save();
-
-        $expenses = array();
-        foreach ($request->expenses as $expense) {
-            array_push($expenses, new Expense([
-                'expense_claim_id' => $claim->id,
-                'date' => Carbon::createFromFormat('m/d/Y',$expense['date'])->format('Y-m-d H:i:s'),
-                'description' => $expense['description'],
-                'amount' => $expense['amount']
-            ]));
-        }
-        $claim->expenses()->saveMany($expenses);
-
-        if($request->receipts){
-            $receipts = array();
-            foreach($request->receipts as $receipt){
-                array_push($receipts, new Receipt([
-                    'expense_claim_id' => $claim->id,
-                    'path' => $receipt->store('receipts')
-                ]));
-            }
-            $claim->receipts()->saveMany($receipts);
-        }
+        $claim = $this->saveExpense($request);
 
         // Send an Email to the Mentor
         Mail::to($request->user())->send(new ClaimSubmittedToMentor($claim));
@@ -161,6 +136,37 @@ class ExpenseClaimController extends Controller {
 
     public function export(){
         return view('expense_claim.export')->with('expense_claims',ExpenseClaim::orderBy('created_at','desc')->get());
+    }
+
+    private function saveExpense(Request $request) {
+        $claim = new ExpenseClaim();
+        // should check report exists and owned by mentor
+        $claim->report_id = $request->report_id; 
+        $claim->mentor_id = $request->user()->id;
+        $claim->save();
+
+        // expense items
+        $expenseItems = collect($request->expenses) ->map(function($expenseItem) use(&$claim) { return 
+            new Expense([
+                'expense_claim_id' => $claim->id,
+                'date' => Carbon::createFromFormat('m/d/Y',$expenseItem['date'])->format('Y-m-d H:i:s'),
+                'description' => $expenseItem['description'],
+                'amount' => $expenseItem['amount']
+                ]
+            );
+        });
+        $claim->expenses()->saveMany($expenseItems);
+
+        // reciepts
+        $receipts = collect($request->receipts) ->map(function($receipt) use(&$claim) { return
+            new Receipt([
+                'expense_claim_id' => $claim->id,
+                'path' => $receipt->store('receipts')
+            ]);
+        });
+        $claim->receipts()->saveMany($receipts);
+
+        return $claim;
     }
 
 }
