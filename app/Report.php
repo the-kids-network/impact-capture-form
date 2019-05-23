@@ -47,20 +47,16 @@ class Report extends Model
     }
 
     public function scopeCanSee($query) {
-        $builder = Report::query();
-
         if (Auth::user()->isAdmin()) {
             // nothing to filter if admin
         } else if (Auth::user()->isManager()) {
-            $ids = Auth::user()->assignedMentors->map(function($user) { return $user->id; });
-            $builder->whereIn('mentor_id', $ids);
+            $ids = Auth::user()->assignedMentors->map(function($m) { return $m->id; });
+            $query->whereIn('mentor_id', $ids);
         } else if (Auth::user()->isMentor()) {
-            $builder->whereMentorId(Auth::user()->id);
-        } else {
-            return null;
-        }
+            $query->whereMentorId(Auth::user()->id);
+        } 
 
-        return $builder;
+        return $query;
     }
 
 }
