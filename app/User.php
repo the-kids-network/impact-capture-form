@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Spark\User as SparkUser;
 use Laravel\Spark\Spark;
+use Illuminate\Support\Facades\Auth;
 
 class User extends SparkUser
 {
@@ -123,4 +124,21 @@ class User extends SparkUser
         return $this->hasMany('App\ExpenseClaim','processed_by_id')->where('status', 'rejected');
     }
 
+    public function scopeCanSee($query) {
+        if (Auth::user()->isAdmin()) {
+            // show all so no restriction
+        }
+        else if (Auth::user()->isManager()) {
+            $query->whereManagerId(Auth::user()->id);
+        }
+        else if (Auth::user()->isMentor()) {
+            $query->find(Auth::user()->id);
+        }
+        return $query;
+    }
+
+    public function scopeIsMentor($query) {
+        $query->whereNull('role');
+        return $query;
+    }
 }
