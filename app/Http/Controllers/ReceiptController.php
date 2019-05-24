@@ -20,20 +20,37 @@ class ReceiptController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $receipt = Receipt::find($id);
+        if (!Receipt::find($id)) abort(404);
+
+        $receipt = Receipt::canSee()->find($id);
+
+        if (!$receipt) abort(401, 'Unauthorized');
+
         return Storage::download($receipt->path);
     }
 
-    public function downloadAll(){
+    public function downloadAll() {
+        $zipFileName = uniqid($prefix = "receipts-");
+        $zipFilePath = storage_path('app/'.$zipFileName.'.zip');
         $zip = new \ZipArchive;
-        $download = storage_path('app/receipts.zip');
-        $zip->open($download, \ZipArchive::CREATE);
+        $zip->open($zipFilePath, \ZipArchive::CREATE);
 
-        foreach (glob( storage_path('app/receipts/*') ) as $file) {
-            $zip->addFile($file);
+        try {
+            foreach (Receipt::canSee()->get() as $receipt) {
+                $receiptFilePath = storage_path('app/'.$receipt->path);
+                if (file_exists($receiptFilePath)) {
+                    $zip->addFile($receiptFilePath, basename($receiptFilePath));
+                }
+            }
         }
-        $zip->close();
+        finally {
+            $zip->close();
+        }
 
-        return response()->download($download)->deleteFileAfterSend(true);
+        if (file_exists($zipFilePath)) {
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            abort(404);
+        }
     }
 }

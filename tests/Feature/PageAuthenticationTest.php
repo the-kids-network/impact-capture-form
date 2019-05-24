@@ -43,7 +43,7 @@ class PageAuthenticationTest extends TestCase
                               ['/expense-claim'                 , 302   , 401   , 401       , 200],
                          //   ['/expense-claim/1'                 , 302   , 401   , 401       , 200],
                               ['/expense-claim/export'          , 302   , 401   , 401       , 200],
-                              ['/receipt/download-all'          , 302   , 401   , 200       , 200],
+                              ['/receipt/download-all'          , 302   , 401   , 404       , 404],
                          //   ['/receipt/1'                     , 302   , 401   , 200       , 200],
 
                               ['/reporting/mentor'              , 302   , 401   , 302       , 302],
