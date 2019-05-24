@@ -41,15 +41,15 @@ class SessionReportController extends Controller {
      */
     public function index(Request $request) {
         // apply role permission scope
-        $builder = Report::canSee();
+        $query = Report::canSee()->orderBy('created_at','desc');
 
         // apply user supplied filters
         if ($request->mentor_id) {
-            $builder->whereMentorId($request->mentor_id);
+            $query->whereMentorId($request->mentor_id);
         }
 
         // get reports
-        $reports = $builder->get();
+        $reports = $query->get();
 
         return view('session_report.index')->with('reports',  $reports);
     }
@@ -77,6 +77,55 @@ class SessionReportController extends Controller {
             'next_session_location' => 'required'
         ], $messages);
 
+        // Check mentor has mentee
+        $mentee = Mentee::canSee()->whereId($request->mentee_id)->first();
+        if (!$mentee) abort(401,'Unauthorized');
+
+        // Save session and schedule
+        $report = $this->saveReport($request);
+        $this->saveSchedule($request);
+
+        // Send the Mentor an Email
+        Mail::to($report->mentor)->send(new ReportSubmittedToMentor($report));
+
+        // Send the Assigned Manager if any an Email
+        if($report->mentor->manager){
+            Mail::to($report->mentor->manager)->send(new ReportSubmittedToManager($report));
+        }
+
+        return redirect('/report')->with('status', 'Report Submitted');
+    }
+   
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        if (!Report::find($id)) abort(404);
+
+        $report = Report::canSee()->whereId($id)->first();
+
+        if(!$report) abort(401,'Unauthorized');
+
+        return view('session_report.show')->with('report', $report);
+    }
+
+    public function export(Request $request){
+        $query = Report::canSee()->orderBy('created_at','desc');
+
+        if ($request->mentor_id) {
+            $query->whereMentorId($request->mentor_id);
+        }
+
+        // get reports
+        $reports = $query->get();
+
+        return view('session_report.export')->with('reports', $reports);
+    }
+
+    private function saveReport(Request $request) {
         $report = new Report();
         $report->mentor_id = $request->user()->id;
         $report->mentee_id = $request->mentee_id;
@@ -90,64 +139,7 @@ class SessionReportController extends Controller {
         $report->emotional_state_id = $request->emotional_state_id;
         $report->meeting_details = $request->meeting_details;
         $report->save();
-
-        $this->saveSchedule($request);
-
-        // Send the Mentor an Email
-        Mail::to($report->mentor)->send(new ReportSubmittedToMentor($report));
-
-        // Send the Assigned Manager if any an Email
-        if($report->mentor->manager){
-            Mail::to($report->mentor->manager)->send(new ReportSubmittedToManager($report));
-        }
-
-        return redirect('/report')->with('status','Report Submitted');
-    }
-   
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        $report = Report::find($id);
-        if (!$report) {
-            abort(404);
-        }
-
-        if (!Auth::user()) {
-            abort(401,'Unauthorized');
-        }
-
-        $user = Auth::user();
-        $report_mentor = $report->mentor()->first();
-        $report_mentor_manager = $report_mentor->manager()->first();
-
-        if ($user == $report_mentor
-             || ($user ->isManager() && $user == $report_mentor_manager)
-             || $user ->isAdmin() ) {
-            return view('session_report.show')->with('report', $report);
-        } else {
-            abort(401,'Unauthorized');
-        }
-    }
-
-    public function export(Request $request){
-        if (!Auth::user()) {
-            abort(401,'Unauthorized');
-        }
-
-        $builder = Report::canSee();
-
-        if ($request->mentor_id) {
-            $builder->whereMentorId($request->mentor_id);
-        }
-
-        // get reports
-        $reports = $builder->get();
-
-        return view('session_report.export')->with('reports', $reports);
+        return $report;
     }
 
     private function saveSchedule(Request $request) {
@@ -156,6 +148,6 @@ class SessionReportController extends Controller {
         $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
         $schedule->next_session_location = $request->next_session_location;
         $schedule->save();
+        return $schedule;
     }
-
 }
