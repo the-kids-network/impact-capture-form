@@ -25,7 +25,7 @@ Route::delete('/roles/admin','RoleController@delete_admin');
 // Home
 Route::get('/home', 'HomeController@show');
 Route::delete('/delete-all','HomeController@deleteAll');
-Route::get('/my-expense-claims','HomeController@expense_claims');
+Route::get('/my-expense-claims','HomeController@newExpenseClaim');
 Route::get('/calendar','HomeController@calendar');
 
 // Admin session form lookups

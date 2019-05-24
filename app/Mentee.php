@@ -49,8 +49,7 @@ class Mentee extends Model
 
     public function scopeCanSee($query) {
         if (Auth::user()->isManager()) {
-            $mentorIds = Auth::user()->assignedMentors
-                            ->map(function($u) { return $u->id; });
+            $mentorIds = Auth::user()->assignedMentors->map(function($m) { return $m->id; });
             $query->whereIn('mentor_id', $mentorIds);
         }
         else if (Auth::user()->isMentor()) {
