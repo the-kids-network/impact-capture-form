@@ -60,7 +60,7 @@ class ExpenseClaimController extends Controller {
         ]);
 
         // Validate user can actually save expense against session
-        $report = Report::canSee()->whereId($request->report_id)->get();
+        $report = Report::canSee()->whereId($request->report_id)->first();
         if (!$report) {
             abort(401,'Unauthorized');
         }
@@ -120,11 +120,8 @@ class ExpenseClaimController extends Controller {
             $claim->processed_at = Carbon::now();
         }
 
-        if ($request->status == 'processed') {
-            // Update the Expense Claim with the Check Number if Provided
-            if ($request->check_number) {
-                $claim->check_number = $request->check_number;
-            }
+        if ($request->status == 'processed' && $request->check_number) {
+            $claim->check_number = $request->check_number;
         }
 
         // Save to Database
@@ -168,7 +165,7 @@ class ExpenseClaimController extends Controller {
         $claim->save();
 
         // expense items
-        $expenseItems = collect($request->expenses) ->map(function($expenseItem) use(&$claim) { return 
+        $expenseItems = collect($request->expenses)->map(function($expenseItem) use(&$claim) { return 
             new Expense([
                 'expense_claim_id' => $claim->id,
                 'date' => Carbon::createFromFormat('m/d/Y',$expenseItem['date'])->format('Y-m-d H:i:s'),
@@ -180,7 +177,7 @@ class ExpenseClaimController extends Controller {
         $claim->expenses()->saveMany($expenseItems);
 
         // reciepts
-        $receipts = collect($request->receipts) ->map(function($receipt) use(&$claim) { return
+        $receipts = collect($request->receipts)->map(function($receipt) use(&$claim) { return
             new Receipt([
                 'expense_claim_id' => $claim->id,
                 'path' => $receipt->store('receipts')
