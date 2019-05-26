@@ -18,22 +18,14 @@ class ManagerController extends Controller {
     }
 
     public function viewExpenseClaims(Request $request) {
-        if ($request->user()->isAdmin()) {
-            $mentors = User::all();
-        } else {
-            $mentors = $request->user()->assignedMentors;
-        }
+        // TODO: This can be simplified by just returning the expense claims rather than the mentors
+        $mentors = User::canSee()->isMentor()->get();
 
-        return view('manager.view-expense-claims')->with('mentors',$mentors);
+        return view('manager.view-expense-claims')->with('mentors', $mentors);
     }
 
     public function exportExpenseClaims(Request $request) {
-        $ids = [];
-        foreach($request->user()->assignedMentors as $mentor){
-            $ids[] = $mentor->id;
-        }
-
-        $expense_claims = ExpenseClaim::whereIn('mentor_id', $ids)->get();
+        $expense_claims = ExpenseClaim::canSee()->orderBy('created_at','desc')->get();
         return view('expense_claim.export')->with('expense_claims', $expense_claims);
     }
 }

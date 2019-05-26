@@ -13,6 +13,7 @@ use App\Mail\ClaimRejectedToMentor;
 use App\Mail\ClaimSubmittedToManager;
 use App\Mail\ClaimSubmittedToMentor;
 use App\Receipt;
+use App\Report;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -38,7 +39,9 @@ class ExpenseClaimController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('expense_claim.index')->with('expense_claims',ExpenseClaim::orderBy('created_at','desc')->get());
+        $expense_claims = ExpenseClaim::canSee()->orderBy('created_at','desc')->get();
+
+        return view('expense_claim.index')->with('expense_claims', $expense_claims);
     }
 
     /**
@@ -56,32 +59,14 @@ class ExpenseClaimController extends Controller {
             'receipts.*' => 'mimes:jpeg,png,gif,pdf,jpg|max:5000'
         ]);
 
-        $claim = new ExpenseClaim();
-        $claim->report_id = $request->report_id;
-        $claim->mentor_id = $request->user()->id;
-        $claim->save();
-
-        $expenses = array();
-        foreach ($request->expenses as $expense) {
-            array_push($expenses, new Expense([
-                'expense_claim_id' => $claim->id,
-                'date' => Carbon::createFromFormat('m/d/Y',$expense['date'])->format('Y-m-d H:i:s'),
-                'description' => $expense['description'],
-                'amount' => $expense['amount']
-            ]));
+        // Validate user can actually save expense against session
+        $report = Report::canSee()->whereId($request->report_id)->first();
+        if (!$report) {
+            abort(401,'Unauthorized');
         }
-        $claim->expenses()->saveMany($expenses);
 
-        if($request->receipts){
-            $receipts = array();
-            foreach($request->receipts as $receipt){
-                array_push($receipts, new Receipt([
-                    'expense_claim_id' => $claim->id,
-                    'path' => $receipt->store('receipts')
-                ]));
-            }
-            $claim->receipts()->saveMany($receipts);
-        }
+        // Save expense claim
+        $claim = $this->saveExpense($request);
 
         // Send an Email to the Mentor
         Mail::to($request->user())->send(new ClaimSubmittedToMentor($claim));
@@ -101,7 +86,13 @@ class ExpenseClaimController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return view('expense_claim.show')->with('expense_claim',ExpenseClaim::find($id));
+        if (!ExpenseClaim::find($id)) abort(404);
+
+        $expense_claim = ExpenseClaim::canSee()->whereId($id)->first();
+        
+        if (!$expense_claim) abort(401,'Unauthorized');
+
+        return view('expense_claim.show')->with('expense_claim', $expense_claim);
     }
 
     /**
@@ -116,8 +107,12 @@ class ExpenseClaimController extends Controller {
             'status' => 'required'
         ]);
 
+        // Get expense if allowed
+        if (!ExpenseClaim::find($id)) abort(404);
+        $claim = ExpenseClaim::canSee()->whereId($id)->first();
+        if (!$claim) abort(401,'Unauthorized');
+
         // Update the Expense Claim with New Status
-        $claim = ExpenseClaim::find($id);
         $claim->status = $request->status;
 
         if ($request->status == 'rejected' || $request->status == 'processed'){
@@ -125,11 +120,8 @@ class ExpenseClaimController extends Controller {
             $claim->processed_at = Carbon::now();
         }
 
-        if ($request->status == 'processed') {
-            // Update the Expense Claim with the Check Number if Provided
-            if ($request->check_number) {
-                $claim->check_number = $request->check_number;
-            }
+        if ($request->status == 'processed' && $request->check_number) {
+            $claim->check_number = $request->check_number;
         }
 
         // Save to Database
@@ -160,7 +152,40 @@ class ExpenseClaimController extends Controller {
     }
 
     public function export(){
-        return view('expense_claim.export')->with('expense_claims',ExpenseClaim::orderBy('created_at','desc')->get());
+        $claims = ExpenseClaim::canSee()->orderBy('created_at','desc')->get();
+
+        return view('expense_claim.export')->with('expense_claims', $claims);
+    }
+
+    private function saveExpense(Request $request) {
+        $claim = new ExpenseClaim();
+        // should check report exists and owned by mentor
+        $claim->report_id = $request->report_id; 
+        $claim->mentor_id = $request->user()->id;
+        $claim->save();
+
+        // expense items
+        $expenseItems = collect($request->expenses)->map(function($expenseItem) use(&$claim) { return 
+            new Expense([
+                'expense_claim_id' => $claim->id,
+                'date' => Carbon::createFromFormat('m/d/Y',$expenseItem['date'])->format('Y-m-d H:i:s'),
+                'description' => $expenseItem['description'],
+                'amount' => $expenseItem['amount']
+                ]
+            );
+        });
+        $claim->expenses()->saveMany($expenseItems);
+
+        // reciepts
+        $receipts = collect($request->receipts)->map(function($receipt) use(&$claim) { return
+            new Receipt([
+                'expense_claim_id' => $claim->id,
+                'path' => $receipt->store('receipts')
+            ]);
+        });
+        $claim->receipts()->saveMany($receipts);
+
+        return $claim;
     }
 
 }
