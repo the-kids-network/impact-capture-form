@@ -33,24 +33,70 @@ Connect to database as user so that you can explore:
 mysql -uhomestead -psecret -Dhomestead
 ```
 
-### Composer Setup
+### Install PHP 7.2
 
-Open a terminal in the source root directory (this one) and run the following commands (taken from https://getcomposer.org/download/):
+brew install php72
+
+### Install Composer
+
+Open a terminal in the source root directory of this project and run the following commands (taken from https://getcomposer.org/download/):
 
 ```bash
-cp .env.example.postgres .env
-
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
 php composer.phar install
-php artisan key:generate
+```
+
+To update composer.lock (e.g. after updating dependencies in composer.json):
+
+```bash
+php composer.phar update
+```
+
+### Configure local environment configuration
+
+```bash
+cp .env.example.mysql .env
+```
+
+### Setup database
+
+Clear the config cache first if any problems:
+
+```bash
 php artisan config:cache
-composer dump-autoload
-#php artisan migrate
-#php artisan db:seed
-php artisan migrate --seed
-php artisan migrate:refresh --seed // Will WIPE the database
+```
+
+To run new database migrations:
+
+```bash
+php artisan migrate
+```
+
+To run all migrations from beginning. This will will WIPE the database:
+
+```bash
+php artisan migrate:refresh
+```
+
+To apply seed data to the database:
+
+```bash
+php artisan db:seed
+```
+
+A handy all-in-one command:
+
+```bash
+php artisan migrate:refresh && php artisan migrate:refresh --seed
+```
+
+### Run application
+```bash
+php artisan key:generate
+php composer.phar dump-autoload
+php artisan config:cache
 php artisan serve
 ```
 
@@ -59,7 +105,10 @@ To rebuild less into css:
 npm run dev
 ```
 
-# Testing
+## Testing
+
+### Unit tests
+Requires the local database to be seeded with data (see above).
 
 To run the unit test:
 
@@ -67,18 +116,27 @@ To run the unit test:
 ./vendor/bin/phpunit
 ```
 
-To run the Dusk browser tests (Note that the app needs to be running before you launch these tests): 
+### Browser acceptance tests
+
+Install right version of chrome driver if needed. Check your version here: https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have and then run:
+
+```bash
+php artisan dusk:chrome-driver 74
+```
 
 Turn off the php debug bar in the .env file, as it interferes with the browser tests.
 
 For debugging in the browser, disable headless in the DuskTestCase.
 
+To run the Dusk browser tests (note that the app needs to be running before you launch these tests): 
+
 ```
 php composer.phar install
-php artisan config:cache && php artisan migrate:refresh --seed && php artisan dusk
+php artisan config:cache
+php artisan dusk
 ```
 
-# Debug
+## Debugging
 
 I kept forgetting how to add debug lines. Start by adding the appropriate "use" line:
 ```
