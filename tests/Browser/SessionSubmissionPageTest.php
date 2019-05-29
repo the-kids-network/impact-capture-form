@@ -47,7 +47,7 @@ class SessionSubmissionPageTest extends DuskTestCase
             $browser->element('[name=report_submit]')->click();
 
             $adminUser = User::where('email', 'admin@example.com')->firstOrFail();
-            $browser->loginAs($adminUser)->visit("report/3");
+            $browser->loginAs($adminUser)->visit("report/4");
 
             $browser->assertSee('Mentor Two');
             $browser->assertSee('Mentee Two Name');

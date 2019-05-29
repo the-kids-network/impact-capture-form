@@ -28,8 +28,8 @@ class ExpenseClaimController extends Controller {
      */
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('admin')->only('index','export','update');
-        $this->middleware('hasAnyOfRoles:admin,manager')->only('show');
+        $this->middleware('admin')->only('update');
+        $this->middleware('hasAnyOfRoles:admin,manager')->only('index','export', 'show');
         $this->middleware('mentor')->only('newExpenseClaim', 'store');
     }
 

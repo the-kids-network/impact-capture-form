@@ -31,8 +31,6 @@ class PageAuthenticationTest extends TestCase
                               ['/finance/process-expense-claims', 302   , 401   , 401       , 200],
 
                               ['/manager'                       , 302   , 401   , 200       , 401],
-                              ['/manager/expense-claim/export'  , 302   , 401   , 200       , 401],
-                              ['/manager/view-expense-claims'   , 302   , 401   , 200       , 401],
 
                               ['/mentee'                        , 302   , 401   , 401       , 200],
 
@@ -40,9 +38,9 @@ class PageAuthenticationTest extends TestCase
                               ['/report/new'                    , 302   , 200   , 401       , 401],
                               ['/report/export'                 , 302   , 200   , 200       , 200],
 
-                              ['/expense-claim'                 , 302   , 401   , 401       , 200],
+                              ['/expense-claim'                 , 302   , 401   , 200       , 200],
                          //   ['/expense-claim/1'                 , 302   , 401   , 401       , 200],
-                              ['/expense-claim/export'          , 302   , 401   , 401       , 200],
+                              ['/expense-claim/export'          , 302   , 401   , 200       , 200],
                               ['/receipt/download-all'          , 302   , 401   , 404       , 404],
                          //   ['/receipt/1'                     , 302   , 401   , 200       , 200],
 
