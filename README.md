@@ -89,7 +89,7 @@ php artisan db:seed
 A handy all-in-one command:
 
 ```bash
-php artisan migrate:refresh && php artisan migrate:refresh --seed
+php artisan config:cache && php artisan migrate:refresh --seed
 ```
 
 ### Run application

@@ -20,7 +20,7 @@ class PageAuthenticationTest extends TestCase
 
                               ['/home'                          , 302   , 200   , 200       , 200],
                          //   ['/delete-all'                    , 302   , 401   , 401       , 200],
-                              ['/my-expense-claims'             , 302   , 200   , 401       , 401],
+                              ['/expense-claim/new'             , 302   , 200   , 401       , 401],
                               ['/calendar'                      , 302   , 200   , 200       , 200],
 
                               ['/activity-type'                 , 302   , 401   , 401       , 200],

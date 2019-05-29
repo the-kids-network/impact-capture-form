@@ -25,7 +25,6 @@ Route::delete('/roles/admin','RoleController@delete_admin');
 // Home
 Route::get('/home', 'HomeController@show');
 Route::delete('/delete-all','HomeController@deleteAll');
-Route::get('/my-expense-claims','HomeController@newExpenseClaim');
 Route::get('/calendar','HomeController@calendar');
 
 // Admin session form lookups
@@ -57,6 +56,7 @@ Route::resource('/report','SessionReportController');
 // Expense claims
 Route::get('/expense-claim/export','ExpenseClaimController@export');
 Route::get('/receipt/download-all','ReceiptController@downloadAll');
+Route::get('/expense-claim/new','ExpenseClaimController@newExpenseClaim');
 Route::resource('/expense-claim','ExpenseClaimController');
 Route::resource('/receipt','ReceiptController');
 
@@ -73,3 +73,4 @@ Route::put('/settings/profile/details', 'ProfileDetailsController@update');
 // Old routes to deprecate eventually once people's symlinks are updated
 Route::redirect('/my-reports', '/report/new');
 Route::redirect('/own-reports', '/report');
+Route::redirect('/my-expense-claims', '/expense-claim/new');
