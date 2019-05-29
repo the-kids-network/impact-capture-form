@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Receipt;
+use App\ExpenseClaim;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,14 +30,33 @@ class ReceiptController extends Controller {
         return Storage::download($receipt->path);
     }
 
-    public function downloadAll() {
+    public function downloadAll(Request $request) {
+        $query = ExpenseClaim::canSee();
+
+        if ($request->mentor_id) {
+            $query->whereMentorId($request->mentor_id);
+        }
+
+        $receipts = $query->get()->flatmap(function($claim) {
+            return $claim->receipts;
+        });
+
+        $zipFilePath = $this->createZipForReceipts($receipts);
+        
+        if (file_exists($zipFilePath)) {
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            abort(404);
+        }
+    }
+
+    private function createZipForReceipts($receipts) {
         $zipFileName = uniqid($prefix = "receipts-");
         $zipFilePath = storage_path('app/'.$zipFileName.'.zip');
         $zip = new \ZipArchive;
         $zip->open($zipFilePath, \ZipArchive::CREATE);
-
         try {
-            foreach (Receipt::canSee()->get() as $receipt) {
+            foreach ($receipts as $receipt) {
                 $receiptFilePath = storage_path('app/'.$receipt->path);
                 if (file_exists($receiptFilePath)) {
                     $zip->addFile($receiptFilePath, basename($receiptFilePath));
@@ -47,10 +67,6 @@ class ReceiptController extends Controller {
             $zip->close();
         }
 
-        if (file_exists($zipFilePath)) {
-            return response()->download($zipFilePath)->deleteFileAfterSend(true);
-        } else {
-            abort(404);
-        }
+        return $zipFilePath;
     }
 }

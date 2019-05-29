@@ -2,6 +2,14 @@
 
 @section('content')
     <div class="container">
+        @if(Request()->mentor_id)
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <a href="{{ url('expense-claim') }}">Clear mentor filter</a>
+            </div>
+        </div>
+        <br/>
+        @endif
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default" id="expense-claim-list">
@@ -14,6 +22,7 @@
                                 <th data-sortable="true">Session</th>
                                 <th data-sortable="true">Created On</th>
                                 <th data-sortable="true">Status</th>
+                                <th data-sortable="true">Amount</th>
                             </tr>
                         </thead>
 
@@ -25,14 +34,14 @@
                                     <td>With {{ $claim->report->mentee->first_name . ' ' . $claim->report->mentee->last_name }} on {{ $claim->report->session_date->toFormattedDateString() }}</td>
                                     <td>{{ $claim->created_at->toFormattedDateString() }}</td>
                                     <td class="text-capitalize">{{ $claim->status }}</td>
+                                    <td>{{ $claim->expenses->sum('amount') }}</td>
                                 </td>
                             @endforeach
                         </tbody>
 
                     </table>
 
-                    <a href="{{ url('expense-claim/export') }}">Download All Data as CSV</a>
-
+                    <a href="{{ route('expense-claim.export', ['mentor_id'=>Request()->mentor_id]) }}">Download All Data as CSV</a>
                 </div>
             </div>
         </div>

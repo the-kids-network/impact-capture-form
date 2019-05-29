@@ -25,7 +25,6 @@ Route::delete('/roles/admin','RoleController@delete_admin');
 // Home
 Route::get('/home', 'HomeController@show');
 Route::delete('/delete-all','HomeController@deleteAll');
-Route::get('/my-expense-claims','HomeController@newExpenseClaim');
 Route::get('/calendar','HomeController@calendar');
 
 // Admin session form lookups
@@ -42,8 +41,6 @@ Route::get('/finance/process-expense-claims','FinanceController@processExpenseCl
 
 // Manager
 Route::get('/manager','ManagerController@index');
-Route::get('/manager/expense-claim/export','ManagerController@exportExpenseClaims');
-Route::get('/manager/view-expense-claims','ManagerController@viewExpenseClaims');
 
 // Mentee
 Route::post('/mentee/restore/{id}','MenteeController@restore');
@@ -55,8 +52,9 @@ Route::get('/report/export','SessionReportController@export')->name('report.expo
 Route::resource('/report','SessionReportController');
 
 // Expense claims
-Route::get('/expense-claim/export','ExpenseClaimController@export');
-Route::get('/receipt/download-all','ReceiptController@downloadAll');
+Route::get('/expense-claim/export','ExpenseClaimController@export')->name('expense-claim.export');
+Route::get('/receipt/download-all','ReceiptController@downloadAll')->name('receipt.download-all');
+Route::get('/expense-claim/new','ExpenseClaimController@newExpenseClaim');
 Route::resource('/expense-claim','ExpenseClaimController');
 Route::resource('/receipt','ReceiptController');
 
@@ -73,3 +71,6 @@ Route::put('/settings/profile/details', 'ProfileDetailsController@update');
 // Old routes to deprecate eventually once people's symlinks are updated
 Route::redirect('/my-reports', '/report/new');
 Route::redirect('/own-reports', '/report');
+Route::redirect('/my-expense-claims', '/expense-claim/new');
+Route::redirect('/manager/expense-claim/export', '/expense-claim/export');
+Route::redirect('/manager/view-expense-claims', '/expense-claim');

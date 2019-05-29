@@ -28,9 +28,9 @@ class ExpenseClaimController extends Controller {
      */
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('admin')->only('index','export','update');
-        $this->middleware('hasAnyOfRoles:admin,manager')->only('show');
-        $this->middleware('mentor')->only('store');
+        $this->middleware('admin')->only('update');
+        $this->middleware('hasAnyOfRoles:admin,manager')->only('index','export', 'show');
+        $this->middleware('mentor')->only('newExpenseClaim', 'store');
     }
 
     /**
@@ -38,10 +38,44 @@ class ExpenseClaimController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $expense_claims = ExpenseClaim::canSee()->orderBy('created_at','desc')->get();
+    public function index(Request $request) {
+        $query = ExpenseClaim::canSee()->orderBy('created_at','desc');
 
-        return view('expense_claim.index')->with('expense_claims', $expense_claims);
+        if ($request->mentor_id) {
+            $query->whereMentorId($request->mentor_id);
+        }
+
+        $expenseClaims = $query->get();
+
+        return view('expense_claim.index')->with('expense_claims', $expenseClaims);
+    }
+
+    /**
+     *
+     * Show the Expense Claim Form
+     * @param Request $request
+     * @return $this
+     */
+    public function newExpenseClaim(Request $request) {
+        return view('expense_claim.new')
+            ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() )
+            ->with('claims', $request->user()->expense_claims()->orderBy('created_at','desc')->get() );
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        if (!ExpenseClaim::find($id)) abort(404);
+
+        $expense_claim = ExpenseClaim::canSee()->whereId($id)->first();
+        
+        if (!$expense_claim) abort(401,'Unauthorized');
+
+        return view('expense_claim.show')->with('expense_claim', $expense_claim);
     }
 
     /**
@@ -76,23 +110,7 @@ class ExpenseClaimController extends Controller {
             Mail::to($request->user()->manager)->send(new ClaimSubmittedToManager($claim));
         }
 
-        return redirect('/my-expense-claims')->with('status','Expense Claim Submitted for Processing');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        if (!ExpenseClaim::find($id)) abort(404);
-
-        $expense_claim = ExpenseClaim::canSee()->whereId($id)->first();
-        
-        if (!$expense_claim) abort(401,'Unauthorized');
-
-        return view('expense_claim.show')->with('expense_claim', $expense_claim);
+        return redirect('/expense-claim/new')->with('status','Expense Claim Submitted for Processing');
     }
 
     /**
@@ -151,8 +169,14 @@ class ExpenseClaimController extends Controller {
         }
     }
 
-    public function export(){
-        $claims = ExpenseClaim::canSee()->orderBy('created_at','desc')->get();
+    public function export(Request $request){
+        $query = ExpenseClaim::canSee()->orderBy('created_at','desc');
+
+        if ($request->mentor_id) {
+            $query->whereMentorId($request->mentor_id);
+        }
+
+        $claims = $query->get();
 
         return view('expense_claim.export')->with('expense_claims', $claims);
     }

@@ -6,6 +6,7 @@
 npm-debug.log
 yarn-error.log
 composer.phar
+composer-setup.php
 
 /public/hot
 /public/storage
@@ -16,4 +17,6 @@ Homestead.json
 Homestead.yaml
 
 .env
+
+.phpunit.*
 

@@ -24,7 +24,7 @@ class HomeController extends Controller {
         $this->middleware('auth');
         $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('show', 'calendar');
         $this->middleware('admin')->only('deleteAll');
-        $this->middleware('mentor')->only('newReport', 'newExpenseClaim');
+        $this->middleware('mentor')->only('newReport');
     }
 
     public function show(Request $request) {
@@ -64,17 +64,7 @@ class HomeController extends Controller {
         return view('schedule.calendar')->with('calendar', $calendar);
     }
 
-    /**
-     *
-     * Show the Expense Claim Form
-     * @param Request $request
-     * @return $this
-     */
-    public function newExpenseClaim(Request $request) {
-        return view('mentor.expense-claim')
-            ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() )
-            ->with('claims', $request->user()->expense_claims()->orderBy('created_at','desc')->get() );
-    }
+
 
     /**
      * @return \Illuminate\Http\RedirectResponse

@@ -115,7 +115,11 @@
                                         </td>
                                         <td class="actual-session-count">{{ $mentor->session_count }}</td>
                                         <td class="total-session-length">{{ $mentor->session_length }}</td>
-                                        <td class="expenses-total">{{ $mentor->expenses_total }}</td>
+                                        <td class="expenses-total">
+                                            <a href={{ route('expense-claim.index', [ 'mentor_id'=>$mentor->mentor_id ]) }}>
+                                                {{ $mentor->expenses_total }}
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

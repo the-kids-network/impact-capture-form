@@ -25,7 +25,7 @@ class MentorPageTest extends DuskTestCase
             $browser->waitFor('.mentor-table .mentee.name-row');
             $browser->assertSeeIn('.mentor-table .mentee.name-row', 'Mentee');
 
-            $browser->assertSelectHasOptions('@mentee-list', [1, 2]);
+            $browser->assertSelectHasOptions('@mentee-list', [1, 2, 3]);
         });
     }
 

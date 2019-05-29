@@ -12,7 +12,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    function setUp() {
+    function setUp() : void {
         parent::setUp();
 
         $this->usersForRoles = [

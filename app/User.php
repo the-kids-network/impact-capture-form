@@ -124,6 +124,10 @@ class User extends SparkUser
         return $this->hasMany('App\ExpenseClaim','processed_by_id')->where('status', 'rejected');
     }
 
+    public function processedAndRejectedClaims() {
+        return $this->hasMany('App\ExpenseClaim','processed_by_id')->whereIn('status', ['rejected', 'processed']);
+    }
+
     public function scopeCanSee($query) {
         if (Auth::user()->isAdmin()) {
             // show all so no restriction

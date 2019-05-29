@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/php:7.1-browsers
+      - image: circleci/php:7.2-browsers
         environment:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
@@ -62,20 +62,7 @@ jobs:
           command: |
             php artisan key:generate
             php artisan config:cache
-      # Download and cache dependencies
-#      - restore_cache:
-#          keys:
-#          - v1-dependencies-{{ checksum "composer.json" }}
-#          # fallback to using the latest cache if no exact match is found
-#          - v1-dependencies-
-
       - run: composer install -n --prefer-dist
-
-#      - save_cache:
-#          paths:
-#            - ./vendor
-#          key: v1-dependencies-{{ checksum "composer.json" }}
-
       - run:
           name: install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -85,11 +72,16 @@ jobs:
           name: Wait for db
           command: dockerize -wait tcp://localhost:3306 -timeout 1m
 
-      - run: php artisan migrate:refresh --seed
+      - run: 
+          name: Refresh application database
+          command: php artisan migrate:refresh --seed
       # run tests!
       - run:
           name: Run Unit tests
           command: vendor/bin/phpunit
+      - run:
+          name: Upgrade Chrome Driver
+          command: php artisan dusk:chrome-driver 74
       - run:
           name: Start Chrome Driver
           command: ./vendor/laravel/dusk/bin/chromedriver-linux

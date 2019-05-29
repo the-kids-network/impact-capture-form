@@ -11,14 +11,14 @@
 
         <div class="row m-t-lg m-b-lg">
             <div class="col-md-12">
-                <a class="btn btn-lg btn-primary btn-block" href="{{ url('/receipt/download-all') }}">Click to Download Receipts</a>
+                <a class="btn btn-lg btn-primary btn-block" 
+                   href="{{ route('receipt.download-all', ['mentor_id'=>Request()->mentor_id]) }}">Click to Download Receipts</a>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-
-                    <table id="test-table" class="table table-bordered table-responsive table-striped">
+                <table id="test-table" class="table table-bordered table-responsive table-striped">
                     <tr>
                         <th>Claim ID</th>
                         <th>Report or Session ID</th>
