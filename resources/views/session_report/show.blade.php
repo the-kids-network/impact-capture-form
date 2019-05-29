@@ -76,4 +76,63 @@
             </div>
         </div>
     </div>
+
+    @if(Auth::user()->isManager() || Auth::user()->isAdmin())
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default" id="expense-claim-list">
+                    <div class="panel-heading">Expense Claims For Session</div>
+                    <table class="table" data-toggle="table" data-search="true" data-pagination="true">
+                        <thead>
+                            <tr>
+                                <th data-sortable="true">Claim ID</th>
+                                <th data-sortable="true">Created On</th>
+                                <th data-sortable="true">Status</th>
+                                <th data-sortable="true">Amount</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach($claims as $claim)
+                                <tr class="clickable-row" data-href="{{ url('/expense-claim/'.$claim->id) }}">
+                                    <td>{{ $claim->id }}</td>
+                                    <td>{{ $claim->created_at->toFormattedDateString() }}</td>
+                                    <td class="text-capitalize">{{ $claim->status }}</td>
+                                    <td>{{ $claim->expenses->sum('amount') }}
+                                </td>
+                            @endforeach
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+@endsection
+
+@section('scripts')
+    <style>
+        .clickable-row{
+            cursor: pointer;
+        }
+    </style>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+@endsection
+
+@section('body-scripts')
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <script>
+        jQuery(document).ready(function($) {
+            $(".table").on("click", ".clickable-row", function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
 @endsection

@@ -106,10 +106,13 @@ class SessionReportController extends Controller {
         if (!Report::find($id)) abort(404);
 
         $report = Report::canSee()->whereId($id)->first();
+        $claims = $report->expense_claims()->orderBy('created_at','desc')->get();
 
         if(!$report) abort(401,'Unauthorized');
 
-        return view('session_report.show')->with('report', $report);
+        return view('session_report.show')
+            ->with('report', $report)
+            ->with('claims', $claims);
     }
 
     public function export(Request $request){
