@@ -38,10 +38,16 @@ class ExpenseClaimController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $expense_claims = ExpenseClaim::canSee()->orderBy('created_at','desc')->get();
+    public function index(Request $request) {
+        $query = ExpenseClaim::canSee()->orderBy('created_at','desc');
 
-        return view('expense_claim.index')->with('expense_claims', $expense_claims);
+        if ($request->mentor_id) {
+            $query->whereMentorId($request->mentor_id);
+        }
+
+        $expenseClaims = $query->get();
+
+        return view('expense_claim.index')->with('expense_claims', $expenseClaims);
     }
 
     /**
@@ -163,8 +169,14 @@ class ExpenseClaimController extends Controller {
         }
     }
 
-    public function export(){
-        $claims = ExpenseClaim::canSee()->orderBy('created_at','desc')->get();
+    public function export(Request $request){
+        $query = ExpenseClaim::canSee()->orderBy('created_at','desc');
+
+        if ($request->mentor_id) {
+            $query->whereMentorId($request->mentor_id);
+        }
+
+        $claims = $query->get();
 
         return view('expense_claim.export')->with('expense_claims', $claims);
     }

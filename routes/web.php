@@ -54,8 +54,8 @@ Route::get('/report/export','SessionReportController@export')->name('report.expo
 Route::resource('/report','SessionReportController');
 
 // Expense claims
-Route::get('/expense-claim/export','ExpenseClaimController@export');
-Route::get('/receipt/download-all','ReceiptController@downloadAll');
+Route::get('/expense-claim/export','ExpenseClaimController@export')->name('expense-claim.export');
+Route::get('/receipt/download-all','ReceiptController@downloadAll')->name('receipt.download-all');
 Route::get('/expense-claim/new','ExpenseClaimController@newExpenseClaim');
 Route::resource('/expense-claim','ExpenseClaimController');
 Route::resource('/receipt','ReceiptController');
