@@ -31,16 +31,4 @@ class UserController extends Controller
         return Spark::interact(UserRepository::class.'@current');
     }
 
-    /**
-     * Update the last read announcements timestamp.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function updateLastReadAnnouncementsTimestamp(Request $request)
-    {
-        $request->user()->forceFill([
-            'last_read_announcements_at' => Carbon::now(),
-        ])->save();
-    }
 }

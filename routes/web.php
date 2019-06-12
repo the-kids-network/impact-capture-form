@@ -4,8 +4,8 @@
 Route::get('/', 'WelcomeController@show');
 
 // Override Registration Route
-Route::get('/register','Auth\MyRegisterController@showRegistrationForm');
-Route::post('/register','Auth\MyRegisterController@register');
+Route::get('/register','Auth\RegisterController@showRegistrationForm');
+Route::post('/register','Auth\RegisterController@register');
 
 /*
  * Role Management Routes

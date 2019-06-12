@@ -35,22 +35,4 @@ interface UserRepository
      * @return \Illuminate\Contracts\Auth\Authenticatable
      */
     public function create(array $data);
-
-    /**
-     * Update the billing address information with the given data.
-     *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  array  $data
-     * @return void
-     */
-    public function updateBillingAddress($user, array $data);
-
-    /**
-     * Update the European VAT ID number for the given user.
-     *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  string  $vatId
-     * @return void
-     */
-    public function updateVatId($user, $vatId);
 }

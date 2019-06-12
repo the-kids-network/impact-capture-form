@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Billable, HasApiTokens, RoutesNotifications;
+    use RoutesNotifications;
 
     private static $REDACTED_STRING = '_DELETED_';
 
@@ -22,7 +22,7 @@ class User extends Authenticatable
     {
         // Email address cannot repeat and cannot be empty. So we'll construct a new fake email address
         $newEmail = $this['id'] . '@example.com';
-        $personalFields = ['name', 'password', 'remember_token', 'photo_url', 'country_code', 'phone'];
+        $personalFields = ['name', 'password', 'remember_token', 'photo_url'];
 
         foreach ($personalFields as $field)
         {
@@ -53,19 +53,7 @@ class User extends Authenticatable
     public function shouldHaveSelfVisibility()
     {
         return $this->makeVisible([
-            'uses_two_factor_auth',
-            'country_code',
-            'phone',
-            'card_brand',
-            'card_last_four',
-            'card_country',
-            'billing_address',
-            'billing_address_line_2',
-            'billing_city',
-            'billing_state',
-            'billing_zip',
-            'billing_country',
-            'extra_billing_information'
+            
         ]);
     }
 
@@ -77,10 +65,6 @@ class User extends Authenticatable
     public function toArray()
     {
         $array = parent::toArray();
-
-        if (! in_array('tax_rate', $this->hidden)) {
-            $array['tax_rate'] = $this->taxPercentage();
-        }
 
         return $array;
     }

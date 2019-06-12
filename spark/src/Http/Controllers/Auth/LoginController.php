@@ -48,10 +48,6 @@ class LoginController extends Controller
 
         $user = Spark::user()->where('email', $request->email)->first();
 
-        if (Spark::usesTwoFactorAuth() && $user && $user->uses_two_factor_auth) {
-            $request->merge(['remember' => '']);
-        }
-
         return $this->traitLogin($request);
     }
 
@@ -64,80 +60,7 @@ class LoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
-        if (Spark::usesTwoFactorAuth() && $user->uses_two_factor_auth) {
-            return $this->redirectForTwoFactorAuth($request, $user);
-        }
-
         return redirect()->intended($this->redirectPath());
-    }
-
-    /**
-     * Redirect the user for two-factor authentication.
-     *
-     * @param  Request  $request
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @return Response
-     */
-    protected function redirectForTwoFactorAuth(Request $request, $user)
-    {
-        Auth::logout();
-
-        // Before we redirect the user to the two-factor token verification screen we will
-        // store this user's ID and "remember me" choice in the session so that we will
-        // be able to get it back out and log in the correct user after verification.
-        $request->session()->put([
-            'spark:auth:id' => $user->id,
-            'spark:auth:remember' => $request->remember,
-        ]);
-
-        return redirect('login/token');
-    }
-
-    /**
-     * Show the two-factor authentication token form.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function showTokenForm(Request $request)
-    {
-        return $request->session()->has('spark:auth:id')
-                        ? view('spark::auth.token') : redirect('login');
-    }
-
-    /**
-     * Verify the given authentication token.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function verifyToken(Request $request)
-    {
-        $this->validate($request, ['token' => 'required']);
-
-        // If there is no authentication ID stored in the session, it means that the user
-        // hasn't made it through the login screen so we'll just redirect them back to
-        // the login view. They must have hit the route manually via a specific URL.
-        if (! $request->session()->has('spark:auth:id')) {
-            return redirect('login');
-        }
-
-        $user = Spark::user()->findOrFail(
-            $request->session()->pull('spark:auth:id')
-        );
-
-        // Next, we'll verify the actual token with our two-factor authentication service
-        // to see if the token is valid. If it is, we can login the user and send them
-        // to their intended location within the protected part of this application.
-        if (Spark::interact(Verify::class, [$user, $request->token])) {
-            Auth::login($user, $request->session()->pull(
-                'spark:auth:remember', false
-            ));
-
-            return redirect()->intended($this->redirectPath());
-        } else {
-            return back();
-        }
     }
 
     /**

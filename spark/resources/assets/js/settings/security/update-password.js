@@ -12,7 +12,6 @@ module.exports = {
         };
     },
 
-
     methods: {
         /**
          * Update the user's password.

@@ -4,8 +4,6 @@ namespace Laravel\Spark\Configuration;
 
 use Closure;
 use Illuminate\Support\Str;
-use Laravel\Spark\Contracts\Interactions\CheckPlanEligibility;
-use Laravel\Spark\Contracts\Interactions\CheckTeamPlanEligibility;
 
 trait CallsInteractions
 {
@@ -88,71 +86,4 @@ trait CallsInteractions
         static::$interactions[$interaction] = $callback;
     }
 
-    /**
-     * Register a callback to provide the rules for new users.
-     *
-     * @param  mixed  $callback
-     * @return void
-     */
-    public static function validateUsersWith($callback)
-    {
-        return static::swap('CreateUser@rules', $callback);
-    }
-
-    /**
-     * Register a callback to create new users.
-     *
-     * @param  mixed  $callback
-     * @return void
-     */
-    public static function createUsersWith($callback)
-    {
-        return static::swap('CreateUser@handle', $callback);
-    }
-
-    /**
-     * Set a callback to be used to check plan eligibility.
-     *
-     * @param  \Closure  $callback
-     * @return void
-     */
-    public static function checkPlanEligibilityUsing($callback)
-    {
-        static::swap('CheckPlanEligibility@handle', $callback);
-    }
-
-    /**
-     * Determine if the user is eligible for the given plan.
-     *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  \Laravel\Spark\Plan  $plan
-     * @return bool
-     */
-    public static function eligibleForPlan($user, $plan)
-    {
-        return static::call(CheckPlanEligibility::class.'@handle', [$user, $plan]);
-    }
-
-    /**
-     * Set a callback to be used to check team plan eligibility.
-     *
-     * @param  \Closure  $callback
-     * @return void
-     */
-    public static function checkTeamPlanEligibilityUsing(Closure $callback)
-    {
-        static::swap('CheckTeamPlanEligibility@handle', $callback);
-    }
-
-    /**
-     * Determine if the team is eligible for the given plan.
-     *
-     * @param  \Laravel\Spark\Team  $team
-     * @param  \Laravel\Spark\Plan  $plan
-     * @return bool
-     */
-    public static function eligibleForTeamPlan($team, $plan)
-    {
-        return static::call(CheckTeamPlanEligibility::class.'@handle', [$team, $plan]);
-    }
 }

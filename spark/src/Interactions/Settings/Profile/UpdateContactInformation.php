@@ -3,7 +3,6 @@
 namespace Laravel\Spark\Interactions\Settings\Profile;
 
 use Illuminate\Support\Facades\Validator;
-use Laravel\Spark\Events\Profile\ContactInformationUpdated;
 use Laravel\Spark\Contracts\Interactions\Settings\Profile\UpdateContactInformation as Contract;
 
 class UpdateContactInformation implements Contract
@@ -29,7 +28,6 @@ class UpdateContactInformation implements Contract
             'email' => $data['email'],
         ])->save();
 
-        event(new ContactInformationUpdated($user));
 
         return $user;
     }

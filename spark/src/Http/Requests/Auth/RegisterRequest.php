@@ -7,8 +7,10 @@ use Laravel\Spark\Invitation;
 use Illuminate\Foundation\Http\FormRequest;
 use Laravel\Spark\Contracts\Interactions\Auth\CreateUser;
 use Laravel\Spark\Contracts\Repositories\CouponRepository;
+use Laravel\Spark\Contracts\Http\Requests\Auth\RegisterRequest as Contract;
 
-class RegisterRequest extends FormRequest
+
+class RegisterRequest extends FormRequest implements Contract
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,16 +30,7 @@ class RegisterRequest extends FormRequest
      */
     protected function registerValidator(array $paymentAttributes)
     {
-        $validator = $this->baseValidator();
-
-        // If a paid plan is selected, we will validate the given required fields which
-        // are typically the Stripe / Braintree tokens. If the selected plan is free
-        // of course we will not need to validate that these fields are available.
-        $validator->sometimes($paymentAttributes, 'required', function ($input) {
-            return $this->plan() && $this->plan()->price > 0;
-        });
-
-        return $this->after($validator);
+        return $this->baseValidator();
     }
 
     /**
@@ -51,91 +44,19 @@ class RegisterRequest extends FormRequest
             CreateUser::class.'@validator', [$this]
         );
 
-        $allPlanIdList = Spark::activePlanIdList().','.Spark::activeTeamPlanIdList();
-
-        $validator->sometimes('plan', 'required|in:'.$allPlanIdList, function () {
-            return Spark::needsCardUpFront();
-        });
-
         return $validator;
     }
 
     /**
-     * Setup the "after" callabck for the validator.
+     * Get the validator for the request.
      *
-     * @param  \Illuminate\Validation\Validator  $validator
      * @return \Illuminate\Validation\Validator
      */
-    protected function after($validator)
+    public function validator()
     {
-        return $validator->after(function ($validator) {
-            if ($this->coupon) {
-                $this->validateCoupon($validator);
-            }
+        $validator = $this->registerValidator(['stripe_token']);
 
-            if ($this->invitation) {
-                $this->validateInvitation($validator);
-            }
-        });
+        return $validator;
     }
 
-    /**
-     * Validate the coupon on the request.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    protected function validateCoupon($validator)
-    {
-        if (! app(CouponRepository::class)->valid($this->coupon)) {
-            $validator->errors()->add('coupon', 'This coupon code is invalid.');
-        }
-    }
-
-    /**
-     * Validate the invitation code on the request.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    protected function validateInvitation($validator)
-    {
-        if (! $this->invitation()) {
-            $validator->errors()->add('invitation', 'This invitation code is invalid.');
-        }
-    }
-
-    /**
-     * Determine if the request contains a paid plan.
-     *
-     * @return bool
-     */
-    public function hasPaidPlan()
-    {
-        return $this->plan() && $this->plan()->price > 0;
-    }
-
-    /**
-     * Get the full plan array for the specified plan.
-     *
-     * @return \Laravel\Spark\Plan|null
-     */
-    public function plan()
-    {
-        if ($this->plan) {
-            return Spark::plans()->merge(Spark::teamPlans())->where('id', $this->plan)->first();
-        }
-    }
-
-    /**
-     * Get the full invitation instance.
-     *
-     * @return \Laravel\Spark\Invitation
-     */
-    public function invitation()
-    {
-        if ($this->invitation) {
-            return Invitation::where('token', $this->invitation)->first();
-        }
-    }
 }

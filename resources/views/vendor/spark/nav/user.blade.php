@@ -1,10 +1,6 @@
 <!-- NavBar For Authenticated Users -->
 <spark-navbar
     :user="user"
-    :teams="teams"
-    :current-team="currentTeam"
-    :has-unread-notifications="hasUnreadNotifications"
-    :has-unread-announcements="hasUnreadAnnouncements"
     inline-template>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -34,16 +30,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     @includeIf('spark::nav.user-right')
 
-                    <!-- Notifications -->
-                    <li>
-                        <a @click="showNotifications" class="has-activity-indicator">
-                            <div class="navbar-icon">
-                                <i class="activity-indicator" v-if="hasUnreadNotifications || hasUnreadAnnouncements"></i>
-                                <i class="icon fa fa-bell"></i>
-                            </div>
-                        </a>
-                    </li>
-
                     <li class="dropdown">
                         <!-- User Photo / Name -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -52,28 +38,6 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <!-- Impersonation -->
-                            @if (session('spark:impersonator'))
-                                <li class="dropdown-header">Impersonation</li>
-
-                                <!-- Stop Impersonating -->
-                                <li>
-                                    <a href="/spark/kiosk/users/stop-impersonating">
-                                        <i class="fa fa-fw fa-btn fa-user-secret"></i>Back To My Account
-                                    </a>
-                                </li>
-
-                                <li class="divider"></li>
-                            @endif
-
-                            <!-- Developer -->
-                            @if (Spark::developer(Auth::user()->email))
-                                @include('spark::nav.developer')
-                            @endif
-
-                            <!-- Subscription Reminders -->
-                            @include('spark::nav.subscriptions')
-
                             <!-- Settings -->
                             <li class="dropdown-header">Settings</li>
 
@@ -85,11 +49,6 @@
                             </li>
 
                             <li class="divider"></li>
-
-                            @if (Spark::usesTeams() && (Spark::createsAdditionalTeams() || Spark::showsTeamSwitcher()))
-                                <!-- Team Settings -->
-                                @include('spark::nav.teams')
-                            @endif
 
                             @if (Spark::hasSupportAddress())
                                 <!-- Support -->

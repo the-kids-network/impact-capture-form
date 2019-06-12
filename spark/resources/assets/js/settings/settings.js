@@ -1,5 +1,5 @@
 module.exports = {
-    props: ['user', 'teams'],
+    props: ['user'],
 
 
     /**
@@ -13,8 +13,7 @@ module.exports = {
      */
     data() {
         return {
-            billableType: 'user',
-            team: null
+           
         };
     },
 

@@ -4,7 +4,6 @@
 Spark.forms = {
     register: {},
     updateContactInformation: {},
-    updateTeamMember: {}
 };
 
 /**

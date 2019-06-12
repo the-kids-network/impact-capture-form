@@ -34,14 +34,8 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Laravel\Spark\Http\Middleware\CreateFreshApiToken::class,
-        ],
-
-        'api' => [
-            'throttle:60,1',
-            'bindings',
-        ],
+            \Illuminate\Routing\Middleware\SubstituteBindings::class
+        ]
     ];
 
     /**
@@ -57,10 +51,7 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'hasTeam' => \Laravel\Spark\Http\Middleware\VerifyUserHasTeam::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'subscribed' => \Laravel\Spark\Http\Middleware\VerifyUserIsSubscribed::class,
-        'teamSubscribed' => \Laravel\Spark\Http\Middleware\VerifyTeamIsSubscribed::class,
 
         'hasAnyOfRoles' => \App\Http\Middleware\VerifyAnyOfRoles::class,
         'manager' => VerifyManager::class,
