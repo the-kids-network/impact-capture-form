@@ -4,21 +4,25 @@
 
 ## Local Setup
 
-### Setup Local Database
-(Expects MySql 5.7 to be installed with the database created.
+### Setup Local MySQL Database
+
+(Expects mySQL 5.7 to be installed with the database created.
 On OS X - simplest way is through Homebrew as follows)
 
-Install mysql 5.7:
+Install mySQL 5.7:
 ```bash
 brew install mysql@5.7
+brew link mysql@5.7 --force
 brew tap homebrew/services
 ```
 
-Start/stop mysql service:
+Start/stop mySQL service:
 ```bash
 brew services start mysql@5.7
 brew services stop mysql@5.7
 ```
+
+Ideally, you might want to create a mySQL docker container instead of installing via homebrew.
 
 Create database and user for app:
 ```bash
@@ -35,9 +39,14 @@ mysql -uhomestead -psecret -Dhomestead
 
 ### Install PHP 7.2
 
-brew install php72
+It's likely you OS may not have PHP installed, or it is the wrong version. So use homebrew (or equivalent) to install the right version of PHP and make sure it is activated e.g. on the path.
 
-### Install Composer
+```bash
+brew install php72
+brew link php72 --force
+```
+
+### Install Composer (need to do this once only if you don't already have it)
 
 Open a terminal in the source root directory of this project and run the following commands (taken from https://getcomposer.org/download/):
 
@@ -45,13 +54,34 @@ Open a terminal in the source root directory of this project and run the followi
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
+```
+
+# Install Node  (need to do this once only if you don't already have it)
+
+```bash
+brew install node
+```
+
+### Install 'PHP' dependencies via composer
+
+To install the backend dependencies (this will create a composer.lock file to fix versions - this should be checked into source control):
+
+```bash
 php composer.phar install
 ```
 
-To update composer.lock (e.g. after updating dependencies in composer.json):
+To update the composer.lock (e.g. after updating dependencies in composer.json):
 
 ```bash
 php composer.phar update
+```
+
+# Install 'Javascript' dependencies via npm
+
+The following will install the dependencies from the package.json file, creating a package-lock.json file to fix the versions - this should be checked into source control.
+
+```bash
+npm install
 ```
 
 ### Configure local environment configuration
@@ -60,21 +90,21 @@ php composer.phar update
 cp .env.example.mysql .env
 ```
 
-### Setup database
+### Setup database schema
 
-Clear the config cache first if any problems:
+Clear the config cache first to ensure the latest config is used to build the database:
 
 ```bash
 php artisan config:cache
 ```
 
-To run new database migrations:
+To run new/latest database migrations (i.e. since last one in the migrations table):
 
 ```bash
 php artisan migrate
 ```
 
-To run all migrations from beginning. This will will WIPE the database:
+To run all migrations from beginning. This will rollback all previous migrations and is likely to incur data loss:
 
 ```bash
 php artisan migrate:refresh
@@ -86,21 +116,29 @@ To apply seed data to the database:
 php artisan db:seed
 ```
 
-A handy all-in-one command:
+A handy all-in-one command to do all the above in one go:
 
 ```bash
 php artisan config:cache && php artisan migrate:refresh --seed
 ```
 
+If all else fails (e.g. some corrupt database state), then try the following which drops all tables and runs migrations from the beginning:
+
+```bash
+php artisan config:cache && php artisan migrate:fresh --seed
+```
+
 ### Run application
+
 ```bash
 php artisan key:generate
 php composer.phar dump-autoload
+npm run dev
 php artisan config:cache
 php artisan serve
 ```
 
-To rebuild less into css:
+To rerun webpack e.g. to regenerate less into css, or regenerate the app.js bundle:
 ```
 npm run dev
 ```
@@ -108,6 +146,7 @@ npm run dev
 ## Testing
 
 ### Unit tests
+
 Requires the local database to be seeded with data (see above).
 
 To run the unit test:
