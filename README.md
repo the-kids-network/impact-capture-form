@@ -54,6 +54,7 @@ Open a terminal in the source root directory of this project and run the followi
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
+mv composer.phar /usr/local/bin/composer
 ```
 
 # Install Node  (need to do this once only if you don't already have it)
@@ -67,13 +68,13 @@ brew install node
 To install the backend dependencies (this will create a composer.lock file to fix versions - this should be checked into source control):
 
 ```bash
-php composer.phar install
+composer install
 ```
 
 To update the composer.lock (e.g. after updating dependencies in composer.json):
 
 ```bash
-php composer.phar update
+composer update
 ```
 
 # Install 'Javascript' dependencies via npm
@@ -82,6 +83,12 @@ The following will install the dependencies from the package.json file, creating
 
 ```bash
 npm install
+```
+
+Run npm update to update dependencies e.g. if a version is changed, or a new dependency added.
+
+```bash
+npm update
 ```
 
 ### Configure local environment configuration
@@ -132,7 +139,7 @@ php artisan config:cache && php artisan migrate:fresh --seed
 
 ```bash
 php artisan key:generate
-php composer.phar dump-autoload
+composer dump-autoload
 npm run dev
 php artisan config:cache
 php artisan serve
@@ -170,7 +177,7 @@ For debugging in the browser, disable headless in the DuskTestCase.
 To run the Dusk browser tests (note that the app needs to be running before you launch these tests): 
 
 ```
-php composer.phar install
+composer install
 php artisan config:cache
 php artisan migrate:refresh --seed
 php artisan dusk
