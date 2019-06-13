@@ -1,8 +1,6 @@
-@extends('spark::layouts.app')
+@extends('layout.app')
 
 @section('content')
-    {{--<home :user="user" inline-template>--}}
-
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
@@ -43,7 +41,7 @@
                         <div class="panel-heading">Add Emotional State</div>
 
                         <div class="panel-body">
-                            @include('spark::shared.errors')
+                            @include('shared.errors')
 
                             <form class="form-horizontal" role="form" method="POST" action="/emotional-state">
                             {{ csrf_field() }}
@@ -72,5 +70,4 @@
                 </div>
             </div>
         </div>
-    {{--</home>--}}
 @endsection

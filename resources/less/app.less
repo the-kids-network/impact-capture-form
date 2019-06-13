@@ -1,0 +1,145 @@
+@import "./../../node_modules/bootstrap/less/bootstrap";
+
+// Import Variables
+@import "variables";
+
+// Spacing Helpers
+@import "spacing";
+
+// Utility Helpers
+@import "utilities";
+
+// HTML Elements
+@import "elements/alerts";
+@import "elements/buttons";
+@import "elements/forms";
+@import "elements/images";
+@import "elements/navbar";
+@import "elements/panels";
+@import "elements/tables";
+
+// Component Styling
+@import "components/settings";
+
+// Body Styling
+body {
+	font-weight: 300;
+}
+
+// Vue Cloak
+[v-cloak] {
+    display: none;
+}
+
+
+@mentor-delete-width: 150px;
+@mentor-expand-width: 15px;
+
+@mentor-name-width: calc(~'100% - @{mentor-delete-width} - @{mentor-expand-width}');
+@mentee-name-width: calc(~'100% - @{mentor-delete-width}');
+
+.expand-all {
+  cursor: pointer;
+}
+
+.mentor-table {
+  display: flex;
+  flex-wrap: wrap;
+  width:100%;
+}
+.mentor {
+  padding: 10px 15px 10px 15px;
+}
+.name-row,.delete-row,.mentor-expand,.spacer {
+  border-bottom: 1px solid #d3e0e9;
+}
+.name-row {
+  display: inline-flex;
+  align-items: center;
+}
+.name-row {
+  width: @mentor-name-width;
+}
+.delete-row {
+  width: @mentor-delete-width;
+  text-align: right;
+}
+
+.spacer {
+  width: @mentor-expand-width;
+}
+
+.mentees {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.mentee_details {
+  width: 100%;
+}
+
+.mentees .title {
+  width: 100%;
+  display: inline-block;
+  margin: 0;
+  padding: 5px 30px 5px 25px;
+  font-size: 1em;
+  border-bottom: 1px solid #d3e0e9;
+  background-color: lightgrey;
+}
+
+.mentee {
+  padding: 5px 15px 5px 0;
+}
+
+.mentee.name-row {
+  padding-left: 25px;
+}
+
+.mentor-expand {
+  width: @mentor-expand-width;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 15px;
+  color: black;
+  cursor: pointer;
+  border-bottom: 1px solid #d3e0e9;
+}
+
+// Hide collapsed sections
+.collapse:not(.in) {
+  display: none;
+}
+
+.panel-subheading {
+  font-weight: 400;
+  font-size: 15px;
+  padding-bottom: 15px;
+}
+
+.panel-divider {
+  margin-bottom: 5px;
+}
+
+.calendar-new-report {
+  float: left;
+  display: inline-block;
+  width: fit-content;
+  padding: 0 10px 0 10px;
+  font-size: 16px;
+}
+
+.calendar-new-schedule {
+  float: right;
+  display: inline-block;
+  width: fit-content;
+  padding: 0 10px 0 10px;
+  font-size: 16px;
+}
+
+.calendar {
+  max-width: 750px;
+  width: 95%;
+  margin: auto;
+}

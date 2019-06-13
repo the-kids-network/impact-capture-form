@@ -1,4 +1,4 @@
-@extends('spark::layouts.app')
+@extends('layout.app')
 
 @section('content')
 
@@ -62,7 +62,7 @@
                     <div class="panel-heading">Add Mentee</div>
 
                     <div class="panel-body">
-                        @include('spark::shared.errors')
+                        @include('shared.errors')
 
                         <form class="form-horizontal" role="form" method="POST" action="/mentee">
                         {{ csrf_field() }}

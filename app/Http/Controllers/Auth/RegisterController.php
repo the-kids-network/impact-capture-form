@@ -2,36 +2,58 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Laravel\Spark\Spark;
+use App\Configuration\Spark;
 use Illuminate\Http\Request;
-use Laravel\Spark\Contracts\Http\Requests\Auth\RegisterRequest;
-use Laravel\Spark\Http\Controllers\Auth\RegisterController as SparkRegisterController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\RedirectsUsers;
+use App\Interactions\Auth\Register;
+use App\Contracts\Http\Requests\Auth\RegisterRequest;
 
-/**
- * Class RegisterController
- * @package App\Http\Controllers\Auth
- * Replaces Guest with Dev Middleware. Registration is now only allowed for Admins
- */
-class RegisterController extends SparkRegisterController
+class RegisterController extends Controller
 {
+    use RedirectsUsers;
 
+    /**
+     * Create a new authentication controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('admin');
+
         $this->redirectTo = Spark::afterLoginRedirect();
     }
 
-    // Process Registration
-    public function register(RegisterRequest $request)
-    {
-        return parent::register($request);
-    }
-
-    // Show Registration Form
+    /**
+     * Show the application registration form.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function showRegistrationForm(Request $request)
     {
-        return parent::showRegistrationForm($request);
+        return view('register.register');
     }
 
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  RegisterRequest  $request
+     * @return Response
+     */
+    public function register(RegisterRequest $request)
+    {
+        
+        $this->interaction(
+            new Register(),
+            $request
+        );
+
+        return response()->json([
+            'redirect' => $this->redirectPath()
+        ]);
+    }
 }

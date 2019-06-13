@@ -1,4 +1,4 @@
-@extends('spark::layouts.app')
+@extends('layout.app')
 
 @section('content')
     <div class="container">
@@ -70,7 +70,7 @@
 
                     @if($expense_claim->status == 'pending' && Auth::user()->isAdmin())
                         <div class="panel-body">
-                            @include('spark::shared.errors')
+                            @include('shared.errors')
 
                             <form id="process-form" class="form-horizontal" role="form" method="post" action="{{url('/expense-claim/'.$expense_claim->id)}}">
                                 {{ csrf_field() }}

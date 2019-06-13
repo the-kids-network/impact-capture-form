@@ -3,7 +3,35 @@
 // Home Page
 Route::get('/', 'WelcomeController@show');
 
-// Override Registration Route
+// Customer Support...
+Route::post('/support/email', 'SupportController@sendEmail');
+
+// Users...
+Route::get('/user/current', 'UserController@current');
+
+// Settings Dashboard...
+Route::get('/settings', 'Settings\DashboardController@show')->name('settings');
+
+// Profile Contact Information...
+Route::put('/settings/contact', 'Settings\Profile\ContactInformationController@update');
+
+// Profile Photo...
+Route::post('/settings/photo', 'Settings\Profile\PhotoController@store');
+
+// Security Settings...
+Route::put('/settings/password', 'Settings\Security\PasswordController@update');
+
+// Authentication...
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('/login', 'Auth\LoginController@login');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+
+// Password Reset...
+Route::get('/password/reset/{token?}', 'Auth\PasswordController@showResetForm')->name('password.reset');
+Route::post('/password/email', 'Auth\PasswordController@sendResetLinkEmail');
+Route::post('/password/reset', 'Auth\PasswordController@reset');
+
+// Registration Route
 Route::get('/register','Auth\RegisterController@showRegistrationForm');
 Route::post('/register','Auth\RegisterController@register');
 

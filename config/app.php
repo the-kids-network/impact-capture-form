@@ -172,9 +172,6 @@ return [
         /*
          * Application Service Providers...
          */
-        Laravel\Spark\Providers\SparkServiceProvider::class,
-        App\Providers\SparkServiceProvider::class,
-        Laravel\Cashier\CashierServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,

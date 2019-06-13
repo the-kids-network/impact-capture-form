@@ -7,7 +7,7 @@
                 </div>
                 <div class="panel-body">
 
-                    @include('spark::shared.errors')
+                    @include('shared.errors')
 
                     <form class="form-horizontal" role="form" method="POST" action="/roles/assign-mentor">
                     {{ csrf_field() }}

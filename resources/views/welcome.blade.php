@@ -14,7 +14,7 @@
 
     <style>
         body, html {
-            background: url('/img/spark-bg.png');
+            background: url('/img/landing-bg.png');
             background-repeat: repeat;
             background-size: 300px 200px;
             height: 100%;

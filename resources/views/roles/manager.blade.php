@@ -1,4 +1,4 @@
-@extends('spark::layouts.app')
+@extends('layout.app')
 
 @section('content')
 
@@ -9,7 +9,7 @@
                     <div class="panel-heading">Promote to Manager</div>
                     <div class="panel-body">
 
-                        @include('spark::shared.errors')
+                        @include('shared.errors')
 
                         <form class="form-horizontal" role="form" method="POST" action="/roles/manager">
                         {{ csrf_field() }}
@@ -55,7 +55,7 @@
                     </div>
                     <div class="panel-body">
 
-                        @include('spark::shared.errors')
+                        @include('shared.errors')
 
                         <form class="form-horizontal" role="form" method="POST" action="/roles/assign-manager">
                         {{ csrf_field() }}
