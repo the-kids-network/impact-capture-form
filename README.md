@@ -1,4 +1,4 @@
-# Impact Capture Form
+# Mentor Session Application
 
 [![CircleCI](https://circleci.com/gh/the-kids-network/impact-capture-form.svg?style=svg)](https://circleci.com/gh/the-kids-network/impact-capture-form)
 
@@ -57,7 +57,7 @@ php -r "unlink('composer-setup.php');"
 mv composer.phar /usr/local/bin/composer
 ```
 
-# Install Node  (need to do this once only if you don't already have it)
+### Install Node  (need to do this once only if you don't already have it)
 
 ```bash
 brew install node
@@ -77,7 +77,7 @@ To update the composer.lock (e.g. after updating dependencies in composer.json):
 composer update
 ```
 
-# Install 'Javascript' dependencies via npm
+### Install 'Javascript' dependencies via npm
 
 The following will install the dependencies from the package.json file, creating a package-lock.json file to fix the versions - this should be checked into source control.
 
