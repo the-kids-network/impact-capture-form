@@ -30,5 +30,9 @@ class ContactInformationController extends Controller
             new UpdateContactInformation(),
             $request
         );
+
+        return response()->json([
+            'status' => "Your contact information has been updated!"
+        ]);
     }
 }

@@ -33,8 +33,7 @@ const Component = {
                 .then(
                     () => {
                         Bus.$emit('updateUser');
-
-                        self.form.finishProcessing();
+                        self.form.setSuccess(null);
                     },
                     (error) => {
                         self.form.setErrors(error.response.data.errors);

@@ -45,9 +45,6 @@ const Component = {
          * Attempt to register with the application.
          */
         register() {
-            this.registerForm.busy = true;
-            this.registerForm.errors.forget();
-
             return this.sendRegistration(); 
         },
 
@@ -57,7 +54,7 @@ const Component = {
         sendRegistration() {
             Spark.post('/register', this.registerForm)
                 .then(response => {
-                    window.location = response.redirect;
+                    this.registerForm.resetFormData()
                 });
         }
     },

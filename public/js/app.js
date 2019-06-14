@@ -71381,9 +71381,6 @@ window.SparkFormErrors = function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-/**
- * SparkForm helper class. Used to set common properties on all forms.
- */
 window.SparkForm = function (data) {
   var form = this;
   $.extend(this, data);
@@ -71393,43 +71390,27 @@ window.SparkForm = function (data) {
 
   this.errors = new SparkFormErrors();
   this.busy = false;
-  this.successful = false;
-  /**
-   * Start processing the form.
-   */
+  this.statusMessage = undefined;
 
   this.startProcessing = function () {
     form.errors.forget();
+    form.statusMessage = undefined;
     form.busy = true;
-    form.successful = false;
   };
-  /**
-   * Finish processing the form.
-   */
 
-
-  this.finishProcessing = function () {
+  this.setSuccess = function (message) {
     form.busy = false;
-    form.successful = true;
+    form.statusMessage = message;
   };
-  /**
-   * Reset the errors and other state for the form.
-   */
-
-
-  this.resetStatus = function () {
-    form.errors.forget();
-    form.busy = false;
-    form.successful = false;
-  };
-  /**
-   * Set the errors on the form.
-   */
-
 
   this.setErrors = function (errors) {
     form.busy = false;
     form.errors.set(errors);
+  };
+
+  this.resetFormData = function () {
+    // reset form fields since success
+    $.extend(this, data);
   };
 };
 
@@ -71480,7 +71461,7 @@ module.exports = {
     return new Promise(function (resolve, reject) {
       form.startProcessing();
       axios[method](uri, JSON.parse(JSON.stringify(form))).then(function (response) {
-        form.finishProcessing();
+        form.setSuccess(response.data.status);
         resolve(response.data);
       })["catch"](function (errors) {
         form.setErrors(errors.response.data.errors);
@@ -71658,8 +71639,6 @@ var Component = {
      * Attempt to register with the application.
      */
     register: function register() {
-      this.registerForm.busy = true;
-      this.registerForm.errors.forget();
       return this.sendRegistration();
     },
 
@@ -71667,8 +71646,10 @@ var Component = {
      * After obtaining the Stripe token, send the registration to Spark.
      */
     sendRegistration: function sendRegistration() {
+      var _this = this;
+
       Spark.post('/register', this.registerForm).then(function (response) {
-        window.location = response.redirect;
+        _this.registerForm.resetFormData();
       });
     }
   },
@@ -71785,7 +71766,7 @@ var Component = {
 
       axios.post('/settings/photo', this.gatherFormData()).then(function () {
         Bus.$emit('updateUser');
-        self.form.finishProcessing();
+        self.form.setSuccess(null);
       }, function (error) {
         self.form.setErrors(error.response.data.errors);
       });

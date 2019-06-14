@@ -33,12 +33,18 @@ class PasswordController extends Controller
 
         if (! Hash::check($request->current_password, $request->user()->password)) {
             return response()->json([
-                'current_password' => ['The given password does not match our records.']
+                'errors' => [
+                    'current_password' => ['The given password does not match our records.']
+                ]
             ], 422);
         }
 
         $request->user()->forceFill([
             'password' => bcrypt($request->password)
         ])->save();
+
+        return response()->json([
+            'status' => "Your password has been updated!"
+        ]);
     }
 }

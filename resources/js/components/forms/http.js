@@ -42,13 +42,11 @@ module.exports = {
 
             axios[method](uri, JSON.parse(JSON.stringify(form)))
                 .then(response => {
-                    form.finishProcessing();
-
+                    form.setSuccess(response.data.status);
                     resolve(response.data);
                 })
                 .catch(errors => {
                     form.setErrors(errors.response.data.errors);
-
                     reject(errors.response.data);
                 });
         });

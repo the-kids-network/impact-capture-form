@@ -1,4 +1,8 @@
 <form class="form-horizontal" role="form">
+
+    <div class="alert alert-success" v-show="registerForm.statusMessage">
+        @{{ registerForm.statusMessage }}
+    </div>
    
     <!-- Name -->
     <div class="form-group" :class="{'has-error': registerForm.errors.has('name')}">

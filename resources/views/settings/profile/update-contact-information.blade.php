@@ -4,8 +4,8 @@
 
         <div class="panel-body">
             <!-- Success Message -->
-            <div class="alert alert-success" v-if="form.successful">
-                Your contact information has been updated!
+            <div class="alert alert-success" v-show="form.statusMessage">
+                @{{ form.statusMessage }}
             </div>
 
             <form class="form-horizontal" role="form">

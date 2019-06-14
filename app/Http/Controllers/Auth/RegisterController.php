@@ -23,8 +23,6 @@ class RegisterController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('admin');
-
-        $this->redirectTo = Spark::afterLoginRedirect();
     }
 
     /**
@@ -53,7 +51,7 @@ class RegisterController extends Controller
         );
 
         return response()->json([
-            'redirect' => $this->redirectPath()
+            'status' => "Registration was successful. Please ask the user to login."
         ]);
     }
 }

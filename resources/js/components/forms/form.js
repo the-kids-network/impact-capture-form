@@ -1,6 +1,3 @@
-/**
- * SparkForm helper class. Used to set common properties on all forms.
- */
 window.SparkForm = function (data) {
     var form = this;
 
@@ -10,42 +7,27 @@ window.SparkForm = function (data) {
      * Create the form error helper instance.
      */
     this.errors = new SparkFormErrors();
-
     this.busy = false;
-    this.successful = false;
+    this.statusMessage = undefined
 
-    /**
-     * Start processing the form.
-     */
     this.startProcessing = function () {
         form.errors.forget();
+        form.statusMessage = undefined
         form.busy = true;
-        form.successful = false;
     };
 
-    /**
-     * Finish processing the form.
-     */
-    this.finishProcessing = function () {
+    this.setSuccess = function (message) {
         form.busy = false;
-        form.successful = true;
+        form.statusMessage = message;
     };
 
-    /**
-     * Reset the errors and other state for the form.
-     */
-    this.resetStatus = function () {
-        form.errors.forget();
-        form.busy = false;
-        form.successful = false;
-    };
-
-
-    /**
-     * Set the errors on the form.
-     */
     this.setErrors = function (errors) {
         form.busy = false;
         form.errors.set(errors);
     };
+
+    this.resetFormData = function () {
+        // reset form fields since success
+        $.extend(this, data);
+    }
 };
