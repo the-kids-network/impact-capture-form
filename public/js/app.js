@@ -71771,6 +71771,17 @@ var Component = {
         self.form.setErrors(error.response.data.errors);
       });
     },
+    remove: function remove(e) {
+      e.preventDefault();
+      var self = this;
+      this.form.startProcessing();
+      axios["delete"]('/settings/photo', this.gatherFormData()).then(function () {
+        Bus.$emit('updateUser');
+        self.form.setSuccess(null);
+      }, function (error) {
+        self.form.setErrors(error.response.data.errors);
+      });
+    },
 
     /**
      * Gather the form data for the photo upload.
@@ -71781,14 +71792,7 @@ var Component = {
       return data;
     }
   },
-  computed: {
-    /**
-     * Calculate the style attribute for the photo preview.
-     */
-    previewStyle: function previewStyle() {
-      return "background-image: url(".concat(this.user.photo_url, ")");
-    }
-  }
+  computed: {}
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Vue.component('update-profile-photo', Component));

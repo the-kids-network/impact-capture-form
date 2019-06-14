@@ -17,6 +17,7 @@ Route::put('/settings/contact', 'Settings\Profile\ContactInformationController@u
 
 // Profile Photo...
 Route::post('/settings/photo', 'Settings\Profile\PhotoController@store');
+Route::delete('/settings/photo', 'Settings\Profile\PhotoController@remove');
 
 // Security Settings...
 Route::put('/settings/password', 'Settings\Security\PasswordController@update');

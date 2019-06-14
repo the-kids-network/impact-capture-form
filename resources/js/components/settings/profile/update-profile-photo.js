@@ -41,27 +41,36 @@ const Component = {
                 );
         },
 
+        remove(e) {
+            e.preventDefault();
+            var self = this;
+            this.form.startProcessing();
+
+            axios.delete('/settings/photo', this.gatherFormData())
+                .then(
+                    () => {
+                        Bus.$emit('updateUser');
+                        self.form.setSuccess(null);
+                    },
+                    (error) => {
+                        self.form.setErrors(error.response.data.errors);
+                    }
+                );
+        },
 
         /**
          * Gather the form data for the photo upload.
          */
         gatherFormData() {
             const data = new FormData();
-
             data.append('photo', this.$refs.photo.files[0]);
-
             return data;
         }
     },
 
 
     computed: {
-        /**
-         * Calculate the style attribute for the photo preview.
-         */
-        previewStyle() {
-            return `background-image: url(${this.user.photo_url})`;
-        }
+
     }
 };
 

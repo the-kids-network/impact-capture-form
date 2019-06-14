@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Notifications\RoutesNotifications;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class User extends Authenticatable
 {
@@ -42,7 +44,8 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token'
+        'remember_token',
+        'photo_url'
     ];
 
     /**
@@ -53,6 +56,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['photo'];
+
+    public function getPhotoAttribute()
+    {
+        return $this->getProfilePhoto();
+    }
 
 /**
      * Redact all personal information from user object
@@ -74,17 +89,6 @@ class User extends Authenticatable
         $this['email'] = $newEmail;
         $this['deleted_at'] = now();
         $this->save();
-    }
-
-    /**
-     * Get the profile photo URL attribute.
-     *
-     * @param  string|null  $value
-     * @return string|null
-     */
-    public function getPhotoUrlAttribute($value)
-    {
-        return empty($value) ? 'https://www.gravatar.com/avatar/'.md5(Str::lower($this->email)).'.jpg?s=200&d=mm' : url($value);
     }
 
     /**
@@ -188,5 +192,53 @@ class User extends Authenticatable
     public function scopeIsMentor($query) {
         $query->whereNull('role');
         return $query;
+    }
+
+    public function getProfilePhoto(){
+        $path = $this->photo_url;
+
+        if ($path && Storage::exists($path)) {
+            $photo = Storage::get($path);
+            return Image::make($photo)->encode('data-url')->encoded;
+        } else {
+            return 'https://www.gravatar.com/avatar/'.md5(Str::lower($this->email)).'.jpg?s=200&d=mm';
+        }
+    }
+
+    public function storeProfilePhoto($imageRaw)
+    {
+        $imageProcessed = $this->formatImage($imageRaw);
+
+        // store photo on disk
+        $path = $imageRaw->hashName('profile');
+        Storage::put($path, $imageProcessed);
+
+        // delete old photo if possible
+        $oldPhotoPath = $this->photo_url;
+        Storage::delete($oldPhotoPath);
+        
+        // store path to new photo against user
+        $this->forceFill([
+            'photo_url' => $path,
+        ])->save();
+    }
+
+    public function removeProfilePhoto() {
+        if ($this->photo_url) {
+            Storage::delete($this->photo_url);
+            $this->photo_url = null;
+            $this->save();
+        }
+    }
+
+    /**
+     * Resize an image instance for the given file.
+     *
+     * @param  \SplFileInfo  $file
+     * @return \Intervention\Image\Image
+     */
+    private function formatImage($file)
+    {
+        return (string) Image::make($file->path())->fit(300)->encode();
     }
 }

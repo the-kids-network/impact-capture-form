@@ -2,73 +2,32 @@
 
 namespace App\Interactions\Settings\Profile;
 
-use Intervention\Image\ImageManager;
+use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Contracts\Interactions\Settings\Profile\UpdateProfilePhoto as Contract;
 
 class UpdateProfilePhoto implements Contract
 {
-    /**
-     * The image manager instance.
-     *
-     * @var ImageManager
-     */
-    protected $images;
-
     public function __construct()
     {
-        $this->images = new ImageManager(['driver' => 'gd']);
+        Image::configure(array('driver' => 'gd'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validator($user, array $data)
     {
+        $messages = [
+            'photo.max' => 'The photo must be max of 4MB in size',
+            'photo.image' => 'The file must be an image',
+        ];
+
         return Validator::make($data, [
             'photo' => 'required|image|max:4000',
-        ]);
+        ], $messages);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle($user, array $data)
     {
-        $file = $data['photo'];
-
-        $path = $file->hashName('profiles');
-
-        // We will store the profile photos on the "public" disk, which is a convention
-        // for where to place assets we want to be publicly accessible. Then, we can
-        // grab the URL for the image to store with this user in the database row.
-        $disk = Storage::disk('public');
-
-        $disk->put(
-            $path, $this->formatImage($file)
-        );
-
-        $oldPhotoUrl = $user->photo_url;
-        
-        $user->forceFill([
-            'photo_url' => $disk->url($path),
-        ])->save();
-
-        if (preg_match('/profiles\/(.*)$/', $oldPhotoUrl, $matches)) {
-            $disk->delete('profiles/'.$matches[1]);
-        }
-    }
-
-    /**
-     * Resize an image instance for the given file.
-     *
-     * @param  \SplFileInfo  $file
-     * @return \Intervention\Image\Image
-     */
-    protected function formatImage($file)
-    {
-        return (string) $this->images->make($file->path())
-                            ->fit(300)->encode();
+        $user->storeProfilePhoto($data['photo']);
     }
 }

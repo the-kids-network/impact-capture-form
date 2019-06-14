@@ -14,9 +14,7 @@
                         <label class="col-md-4 control-label">&nbsp;</label>
 
                         <div class="col-md-6">
-                            <span role="img" class="profile-photo-preview"
-                                :style="previewStyle">
-                            </span>
+                            <img :src="user.photo" v-if="user.photo" role="img" class="profile-photo-preview" />
                         </div>
                     </div>
 
@@ -30,6 +28,17 @@
 
                                 <input ref="photo" type="file" class="form-control" name="photo" @change="update">
                             </label>
+                        </div>
+                    </div>
+
+                    <!-- Delete Button -->
+                    <div class="form-group" v-if="!user.photo.includes('gravatar')">
+                        <label class="col-md-4 control-label">&nbsp;</label>
+
+                        <div class="col-md-6">
+                            <label type=button class="btn btn-info" :disabled="form.busy" @click="remove">
+                                <span>Remove Photo</span>         
+                            </label>               
                         </div>
                     </div>
                 </form>

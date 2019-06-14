@@ -31,7 +31,7 @@
                     <li class="dropdown">
                         <!-- User Photo / Name -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <img :src="user.photo_url" class="spark-nav-profile-photo m-r-xs">
+                            <img :src="user.photo" v-if="user.photo" class="spark-nav-profile-photo m-r-xs">
                             <span class="caret"></span>
                         </a>
 

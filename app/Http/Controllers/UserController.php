@@ -15,9 +15,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->only(
-            'updateLastReadAnnouncementsTimestamp'
-        );
+        $this->middleware('auth');
     }
 
     /**
