@@ -93,9 +93,6 @@ Route::get('/reporting/mentor/export','MentorReportingController@generateExporta
 // Schedule
 Route::resource('/schedule','ScheduleController');
 
-// Profile settings
-Route::put('/settings/profile/details', 'ProfileDetailsController@update');
-
 // Old routes to deprecate eventually once people's symlinks are updated
 Route::redirect('/my-reports', '/report/new');
 Route::redirect('/own-reports', '/report');
