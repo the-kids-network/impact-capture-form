@@ -4,7 +4,6 @@ namespace App\Configuration;
 
 class Spark
 {
-    use ManagesAppOptions,
-        ManagesSupportOptions,
+    use ManagesSupportOptions,
         ProvidesScriptVariables;
 }

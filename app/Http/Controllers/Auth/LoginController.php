@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Configuration\Spark;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,8 +22,6 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-
-        $this->redirectTo = Spark::afterLoginRedirect();
     }
 
     /**
@@ -60,7 +57,7 @@ class LoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
-        return redirect()->intended($this->redirectPath());
+        return redirect()->intended('/home');
     }
 
     /**
@@ -74,9 +71,6 @@ class LoginController extends Controller
 
         session()->flush();
 
-        return redirect(
-            property_exists($this, 'redirectAfterLogout')
-                    ? $this->redirectAfterLogout : '/'
-        );
+        return redirect('/');
     }
 }
