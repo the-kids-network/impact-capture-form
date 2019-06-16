@@ -3,14 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Spark\User as SparkUser;
-use Laravel\Spark\Spark;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Notifications\RoutesNotifications;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
-class User extends SparkUser
+class User extends Authenticatable
 {
+    use SoftDeletes, RoutesNotifications;
 
-    use SoftDeletes;
+    private static $REDACTED_STRING = '_DELETED_';
 
     /**
      * The attributes that should be mutated to dates.
@@ -30,8 +34,7 @@ class User extends SparkUser
      */
     protected $fillable = [
         'name',
-        'email',
-        'reminder_emails'
+        'email'
     ];
 
     /**
@@ -42,18 +45,7 @@ class User extends SparkUser
     protected $hidden = [
         'password',
         'remember_token',
-        'authy_id',
-        'country_code',
-        'phone',
-        'card_brand',
-        'card_last_four',
-        'card_country',
-        'billing_address',
-        'billing_address_line_2',
-        'billing_city',
-        'billing_zip',
-        'billing_country',
-        'extra_billing_information',
+        'photo_url'
     ];
 
     /**
@@ -62,10 +54,66 @@ class User extends SparkUser
      * @var array
      */
     protected $casts = [
-        'trial_ends_at' => 'datetime',
-        'uses_two_factor_auth' => 'boolean',
-        'reminder_emails' => 'datetime'
+        'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['photo'];
+
+    public function getPhotoAttribute()
+    {
+        return $this->getProfilePhoto();
+    }
+
+/**
+     * Redact all personal information from user object
+     *
+     * Idea is that we don't want to actually delete a user because it would corrupt reports.
+     * So instead we're removing all personal data from the user row.
+     */
+    public function redactPersonalDetails()
+    {
+        // Email address cannot repeat and cannot be empty. So we'll construct a new fake email address
+        $newEmail = $this['id'] . '@example.com';
+        $personalFields = ['name', 'password', 'remember_token', 'photo_url'];
+
+        foreach ($personalFields as $field)
+        {
+            $this[$field] = '_DELETED_';
+        }
+
+        $this['email'] = $newEmail;
+        $this['deleted_at'] = now();
+        $this->save();
+    }
+
+    /**
+     * Make the team user visible for the current user.
+     *
+     * @return $this
+     */
+    public function shouldHaveSelfVisibility()
+    {
+        return $this->makeVisible([
+            
+        ]);
+    }
+
+    /**
+     * Convert the model instance to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $array = parent::toArray();
+
+        return $array;
+    }
 
     /**
      * Reports that this mentor has written
@@ -144,5 +192,53 @@ class User extends SparkUser
     public function scopeIsMentor($query) {
         $query->whereNull('role');
         return $query;
+    }
+
+    public function getProfilePhoto(){
+        $path = $this->photo_url;
+
+        if ($path && Storage::exists($path)) {
+            $photo = Storage::get($path);
+            return Image::make($photo)->encode('data-url')->encoded;
+        } else {
+            return 'https://www.gravatar.com/avatar/'.md5(Str::lower($this->email)).'.jpg?s=200&d=mm';
+        }
+    }
+
+    public function storeProfilePhoto($imageRaw)
+    {
+        $imageProcessed = $this->formatImage($imageRaw);
+
+        // store photo on disk
+        $path = $imageRaw->hashName('profile');
+        Storage::put($path, $imageProcessed);
+
+        // delete old photo if possible
+        $oldPhotoPath = $this->photo_url;
+        Storage::delete($oldPhotoPath);
+        
+        // store path to new photo against user
+        $this->forceFill([
+            'photo_url' => $path,
+        ])->save();
+    }
+
+    public function removeProfilePhoto() {
+        if ($this->photo_url) {
+            Storage::delete($this->photo_url);
+            $this->photo_url = null;
+            $this->save();
+        }
+    }
+
+    /**
+     * Resize an image instance for the given file.
+     *
+     * @param  \SplFileInfo  $file
+     * @return \Intervention\Image\Image
+     */
+    private function formatImage($file)
+    {
+        return (string) Image::make($file->path())->fit(300)->encode();
     }
 }

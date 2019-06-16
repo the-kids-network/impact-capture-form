@@ -1,7 +1,6 @@
-@extends('spark::layouts.app')
+@extends('layout.app')
 
 @section('content')
-{{--<home :user="user" inline-template>--}}
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -9,7 +8,7 @@
                     <div class="panel-heading">Weekly Session Report</div>
 
                     <div class="panel-body">
-                        @include('spark::shared.errors')
+                        @include('shared.errors')
 
                         <form class="form-horizontal" role="form" method="POST" action="/report">
                         {{ csrf_field() }}
@@ -183,7 +182,6 @@
         </div>
     </div>
 
-{{--</home>--}}
 @endsection
 
 

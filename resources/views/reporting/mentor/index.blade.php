@@ -1,4 +1,4 @@
-@extends('spark::layouts.app')
+@extends('layout.app')
 
 @section('content')
     <div class="container">
@@ -8,7 +8,7 @@
                     <div class="panel-heading">Filters</div>
 
                     <div class="panel-body">
-                        @include('spark::shared.errors')
+                        @include('shared.errors')
 
                         <form class="form-horizontal" role="form" method="GET" action="/reporting/mentor">
                         {{ csrf_field() }}

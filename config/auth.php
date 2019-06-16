@@ -42,7 +42,9 @@ return [
         ],
 
         'api' => [
-            'driver' => 'spark',
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
         ],
     ],
 
@@ -67,12 +69,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        ]
     ],
 
     /*
@@ -97,7 +94,7 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'email' => 'spark::auth.emails.password',
+            'email' => 'emails.auth.password',
             'table' => 'password_resets',
             'expire' => 60,
         ],

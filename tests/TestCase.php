@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\User;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Spark\Spark;
+use App\Configuration\Spark;
 
 abstract class TestCase extends BaseTestCase
 {
