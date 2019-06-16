@@ -60,8 +60,6 @@ class UsersTableSeeder extends Seeder
         ], [
             'name' => $name,
             'email' => $email_of_user,
-            'trial_ends_at' => '2018-02-21 00:25:39',
-            'last_read_announcements_at' => '2018-02-21 00:25:39',
             'created_at' => '2018-02-21 00:25:39',
             'updated_at' => '2018-02-21 00:25:39',
             'role' => $role,
