@@ -91,17 +91,6 @@ class User extends Authenticatable
         $this->save();
     }
 
-    /**
-     * Make the team user visible for the current user.
-     *
-     * @return $this
-     */
-    public function shouldHaveSelfVisibility()
-    {
-        return $this->makeVisible([
-            
-        ]);
-    }
 
     /**
      * Convert the model instance to an array.

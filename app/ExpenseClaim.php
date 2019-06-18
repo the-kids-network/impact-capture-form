@@ -47,14 +47,6 @@ class ExpenseClaim extends Model {
     }
 
     /**
-     * Returns the Manager who approved this claim
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function approvedBy() {
-        return $this->belongsTo('App\User','approved_by_id');
-    }
-
-    /**
      * Returns the Finance Person who processed this claim
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
