@@ -8,6 +8,8 @@ Route::post('/support/email', 'SupportController@sendEmail');
 
 // Users...
 Route::get('/user/current', 'UserController@current');
+Route::delete('/user/{user_id}','UserController@delete');
+Route::post('/user/{user_id}/restore','UserController@restore');
 
 // Settings Dashboard...
 Route::get('/settings', 'Settings\DashboardController@show')->name('settings');
@@ -47,7 +49,6 @@ Route::post('/roles/admin','RoleController@store_admin_role');
 Route::post('/roles/assign-mentor','RoleController@assignMentor');
 Route::post('/roles/assign-manager','RoleController@assignManager');
 Route::delete('/roles/mentor/{mentor_id}/mentee/{mentee_id}','RoleController@disassociate_mentee');
-Route::delete('/roles/mentor/{mentor_id}','RoleController@delete_mentor');
 Route::delete('/roles/manager','RoleController@delete_manager_role');
 Route::delete('/roles/admin','RoleController@delete_admin_role');
 

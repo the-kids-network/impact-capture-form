@@ -20,8 +20,9 @@ class MenteeController extends Controller {
      */
     public function index() {
         return view('mentee.index')
-            ->with('mentees', Mentee::withTrashed()->get())
-            ->with('mentors', User::mentor()->get());
+            ->with('allMentees', Mentee::withTrashed()->get())
+            ->with('assignableMentees', Mentee::all())
+            ->with('assignableMentors', User::mentor()->get());
     }
 
     /**

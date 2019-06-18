@@ -20,8 +20,9 @@ class RoleController extends Controller {
 
     public function mentor(){
         return view('roles.mentor')
-            ->with('mentors', User::mentor()->withTrashed()->get())
-            ->with('mentees', Mentee::all());
+            ->with('allMentors', User::mentor()->withDeactivated()->get())
+            ->with('assignableMentors', User::mentor()->get())
+            ->with('assignableMentees', Mentee::all());
     }
 
     public function manager(){
@@ -72,13 +73,6 @@ class RoleController extends Controller {
         $mentee->save();
 
         return redirect('roles/mentor')->with('status', 'Mentor disassociated from Mentee');
-    }
-
-    public function delete_mentor(Request $request) {
-        $mentor = User::find($request->mentor_id);
-        $mentor->redactPersonalDetails();
-
-        return redirect('roles/mentor')->with('status', 'Deleted mentor');
     }
 
     public function delete_manager_role(Request $request){

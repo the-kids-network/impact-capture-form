@@ -14,7 +14,7 @@ class User extends Authenticatable
 {
     use SoftDeletes, RoutesNotifications;
 
-    private static $REDACTED_STRING = '_DELETED_';
+    private const REDACTED_STRING = '_DELETED_';
 
     /**
      * The attributes that should be mutated to dates.
@@ -68,29 +68,6 @@ class User extends Authenticatable
     {
         return $this->getProfilePhoto();
     }
-
-/**
-     * Redact all personal information from user object
-     *
-     * Idea is that we don't want to actually delete a user because it would corrupt reports.
-     * So instead we're removing all personal data from the user row.
-     */
-    public function redactPersonalDetails()
-    {
-        // Email address cannot repeat and cannot be empty. So we'll construct a new fake email address
-        $newEmail = $this['id'] . '@example.com';
-        $personalFields = ['name', 'password', 'remember_token', 'photo_url'];
-
-        foreach ($personalFields as $field)
-        {
-            $this[$field] = '_DELETED_';
-        }
-
-        $this['email'] = $newEmail;
-        $this['deleted_at'] = now();
-        $this->save();
-    }
-
 
     /**
      * Convert the model instance to an array.
@@ -166,6 +143,19 @@ class User extends Authenticatable
         return $query;
     }
 
+    /**
+     * Overrides SoftDelete, to instead redact personal details
+     * instead of deleting the row.
+     */
+    public function forceDelete() {
+        $this->redactPersonalDetails();
+        return parent::delete();
+    }
+
+    public function scopeWithDeactivated($query) {
+        return $query->withTrashed()->where('permenantly_deleted', false);
+    }
+
     public function getProfilePhoto(){
         $path = $this->photo_url;
 
@@ -210,5 +200,22 @@ class User extends Authenticatable
      */
     private function formatImage($file) {
         return (string) Image::make($file->path())->fit(300)->encode();
+    }
+
+    /**
+     * Redact all personal information from user object
+     */
+    private function redactPersonalDetails()
+    {
+        $this->unsetProfilePhoto();
+
+        // some fields are non-nullable hence the _DELETED_
+        $this['name'] = self::REDACTED_STRING;
+        $this['email'] = $this['id'] . '@example.com';
+        $this['password'] = self::REDACTED_STRING;
+        $this['remember_token'] = null;
+        $this['permenantly_deleted'] = true;
+
+        $this->save();
     }
 }
