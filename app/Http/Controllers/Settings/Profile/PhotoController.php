@@ -26,6 +26,6 @@ class PhotoController extends Controller
 
     public function remove(Request $request)
     {
-        $request->user()->removeProfilePhoto();
+        $request->user()->unsetProfilePhoto();
     }
 }

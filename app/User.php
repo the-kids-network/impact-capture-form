@@ -194,8 +194,7 @@ class User extends Authenticatable
         }
     }
 
-    public function storeProfilePhoto($imageRaw)
-    {
+    public function setProfilePhoto($imageRaw) {
         $imageProcessed = $this->formatImage($imageRaw);
 
         // store photo on disk
@@ -212,7 +211,7 @@ class User extends Authenticatable
         ])->save();
     }
 
-    public function removeProfilePhoto() {
+    public function unsetProfilePhoto() {
         if ($this->photo_url) {
             Storage::delete($this->photo_url);
             $this->photo_url = null;
@@ -226,8 +225,7 @@ class User extends Authenticatable
      * @param  \SplFileInfo  $file
      * @return \Intervention\Image\Image
      */
-    private function formatImage($file)
-    {
+    private function formatImage($file) {
         return (string) Image::make($file->path())->fit(300)->encode();
     }
 }
