@@ -17,10 +17,8 @@
                             <label class="col-md-4 control-label">Mentor Name</label>
                             <div class="col-md-6">
                                 <select class="form-control" name="mentor_id">
-                                    @foreach($users as $user)
-                                        @if($user->isMentor())
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                        @endif
+                                    @foreach($mentors as $mentor)
+                                        <option value="{{ $mentor->id }}">{{ $mentor->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

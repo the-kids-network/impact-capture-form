@@ -161,7 +161,7 @@ class User extends Authenticatable
         return $query;
     }
 
-    public function scopeIsMentor($query) {
+    public function scopeMentor($query) {
         $query->whereNull('role');
         return $query;
     }

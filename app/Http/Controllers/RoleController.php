@@ -20,8 +20,8 @@ class RoleController extends Controller {
 
     public function mentor(){
         return view('roles.mentor')
-            ->with('users',User::all())
-            ->with('mentees',Mentee::all());
+            ->with('mentors', User::mentor()->withTrashed()->get())
+            ->with('mentees', Mentee::all());
     }
 
     public function manager(){

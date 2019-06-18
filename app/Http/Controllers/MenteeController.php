@@ -21,7 +21,7 @@ class MenteeController extends Controller {
     public function index() {
         return view('mentee.index')
             ->with('mentees', Mentee::withTrashed()->get())
-            ->with('users',User::all());
+            ->with('mentors', User::mentor()->get());
     }
 
     /**

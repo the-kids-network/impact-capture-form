@@ -28,44 +28,42 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Mentors<span class="pull-right"><a class="expand-all">Toggle All</a></span></div>
                     <div class="mentor-table">
-                        @foreach($users as $user)
-                            @if( $user->isMentor() )
-                                    <span class="mentor name-row list-group-item-info">{{$user->name}}</span>
-                                    <span class="mentor delete-row list-group-item-info">
-                                        <form action="/roles/mentor/{$user->id}" method="post" class="delete">
-                                            {{ csrf_field() }}
-                                            {{ method_field('delete') }}
-                                            <input type="hidden" name="mentor_id" value="{{$user->id}}">
-                                            <input type="submit" value="Delete" class="btn btn-xs btn-danger-outline">
-                                        </form>
-                                    </span>
-                                    @if(!$user->mentees->isEmpty())
-                                        <div class="mentor-expand list-group-item-info toggle-btn"
-                                                    data-target="#mentee_details{{$user->id}}" data-toggle="collapse">
-                                            <i class="fa fa-bars"></i>
-                                        </div>
-                                    @else
-                                        <div class="list-group-item-info spacer"></div>
-                                    @endif
-                                    @if(!$user->mentees->isEmpty())
-                                        <div class="collapse mentee_details" id="mentee_details{{$user->id}}">
-                                            <div class="mentees">
-                                            <h3 class="title">Assigned Mentees</h3>
-                                        @forelse($user->mentees as $mentee)
-                                            <div class="mentee name-row">{{ $mentee->name }}</div>
-                                            <span class="mentee delete-row">
-                                                <form action="/roles/mentor/{{ $user->id }}/mentee/{{ $mentee->id }}" method="post">
-                                                    {{ csrf_field() }}
-                                                    {{ method_field('delete') }}
-                                                    <input type="hidden" name="mentee_id" value="{{$mentee->id}}">
-                                                    <input type="submit" value="Disassociate" class="btn btn-xs btn-danger-outline">
-                                                </form>
-                                            </span>
-                                            <div class="mentee spacer"></div>
-                                        @endforeach
-                                            </div>
-                                        </div>
-                                    @endif
+                        @foreach($mentors as $mentor)
+                            <span class="mentor name-row list-group-item-info">{{$mentor->name}}</span>
+                            <span class="mentor delete-row list-group-item-info">
+                                <form action="/roles/mentor/{$mentor->id}" method="post" class="delete">
+                                    {{ csrf_field() }}
+                                    {{ method_field('delete') }}
+                                    <input type="hidden" name="mentor_id" value="{{$mentor->id}}">
+                                    <input type="submit" value="Delete" class="btn btn-xs btn-danger-outline">
+                                </form>
+                            </span>
+                            @if(!$mentor->mentees->isEmpty())
+                                <div class="mentor-expand list-group-item-info toggle-btn"
+                                            data-target="#mentee_details{{$mentor->id}}" data-toggle="collapse">
+                                    <i class="fa fa-bars"></i>
+                                </div>
+                            @else
+                                <div class="list-group-item-info spacer"></div>
+                            @endif
+                            @if(!$mentor->mentees->isEmpty())
+                                <div class="collapse mentee_details" id="mentee_details{{$mentor->id}}">
+                                    <div class="mentees">
+                                    <h3 class="title">Assigned Mentees</h3>
+                                    @forelse($mentor->mentees as $mentee)
+                                        <div class="mentee name-row">{{ $mentee->name }}</div>
+                                        <span class="mentee delete-row">
+                                            <form action="/roles/mentor/{{ $mentor->id }}/mentee/{{ $mentee->id }}" method="post">
+                                                {{ csrf_field() }}
+                                                {{ method_field('delete') }}
+                                                <input type="hidden" name="mentee_id" value="{{$mentee->id}}">
+                                                <input type="submit" value="Disassociate" class="btn btn-xs btn-danger-outline">
+                                            </form>
+                                        </span>
+                                        <div class="mentee spacer"></div>
+                                    @endforeach
+                                    </div>
+                                </div>
                             @endif
                         @endforeach
                     </div>
