@@ -51,15 +51,16 @@ class MentorReportingController extends Controller {
         // Generate stats data
         $user = Auth::user();
         $manager_id = ($user && $user->isManager()) ? Auth::id() : null;
-        $mentors = $this->get_stats($report_start_date, $report_end_date, $manager_id);
+        $mentors = $this->get_stats($report_start_date, $report_end_date, $manager_id, $request->show_inactive);
 
         // Display results
         return view($view_name)->with('mentors', $mentors);
     }
 
-    private function get_stats($report_start_date, $report_end_date, $manager_id) {
+    private function get_stats($report_start_date, $report_end_date, $manager_id, $show_inactive_mentors) {
         $mentors_stats = DB::select("
                 SELECT DISTINCT 
+                    m.active,
                     m.mentor_id, 
                     m.mentor_name,
                     m.manager_name,
@@ -83,7 +84,11 @@ class MentorReportingController extends Controller {
                 ".
                 ( $manager_id ? 'AND m.manager_id = '.$manager_id : '' )
                 ."
-                GROUP BY m.mentor_id, 
+                ".
+                ( $show_inactive_mentors ? '' : 'AND m.active=true' )
+                ."
+                GROUP BY m.active,
+                         m.mentor_id, 
                          m.mentor_name,
                          m.manager_name,
                          m.start_date,

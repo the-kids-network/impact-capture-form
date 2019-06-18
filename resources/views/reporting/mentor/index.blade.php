@@ -34,6 +34,17 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Show Inactive</label>
+                                <div class="col-md-6">
+                                    <input type="checkbox" 
+                                            name="show_inactive"
+                                            autocomplete="off"
+                                            {{ (Request()->show_inactive) ? 'checked' : ''}} />
+                                    </label>
+                                </div>
+                            </div>
+
                             <!-- Submit Button -->
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-4">
@@ -56,6 +67,9 @@
                             <thead>
                                 <tr>
                                     <th data-sortable="true">Mentor Name</th>
+                                    @if(Request()->show_inactive)
+                                    <th data-sortable="true">Active</th>
+                                    @endif
                                     @if( !Auth::user()->isManager() )
                                     <th data-sortable="true">Manager Name</th>
                                     @endif
@@ -78,6 +92,11 @@
                                                     {{ $mentor->mentor_name }}
                                             </a>
                                         </td>
+                                        @if( Request()->show_inactive )
+                                        <td class="mentor-active">
+                                            {{ ($mentor->active) ? 'Yes' : 'No' }}
+                                        </td>
+                                        @endif
                                         @if( !Auth::user()->isManager() )
                                         <td class="manager-name">
                                             @if (isset($mentor->manager_name )) {{ $mentor->manager_name }}  @else Unassigned @endif
@@ -128,7 +147,8 @@
                         <div class="panel-body">
                             <a href="{{ route('mentor-reporting-export', 
                                         [ 'start_date' => Request()->start_date,
-                                            'end_date' => Request()->end_date 
+                                            'end_date' => Request()->end_date,
+                                            'show_inactive' => Request()->show_inactive
                                         ]) 
                                         }}">Download All Data as CSV</a>
                         </div>

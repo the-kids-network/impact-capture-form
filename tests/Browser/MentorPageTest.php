@@ -29,36 +29,6 @@ class MentorPageTest extends DuskTestCase
         });
     }
 
-    public function testCanCancelDeleteMentor()
-    {
-        $this->browse(function (Browser $browser) {
-            $user = User::where('email', 'admin@example.com')->firstOrFail();
-
-            $browser->loginAs($user)->visit(new MentorPage());
-
-            $this->assertMentorCount($browser, 10);
-            $browser->element('.mentor-table .mentor.delete-row:nth-child(odd) form input[type="submit"]')->click();
-            $browser->dismissDialog();
-
-            $this->assertMentorCount($browser, 10);
-        });
-    }
-
-    public function testCanDeleteMentor()
-    {
-        $this->browse(function (Browser $browser) {
-            $user = User::where('email', 'admin@example.com')->firstOrFail();
-
-            $browser->loginAs($user)->visit(new MentorPage());
-
-            $this->assertMentorCount($browser, 10);
-            $browser->element('.mentor-table .mentor.delete-row:nth-child(odd) form input[type="submit"]')->click();
-            $browser->acceptDialog();
-
-            $this->assertMentorCount($browser, 9);
-        });
-    }
-
     private function assertMentorCount($browser, $mentorCount)
     {
         $browser->pause(1000);
