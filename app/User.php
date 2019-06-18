@@ -104,41 +104,12 @@ class User extends Authenticatable
         return $array;
     }
 
-    /**
-     * Reports that this mentor has written
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function reports(){
         return $this->hasMany('App\Report','mentor_id');
     }
 
-    /**
-     * Expense Claims that this mentor has submitted
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function expense_claims(){
         return $this->hasMany('App\ExpenseClaim','mentor_id');
-    }
-
-    public function hasRole($role) {
-        if ($role == "mentor") {
-            return !$this->role;
-        } else {
-            return $this->role && $this->role == $role;
-        }
-    }
-
-    public function isManager() {
-        return $this->role && $this->role == 'manager';
-    }
-
-    public function isMentor() {
-        return !$this->role;
-    }
-
-    public function isAdmin() {
-        return $this->role == 'admin';
     }
 
     public function manager() {
@@ -154,15 +125,27 @@ class User extends Authenticatable
     }
 
     public function processedClaims() {
-        return $this->hasMany('App\ExpenseClaim', 'processed_by_id')->where('status', 'processed');
-    }
-
-    public function rejectedClaims() {
-        return $this->hasMany('App\ExpenseClaim','processed_by_id')->where('status', 'rejected');
-    }
-
-    public function processedAndRejectedClaims() {
         return $this->hasMany('App\ExpenseClaim','processed_by_id')->whereIn('status', ['rejected', 'processed']);
+    }
+
+    public function hasRole($role) {
+        if ($role == "mentor") {
+            return !$this->role;
+        } else {
+            return $this->role && $this->role == $role;
+        }
+    }
+
+    public function isManager() {
+        return $this->hasRole("manager");
+    }
+
+    public function isMentor() {
+        return $this->hasRole("mentor");
+    }
+
+    public function isAdmin() {
+        return $this->hasRole("admin");
     }
 
     public function scopeCanSee($query) {
