@@ -42,14 +42,14 @@ Route::post('/register','Auth\RegisterController@register');
 Route::get('/roles/mentor','RoleController@mentor');
 Route::get('/roles/manager','RoleController@manager');
 Route::get('/roles/admin','RoleController@admin');
-Route::post('/roles/manager','RoleController@store_manager');
-Route::post('/roles/admin','RoleController@store_admin');
+Route::post('/roles/manager','RoleController@store_manager_role');
+Route::post('/roles/admin','RoleController@store_admin_role');
 Route::post('/roles/assign-mentor','RoleController@assignMentor');
 Route::post('/roles/assign-manager','RoleController@assignManager');
 Route::delete('/roles/mentor/{mentor_id}/mentee/{mentee_id}','RoleController@disassociate_mentee');
 Route::delete('/roles/mentor/{mentor_id}','RoleController@delete_mentor');
-Route::delete('/roles/manager','RoleController@delete_manager');
-Route::delete('/roles/admin','RoleController@delete_admin');
+Route::delete('/roles/manager','RoleController@delete_manager_role');
+Route::delete('/roles/admin','RoleController@delete_admin_role');
 
 // Home
 Route::get('/home', 'HomeController@show');

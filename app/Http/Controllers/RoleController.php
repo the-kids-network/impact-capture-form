@@ -34,14 +34,14 @@ class RoleController extends Controller {
             ->with('users', User::all() );
     }
 
-    public function store_manager(Request $request){
+    public function store_manager_role(Request $request){
         $user = User::find($request->user_id);
         $user->role = 'manager' ;
         $user->save();
         return redirect('/roles/manager')->with('status','User promoted to Manager');
     }
     
-    public function store_admin(Request $request){
+    public function store_admin_role(Request $request){
         $user = User::find($request->user_id);
         $user->role = 'admin' ;
         $user->save();
@@ -81,7 +81,7 @@ class RoleController extends Controller {
         return redirect('roles/mentor')->with('status', 'Deleted mentor');
     }
 
-    public function delete_manager(Request $request){
+    public function delete_manager_role(Request $request){
         $user = User::find($request->manager_id);
 
         foreach($user->assignedMentors as $mentor){
@@ -94,7 +94,7 @@ class RoleController extends Controller {
         return redirect('/roles/manager')->with('status', $user->name . ' is no longer a manager.');
     }
 
-    public function delete_admin(Request $request){
+    public function delete_admin_role(Request $request){
         $user = User::find($request->admin_id);
         $user->role = NULL;
         $user->save();
