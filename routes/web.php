@@ -68,9 +68,6 @@ Route::resource('/activity-type','ActivityTypeController');
 Route::get('/finance/expense-claim/export','FinanceController@exportExpenseClaims');
 Route::get('/finance/process-expense-claims','FinanceController@processExpenseClaims');
 
-// Manager
-Route::get('/manager','ManagerController@index');
-
 // Mentee
 Route::post('/mentee/restore/{id}','MenteeController@restore');
 Route::resource('/mentee','MenteeController');

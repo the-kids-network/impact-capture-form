@@ -30,8 +30,6 @@ class PageAuthenticationTest extends TestCase
                               ['/finance/expense-claim/export'  , 302   , 401   , 401       , 200],
                               ['/finance/process-expense-claims', 302   , 401   , 401       , 200],
 
-                              ['/manager'                       , 302   , 401   , 200       , 401],
-
                               ['/mentee'                        , 302   , 401   , 401       , 200],
 
                               ['/report'                        , 302   , 200   , 200       , 200],
