@@ -77,7 +77,7 @@ Route::post('/mentee/restore/{id}','MenteeController@restore');
 Route::resource('/mentee','MenteeController');
 
 // Session reports
-Route::get('/report/new','HomeController@newReport');
+Route::get('/report/new','SessionReportController@create');
 Route::get('/report/export','SessionReportController@export')->name('report.export');
 Route::resource('/report','SessionReportController');
 

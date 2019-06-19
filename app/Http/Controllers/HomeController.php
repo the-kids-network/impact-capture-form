@@ -24,7 +24,6 @@ class HomeController extends Controller {
         $this->middleware('auth');
         $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('show', 'calendar');
         $this->middleware('admin')->only('deleteAll');
-        $this->middleware('mentor')->only('newReport');
     }
 
     public function show(Request $request) {
@@ -41,20 +40,6 @@ class HomeController extends Controller {
         }
     }
 
-    /**
-     * Show the report form.
-     *
-     * @return Response
-     */
-    public function newReport(Request $request) {
-        return view('mentor.report')
-            ->with('mentees',$request->user()->mentees)
-            ->with('activity_types', ActivityType::all())
-            ->with('physical_appearances',PhysicalAppearance::all())
-            ->with('emotional_states',EmotionalState::all())
-            ->with('session_ratings',SessionRating::selectable())
-            ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() );
-    }
 
     public function calendar(Request $request) {
         $allowableMentees = Mentee::canSee()->get();
@@ -63,8 +48,6 @@ class HomeController extends Controller {
 
         return view('schedule.calendar')->with('calendar', $calendar);
     }
-
-
 
     /**
      * @return \Illuminate\Http\RedirectResponse

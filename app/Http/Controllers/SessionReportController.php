@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\ActivityType;
 use App\ExpenseClaim;
 use App\Mail\ReportSubmittedToManager;
 use App\Mail\ReportSubmittedToMentor;
@@ -10,6 +9,10 @@ use App\Mentee;
 use App\User;
 use App\Report;
 use App\Schedule;
+use App\ActivityType;
+use App\EmotionalState;
+use App\PhysicalAppearance;
+use App\SessionRating;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -23,22 +26,22 @@ use Debugbar;
 
 class SessionReportController extends Controller {
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('mentor')->only('store');
+        $this->middleware('mentor')->only('store', 'create');
         $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('index', 'show', 'export');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function create(Request $request) {
+        return view('mentor.report')
+            ->with('mentees',$request->user()->mentees)
+            ->with('activity_types', ActivityType::all())
+            ->with('physical_appearances',PhysicalAppearance::all())
+            ->with('emotional_states',EmotionalState::all())
+            ->with('session_ratings',SessionRating::selectable())
+            ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() );
+    }
+
     public function index(Request $request) {
         // apply role permission scope
         $query = Report::canSee()->orderBy('created_at','desc');
@@ -54,12 +57,18 @@ class SessionReportController extends Controller {
         return view('session_report.index')->with('reports',  $reports);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function show($id) {
+        if (!Report::find($id)) abort(404);
+
+        $report = Report::canSee()->whereId($id)->first();
+        if(!$report) abort(401,'Unauthorized');
+        $claims = $report->expense_claims()->orderBy('created_at','desc')->get();
+
+        return view('session_report.show')
+            ->with('report', $report)
+            ->with('claims', $claims);
+    }
+
     public function store(Request $request) {
         $messages = ['rating_id.min' => 'The session rating field is required.'];
         $this->validate($request, [
@@ -94,24 +103,6 @@ class SessionReportController extends Controller {
         }
 
         return redirect('/report')->with('status', 'Report Submitted');
-    }
-   
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        if (!Report::find($id)) abort(404);
-
-        $report = Report::canSee()->whereId($id)->first();
-        if(!$report) abort(401,'Unauthorized');
-        $claims = $report->expense_claims()->orderBy('created_at','desc')->get();
-
-        return view('session_report.show')
-            ->with('report', $report)
-            ->with('claims', $claims);
     }
 
     public function export(Request $request){
