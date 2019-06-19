@@ -14,7 +14,7 @@ class User extends Authenticatable
 {
     use SoftDeletes, RoutesNotifications;
 
-    private static $REDACTED_STRING = '_DELETED_';
+    private const REDACTED_STRING = '_DELETED_';
 
     /**
      * The attributes that should be mutated to dates.
@@ -69,40 +69,6 @@ class User extends Authenticatable
         return $this->getProfilePhoto();
     }
 
-/**
-     * Redact all personal information from user object
-     *
-     * Idea is that we don't want to actually delete a user because it would corrupt reports.
-     * So instead we're removing all personal data from the user row.
-     */
-    public function redactPersonalDetails()
-    {
-        // Email address cannot repeat and cannot be empty. So we'll construct a new fake email address
-        $newEmail = $this['id'] . '@example.com';
-        $personalFields = ['name', 'password', 'remember_token', 'photo_url'];
-
-        foreach ($personalFields as $field)
-        {
-            $this[$field] = '_DELETED_';
-        }
-
-        $this['email'] = $newEmail;
-        $this['deleted_at'] = now();
-        $this->save();
-    }
-
-    /**
-     * Make the team user visible for the current user.
-     *
-     * @return $this
-     */
-    public function shouldHaveSelfVisibility()
-    {
-        return $this->makeVisible([
-            
-        ]);
-    }
-
     /**
      * Convert the model instance to an array.
      *
@@ -115,41 +81,12 @@ class User extends Authenticatable
         return $array;
     }
 
-    /**
-     * Reports that this mentor has written
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function reports(){
         return $this->hasMany('App\Report','mentor_id');
     }
 
-    /**
-     * Expense Claims that this mentor has submitted
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function expense_claims(){
         return $this->hasMany('App\ExpenseClaim','mentor_id');
-    }
-
-    public function hasRole($role) {
-        if ($role == "mentor") {
-            return !$this->role;
-        } else {
-            return $this->role && $this->role == $role;
-        }
-    }
-
-    public function isManager() {
-        return $this->role && $this->role == 'manager';
-    }
-
-    public function isMentor() {
-        return !$this->role;
-    }
-
-    public function isAdmin() {
-        return $this->role == 'admin';
     }
 
     public function manager() {
@@ -165,15 +102,27 @@ class User extends Authenticatable
     }
 
     public function processedClaims() {
-        return $this->hasMany('App\ExpenseClaim', 'processed_by_id')->where('status', 'processed');
-    }
-
-    public function rejectedClaims() {
-        return $this->hasMany('App\ExpenseClaim','processed_by_id')->where('status', 'rejected');
-    }
-
-    public function processedAndRejectedClaims() {
         return $this->hasMany('App\ExpenseClaim','processed_by_id')->whereIn('status', ['rejected', 'processed']);
+    }
+
+    public function hasRole($role) {
+        if ($role == "mentor") {
+            return !$this->role;
+        } else {
+            return $this->role && $this->role == $role;
+        }
+    }
+
+    public function isManager() {
+        return $this->hasRole("manager");
+    }
+
+    public function isMentor() {
+        return $this->hasRole("mentor");
+    }
+
+    public function isAdmin() {
+        return $this->hasRole("admin");
     }
 
     public function scopeCanSee($query) {
@@ -189,9 +138,22 @@ class User extends Authenticatable
         return $query;
     }
 
-    public function scopeIsMentor($query) {
+    public function scopeMentor($query) {
         $query->whereNull('role');
         return $query;
+    }
+
+    /**
+     * Overrides SoftDelete, to instead redact personal details
+     * instead of deleting the row.
+     */
+    public function forceDelete() {
+        $this->redactPersonalDetails();
+        return parent::delete();
+    }
+
+    public function scopeWithDeactivated($query) {
+        return $query->withTrashed()->where('permenantly_deleted', false);
     }
 
     public function getProfilePhoto(){
@@ -205,8 +167,7 @@ class User extends Authenticatable
         }
     }
 
-    public function storeProfilePhoto($imageRaw)
-    {
+    public function setProfilePhoto($imageRaw) {
         $imageProcessed = $this->formatImage($imageRaw);
 
         // store photo on disk
@@ -223,7 +184,7 @@ class User extends Authenticatable
         ])->save();
     }
 
-    public function removeProfilePhoto() {
+    public function unsetProfilePhoto() {
         if ($this->photo_url) {
             Storage::delete($this->photo_url);
             $this->photo_url = null;
@@ -237,8 +198,24 @@ class User extends Authenticatable
      * @param  \SplFileInfo  $file
      * @return \Intervention\Image\Image
      */
-    private function formatImage($file)
-    {
+    private function formatImage($file) {
         return (string) Image::make($file->path())->fit(300)->encode();
+    }
+
+    /**
+     * Redact all personal information from user object
+     */
+    private function redactPersonalDetails()
+    {
+        $this->unsetProfilePhoto();
+
+        // some fields are non-nullable hence the _DELETED_
+        $this['name'] = self::REDACTED_STRING;
+        $this['email'] = $this['id'] . '@example.com';
+        $this['password'] = self::REDACTED_STRING;
+        $this['remember_token'] = null;
+        $this['permenantly_deleted'] = true;
+
+        $this->save();
     }
 }

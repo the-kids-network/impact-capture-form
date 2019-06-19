@@ -2,12 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\ActivityType;
-use App\EmotionalState;
-use App\PhysicalAppearance;
-use App\SessionRating;
-use App\Schedule;
-use App\Mentee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -22,9 +16,8 @@ class HomeController extends Controller {
      */
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('show', 'calendar');
+        $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('show');
         $this->middleware('admin')->only('deleteAll');
-        $this->middleware('mentor')->only('newReport');
     }
 
     public function show(Request $request) {
@@ -42,31 +35,6 @@ class HomeController extends Controller {
     }
 
     /**
-     * Show the report form.
-     *
-     * @return Response
-     */
-    public function newReport(Request $request) {
-        return view('mentor.report')
-            ->with('mentees',$request->user()->mentees)
-            ->with('activity_types', ActivityType::all())
-            ->with('physical_appearances',PhysicalAppearance::all())
-            ->with('emotional_states',EmotionalState::all())
-            ->with('session_ratings',SessionRating::selectable())
-            ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() );
-    }
-
-    public function calendar(Request $request) {
-        $allowableMentees = Mentee::canSee()->get();
-
-        $calendar = $this->createCalendar($allowableMentees);
-
-        return view('schedule.calendar')->with('calendar', $calendar);
-    }
-
-
-
-    /**
      * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteAll() {
@@ -82,27 +50,6 @@ class HomeController extends Controller {
 
         // Return Home
         return redirect('/home')->with('status','All Reports and Expense Claims Deleted');
-    }
-
-    private function createCalendar($mentees) {
-        $events = $mentees->flatmap(function($mentee) {
-            return $mentee->schedules()->map(function($schedule) use(&$mentee) {
-                return \Calendar::event(
-                    is_null($mentee->mentor()->first()) ? 'NO MENTOR' : $mentee->mentor()->first()->name,
-                    true,
-                    new \DateTime($schedule['next_session_date']),
-                    new \DateTime($schedule['next_session_date']),
-                    $schedule->id,
-                    ['url' => 'schedule/' . $schedule->id]
-                );
-            });
-        });
-
-        return \Calendar::addEvents($events)
-            ->setOptions([
-                'header' => array('left' => 'prev,today,next', 'center' => 'title', 'right' => false),
-                'buttonText' => array('today' => 'Now')
-            ]);
     }
 
 }

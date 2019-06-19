@@ -179,8 +179,7 @@ To run the Dusk browser tests (note that the app needs to be running before you 
 ```
 composer install
 php artisan config:cache
-php artisan migrate:refresh --seed
-php artisan dusk
+php artisan migrate:refresh --seed && php artisan dusk
 ```
 
 ## Debugging

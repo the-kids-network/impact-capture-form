@@ -15,6 +15,9 @@
                 <table id="data-table" class="table table-bordered table-responsive table-striped">
                     <tr>
                         <th>Mentor Name</th>
+                        @if(Request()->show_inactive)
+                        <th data-sortable="true">Active</th>
+                        @endif
                         @if( !Auth::user()->isManager() )
                         <th data-sortable="true">Manager Name</th>
                         @endif
@@ -31,6 +34,11 @@
                     @foreach($mentors as $mentor)
                     <tr>
                         <td class="mentor-name">{{ $mentor->mentor_name }}</td>
+                        @if( Request()->show_inactive )
+                        <td class="mentor-active">
+                            {{ ($mentor->active) ? 'Yes' : 'No' }}
+                        </td>
+                        @endif
                         @if( !Auth::user()->isManager() )
                         <td class="manager-name">
                             @if (isset($mentor->manager_name )) {{ $mentor->manager_name }}  @else Unassigned @endif

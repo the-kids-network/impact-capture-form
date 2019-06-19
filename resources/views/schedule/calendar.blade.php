@@ -18,7 +18,7 @@
             @endif
 
             <div class="calendar-new-schedule">
-                <a href="/schedule"><i class="fas fa-plus-circle"></i> Schedule New Session</a>
+                <a href="/schedule/new"><i class="fas fa-plus-circle"></i> Schedule New Session</a>
             </div>
         </span>
         <br/>

@@ -17,7 +17,15 @@ class ScheduleController extends Controller {
     }
 
     public function index(Request $request) {
-        return view('schedule.index')
+        $allowableMentees = Mentee::canSee()->get();
+
+        $calendar = $this->createCalendar($allowableMentees);
+
+        return view('schedule.calendar')->with('calendar', $calendar);
+    }
+
+    public function create(Request $request) {
+        return view('schedule.new')
             ->with('mentees', Mentee::canSee()->get());
     }
 
@@ -61,5 +69,26 @@ class ScheduleController extends Controller {
         $schedule->save();
 
         return redirect('/calendar');
+    }
+
+    private function createCalendar($mentees) {
+        $events = $mentees->flatmap(function($mentee) {
+            return $mentee->schedules()->map(function($schedule) use(&$mentee) {
+                return \Calendar::event(
+                    is_null($mentee->mentor()->first()) ? 'NO MENTOR' : $mentee->mentor()->first()->name,
+                    true,
+                    new \DateTime($schedule['next_session_date']),
+                    new \DateTime($schedule['next_session_date']),
+                    $schedule->id,
+                    ['url' => 'schedule/' . $schedule->id]
+                );
+            });
+        });
+
+        return \Calendar::addEvents($events)
+            ->setOptions([
+                'header' => array('left' => 'prev,today,next', 'center' => 'title', 'right' => false),
+                'buttonText' => array('today' => 'Now')
+            ]);
     }
 }

@@ -8,6 +8,8 @@ Route::post('/support/email', 'SupportController@sendEmail');
 
 // Users...
 Route::get('/user/current', 'UserController@current');
+Route::delete('/user/{user_id}','UserController@delete');
+Route::post('/user/{user_id}/restore','UserController@restore');
 
 // Settings Dashboard...
 Route::get('/settings', 'Settings\DashboardController@show')->name('settings');
@@ -42,19 +44,17 @@ Route::post('/register','Auth\RegisterController@register');
 Route::get('/roles/mentor','RoleController@mentor');
 Route::get('/roles/manager','RoleController@manager');
 Route::get('/roles/admin','RoleController@admin');
-Route::post('/roles/manager','RoleController@store_manager');
-Route::post('/roles/admin','RoleController@store_admin');
+Route::post('/roles/manager','RoleController@store_manager_role');
+Route::post('/roles/admin','RoleController@store_admin_role');
 Route::post('/roles/assign-mentor','RoleController@assignMentor');
 Route::post('/roles/assign-manager','RoleController@assignManager');
 Route::delete('/roles/mentor/{mentor_id}/mentee/{mentee_id}','RoleController@disassociate_mentee');
-Route::delete('/roles/mentor/{mentor_id}','RoleController@delete_mentor');
-Route::delete('/roles/manager','RoleController@delete_manager');
-Route::delete('/roles/admin','RoleController@delete_admin');
+Route::delete('/roles/manager','RoleController@delete_manager_role');
+Route::delete('/roles/admin','RoleController@delete_admin_role');
 
 // Home
 Route::get('/home', 'HomeController@show');
 Route::delete('/delete-all','HomeController@deleteAll');
-Route::get('/calendar','HomeController@calendar');
 
 // Admin session form lookups
 Route::post('/activity-type/restore/{id}','ActivityTypeController@restore');
@@ -68,15 +68,12 @@ Route::resource('/activity-type','ActivityTypeController');
 Route::get('/finance/expense-claim/export','FinanceController@exportExpenseClaims');
 Route::get('/finance/process-expense-claims','FinanceController@processExpenseClaims');
 
-// Manager
-Route::get('/manager','ManagerController@index');
-
 // Mentee
 Route::post('/mentee/restore/{id}','MenteeController@restore');
 Route::resource('/mentee','MenteeController');
 
 // Session reports
-Route::get('/report/new','HomeController@newReport');
+Route::get('/report/new','SessionReportController@create');
 Route::get('/report/export','SessionReportController@export')->name('report.export');
 Route::resource('/report','SessionReportController');
 
@@ -92,6 +89,7 @@ Route::get('/reporting/mentor','MentorReportingController@generateIndexReport')-
 Route::get('/reporting/mentor/export','MentorReportingController@generateExportableReport')->name('mentor-reporting-export');
 
 // Schedule
+Route::get('/schedule/new','ScheduleController@create');
 Route::resource('/schedule','ScheduleController');
 
 // Old routes to deprecate eventually once people's symlinks are updated
@@ -100,3 +98,5 @@ Route::redirect('/own-reports', '/report');
 Route::redirect('/my-expense-claims', '/expense-claim/new');
 Route::redirect('/manager/expense-claim/export', '/expense-claim/export');
 Route::redirect('/manager/view-expense-claims', '/expense-claim');
+Route::redirect('/calendar', '/schedule');
+

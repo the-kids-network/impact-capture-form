@@ -28,6 +28,6 @@ class UpdateProfilePhoto implements Contract
 
     public function handle($user, array $data)
     {
-        $user->storeProfilePhoto($data['photo']);
+        $user->setProfilePhoto($data['photo']);
     }
 }

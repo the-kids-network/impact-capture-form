@@ -21,7 +21,7 @@ class PageAuthenticationTest extends TestCase
                               ['/home'                          , 302   , 200   , 200       , 200],
                          //   ['/delete-all'                    , 302   , 401   , 401       , 200],
                               ['/expense-claim/new'             , 302   , 200   , 401       , 401],
-                              ['/calendar'                      , 302   , 200   , 200       , 200],
+                              ['/schedule'                      , 302   , 200   , 200       , 200],
 
                               ['/activity-type'                 , 302   , 401   , 401       , 200],
                               ['/emotional-state'               , 302   , 401   , 401       , 200],
@@ -29,8 +29,6 @@ class PageAuthenticationTest extends TestCase
 
                               ['/finance/expense-claim/export'  , 302   , 401   , 401       , 200],
                               ['/finance/process-expense-claims', 302   , 401   , 401       , 200],
-
-                              ['/manager'                       , 302   , 401   , 200       , 401],
 
                               ['/mentee'                        , 302   , 401   , 401       , 200],
 

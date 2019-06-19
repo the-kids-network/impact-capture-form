@@ -7,11 +7,7 @@
             <div class="col-md-8 col-md-offset-2">
 
                 <button class="btn btn-lg btn-default" onclick="toggle('.trashed')">
-                    Hide / Show Deactivated Mentees
-                </button>
-
-                <button class="btn btn-lg btn-default" onclick="toggle('.not-trashed')">
-                    Hide / Show Active Mentees
+                    Toggle Deactivated Mentees
                 </button>
 
                 <hr>
@@ -19,8 +15,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Mentees</div>
                     <ul class="list-group">
-                        @foreach($mentees as $mentee)
-                        <li class="list-group-item @if($mentee->trashed()) trashed @else not-trashed @endif">
+                        @foreach($allMentees as $mentee)
+                        <li class="list-group-item @if($mentee->trashed()) trashed @else not-trashed @endif" style="@if($mentee->trashed()) display: none @endif">
                             {{ $mentee->first_name }} {{ $mentee->last_name }}
                             <div class="pull-right">
                                 @if($mentee->trashed())
@@ -101,12 +97,14 @@
         </div>
     </div>
 
-    @include('roles.include.mentor_mentee_pairing_form')
+    @include('roles.include.mentor_mentee_pairing_form', ['mentors' => $assignableMentors, 'mentees' => $assignableMentees])
 
+@endsection
+
+@section('body-scripts')
     <script>
         function toggle(selector){
             $(selector).toggle();
         }
     </script>
-
 @endsection
