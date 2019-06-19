@@ -55,7 +55,6 @@ Route::delete('/roles/admin','RoleController@delete_admin_role');
 // Home
 Route::get('/home', 'HomeController@show');
 Route::delete('/delete-all','HomeController@deleteAll');
-Route::get('/calendar','HomeController@calendar');
 
 // Admin session form lookups
 Route::post('/activity-type/restore/{id}','ActivityTypeController@restore');
@@ -93,6 +92,7 @@ Route::get('/reporting/mentor','MentorReportingController@generateIndexReport')-
 Route::get('/reporting/mentor/export','MentorReportingController@generateExportableReport')->name('mentor-reporting-export');
 
 // Schedule
+Route::get('/schedule/new','ScheduleController@create');
 Route::resource('/schedule','ScheduleController');
 
 // Old routes to deprecate eventually once people's symlinks are updated
@@ -101,3 +101,5 @@ Route::redirect('/own-reports', '/report');
 Route::redirect('/my-expense-claims', '/expense-claim/new');
 Route::redirect('/manager/expense-claim/export', '/expense-claim/export');
 Route::redirect('/manager/view-expense-claims', '/expense-claim');
+Route::redirect('/calendar', '/schedule');
+
