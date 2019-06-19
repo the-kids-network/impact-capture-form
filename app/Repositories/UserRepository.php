@@ -32,26 +32,6 @@ class UserRepository implements UserRepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function search($query, $excludeUser = null)
-    {
-        $search = User::with('subscriptions');
-
-        // If a user to exclude was passed to the repository, we will exclude their User
-        // ID from the list. Typically we don't want to show the current user in the
-        // search results and only want to display the other users from the query.
-        if ($excludeUser) {
-            $search->where('id', '<>', $excludeUser->id);
-        }
-
-        return $search->where(function ($search) use ($query) {
-            $search->where('email', 'like', $query)
-                   ->orWhere('name', 'like', $query);
-        })->get();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function create(array $data)
     {
         $user = new User();
