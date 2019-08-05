@@ -104,7 +104,7 @@ class EmailSendCommand extends Command
         $mentee = $schedule->mentee();
 
         $mail = Mail::to($mentee->mentor);
-        if ($isLate) {
+        if ($isLate && isset($mentee->mentor->manager)) {
             $mail->cc($mentee->mentor->manager);
         }
         $mail->send(new MissingReportReminder($mentee->mentor, $mentee, $schedule));
