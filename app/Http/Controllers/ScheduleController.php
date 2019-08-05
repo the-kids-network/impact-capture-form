@@ -49,7 +49,7 @@ class ScheduleController extends Controller {
 
         Schedule::destroy($scheduleToDelete->id);
 
-        return redirect('/calendar');
+        return redirect('/schedule');
     }
 
     public function store(Request $request) {
@@ -68,7 +68,7 @@ class ScheduleController extends Controller {
         $schedule->next_session_location = $request->next_session_location;
         $schedule->save();
 
-        return redirect('/calendar');
+        return redirect('/schedule');
     }
 
     private function createCalendar($mentees) {

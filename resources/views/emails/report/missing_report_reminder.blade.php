@@ -12,7 +12,7 @@ Please do get in touch if you need any further support in your role.
 Thanks,<br>
 {{ config('app.name') }}
 
-@component('mail::button', ['url' => url('/calendar' )])
+@component('mail::button', ['url' => url('/schedule' )])
 Scheduled Sessions Calendar
 @endcomponent
 
