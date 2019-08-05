@@ -81,7 +81,7 @@ jobs:
           command: vendor/bin/phpunit
       - run:
           name: Upgrade Chrome Driver
-          command: php artisan dusk:chrome-driver 74
+          command: php artisan dusk:chrome-driver 76
       - run:
           name: Start Chrome Driver
           command: ./vendor/laravel/dusk/bin/chromedriver-linux
