@@ -4,13 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Expense;
 use App\ExpenseClaim;
-use App\Mail\ClaimProcessedToFinance;
-use App\Mail\ClaimProcessedToManager;
 use App\Mail\ClaimProcessedToMentor;
-use App\Mail\ClaimRejectedToFinance;
-use App\Mail\ClaimRejectedToManager;
 use App\Mail\ClaimRejectedToMentor;
-use App\Mail\ClaimSubmittedToManager;
 use App\Mail\ClaimSubmittedToMentor;
 use App\Receipt;
 use App\Report;
@@ -105,11 +100,6 @@ class ExpenseClaimController extends Controller {
         // Send an Email to the Mentor
         Mail::to($request->user())->send(new ClaimSubmittedToMentor($claim));
 
-        // Send an Email to the Assigned Manager if any
-        if($request->user()->manager){
-            Mail::to($request->user()->manager)->send(new ClaimSubmittedToManager($claim));
-        }
-
         return redirect('/expense-claim/new')->with('status','Expense Claim Submitted for Processing');
     }
 
@@ -147,24 +137,12 @@ class ExpenseClaimController extends Controller {
 
         // Send Emails
         if ($request->status == 'processed'){
-            // Send Processed Emails to Mentor, Approving Manager and Processor (Finance)
-            Mail::to($request->user())->send(new ClaimProcessedToFinance($claim));
-            if ($claim->mentor->manager) {
-                Mail::to($claim->mentor->manager)->send(new ClaimProcessedToManager($claim));
-            }
             Mail::to($claim->mentor)->send(new ClaimProcessedToMentor($claim));
-
             return redirect('/expense-claim/'.$id)->with('status','Expense Claim Processed');
         }
 
         if ($request->status == 'rejected'){
-            // Send Rejection Emails
-            Mail::to($request->user())->send(new ClaimRejectedToFinance($claim));
-            if ($claim->mentor->manager) {
-                Mail::to($claim->mentor->manager)->send(new ClaimRejectedToManager($claim));
-            }
             Mail::to($claim->mentor)->send(new ClaimRejectedToMentor($claim));
-
             return redirect('/expense-claim')->with('status','Expense Claim Rejected');
         }
     }

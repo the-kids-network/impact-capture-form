@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class Schedule extends Model
 {
@@ -19,7 +20,8 @@ class Schedule extends Model
         'created_at',
         'updated_at',
         'deleted_at',
-        'next_session_date'
+        'next_session_date',
+        'last_email_reminder'
     ];
 
     /**
