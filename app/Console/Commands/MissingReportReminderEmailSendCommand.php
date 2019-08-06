@@ -15,7 +15,7 @@ use App\Mail\MissingReportReminder;
 
 use Illuminate\Support\Carbon;
 
-class EmailSendCommand extends Command
+class MissingReportReminderEmailSendCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -52,20 +52,22 @@ class EmailSendCommand extends Command
         $schedules = $this->filterSchedulesWhereEmailNotAlreadySentToday($schedules);
 
         foreach ($schedules as $schedule) {
-            // assume session finished by 8pm latest
+            // assume session finished by 8pm UTC latest
             $schedule_session_date = $schedule->next_session_date->setTime(20,00);
 
             $diff = $schedule_session_date->diff($this->now());
 
-            Log::info("Schedule ID: ".$schedule->id);
-            Log::info("Scheduled session date: ".$schedule_session_date);
-            Log::info("Last reminder email sent: ".$schedule->last_email_reminder);
-            Log::info("Days since scheduled session date and now: ".$diff->days);
+            Log::debug("Schedule ID: ".$schedule->id);
+            Log::debug("Scheduled session date: ".$schedule_session_date);
+            Log::debug("Last reminder email sent: ".$schedule->last_email_reminder);
+            Log::debug("Days since scheduled session date and now: ".$diff->days);
 
             if ($diff->days == 2) {
                 $this->sendEmail($schedule, false);
             } else if ($diff->days == 3 || $diff->days == 5) {
                 $this->sendEmail($schedule, true);
+            } else {
+                Log::debug("Reminder email not required yet");
             }
         }
     }
@@ -98,16 +100,11 @@ class EmailSendCommand extends Command
     }
 
     private function sendEmail($schedule, $isLate) {
-        Log::info("Sending reminder email");
+        Log::debug("Sending reminder email");
         $schedule->last_email_reminder = $this->now();
         $schedule->save();
-        $mentee = $schedule->mentee();
 
-        $mail = Mail::to($mentee->mentor);
-        if ($isLate && isset($mentee->mentor->manager)) {
-            $mail->cc($mentee->mentor->manager);
-        }
-        $mail->send(new MissingReportReminder($mentee->mentor, $mentee, $schedule));
+        Mail::send(new MissingReportReminder($isLate, $schedule));
     }
 
     private function daysAgo($days) {
