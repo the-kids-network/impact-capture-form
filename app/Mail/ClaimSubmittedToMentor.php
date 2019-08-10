@@ -31,6 +31,14 @@ class ClaimSubmittedToMentor extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Expense Claim Received')->markdown('emails.claim.submitted_to_mentor');
+        $mail = $this
+            ->subject('Expense Claim Received')
+            ->markdown('emails.claim.submitted_to_mentor');
+
+        if (isset($this->claim->mentor->manager)){
+            $mail->replyTo($this->claim->mentor->manager);
+        }
+
+        return $mail;
     }
 }
