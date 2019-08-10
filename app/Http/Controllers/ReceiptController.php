@@ -31,17 +31,18 @@ class ReceiptController extends Controller {
     }
 
     public function downloadAll(Request $request) {
+        // apply filters
         $query = ExpenseClaim::canSee();
-
         if ($request->mentor_id) {
             $query->whereMentorId($request->mentor_id);
         }
 
+        // get receipts
         $receipts = $query->get()->flatmap(function($claim) {
             return $claim->receipts;
         });
 
-        $zipFilePath = $this->createZipForReceipts($receipts);
+        $zipFilePath = $this->createZip($receipts);
         
         if (file_exists($zipFilePath)) {
             return response()->download($zipFilePath)->deleteFileAfterSend(true);
@@ -50,22 +51,39 @@ class ReceiptController extends Controller {
         }
     }
 
-    private function createZipForReceipts($receipts) {
-        $zipFileName = uniqid($prefix = "receipts-");
-        $zipFilePath = storage_path('app/'.$zipFileName.'.zip');
-        $zip = new \ZipArchive;
-        $zip->open($zipFilePath, \ZipArchive::CREATE);
-        try {
-            foreach ($receipts as $receipt) {
-                $receiptFilePath = storage_path('app/'.$receipt->path);
-                if (file_exists($receiptFilePath)) {
-                    $zip->addFile($receiptFilePath, basename($receiptFilePath));
-                }
+    private function copyReceiptFilesIntoTempDirectory($store, $receipts) {
+        $tempDirPath = "zip/receipts-".uniqid();
+        foreach ($receipts as $receipt) {
+            if (isset($receipt->path)) {
+                $receiptFile = Storage::get($receipt->path)[0];
+                $tempReceiptFilePath = $tempDirPath."/".$receipt->path;
+                $store->put($tempReceiptFilePath, $receiptFile);
             }
         }
-        finally {
-            $zip->close();
-        }
+        return $tempDirPath;
+    }
+
+    private function createZip($receipts) {
+        $localStorage = Storage::disk('local');
+
+        // copy files into temp directory
+        $tempDirPath = $this->copyReceiptFilesIntoTempDirectory($localStorage, $receipts);
+
+        // Build zip from temp directory
+        $dirFiles = glob(storage_path('app/'.$tempDirPath.'/**/*'));
+        $zipFilePath = storage_path('app/'.$tempDirPath.'.zip');
+        $zip = new \ZipArchive;
+        if ($zip->open($zipFilePath, \ZipArchive::CREATE)) {
+            try {
+                foreach ($dirFiles as $file) {
+                    $zip->addFile($file, basename($file));
+                }
+            }
+            finally {
+                $zip->close();
+                $localStorage->deleteDirectory($tempDirPath);
+            }
+        }        
 
         return $zipFilePath;
     }
