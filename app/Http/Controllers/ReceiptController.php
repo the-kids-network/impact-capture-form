@@ -51,13 +51,13 @@ class ReceiptController extends Controller {
         }
     }
 
-    private function copyReceiptFilesIntoTempDirectory($store, $receipts) {
+    private function copyReceiptFilesIntoTempDirectory($tempStore, $receipts) {
         $tempDirPath = "zip/receipts-".uniqid();
         foreach ($receipts as $receipt) {
-            if (isset($receipt->path)) {
-                $receiptFile = Storage::get($receipt->path)[0];
+            if (isset($receipt->path) && Storage::exists($receipt->path)) {
+                $receiptFile = Storage::get($receipt->path);
                 $tempReceiptFilePath = $tempDirPath."/".$receipt->path;
-                $store->put($tempReceiptFilePath, $receiptFile);
+                $tempStore->put($tempReceiptFilePath, $receiptFile);
             }
         }
         return $tempDirPath;
