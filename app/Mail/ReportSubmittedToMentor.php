@@ -31,6 +31,14 @@ class ReportSubmittedToMentor extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Report Received')->markdown('emails.report.submitted_to_mentor');
+        $mail = $this
+            ->subject('Report Received')
+            ->markdown('emails.report.submitted_to_mentor');
+
+        if (isset($this->report->mentor->manager)){
+            $mail->replyTo($this->report->mentor->manager);
+        }
+
+        return $mail;
     }
 }
