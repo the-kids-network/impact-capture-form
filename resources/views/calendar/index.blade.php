@@ -20,6 +20,10 @@
             <div class="calendar-new-planned-session">
                 <a href="/planned-session/new"><i class="fas fa-plus-circle"></i> New Planned Session</a>
             </div>
+
+            <div class="calendar-new-leave">
+                <a href="/mentor/leave/new"><i class="fas fa-plus-circle"></i> New Leave</a>
+            </div>
         </span>
         <br/>
         <br/>
