@@ -10,14 +10,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\User;
 use App\Mentee;
-use App\Schedule;
+use App\PlannedSession;
 
 class MissingReportReminder extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public $isReportLate;
-    public $schedule;
+    public $plannedSession;
     public $mentee;
     public $mentor;
     public $manager;
@@ -27,10 +27,10 @@ class MissingReportReminder extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($isLate, Schedule $schedule) {
+    public function __construct($isLate, PlannedSession $plannedSession) {
         $this->isReportLate = $isLate;
-        $this->schedule = $schedule;
-        $this->mentee = $this->schedule->mentee();
+        $this->plannedSession = $plannedSession;
+        $this->mentee = $this->plannedSession->mentee();
         $this->mentor = $this->mentee->mentor;
         $this->manager = $this->mentor->manager;
     }

@@ -8,7 +8,7 @@ use App\Mail\ReportSubmittedToMentor;
 use App\Mentee;
 use App\User;
 use App\Report;
-use App\Schedule;
+use App\PlannedSession;
 use App\ActivityType;
 use App\EmotionalState;
 use App\PhysicalAppearance;
@@ -19,8 +19,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Log;
-
-use App\Http\Controllers\ScheduleController;
 
 use Debugbar;
 
@@ -90,9 +88,9 @@ class SessionReportController extends Controller {
         $mentee = Mentee::canSee()->whereId($request->mentee_id)->first();
         if (!$mentee) abort(401,'Unauthorized');
 
-        // Save session and schedule
+        // Save session and planned next session
         $report = $this->saveReport($request);
-        $this->saveSchedule($request);
+        $this->saveNextPlannedSession($request);
 
         // Send the Mentor an Email
         Mail::to($report->mentor)->send(new ReportSubmittedToMentor($report));
@@ -135,12 +133,12 @@ class SessionReportController extends Controller {
         return $report;
     }
 
-    private function saveSchedule(Request $request) {
-        $schedule = new Schedule();
-        $schedule->mentee_id = $request->mentee_id;
-        $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
-        $schedule->next_session_location = $request->next_session_location;
-        $schedule->save();
-        return $schedule;
+    private function saveNextPlannedSession(Request $request) {
+        $plannedSession = new PlannedSession();
+        $plannedSession->mentee_id = $request->mentee_id;
+        $plannedSession->date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
+        $plannedSession->location = $request->next_session_location;
+        $plannedSession->save();
+        return $plannedSession;
     }
 }

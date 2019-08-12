@@ -76,7 +76,7 @@
                                     <th data-sortable="true">Start Date</th>
                                     <th data-sortable="true">Last Session Date</th>
                                     <th data-sortable="true">Days Since Last Session</th>
-                                    <th data-sortable="true">Next Scheduled Session</th>
+                                    <th data-sortable="true">Next Planned Session</th>
                                     <th data-sortable="true">Expected Sessions</th>
                                     <th data-sortable="true">Actual Sessions</th>
                                     <th data-sortable="true">Total Session Length (Hrs)</th>
@@ -121,10 +121,10 @@
                                         <td class="days-since-last-session">
                                             @if (isset($mentor->days_since_last_session)) {{ $mentor->days_since_last_session}} @else Unknown @endif
                                         </td>
-                                        <td class="next-scheduled-session-date">
-                                            <span class="hidden">{{ $mentor->next_scheduled_session }}</span>
-                                            @if (isset($mentor->next_scheduled_session)) 
-                                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->next_scheduled_session)->toFormattedDateString() }} 
+                                        <td class="next-planned-session-date">
+                                            <span class="hidden">{{ $mentor->next_planned_session_date }}</span>
+                                            @if (isset($mentor->next_planned_session_date)) 
+                                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->next_planned_session_date)->toFormattedDateString() }} 
                                             @else 
                                                 Unknown 
                                             @endif

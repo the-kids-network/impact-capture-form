@@ -88,9 +88,10 @@ Route::resource('/receipt','ReceiptController');
 Route::get('/reporting/mentor','MentorReportingController@generateIndexReport')->name('mentor-reporting-index');
 Route::get('/reporting/mentor/export','MentorReportingController@generateExportableReport')->name('mentor-reporting-export');
 
-// Schedule
-Route::get('/schedule/new','ScheduleController@create');
-Route::resource('/schedule','ScheduleController');
+// Calendar and events
+Route::get('/planned-session/new','PlannedSessionController@create');
+Route::resource('/planned-session','PlannedSessionController');
+Route::resource('/calendar','CalendarController');
 
 // Old routes to deprecate eventually once people's symlinks are updated
 Route::redirect('/my-reports', '/report/new');
@@ -98,5 +99,5 @@ Route::redirect('/own-reports', '/report');
 Route::redirect('/my-expense-claims', '/expense-claim/new');
 Route::redirect('/manager/expense-claim/export', '/expense-claim/export');
 Route::redirect('/manager/view-expense-claims', '/expense-claim');
-Route::redirect('/calendar', '/schedule');
+Route::redirect('/schedule', '/calendar');
 

@@ -5,12 +5,12 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Scheduled Session Details</div>
+                    <div class="panel-heading">Planned Session Details</div>
 
                     <div class="panel-body">
                         @include('shared.errors')
 
-                        <form class="form-horizontal" role="form" method="POST" action="/schedule">
+                        <form class="form-horizontal" role="form" method="POST" action="/planned-session">
                         {{ csrf_field() }}
 
                             <!-- Mentee -->
@@ -27,8 +27,8 @@
 
                             <!-- Date of Session -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label" data-toggle="popover" data-trigger="hover" data-content="<?php echo 'Email reminders will be sent if a report has not been saved within three days of a scheduled session.'; ?>">
-                                    Scheduled Session Date <i class="fas fa-info-circle"></i>
+                                <label class="col-md-4 control-label" data-toggle="popover" data-trigger="hover" data-content="<?php echo 'Email reminders will be sent if a report has not been saved within three days of a planned session.'; ?>">
+                                    Session Date <i class="fas fa-info-circle"></i>
                                 </label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control datepicker" name="next_session_date" value="{{ old('next_session_date') }}" autocomplete="off">
@@ -37,7 +37,7 @@
 
                             <!-- Location of Session -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Schedule Session Location</label>
+                                <label class="col-md-4 control-label">Session Location</label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" name="next_session_location" value="{{ old('next_session_location') }}">
                                 </div>

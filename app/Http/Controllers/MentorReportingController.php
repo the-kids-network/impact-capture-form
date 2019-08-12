@@ -67,7 +67,7 @@ class MentorReportingController extends Controller {
                     m.start_date,
                     m.last_session_date,
                     m.days_since_last_session,
-                    m.next_scheduled_session,
+                    m.next_planned_session_date,
                     COALESCE(SUM(s.session_count), 0) AS session_count, 
                     COALESCE(SUM(s.session_length), 0) AS session_length, 
                     COALESCE(SUM(s.expenses_total), 0) AS expenses_total
@@ -94,7 +94,7 @@ class MentorReportingController extends Controller {
                          m.start_date,
                          m.last_session_date,
                          m.days_since_last_session,
-                         m.next_scheduled_session;", 
+                         m.next_planned_session_date;", 
                 [ 
                     'start_date' => $report_start_date->format('Y-m-d'), 
                     'end_date' => $report_end_date->format('Y-m-d')
