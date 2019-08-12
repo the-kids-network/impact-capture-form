@@ -46,6 +46,11 @@ class PlannedSessionController extends Controller {
     }
 
     public function store(Request $request) {
+        $request->validate([
+            'next_session_date' => 'required|date|date_format:m/d/Y',
+            'next_session_location' => 'required|string|max:50'
+        ]);    
+
         $allowableMentees = Mentee::canSee();
         if (!$allowableMentees->find($request->mentee_id)) {
             abort(401,'Unauthorized'); 

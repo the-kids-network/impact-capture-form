@@ -68,21 +68,25 @@ class SessionReportController extends Controller {
     }
 
     public function store(Request $request) {
-        $messages = ['rating_id.min' => 'The session rating field is required.'];
-        $this->validate($request, [
-            'mentee_id' => 'required|exists:mentees,id',
-            'session_date' => 'required|date|before_or_equal:today',
-            'rating_id' => 'required|exists:session_ratings,id|numeric|min:2',
-            'length_of_session' => 'required|numeric|max:24',
-            'activity_type_id' => 'required|exists:activity_types,id',
-            'location' => 'required',
-            'safeguarding_concern' => 'required|boolean',
-            'physical_appearance_id' => 'required|exists:physical_appearances,id',
-            'emotional_state_id' => 'required|exists:emotional_states,id',
-            'meeting_details' => 'required',
-            'next_session_date' => 'required',
-            'next_session_location' => 'required'
-        ], $messages);
+        $this->validate($request, 
+            [
+                'mentee_id' => 'required|exists:mentees,id',
+                'session_date' => 'required|date|before_or_equal:today',
+                'rating_id' => 'required|exists:session_ratings,id|numeric|min:2',
+                'length_of_session' => 'required|numeric|max:24',
+                'activity_type_id' => 'required|exists:activity_types,id',
+                'location' => 'required',
+                'safeguarding_concern' => 'required|boolean',
+                'physical_appearance_id' => 'required|exists:physical_appearances,id',
+                'emotional_state_id' => 'required|exists:emotional_states,id',
+                'meeting_details' => 'required',
+                'next_session_date' => 'required|date|date_format:m/d/Y',
+                'next_session_location' => 'required|string|max:50'
+            ], 
+            [
+                'rating_id.min' => 'The session rating field is required.'
+            ]
+        );
 
         // Check mentor has mentee
         $mentee = Mentee::canSee()->whereId($request->mentee_id)->first();
