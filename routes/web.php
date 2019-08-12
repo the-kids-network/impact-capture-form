@@ -89,9 +89,9 @@ Route::get('/reporting/mentor','MentorReportingController@generateIndexReport')-
 Route::get('/reporting/mentor/export','MentorReportingController@generateExportableReport')->name('mentor-reporting-export');
 
 // Calendar and events
-Route::get('/planned-session/new','PlannedSessionController@create');
-Route::resource('/planned-session','PlannedSessionController');
-Route::resource('/calendar','CalendarController');
+Route::get('/planned-session/new','Event\PlannedSessionController@create');
+Route::resource('/planned-session','Event\PlannedSessionController');
+Route::resource('/calendar','Event\CalendarController');
 
 // Old routes to deprecate eventually once people's symlinks are updated
 Route::redirect('/my-reports', '/report/new');
