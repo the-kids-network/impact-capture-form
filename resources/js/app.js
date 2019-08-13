@@ -30,13 +30,13 @@ window.moment.defineLocale('en-short', {
 window.moment.locale('en');
 
 
-/*
- * Load jQuery and Bootstrap jQuery, used for front-end interaction.
- */
 if (window.$ === undefined || window.jQuery === undefined) {
     window.$ = window.jQuery = require('jquery');
 }
+
 require('bootstrap/dist/js/npm');
+
+require('bootstrap-table/dist/bootstrap-table');
 
 /**
  * Load Vue if this application is using Vue as its framework.

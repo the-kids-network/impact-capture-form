@@ -1,0 +1,5 @@
+### Including new 3rd party libraries
+
+Once new packages have been added to package.json and installed, then add the require
+to the app.js file to ensure it is compiled by webpack into the monolithic app.js file 
+generated into the public directory.

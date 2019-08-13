@@ -57,15 +57,9 @@
             cursor: pointer;
         }
     </style>
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
 @endsection
 
 @section('body-scripts')
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
-
     <script>
         jQuery(document).ready(function($) {
             $(".table").on("click", ".clickable-row", function() {
