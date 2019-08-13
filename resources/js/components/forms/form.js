@@ -1,4 +1,6 @@
-window.SparkForm = function (data) {
+import SparkFormErrors from './errors'
+
+const SparkForm = function (data) {
     var form = this;
 
     $.extend(this, data);
@@ -31,3 +33,5 @@ window.SparkForm = function (data) {
         $.extend(this, data);
     }
 };
+
+export default SparkForm;

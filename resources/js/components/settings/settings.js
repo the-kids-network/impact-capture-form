@@ -14,9 +14,4 @@ const Component = {
     }
 };
 
-export {
-    Component
-};
-
-export default Vue.component('settings', Component);
-
+export default Component;

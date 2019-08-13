@@ -33,6 +33,6 @@ mix
         }
    });
 
-   if (mix.inProduction()) {
+if (mix.inProduction()) {
     mix.version();
-  }
+}

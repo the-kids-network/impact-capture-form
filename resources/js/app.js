@@ -35,8 +35,13 @@ if (window.$ === undefined || window.jQuery === undefined) {
 }
 
 require('bootstrap/dist/js/npm');
-
 require('bootstrap-table/dist/bootstrap-table');
+
+require('@fullcalendar/core');
+require('@fullcalendar/daygrid');
+require('@fullcalendar/timegrid');
+require('@fullcalendar/interaction');
+require('@fullcalendar/vue');
 
 /**
  * Load Vue if this application is using Vue as its framework.

@@ -1,3 +1,6 @@
+import SparkForm from '../forms/form';
+import http from '../forms/http';
+
 const Component = {
     /**
      * Load mixins for the component.
@@ -12,17 +15,13 @@ const Component = {
         return {
             query: null,
 
-            registerForm: $.extend(
-                true, 
-                new SparkForm({
-                    name: '',
-                    email: '',
-                    password: '',
-                    password_confirmation: '',
-                    terms: false
-                }), 
-                Spark.forms.register
-            )
+            registerForm: new SparkForm({
+                name: '',
+                email: '',
+                password: '',
+                password_confirmation: '',
+                terms: false
+            })
         };
     },
 
@@ -48,11 +47,8 @@ const Component = {
             return this.sendRegistration(); 
         },
 
-        /*
-         * After obtaining the Stripe token, send the registration to Spark.
-         */
         sendRegistration() {
-            Spark.post('/register', this.registerForm)
+            http.post('/register', this.registerForm)
                 .then(response => {
                     this.registerForm.resetFormData()
                 });
@@ -69,8 +65,4 @@ const Component = {
     }
 };
 
-export {
-    Component
-};
-
-export default Vue.component('register', Component);
+export default Component;

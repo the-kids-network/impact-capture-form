@@ -1,15 +1,18 @@
+import Vue from 'vue';
+import globalMixins from './mixin';
+
 /*
  * Load Vue & Vue-Resource.
  */
 if (window.Vue === undefined) {
-    window.Vue = require('vue');
+    window.Vue = Vue;
     window.Bus = new Vue();
 }
 
 /**
  * Load Vue Global Mixin.
  */
-Vue.mixin(require('./mixin'));
+Vue.mixin(globalMixins);
 
 /**
  * Define the Vue filters.

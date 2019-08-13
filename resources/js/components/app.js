@@ -1,4 +1,7 @@
-module.exports = {
+import SparkForm from './forms/form'
+import http from './forms/http'
+
+const App = {
     el: '#app',
 
     /**
@@ -65,7 +68,7 @@ module.exports = {
          * Send a customer support request.
          */
         sendSupportRequest() {
-            Spark.post('/support/email', this.supportForm)
+            http.post('/support/email', this.supportForm)
                 .then(() => {
                     $('#modal-support').modal('hide');
 
@@ -95,3 +98,5 @@ module.exports = {
     
     }
 };
+
+export default App;
