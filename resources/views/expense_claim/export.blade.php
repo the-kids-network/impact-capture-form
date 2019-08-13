@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        @if(Request()->mentor_id)
+        @if(Request()->mentor_id || Auth::user()->isManager())
         <div class="row m-t-lg m-b-lg">
             <div class="col-md-12">
                 <a class="btn btn-lg btn-primary btn-block" 
