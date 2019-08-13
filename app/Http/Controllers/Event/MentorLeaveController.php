@@ -49,7 +49,7 @@ class MentorLeaveController extends Controller {
             [
                 'start_date' => 'required|date|date_format:m/d/Y|before_or_equal:end_date',
                 'end_date' => 'required|date|date_format:m/d/Y',
-                'description' => 'string|max:50'
+                'description' => 'nullable|string|max:50'
             ],
             [
                 'start_date.before_or_equal' => 'The start date should be before or equal to the end date.',

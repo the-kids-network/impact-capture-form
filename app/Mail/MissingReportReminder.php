@@ -30,7 +30,7 @@ class MissingReportReminder extends Mailable implements ShouldQueue
     public function __construct($isLate, PlannedSession $plannedSession) {
         $this->isReportLate = $isLate;
         $this->plannedSession = $plannedSession;
-        $this->mentee = $this->plannedSession->mentee();
+        $this->mentee = $this->plannedSession->mentee;
         $this->mentor = $this->mentee->mentor;
         $this->manager = $this->mentor->manager;
     }
@@ -43,7 +43,6 @@ class MissingReportReminder extends Mailable implements ShouldQueue
     public function build() {
 
         $mail = $this
-            ->to($this->mentor)
             ->subject('Report Submission Reminder')
             ->markdown('emails.report.missing_report_reminder');
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Event;
 use App\Http\Controllers\Controller;
 use App\PlannedSession;
 use App\MentorLeave;
-use App\Mentee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -19,75 +18,58 @@ class CalendarController extends Controller {
     }
 
     public function index(Request $request) {
-        $plannedSessionEvents = $this->getPlannedSessionCalendarEvents()->toArray();
-        $mentorLeaveEvents = $this->getMentorLeaveCalendarEvents()->toArray();
-        $allEvents = array_merge($plannedSessionEvents, $mentorLeaveEvents);
+        $plannedSessionEvents = $this->getPlannedSessions();
+        $mentorLeaveEvents = $this->getMentorLeaves();
+        $events = array();
+        $events['planned_sessions'] = $plannedSessionEvents;
+        $events['mentors_leaves'] = $mentorLeaveEvents;
 
-        $calendar = $this->createCalendar($allEvents);
-
-        return view('calendar.index')->with('calendar', $calendar);
+        return view('calendar.index')->with('events', $events);
     }
 
-    private function getPlannedSessionCalendarEvents() {
-        return PlannedSession::canSee()->get()
-            ->map(function($plannedSession) {
-                return $this->mapPlannedSessionToCalendarEvent($plannedSession);
-            });
+    private function getPlannedSessions() {
+        $plannedSessions =  PlannedSession::canSee()
+                            ->get()
+                            ->map(function($plannedSession) {
+                                return $this->transformPlannedSession($plannedSession);
+                            })
+                            ->toArray();
+        
+            // convert to sequential array to ensure json_encode works properly
+            return array_values($plannedSessions);
     }
 
-    private function mapPlannedSessionToCalendarEvent($plannedSession) {
-        if (Auth::user()->isMentor()) {
-            $title = $plannedSession->mentee()->name;
-        } else {
-            $mentor = $plannedSession->mentee()->mentor;
-            $title = is_null($mentor) ? 'NO MENTOR' : $mentor->name;
-        }
-
-        return \Calendar::event(
-            $title,
-            true,
-            new \DateTime($plannedSession['date']),
-            new \DateTime($plannedSession['date']),
-            $plannedSession->id,
-            [
-                'url' => 'planned-session/' . $plannedSession->id,
-                'color' => '#34A5EF'
-            ]
-        );
+    private function transformPlannedSession($plannedSession) {
+        $mentee = $plannedSession->mentee;
+        $mentor = $plannedSession->mentee->mentor;
+        $event = array();
+        $event['mentor'] = is_null($mentor) ? 'NO MENTOR' : $mentor->name;
+        $event['mentee'] = $mentee->name;
+        $event['id'] = $plannedSession->id;
+        $event['start_date'] = $plannedSession->date;
+        $event['end_date'] = $plannedSession->date->modify('+1 day');
+        $event['location'] = $plannedSession->location;
+        return $event;
     }
 
-    private function getMentorLeaveCalendarEvents() {
-        return MentorLeave::canSee()->get()
-            ->map(function($leave) {
-                return $this->mapMentorLeaveToCalendarEvent($leave);
-            });
+    private function getMentorLeaves() {
+        $leaves =  MentorLeave::canSee()
+                        ->get()
+                        ->map(function($leave) {
+                            return $this->transformMentorLeaves($leave);
+                        })
+                        ->toArray();
+
+        return array_values($leaves);
     }
 
-    private function mapMentorLeaveToCalendarEvent($mentorLeave) {
-        if (Auth::user()->isMentor()) {
-            $title = 'Leave';
-            $title = ($mentorLeave->description) ? $title.' - '.$mentorLeave->description : $title;
-        } else {
-            $title = $mentorLeave->mentor->name.' Leave';
-        }
-        return \Calendar::event(
-            $title,
-            true,
-            new \DateTime($mentorLeave['start_date']),
-            (new \DateTime($mentorLeave['end_date']))->modify('+1 day'),
-            $mentorLeave->id,
-            [
-                'url' => 'mentor/leave/' . $mentorLeave->id,
-                'color' => '#A41250'
-            ]
-        );
-    }
-
-    private function createCalendar($events) {
-        return \Calendar::addEvents($events)
-            ->setOptions([
-                'header' => array('left' => 'prev,today,next', 'center' => 'title', 'right' => false),
-                'buttonText' => array('today' => 'Now')
-            ]);
+    private function transformMentorLeaves($mentorLeave) {
+        $event = array();
+        $event['mentor'] = $mentorLeave->mentor->name;
+        $event['id'] = $mentorLeave->id;
+        $event['start_date'] = $mentorLeave->start_date;
+        $event['end_date'] = $mentorLeave->end_date->modify('+1 day');
+        $event['description'] = $mentorLeave->description;
+        return $event;
     }
 }

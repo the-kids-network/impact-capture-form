@@ -25,7 +25,7 @@ class MentorLeave extends Model
     ];
 
     public function mentor() {
-        return $this->belongsTo('App\User')->withTrashed();
+        return $this->belongsTo('App\User');
     }
 
     public function scopeCanSee($query) {
@@ -35,6 +35,9 @@ class MentorLeave extends Model
         }
         else if (Auth::user()->isMentor()) {
             $query->whereMentorId(Auth::user()->id);
+        } else {
+            $ids = User::mentor()->get()->map(function($m) { return $m->id; });
+            $query->whereIn('mentor_id', $ids);
         }
         return $query;
     }

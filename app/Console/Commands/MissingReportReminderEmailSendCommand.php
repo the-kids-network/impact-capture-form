@@ -51,7 +51,7 @@ class MissingReportReminderEmailSendCommand extends Command
         $plannedSessions = $this->filterPlannedSessionsThatDoNotHaveReport($plannedSessions);
         $plannedSessions = $this->filterPlannedSessionsWhereEmailNotAlreadySentToday($plannedSessions);
 
-        foreach ($plannedSession as $plannedSessions) {
+        foreach ($plannedSessions as $plannedSession) {
             // assume session finished by 8pm UTC latest
             $planned_session_date = $plannedSession->date->setTime(20,00);
 
@@ -100,11 +100,16 @@ class MissingReportReminderEmailSendCommand extends Command
     }
 
     private function sendEmail($plannedSession, $isLate) {
-        Log::debug("Sending reminder email");
-        $plannedSession->last_email_reminder = $this->now();
-        $plannedSession->save();
-
-        Mail::send(new MissingReportReminder($isLate, $plannedSession));
+        if (isset($plannedSession->mentee) && isset($plannedSession->mentee->mentor)) {
+            Log::debug("Sending reminder email");
+            $plannedSession->last_email_reminder = $this->now();
+            $plannedSession->save();
+            Mail::to($plannedSession->mentee->mentor)->send(
+                new MissingReportReminder($isLate, $plannedSession)
+            );
+        } else {
+            Log::debug("Not sending as mentee or mentor is deactivated");
+        }
     }
 
     private function daysAgo($days) {

@@ -51,7 +51,7 @@
 
     </head>
 
-    <body class="with-navbar">
+    <body class="with-navbar @unless(empty($body_class)){{$body_class}}@endunless">
         <div id="app" v-cloak>
             <!-- Navigation -->
             @if (Auth::check())

@@ -30,7 +30,7 @@ class PlannedSession extends Model
      * @var array
      */
     public function mentee(){
-        return $this->belongsTo('App\Mentee')->first();
+        return $this->belongsTo('App\Mentee');
     }
 
     public function scopeCanSee($query) {
@@ -42,6 +42,10 @@ class PlannedSession extends Model
         }
         else if (Auth::user()->isMentor()) {
             $menteeIds = Auth::user()->mentees
+                            ->map(function($u) { return $u->id; });
+            return $query->whereIn('mentee_id', $menteeIds);
+        } else {
+            $menteeIds = Mentee::all()
                             ->map(function($u) { return $u->id; });
             return $query->whereIn('mentee_id', $menteeIds);
         }

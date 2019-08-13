@@ -1,3 +1,5 @@
+import LocalStorage from 'vue-ls';
+import VueSessionStorage from 'vue-sessionstorage'
 import app from './app'
 import navbar from './layout/navbar/navbar';
 import settings from './settings/settings';
@@ -7,6 +9,7 @@ import updateProfilePhoto from './settings/profile/update-profile-photo';
 import security from './settings/security';
 import updatePassword from './settings/security/update-password';
 import register from './register/register';
+import calendar from './calendar/calendar';
 
 // Load all specific globally registered Vue components
 Vue.component('nav-bar', navbar)
@@ -19,6 +22,16 @@ Vue.component('update-password', updatePassword)
 Vue.component('register', register)
 
 // Load Vue app
+Vue.use(LocalStorage, {
+    namespace: 'tkn',
+    name: 'ls',
+    storage: 'local'
+  }
+);
+Vue.use(VueSessionStorage)
 new Vue({
-    mixins: [app]
+    mixins: [app],
+    components: {
+        'calendar': calendar
+    }
 });

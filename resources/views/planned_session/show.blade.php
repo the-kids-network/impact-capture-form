@@ -14,13 +14,13 @@
                         {{ csrf_field() }}
 
                             <input type="hidden" name="id" value="{{ $plannedSession->id }}"/>
-                            <input type="hidden" name="mentee_id" value="{{ $plannedSession->mentee()->id }}"/>
+                            <input type="hidden" name="mentee_id" value="{{ $plannedSession->mentee->id }}"/>
 
                             <!-- Mentee Name -->
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Mentee</label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="mentee_name" value="{{ $plannedSession->mentee()->getNameAttribute() }}" readonly="true">
+                                    <input type="text" class="form-control" name="mentee_name" value="{{ $plannedSession->mentee->name }}" readonly="true">
                                 </div>
                             </div>
 

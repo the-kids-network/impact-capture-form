@@ -1,0 +1,50 @@
+.calendar {
+    max-width: 750px;
+    width: 95%;
+    margin: auto;
+}
+
+// Override styling from the full-calendar default theme to match brand
+.fc-button-primary {
+    color: #fff;
+    background-color: @brand-primary;
+    border-color: @brand-primary;
+}
+
+.fc-button-primary:hover {
+    color: #fff;
+    background-color: darken(@brand-primary, 6%);
+    border-color: darken(@brand-primary, 6%);
+}
+
+.fc-button-primary:focus {
+    -webkit-box-shadow: 0 0 0 0 darken(@brand-primary, 12%);
+    box-shadow: 0 0 0 0 darken(@brand-primary, 12%);
+}
+
+.fc-button-primary:disabled {
+    color: #fff;
+    background-color: rgb(66, 66, 66);
+    border-color: rgb(66, 66, 66);
+}
+
+.fc-button-primary:not(:disabled):active,
+.fc-button-primary:not(:disabled).fc-button-active {
+    color: #fff;
+    background-color: darken(@brand-primary, 12%);
+    border-color: darken(@brand-primary, 12%);
+}
+
+.fc-button-primary:not(:disabled):active:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus {
+    -webkit-box-shadow: 0 0 0 0.2rem darken(@brand-primary, 12%);
+    box-shadow: 0 0 0 0.2rem darken(@brand-primary, 12%);
+}
+
+// Customise tooltips in the calendar
+.calendar-body .tooltip .tooltip-inner  {
+    background-color:rgb(66, 66, 66);
+}
+.calendar-body .tooltip .tooltip-arrow {
+    border-top-color: rgb(66, 66, 66);
+}

@@ -36,6 +36,7 @@
 
 // Component Styling
 @import "components/settings";
+@import "components/calendar";
 
 // Body Styling
 body {
@@ -46,13 +47,6 @@ body {
 [v-cloak] {
     display: none;
 }
-
-
-@mentor-delete-width: 150px;
-@mentor-expand-width: 15px;
-
-@mentor-name-width: calc(~'100% - @{mentor-delete-width} - @{mentor-expand-width}');
-@mentee-name-width: calc(~'100% - @{mentor-delete-width}');
 
 .expand-all {
   cursor: pointer;
@@ -167,10 +161,4 @@ body {
   width: fit-content;
   padding: 0 10px 0 10px;
   font-size: 16px;
-}
-
-.calendar {
-  max-width: 750px;
-  width: 95%;
-  margin: auto;
 }
