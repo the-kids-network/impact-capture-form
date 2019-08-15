@@ -70,11 +70,14 @@ class MentorReportingController extends Controller {
                     m.next_planned_session_date,
                     COALESCE(SUM(s.session_count), 0) AS session_count, 
                     COALESCE(SUM(s.session_length), 0) AS session_length, 
-                    COALESCE(SUM(s.expenses_total), 0) AS expenses_total
+                    COALESCE(SUM(s.expenses_total), 0) AS expenses_total,
+                    COALESCE(SUM(s.expenses_pending), 0) AS expenses_pending
                 FROM reporting_mentors m
                 LEFT JOIN (
                     /* Join sessions */
-                    SELECT DISTINCT * 
+                    SELECT DISTINCT 
+                        *,
+                        1 AS session_count
                     FROM reporting_sessions
                     WHERE 1=1
                     AND session_date >= :start_date

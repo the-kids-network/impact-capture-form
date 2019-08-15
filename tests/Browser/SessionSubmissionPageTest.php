@@ -50,7 +50,7 @@ class SessionSubmissionPageTest extends DuskTestCase
             $browser->loginAs($adminUser)->visit("report/4");
 
             $browser->assertSee('Mentor Two');
-            $browser->assertSee('Mentee Two Name');
+            $browser->assertSee('Mentee Two');
             $browser->assertSee('Aug 29, 2018');
             $browser->assertSee('Poor');
             $browser->assertSee('1');
