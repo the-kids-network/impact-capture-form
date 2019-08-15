@@ -1,25 +1,30 @@
-.calendar {
-    max-width: 750px;
-    width: 95%;
-    margin: auto;
+// Events in the calendar view
+.ps-event {
+    background-color: @calendar-planned-session-colour;
+    border-color: @calendar-planned-session-colour;
+}
+
+.ml-event {
+    background-color: @calendar-mentor-leave-colour;
+    border-color: @calendar-mentor-leave-colour;
 }
 
 // Override styling from the full-calendar default theme to match brand
 .fc-button-primary {
     color: #fff;
-    background-color: @brand-primary;
-    border-color: @brand-primary;
+    background-color: darken(@brand-primary, 10%);
+    border-color: darken(@brand-primary, 10%);
 }
 
 .fc-button-primary:hover {
     color: #fff;
-    background-color: darken(@brand-primary, 6%);
-    border-color: darken(@brand-primary, 6%);
+    background-color: darken(@brand-primary, 15%);
+    border-color: darken(@brand-primary, 15%);
 }
 
 .fc-button-primary:focus {
-    -webkit-box-shadow: 0 0 0 0 darken(@brand-primary, 12%);
-    box-shadow: 0 0 0 0 darken(@brand-primary, 12%);
+    -webkit-box-shadow: 0 0 0 0 darken(@brand-primary, 20%);
+    box-shadow: 0 0 0 0 darken(@brand-primary, 20%);
 }
 
 .fc-button-primary:disabled {
@@ -31,12 +36,13 @@
 .fc-button-primary:not(:disabled):active,
 .fc-button-primary:not(:disabled).fc-button-active {
     color: #fff;
-    background-color: darken(@brand-primary, 12%);
-    border-color: darken(@brand-primary, 12%);
+    background-color: darken(@brand-primary, 20%);
+    border-color: darken(@brand-primary, 20%);
 }
 
 .fc-button-primary:not(:disabled):active:focus,
 .fc-button-primary:not(:disabled).fc-button-active:focus {
-    -webkit-box-shadow: 0 0 0 0.2rem darken(@brand-primary, 12%);
-    box-shadow: 0 0 0 0.2rem darken(@brand-primary, 12%);
+    -webkit-box-shadow: 0 0 0 0.2rem darken(@brand-primary, 20%);
+    box-shadow: 0 0 0 0.2rem darken(@brand-primary, 20%);
 }
+

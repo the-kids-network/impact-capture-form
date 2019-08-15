@@ -12,7 +12,7 @@ export default function buildFullCalendarEvents(usertype, events) {
             title: title,
             tooltip: tooltip,
             url: '/mentor/leave/' + e.id,
-            color: '#A41250'
+            classNames: ['ml-event']
         }
     });
 
@@ -28,7 +28,7 @@ export default function buildFullCalendarEvents(usertype, events) {
             title: title,
             tooltip: tooltip,
             url: '/planned-session/' + e.id,
-            color: '#34A5EF'
+            classNames: ['ps-event']
         }
     });
 

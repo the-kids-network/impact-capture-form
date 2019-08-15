@@ -1,31 +1,33 @@
-@extends('layout.app' , ['body_class' => 'calendar-body'])
+@extends('layout.app' , ['body_class' => 'body-cal'])
 
 @section('scripts')
     
 @endsection
 
 @section('content')
-    <div>
-        <span class="calendar-header">
+    <div class="calendar-page">
+        <div class="calendar-header">
+            <div class="new-report">
             @if (Auth::user()->isMentor())
-                <div class="calendar-new-report">
-                    <a href="/report/new"><i class="fas fa-plus-circle"></i> New Session Report</a>
-                </div>
+                <a href="/report/new"><i class="fas fa-plus-circle"></i> New Session Report</a>
             @endif
-
-            <div class="calendar-new-planned-session">
-                <a href="/planned-session/new"><i class="fas fa-plus-circle"></i> New Planned Session</a>
             </div>
 
-            <div class="calendar-new-leave">
-                <a href="/mentor/leave/new"><i class="fas fa-plus-circle"></i> New Leave</a>
-            </div>
-        </span>
-        <br/>
-        <br/>
+            <div class="new-event">
+                <div class="new-planned-session">
+                    <a href="/planned-session/new"><i class="fas fa-plus-circle"></i> New Planned Session</a>
+                </div>
 
-        <calendar :events="{{ json_encode($events) }}" 
-                  usertype="{{ (isset(Auth::user()->role)) ? Auth::user()->role : 'mentor'}}"
-                  class="calendar" /> 
+                <div class="new-leave">
+                    <a href="/mentor/leave/new"><i class="fas fa-plus-circle"></i> New Leave</a>
+                </div>
+            </div>          
+        </div>
+        
+        <div class="calendar-body">
+            <calendar :events="{{ json_encode($events) }}" 
+                    usertype="{{ (isset(Auth::user()->role)) ? Auth::user()->role : 'mentor'}}"
+                    class="calendar" /> 
+        </div>
     </div>
 @endsection
