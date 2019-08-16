@@ -8,7 +8,7 @@ export default function buildFullCalendarEvents(usertype, events) {
             (e.description != null ? "<br/>Description: " + e.description : "")
 
         return {
-            id: 'ml-' + e.id,
+            id: 'mentor-leave-' + e.id,
             start: e.start_date,
             end: e.end_date,
             allDay: true,
@@ -28,7 +28,7 @@ export default function buildFullCalendarEvents(usertype, events) {
             (e.mentor != null ? "<br/>Mentored by: " + e.mentor : "")
 
         return {
-            id: 'ml-' + e.id,
+            id: 'mentee-leave-' + e.id,
             start: e.start_date,
             end: e.end_date,
             allDay: true,
@@ -40,12 +40,15 @@ export default function buildFullCalendarEvents(usertype, events) {
     });
 
     let plannedSessions = events.planned_sessions.map(e => {
-        const mentorTooltip = "Planned session with " + e.mentee
+        const mentorTooltip = "Planned session with " + e.mentee +
+            (e.location != null ? "<br/>Location: " + e.location : "")
 
-        const tknTooltip = "Planned session between " + e.mentor + " and " + e.mentee
+        const tknTooltip = "Planned session between " + e.mentor + " and " + e.mentee +
+            (e.location != null ? "<br/>Location: " + e.location : "")
+
 
         return {
-            id: 'ps-' + e.id,
+            id: 'planned-session-' + e.id,
             start: e.start_date,
             end: e.end_date,
             allDay: true,
