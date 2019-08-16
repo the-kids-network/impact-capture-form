@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use Carbon\Carbon;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
@@ -41,7 +42,7 @@ class SessionSubmissionPageTest extends DuskTestCase
             $browser->value('[name=length_of_session]', '1');
             $browser->value('[name=location]', 'Home');
             $browser->value('[name=meeting_details]', 'Here are the meeting details');
-            $browser->value('[name=next_session_date]', '08/30/2018');
+            $browser->value('[name=next_session_date]', Carbon::now()->addDay()->format('m/d/Y'));
             $browser->value('[name=next_session_location]', 'Next location');
 
             $browser->element('[name=report_submit]')->click();

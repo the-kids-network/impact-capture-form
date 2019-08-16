@@ -182,6 +182,13 @@ php artisan config:cache
 php artisan migrate:refresh --seed && php artisan dusk
 ```
 
+To run a specific test:
+
+```
+php artisan dusk tests/Browser/SessionSubmissionPageTest.php 
+```
+
+
 ## Debugging
 
 I kept forgetting how to add debug lines. Start by adding the appropriate "use" line:
