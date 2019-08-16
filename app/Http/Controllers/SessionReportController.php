@@ -31,7 +31,7 @@ class SessionReportController extends Controller {
     }
 
     public function create(Request $request) {
-        return view('mentor.report')
+        return view('session_report.new')
             ->with('mentees',$request->user()->mentees)
             ->with('activity_types', ActivityType::all())
             ->with('physical_appearances',PhysicalAppearance::all())
