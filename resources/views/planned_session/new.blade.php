@@ -19,7 +19,7 @@
                                 <div class="col-md-6">
                                     <select class="form-control" name="mentee_id">
                                         @foreach($mentees as $mentee)
-                                            <option value="{{ $mentee->id }}">{{ $mentee->getNameAttribute() }}</option>
+                                            <option value="{{ $mentee->id }}">{{ $mentee->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

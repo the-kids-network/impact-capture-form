@@ -19,7 +19,7 @@
                                 <div class="col-md-6">
                                     <select class="form-control" name="report_id">
                                         @foreach($reports as $report)
-                                            <option value="{{ $report->id }}">{{ $report->mentee->first_name }} on {{ $report->session_date->toFormattedDateString() }}</option>
+                                            <option value="{{ $report->id }}">{{ $report->mentee->name }} on {{ $report->session_date->toFormattedDateString() }}</option>
                                             @endforeach
                                     </select>
                                 </div>
@@ -101,7 +101,7 @@
                     <ul class="list-group">
                         @foreach($claims as $claim)
                             <li class="list-group-item">
-                                <span class="submitted-date">Claim for Session with {{ $claim->report->mentee->first_name }} on {{ $claim->report->session_date->toFormattedDateString() }} submitted on {{ $claim->created_at->toFormattedDateString() }}</span>
+                                <span class="submitted-date">Claim for Session with {{ $claim->report->mentee->name }} on {{ $claim->report->session_date->toFormattedDateString() }} submitted on {{ $claim->created_at->toFormattedDateString() }}</span>
                                 <div class="pull-right text-capitalize">
                                     {{ $claim->status }}
                                 </div>

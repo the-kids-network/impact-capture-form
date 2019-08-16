@@ -17,7 +17,7 @@
                     <ul class="list-group">
                         @foreach($allMentees as $mentee)
                         <li class="list-group-item @if($mentee->trashed()) trashed @else not-trashed @endif" style="@if($mentee->trashed()) display: none @endif">
-                            {{ $mentee->first_name }} {{ $mentee->last_name }}
+                            {{ $mentee->name }}
                             <div class="pull-right">
                                 @if($mentee->trashed())
                                     <form style="display: inline-block" action="{{ url('/mentee/restore/'.$mentee->id) }}" id="restore-{{$mentee->id}}" method="post">

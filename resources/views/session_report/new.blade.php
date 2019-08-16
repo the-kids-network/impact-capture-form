@@ -15,11 +15,11 @@
 
                             <!-- Mentee's Name -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Mentee Name</label>
+                                <label class="col-md-4 control-label">Mentee</label>
                                 <div class="col-md-6">
                                     <select class="form-control" name="mentee_id">
                                         @foreach($mentees as $mentee)
-                                            <option value="{{ $mentee->id }}">{{ $mentee->first_name }}</option>
+                                            <option value="{{ $mentee->id }}">{{ $mentee->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -169,7 +169,7 @@
                     <ul class="list-group">
                         @foreach($reports as $report)
                             <li class="list-group-item">
-                                {{ $report->mentee->first_name }}
+                                {{ $report->mentee->name }}
                                 <div class="pull-right">
                                     {{ $report->session_date->toFormattedDateString()  }}
                                 </div>

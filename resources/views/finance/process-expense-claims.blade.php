@@ -25,7 +25,7 @@
                                 <tr class="clickable-row" data-href="{{ url('/expense-claim/'.$claim->id) }}">
                                     <td>{{ $claim->id }}</td>
                                     <td>{{ $claim->mentor->name }}</td>
-                                    <td>With {{ $claim->report->mentee->first_name . ' ' . $claim->report->mentee->last_name }} on {{ $claim->report->session_date->toFormattedDateString() }}</td>
+                                    <td>With {{ $claim->report->mentee->name }} on {{ $claim->report->session_date->toFormattedDateString() }}</td>
                                     <td>{{ $claim->created_at->toFormattedDateString() }}</td>
                                 </tr>
                             @endforeach
@@ -61,7 +61,7 @@
                             <tr class="clickable-row" data-href="{{ url('/expense-claim/'.$claim->id) }}">
                                 <td>{{ $claim->id }}</td>
                                 <td>{{ $claim->mentor->name }}</td>
-                                <td>With {{ $claim->report->mentee->first_name . ' ' . $claim->report->mentee->last_name }} on {{ $claim->report->session_date->toFormattedDateString() }}</td>
+                                <td>With {{ $claim->report->mentee->name }} on {{ $claim->report->session_date->toFormattedDateString() }}</td>
                                 <td>{{ $claim->created_at->toFormattedDateString() }}</td>
                             </tr>
                             @endif
@@ -97,7 +97,7 @@
                             <tr class="clickable-row" data-href="{{ url('/expense-claim/'.$claim->id) }}">
                                 <td>{{ $claim->id }}</td>
                                 <td>{{ $claim->mentor->name }}</td>
-                                <td>With {{ $claim->report->mentee->first_name . ' ' . $claim->report->mentee->last_name }} on {{ $claim->report->session_date->toFormattedDateString() }}</td>
+                                <td>With {{ $claim->report->mentee->name }} on {{ $claim->report->session_date->toFormattedDateString() }}</td>
                                 <td>{{ $claim->created_at->toFormattedDateString() }}</td>
                             </tr>
                             @endif
