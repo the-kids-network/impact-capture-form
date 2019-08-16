@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Event;
 
 use App\Http\Controllers\Controller;
-use App\MentorLeave;
+use App\MenteeLeave;
+use App\Mentee;
 use App\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-class MentorLeaveController extends Controller {
+class MenteeLeaveController extends Controller {
 
     public function __construct() {
         $this->middleware('auth');
@@ -18,28 +19,28 @@ class MentorLeaveController extends Controller {
     }
 
     public function create(Request $request) {
-        return view('mentor_leave.new')
-            ->with('mentors', User::mentor()->canSee()->get());
+        return view('mentee_leave.new')
+            ->with('mentees', Mentee::canSee()->get());
     }
 
     public function show($id) {
-        $mentorLeave = MentorLeave::canSee()->find($id);
-        if (!$mentorLeave) {
+        $menteeLeave = MenteeLeave::canSee()->find($id);
+        if (!$menteeLeave) {
             abort(401, 'Unauthorized'); 
         }
 
-        return view('mentor_leave.show', compact('mentorLeave'))
-            ->with('mentorLeave', $mentorLeave);
+        return view('mentee_leave.show', compact('menteeLeave'))
+            ->with('menteeLeave', $menteeLeave);
     }
 
     public function destroy($id) {
-        $allowable = MentorLeave::canSee();
+        $allowable = MenteeLeave::canSee();
         $toDelete = $allowable->find($id);
         if (!$toDelete) {
             abort(401, 'Unauthorized'); 
         }
 
-        MentorLeave::destroy($toDelete->id);
+        MenteeLeave::destroy($toDelete->id);
 
         return redirect('/calendar');
     }
@@ -47,7 +48,7 @@ class MentorLeaveController extends Controller {
     public function store(Request $request) {  
         $request->validate(
             [
-                'mentor_id' => 'required|exists:users,id',
+                'mentee_id' => 'required|exists:mentees,id',
                 'start_date' => 'required|date|date_format:m/d/Y|before_or_equal:end_date',
                 'end_date' => 'required|date|date_format:m/d/Y',
                 'description' => 'nullable|string|max:50'
@@ -57,16 +58,16 @@ class MentorLeaveController extends Controller {
             ]
         );    
 
-        if (!User::mentor()->canSee()->find($request->mentor_id)) {
+        if (!Mentee::canSee()->find($request->mentee_id)) {
             abort(401, 'Unauthorized'); 
         }
 
-        $leave = MentorLeave::canSee()->find($request->id);
+        $leave = MenteeLeave::canSee()->find($request->id);
         if (!$leave) {
-            $leave = new MentorLeave();
+            $leave = new MenteeLeave();
         }
 
-        $leave->mentor_id = $request->mentor_id;
+        $leave->mentee_id = $request->mentee_id;
         $leave->start_date = Carbon::createFromFormat('m/d/Y',$request->start_date);
         $leave->end_date = Carbon::createFromFormat('m/d/Y',$request->end_date);
         $leave->description = $request->description;

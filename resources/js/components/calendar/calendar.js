@@ -56,7 +56,8 @@ const Component = {
                     title: info.event.extendedProps.tooltip,
                     placement: "top",
                     trigger: "hover",
-                    container: "body"
+                    container: "body",
+                    html: true
                 });
             }
         }

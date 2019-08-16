@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Event;
 use App\Http\Controllers\Controller;
 use App\PlannedSession;
 use App\MentorLeave;
+use App\MenteeLeave;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -18,11 +19,13 @@ class CalendarController extends Controller {
     }
 
     public function index(Request $request) {
-        $plannedSessionEvents = $this->getPlannedSessions();
-        $mentorLeaveEvents = $this->getMentorLeaves();
+        $plannedSessions = $this->getPlannedSessions();
+        $mentorLeaves = $this->getMentorLeaves();
+        $menteeLeaves = $this->getMenteeLeaves();
         $events = array();
-        $events['planned_sessions'] = $plannedSessionEvents;
-        $events['mentors_leaves'] = $mentorLeaveEvents;
+        $events['planned_sessions'] = $plannedSessions;
+        $events['mentor_leaves'] = $mentorLeaves;
+        $events['mentee_leaves'] = $menteeLeaves;
 
         return view('calendar.index')->with('events', $events);
     }
@@ -70,6 +73,28 @@ class CalendarController extends Controller {
         $event['start_date'] = $mentorLeave->start_date;
         $event['end_date'] = $mentorLeave->end_date->modify('+1 day');
         $event['description'] = $mentorLeave->description;
+        return $event;
+    }
+
+    private function getMenteeLeaves() {
+        $leaves =  MenteeLeave::canSee()
+                        ->get()
+                        ->map(function($leave) {
+                            return $this->transformMenteeLeaves($leave);
+                        })
+                        ->toArray();
+
+        return array_values($leaves);
+    }
+
+    private function transformMenteeLeaves($leave) {
+        $event = array();
+        $event['mentor'] = (isset($leave->mentee->mentor)) ? $leave->mentee->mentor->name : null;
+        $event['mentee'] = $leave->mentee->name;
+        $event['id'] = $leave->id;
+        $event['start_date'] = $leave->start_date;
+        $event['end_date'] = $leave->end_date->modify('+1 day');
+        $event['description'] = $leave->description;
         return $event;
     }
 }

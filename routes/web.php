@@ -89,6 +89,8 @@ Route::get('/reporting/mentor','MentorReportingController@generateIndexReport')-
 Route::get('/reporting/mentor/export','MentorReportingController@generateExportableReport')->name('mentor-reporting-export');
 
 // Calendar and events
+Route::get('/mentee/leave/new','Event\MenteeLeaveController@create');
+Route::resource('/mentee/leave','Event\MenteeLeaveController');
 Route::get('/mentor/leave/new','Event\MentorLeaveController@create');
 Route::resource('/mentor/leave','Event\MentorLeaveController');
 Route::get('/planned-session/new','Event\PlannedSessionController@create');
