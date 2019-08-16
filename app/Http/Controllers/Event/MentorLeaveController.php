@@ -67,8 +67,8 @@ class MentorLeaveController extends Controller {
         }
 
         $leave->mentor_id = $request->mentor_id;
-        $leave->start_date = Carbon::createFromFormat('m/d/Y',$request->start_date);
-        $leave->end_date = Carbon::createFromFormat('m/d/Y',$request->end_date);
+        $leave->start_date = Carbon::createFromFormat('m/d/Y',$request->start_date)->setTime(0,0,0);
+        $leave->end_date = Carbon::createFromFormat('m/d/Y',$request->end_date)->setTime(0,0,0);
         $leave->description = $request->description;
         $leave->save();
 

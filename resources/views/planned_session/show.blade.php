@@ -10,10 +10,10 @@
                     <div class="panel-body">
                         @include('shared.errors')
 
-                        <form class="form-horizontal" role="form" method="POST" action="/planned-session">
+                        <form class="form-horizontal" role="form" method="POST" action="/planned-session/{{ $plannedSession->id }}">
                         {{ csrf_field() }}
+                            <input type="hidden" name="_method" value="PUT"/>
 
-                            <input type="hidden" name="id" value="{{ $plannedSession->id }}"/>
                             <input type="hidden" name="mentee_id" value="{{ $plannedSession->mentee->id }}"/>
 
                             <!-- Mentee Name -->
@@ -30,7 +30,7 @@
                                     Session Date <i class="fas fa-info-circle"></i>
                                 </label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control datepicker" name="next_session_date" value="{{ old('next_session_date', $session_date) }}" autocomplete="off">
+                                    <input type="text" class="form-control datepicker" name="next_session_date" value="{{ old('next_session_date', $plannedSession->date->format('m/d/Y')) }}" autocomplete="off">
                                 </div>
                             </div>
 
@@ -50,7 +50,6 @@
 
                         <form class="form-horizontal" role="form" method="POST" action="/planned-session/{{ $plannedSession->id }}">
                             {{ csrf_field() }}
-
                             <input type="hidden" name="_method" value="DELETE"/>
                             <input type="submit" class="btn btn-xs btn-danger-outline" value="Delete"/>
                         </form>
