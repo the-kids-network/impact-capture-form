@@ -61,12 +61,20 @@ class PlannedSessionController extends Controller {
     public function store(Request $request) {
         $request->validate($this->validationRules);    
 
+        // Authorize
         if (! Mentee::canSee()->find($request->mentee_id)) {
             abort(401, 'Unauthorized'); 
         }
         
+        // Create planned session
         $plannedSession = new PlannedSession();
         $plannedSession = $this->mapRequestToPlannedSession($plannedSession, $request);
+
+        // Check not a planned session for the same date/mentee
+        $resp = $this->validatePreviousPlannedSessionDoesNotAlreadyExist($plannedSession);
+        if($resp) return $resp;
+
+        // Save it
         $plannedSession->save();
 
         return redirect('/calendar');
@@ -75,16 +83,23 @@ class PlannedSessionController extends Controller {
     public function update(Request $request, $id) {
         $request->validate($this->validationRules);   
 
+        // Authorize
         $plannedSession = PlannedSession::canSee()->find($id);
         if (!$plannedSession) {
             abort(401, 'Unauthorized');
         }
-        
         if (!Mentee::canSee()->find($request->mentee_id)) {
             abort(401, 'Unauthorized'); 
         }
 
+        // Create planned session
         $plannedSession = $this->mapRequestToPlannedSession($plannedSession, $request);
+
+        // Check not a planned session for the same date/mentee
+        $resp = $this->validatePreviousPlannedSessionDoesNotAlreadyExist($plannedSession);
+        if($resp) return $resp;
+
+        // Save it
         $plannedSession->save();
         $isDirty = !empty($plannedSession->getChanges());
 
@@ -104,4 +119,24 @@ class PlannedSessionController extends Controller {
         $plannedSession->location = $request->next_session_location;
         return $plannedSession;
     }
+
+    private function validatePreviousPlannedSessionDoesNotAlreadyExist($plannedSession) {
+        $previouslyPlannedSession = $this->getPreviouslyPlannedSession(
+            $plannedSession->id, $plannedSession->date, $plannedSession->mentee_id);
+        if (isset($previouslyPlannedSession)){
+            return back()->withInput()
+                ->withErrors('Looks like you already have a session planned for that date and mentee. 
+                    <a href="/planned-session/'.$previouslyPlannedSession->id.'">Change it here.</a>');
+        }
+    }
+
+    private function getPreviouslyPlannedSession($id, $date, $menteeId) {
+        $otherPlannedSessions = PlannedSession::canSee()
+           ->where('id', '!=', $id)
+           ->whereDate('date', '=', $date)
+           ->whereMenteeId($menteeId)
+           ->get();
+
+        return $otherPlannedSessions->first();
+   }
 }

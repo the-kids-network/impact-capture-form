@@ -19,7 +19,7 @@
                                 <div class="col-md-6">
                                     <select class="form-control" name="mentee_id">
                                         @foreach($mentees as $mentee)
-                                            <option value="{{ $mentee->id }}">{{ $mentee->name }}</option>
+                                            <option value="{{ $mentee->id }}" @if( old('mentee_id') == $mentee->id) selected="selected" @endif>{{ $mentee->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
