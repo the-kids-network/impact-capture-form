@@ -1,7 +1,8 @@
 /**
  * Spark form error collection class.
  */
-window.SparkFormErrors = function () {
+const SparkFormErrors = function () {
+    
     this.errors = {};
 
     /**
@@ -69,3 +70,5 @@ window.SparkFormErrors = function () {
         }
     };
 };
+
+export default SparkFormErrors;

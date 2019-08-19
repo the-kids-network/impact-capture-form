@@ -24,8 +24,4 @@ const Component = {
     }
 }
 
-export {
-    Component
-}
-
-export default Vue.component('nav-bar', Component);
+export default Component

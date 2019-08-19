@@ -5,40 +5,42 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Scheduled Session Details</div>
+                    <div class="panel-heading">Mentee Leave</div>
 
                     <div class="panel-body">
                         @include('shared.errors')
 
-                        <form class="form-horizontal" role="form" method="POST" action="/schedule">
+                        <form class="form-horizontal" role="form" method="POST" action="/mentee/leave">
                         {{ csrf_field() }}
 
-                            <input type="hidden" name="id" value="{{ $schedule->id }}"/>
-                            <input type="hidden" name="mentee_id" value="{{ $schedule->mentee()->id }}"/>
+                            <input type="hidden" name="id" value="{{ $menteeLeave->id }}"/>
+                            <input type="hidden" name="mentee_id" value="{{ $menteeLeave->mentee->id }}"/>
 
-                            <!-- Mentee Name -->
+                            <!-- Start date -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Mentee</label>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control" name="mentee_name" value="{{ $schedule->mentee()->getNameAttribute() }}" readonly="true">
-                                </div>
-                            </div>
-
-                            <!-- Date of Session -->
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" data-toggle="popover" data-trigger="hover" data-content="<?php echo 'Email reminders will be sent if a report has not been saved within three days of a scheduled session.'; ?>">
-                                    Scheduled Session Date <i class="fas fa-info-circle"></i>
+                                <label class="col-md-4 control-label" data-toggle="popover" data-trigger="hover" data-content="<?php echo 'The first day of your mentee\'s leave/holiday.'; ?>">
+                                    Start Date <i class="fas fa-info-circle"></i>
                                 </label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control datepicker" name="next_session_date" value="{{ old('next_session_date', $session_date) }}" autocomplete="off">
+                                    <input type="text" class="form-control datepicker" name="start_date" value="{{ old('start_date', $menteeLeave->start_date->format('m/d/Y')) }}" autocomplete="off">
                                 </div>
                             </div>
 
-                            <!-- Location of Session -->
+                            <!-- End date -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Schedule Session Location</label>
+                                <label class="col-md-4 control-label" data-toggle="popover" data-trigger="hover" data-content="<?php echo 'The last day (inclusive) of your mentee\'s leave/holiday.'; ?>">
+                                    End Date <i class="fas fa-info-circle"></i>
+                                </label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="next_session_location" value="{{ old('next_session_location', $schedule->next_session_location) }}">
+                                    <input type="text" class="form-control datepicker" name="end_date" value="{{ old('end_date',  $menteeLeave->end_date->format('m/d/Y')) }}" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Description (Optional)</label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="description" value="{{ old('description',  $menteeLeave->description) }}">
                                 </div>
                             </div>
 
@@ -48,7 +50,7 @@
                             </div>
                         </form>
 
-                        <form class="form-horizontal" role="form" method="POST" action="/schedule/{{ $schedule->id }}">
+                        <form class="form-horizontal" role="form" method="POST" action="/mentee/leave/{{ $menteeLeave->id }}">
                             {{ csrf_field() }}
 
                             <input type="hidden" name="_method" value="DELETE"/>

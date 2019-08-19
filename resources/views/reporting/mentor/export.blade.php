@@ -24,7 +24,7 @@
                         <th>Start Date</th>
                         <th data-sortable="true">Last Session Date</th>
                         <th data-sortable="true">Days Since Last Session</th>
-                        <th data-sortable="true">Next Scheduled Session</th>
+                        <th data-sortable="true">Next Planned Session</th>
                         <th>Expected Sessions</th>
                         <th>Actual Sessions</th>
                         <th>Total Session Length (Hrs)</th>
@@ -65,9 +65,9 @@
                                 Unknown 
                             @endif
                         </td>
-                        <td class="next-scheduled-session-date">
-                            @if (isset($mentor->next_scheduled_session)) 
-                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->next_scheduled_session)->format('d-m-y') }} 
+                        <td class="next-planned-session-date">
+                            @if (isset($mentor->next_planned_session_date)) 
+                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->next_planned_session_date)->format('d-m-y') }} 
                             @else 
                                 Unknown 
                             @endif

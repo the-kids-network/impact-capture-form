@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Mail;
 
 use App\User;
 use App\Mentee;
-use App\Schedule;
+use App\PlannedSession;
 use App\Report;
 use Illuminate\Support\Facades\Log;
 
@@ -47,64 +47,69 @@ class MissingReportReminderEmailSendCommand extends Command
      * @return mixed
      */
     public function handle() {
-        $schedules = $this->getSchedulesWithSessionDateInLastWeek();
-        $schedules = $this->filterSchedulesThatDoNotHaveReport($schedules);
-        $schedules = $this->filterSchedulesWhereEmailNotAlreadySentToday($schedules);
+        $plannedSessions = $this->getPlannedSessionsWithSessionDateInLastWeek();
+        $plannedSessions = $this->filterPlannedSessionsThatDoNotHaveReport($plannedSessions);
+        $plannedSessions = $this->filterPlannedSessionsWhereEmailNotAlreadySentToday($plannedSessions);
 
-        foreach ($schedules as $schedule) {
+        foreach ($plannedSessions as $plannedSession) {
             // assume session finished by 8pm UTC latest
-            $schedule_session_date = $schedule->next_session_date->setTime(20,00);
+            $planned_session_date = $plannedSession->date->setTime(20,00);
 
-            $diff = $schedule_session_date->diff($this->now());
+            $diff = $planned_session_date->diff($this->now());
 
-            Log::debug("Schedule ID: ".$schedule->id);
-            Log::debug("Scheduled session date: ".$schedule_session_date);
-            Log::debug("Last reminder email sent: ".$schedule->last_email_reminder);
-            Log::debug("Days since scheduled session date and now: ".$diff->days);
+            Log::debug("Planned session ID: ".$plannedSession->id);
+            Log::debug("Planned session date: ".$planned_session_date);
+            Log::debug("Last reminder email sent: ".$plannedSession->last_email_reminder);
+            Log::debug("Days since planned session date and now: ".$diff->days);
 
             if ($diff->days == 2) {
-                $this->sendEmail($schedule, false);
+                $this->sendEmail($plannedSession, false);
             } else if ($diff->days == 3 || $diff->days == 5) {
-                $this->sendEmail($schedule, true);
+                $this->sendEmail($plannedSession, true);
             } else {
                 Log::debug("Reminder email not required yet");
             }
         }
     }
 
-    private function getSchedulesWithSessionDateInLastWeek() {
-        return Schedule::where('next_session_date', '>=', $this->daysAgo(7))
-            ->where('next_session_date', '<=', $this->now())
+    private function getPlannedSessionsWithSessionDateInLastWeek() {
+        return PlannedSession::where('date', '>=', $this->daysAgo(7))
+            ->where('date', '<=', $this->now())
             ->get();
     }
 
-    private function filterSchedulesThatDoNotHaveReport($schedules) {
-        return $schedules->filter(function($schedule, $key) {
-            return $this->getReportForSchedule($schedule) == null;
+    private function filterPlannedSessionsThatDoNotHaveReport($plannedSessions) {
+        return $plannedSessions->filter(function($plannedSession, $key) {
+            return $this->getReportForPlannedSession($plannedSession) == null;
         });
     }
 
-    private function filterSchedulesWhereEmailNotAlreadySentToday($schedules) {
-        return $schedules->filter(function($schedule, $key) {
-            if(!isset($schedule->last_email_reminder)) return true;
+    private function filterPlannedSessionsWhereEmailNotAlreadySentToday($plannedSessions) {
+        return $plannedSessions->filter(function($plannedSession, $key) {
+            if(!isset($plannedSession->last_email_reminder)) return true;
 
-            $diff = $schedule->last_email_reminder->diff($this->now());
+            $diff = $plannedSession->last_email_reminder->diff($this->now());
             return $diff->days != 0;
         });
     }
 
-    private function getReportForSchedule($schedule) {
-        return Report::where('mentee_id', $schedule->mentee_id)
-        ->where('session_date', $schedule->next_session_date)
+    private function getReportForPlannedSession($plannedSession) {
+        return Report::where('mentee_id', $plannedSession->mentee_id)
+        ->where('session_date', $plannedSession->date)
         ->first();
     }
 
-    private function sendEmail($schedule, $isLate) {
-        Log::debug("Sending reminder email");
-        $schedule->last_email_reminder = $this->now();
-        $schedule->save();
-
-        Mail::send(new MissingReportReminder($isLate, $schedule));
+    private function sendEmail($plannedSession, $isLate) {
+        if (isset($plannedSession->mentee) && isset($plannedSession->mentee->mentor)) {
+            Log::debug("Sending reminder email");
+            $plannedSession->last_email_reminder = $this->now();
+            $plannedSession->save();
+            Mail::to($plannedSession->mentee->mentor)->send(
+                new MissingReportReminder($isLate, $plannedSession)
+            );
+        } else {
+            Log::debug("Not sending as mentee or mentor is deactivated");
+        }
     }
 
     private function daysAgo($days) {

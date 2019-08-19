@@ -1,21 +1,5 @@
 @extends('layout.app')
 
-@section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("form.delete").submit(function(event) {
-                return confirm("This will permanently delete the user.\nIt cannot be undone, although their reports will remain.");
-            });
-
-            $(".expand-all").click(function(event) {
-                $(".mentor-expand").click();
-            });
-        });
-    </script>
-@endsection
-
 @section('content')
     <div class="container">
         <div class="row">
@@ -48,11 +32,11 @@
                                         <a href="javascript:{}" onclick="document.getElementById('restore-{{$mentor->id}}').submit(); return false;">Restore</a>
                                     </form>
                                     |
-                                    <form style="display: inline-block" action="{{ url('/user/'.$mentor->id) }}" id="deactivate-{{$mentor->id}}" method="post">
+                                    <form style="display: inline-block" action="{{ url('/user/'.$mentor->id) }}" id="delete-{{$mentor->id}}" class="delete-mentor" method="post">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}
                                         <input type="hidden" name="really_delete" value="1">
-                                        <a href="javascript:{}" onclick="document.getElementById('deactivate-{{$mentor->id}}').submit(); return false;">Delete</a>
+                                        <a href="javascript:{}" onclick="document.getElementById('delete-{{$mentor->id}}').submit(); return false;">Delete</a>
                                     </form>
                                 @else
                                     <form style="display: inline-block" action="{{ url('/user/'.$mentor->id) }}" id="deactivate-{{$mentor->id}}" method="post">
@@ -101,6 +85,17 @@
 @endsection
 
 @section('body-scripts')
+<script type="text/javascript">
+        $(document).ready(function() {
+            $(".delete-mentor").submit(function(event) {
+                return confirm("This will permanently delete the user.\nIt cannot be undone, although their reports will remain.");
+            });
+
+            $(".expand-all").click(function(event) {
+                $(".mentor-expand").click();
+            });
+        });
+    </script>
     <script>
         function toggle(selector){
             $(selector).toggle();

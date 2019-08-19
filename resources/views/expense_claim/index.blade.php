@@ -31,7 +31,7 @@
                                 <tr class="clickable-row" data-href="{{ url('/expense-claim/'.$claim->id) }}">
                                     <td>{{ $claim->id }}</td>
                                     <td>{{ $claim->mentor->name }}</td>
-                                    <td>With {{ $claim->report->mentee->first_name . ' ' . $claim->report->mentee->last_name }} on {{ $claim->report->session_date->toFormattedDateString() }}</td>
+                                    <td>With {{ $claim->report->mentee->name }} on {{ $claim->report->session_date->toFormattedDateString() }}</td>
                                     <td>{{ $claim->created_at->toFormattedDateString() }}</td>
                                     <td class="text-capitalize">{{ $claim->status }}</td>
                                     <td>{{ $claim->expenses->sum('amount') }}</td>
@@ -53,24 +53,16 @@
 @endsection
 
 @section('scripts')
-
     <style>
         .clickable-row{
             cursor: pointer;
         }
     </style>
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
 @endsection
 
 
 
 @section('body-scripts')
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
-
     <script>
         jQuery(document).ready(function($) {
             $(".table").on("click", ".clickable-row", function() {

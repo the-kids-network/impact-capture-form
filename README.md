@@ -167,7 +167,7 @@ To run the unit test:
 Install right version of chrome driver if needed. Check your version here: https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have and then run:
 
 ```bash
-php artisan dusk:chrome-driver 74
+php artisan dusk:chrome-driver <version>
 ```
 
 Turn off the php debug bar in the .env file, as it interferes with the browser tests.
@@ -181,6 +181,13 @@ composer install
 php artisan config:cache
 php artisan migrate:refresh --seed && php artisan dusk
 ```
+
+To run a specific test:
+
+```
+php artisan dusk tests/Browser/SessionSubmissionPageTest.php 
+```
+
 
 ## Debugging
 

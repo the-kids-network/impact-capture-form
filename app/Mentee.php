@@ -42,9 +42,9 @@ class Mentee extends Model
         return $this->belongsTo('App\User','mentor_id');
     }
 
-    public function schedules()
+    public function plannedSessions()
     {
-        return $this->hasMany('App\Schedule')->get();
+        return $this->hasMany('App\PlannedSession')->get();
     }
 
     public function scopeCanSee($query) {

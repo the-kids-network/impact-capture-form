@@ -1,10 +1,5 @@
-module.exports = {
+export default {
     computed: {
-        /**
-         * Access the global Spark object.
-         */
-        spark() {
-            return window.Spark;
-        }
+        
     }
 };

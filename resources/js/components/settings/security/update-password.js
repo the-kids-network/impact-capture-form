@@ -1,3 +1,6 @@
+import SparkForm from '../../forms/form'
+import http from '../../forms/http'
+
 const Component = {
     /**
      * The component's data.
@@ -17,13 +20,9 @@ const Component = {
          * Update the user's password.
          */
         update() {
-            Spark.put('/settings/password', this.form);
+            http.put('/settings/password', this.form);
         }
     }
 };
 
-export {
-    Component
-};
-
-export default Vue.component('update-password', Component);
+export default Component;

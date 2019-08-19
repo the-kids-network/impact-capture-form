@@ -1,3 +1,5 @@
+import SparkForm from '../../forms/form'
+
 const Component = {
     props: ['user'],
 
@@ -74,8 +76,4 @@ const Component = {
     }
 };
 
-export {
-    Component
-};
-
-export default Vue.component('update-profile-photo', Component);
+export default Component;

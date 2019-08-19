@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 
-class Schedule extends Model
+class PlannedSession extends Model
 {
     use SoftDeletes;
 
@@ -20,7 +20,7 @@ class Schedule extends Model
         'created_at',
         'updated_at',
         'deleted_at',
-        'next_session_date',
+        'date',
         'last_email_reminder'
     ];
 
@@ -30,7 +30,7 @@ class Schedule extends Model
      * @var array
      */
     public function mentee(){
-        return $this->belongsTo('App\Mentee')->first();
+        return $this->belongsTo('App\Mentee');
     }
 
     public function scopeCanSee($query) {
@@ -42,6 +42,10 @@ class Schedule extends Model
         }
         else if (Auth::user()->isMentor()) {
             $menteeIds = Auth::user()->mentees
+                            ->map(function($u) { return $u->id; });
+            return $query->whereIn('mentee_id', $menteeIds);
+        } else {
+            $menteeIds = Mentee::all()
                             ->map(function($u) { return $u->id; });
             return $query->whereIn('mentee_id', $menteeIds);
         }

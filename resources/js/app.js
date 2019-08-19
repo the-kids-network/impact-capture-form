@@ -30,13 +30,18 @@ window.moment.defineLocale('en-short', {
 window.moment.locale('en');
 
 
-/*
- * Load jQuery and Bootstrap jQuery, used for front-end interaction.
- */
 if (window.$ === undefined || window.jQuery === undefined) {
     window.$ = window.jQuery = require('jquery');
 }
+
 require('bootstrap/dist/js/npm');
+require('bootstrap-table/dist/bootstrap-table');
+
+require('@fullcalendar/core');
+require('@fullcalendar/daygrid');
+require('@fullcalendar/timegrid');
+require('@fullcalendar/interaction');
+require('@fullcalendar/vue');
 
 /**
  * Load Vue if this application is using Vue as its framework.
@@ -44,10 +49,6 @@ require('bootstrap/dist/js/npm');
 if ($('#app').length > 0) {
     require('./vue-bootstrap');
 }
-
-try {
-    window.Popper = require('popper.js').default;
-} catch (e) {}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

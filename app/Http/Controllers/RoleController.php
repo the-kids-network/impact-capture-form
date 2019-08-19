@@ -56,7 +56,7 @@ class RoleController extends Controller {
         $mentee->mentor_id = $request->mentor_id;
         $mentee->save();
 
-        return redirect('/roles/mentor')->with('status', $mentor->name . ' has been assigned to ' . $mentee->first_name);
+        return redirect('/roles/mentor')->with('status', $mentor->name . ' has been assigned to ' . $mentee->name);
     }
 
     public function assignManager(Request $request){

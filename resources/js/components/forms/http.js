@@ -1,9 +1,9 @@
-module.exports = {
+const Http = {
     /**
      * Helper method for making POST HTTP requests.
      */
     post(uri, form) {
-        return Spark.sendForm('post', uri, form);
+        return this.sendForm('post', uri, form);
     },
 
 
@@ -11,7 +11,7 @@ module.exports = {
      * Helper method for making PUT HTTP requests.
      */
     put(uri, form) {
-        return Spark.sendForm('put', uri, form);
+        return this.sendForm('put', uri, form);
     },
 
 
@@ -19,7 +19,7 @@ module.exports = {
      * Helper method for making PATCH HTTP requests.
      */
     patch(uri, form) {
-        return Spark.sendForm('patch', uri, form);
+        return this.sendForm('patch', uri, form);
     },
 
 
@@ -27,7 +27,7 @@ module.exports = {
      * Helper method for making DELETE HTTP requests.
      */
     delete(uri, form) {
-        return Spark.sendForm('delete', uri, form);
+        return this.sendForm('delete', uri, form);
     },
 
 
@@ -52,3 +52,5 @@ module.exports = {
         });
     }
 };
+
+export default Http

@@ -8,19 +8,19 @@ use App\Mail\ReportSubmittedToMentor;
 use App\Mentee;
 use App\User;
 use App\Report;
-use App\Schedule;
+use App\PlannedSession;
 use App\ActivityType;
 use App\EmotionalState;
 use App\PhysicalAppearance;
 use App\SessionRating;
+use App\MentorLeave;
+use App\MenteeLeave;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Log;
-
-use App\Http\Controllers\ScheduleController;
 
 use Debugbar;
 
@@ -33,7 +33,7 @@ class SessionReportController extends Controller {
     }
 
     public function create(Request $request) {
-        return view('mentor.report')
+        return view('session_report.new')
             ->with('mentees',$request->user()->mentees)
             ->with('activity_types', ActivityType::all())
             ->with('physical_appearances',PhysicalAppearance::all())
@@ -70,29 +70,42 @@ class SessionReportController extends Controller {
     }
 
     public function store(Request $request) {
-        $messages = ['rating_id.min' => 'The session rating field is required.'];
-        $this->validate($request, [
-            'mentee_id' => 'required|exists:mentees,id',
-            'session_date' => 'required|date|before_or_equal:today',
-            'rating_id' => 'required|exists:session_ratings,id|numeric|min:2',
-            'length_of_session' => 'required|numeric|max:24',
-            'activity_type_id' => 'required|exists:activity_types,id',
-            'location' => 'required',
-            'safeguarding_concern' => 'required|boolean',
-            'physical_appearance_id' => 'required|exists:physical_appearances,id',
-            'emotional_state_id' => 'required|exists:emotional_states,id',
-            'meeting_details' => 'required',
-            'next_session_date' => 'required',
-            'next_session_location' => 'required'
-        ], $messages);
+        $this->validate($request, 
+            [
+                'mentee_id' => 'required|exists:mentees,id',
+                'session_date' => 'required|date|date_format:m/d/Y|before_or_equal:today',
+                'rating_id' => 'required|exists:session_ratings,id|numeric|min:2',
+                'length_of_session' => 'required|numeric|min:1|max:24',
+                'activity_type_id' => 'required|exists:activity_types,id',
+                'location' => 'required|string|max:50',
+                'safeguarding_concern' => 'required|boolean',
+                'physical_appearance_id' => 'required|exists:physical_appearances,id',
+                'emotional_state_id' => 'required|exists:emotional_states,id',
+                'meeting_details' => 'required|string|max:1000',
+                'next_session_date' => 'required|date|date_format:m/d/Y|after_or_equal:today',
+                'next_session_location' => 'required|string|max:50',
+                'mentor_id' => 'required|exists:users,id',
+                'leave_type' => "required|in:mentor,mentee",
+                'leave_start_date' => 'nullable|date|date_format:m/d/Y|before_or_equal:leave_end_date',
+                'leave_end_date' => 'nullable|date|date_format:m/d/Y',
+                'leave_description' => 'nullable|string|max:50'
+            ], 
+            [
+                'session_date.before_or_equal' => 'The session date should be before or equal to today.',
+                'rating_id.min' => 'The session rating field is required.',
+                'next_session_date.after_or_equal' => 'The next session date should be in the future.',
+                'leave_start_date.before_or_equal' => 'The leave start date should be before or equal to the end date.'
+            ]
+        );
 
         // Check mentor has mentee
         $mentee = Mentee::canSee()->whereId($request->mentee_id)->first();
         if (!$mentee) abort(401,'Unauthorized');
 
-        // Save session and schedule
+        // Save parts
         $report = $this->saveReport($request);
-        $this->saveSchedule($request);
+        $this->saveNextPlannedSession($request);
+        $this->saveLeave($request);
 
         // Send the Mentor an Email
         Mail::to($report->mentor)->send(new ReportSubmittedToMentor($report));
@@ -122,7 +135,7 @@ class SessionReportController extends Controller {
         $report = new Report();
         $report->mentor_id = $request->user()->id;
         $report->mentee_id = $request->mentee_id;
-        $report->session_date = Carbon::createFromFormat('m/d/Y',$request->session_date)->format('Y-m-d H:i:s');
+        $report->session_date = Carbon::createFromFormat('m/d/Y',$request->session_date)->setTime(0,0,0);
         $report->rating_id = $request->rating_id;
         $report->length_of_session = $request->length_of_session;
         $report->activity_type_id = $request->activity_type_id;
@@ -135,12 +148,33 @@ class SessionReportController extends Controller {
         return $report;
     }
 
-    private function saveSchedule(Request $request) {
-        $schedule = new Schedule();
-        $schedule->mentee_id = $request->mentee_id;
-        $schedule->next_session_date = Carbon::createFromFormat('m/d/Y',$request->next_session_date);
-        $schedule->next_session_location = $request->next_session_location;
-        $schedule->save();
-        return $schedule;
+    private function saveNextPlannedSession(Request $request) {
+        $plannedSession = new PlannedSession();
+        $plannedSession->mentee_id = $request->mentee_id;
+        $plannedSession->date = Carbon::createFromFormat('m/d/Y',$request->next_session_date)->setTime(0,0,0);
+        $plannedSession->location = $request->next_session_location;
+        $plannedSession->save();
+        return $plannedSession;
+    }
+
+    private function saveLeave(Request $request) {
+        if (isset($request->leave_type) && 
+            isset($request->leave_start_date) && 
+            isset($request->leave_end_date)) {
+
+            if ($request->leave_type = 'mentee') {
+                $leave = new MenteeLeave();
+                $leave->mentee_id = $request->mentee_id;
+            } else {
+                $leave = new MentorLeave();
+                $leave->mentor_id = $request->mentor_id;
+            }
+
+            $leave->start_date = Carbon::createFromFormat('m/d/Y',$request->leave_start_date)->setTime(0,0,0);
+            $leave->end_date = Carbon::createFromFormat('m/d/Y',$request->leave_end_date)->setTime(0,0,0);
+            $leave->description = $request->leave_description;
+            $leave->save();
+            return $leave;
+        }
     }
 }

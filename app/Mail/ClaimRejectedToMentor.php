@@ -31,8 +31,14 @@ class ClaimRejectedToMentor extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this
-            ->subject('Expense Claim Rejected')
-            ->markdown('emails.claim.rejected_to_mentor');
+        $mail = $this
+        ->subject('Expense Claim Rejected')
+        ->markdown('emails.claim.rejected_to_mentor');
+
+        if (isset($this->claim->mentor->manager)){
+            $mail->replyTo($this->claim->mentor->manager);
+        }
+
+        return $mail;
     }
 }
