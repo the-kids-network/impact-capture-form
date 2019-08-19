@@ -40,6 +40,21 @@ class PlannedSessionController extends Controller {
             ->with('plannedSession', $plannedSession);
     }
 
+    public function showNext(Request $request) {
+        $plannedSession = PlannedSession::canSee()
+            ->whereDate('date', '>=', Carbon::now())
+            ->orderBy('date', 'asc')
+            ->first();
+
+        if (! isset($plannedSession)) {
+           return redirect('/planned-session/new')
+                ->with('status', "You do not have planned session scheduled today or in the future. Create a new one instead below.");
+        }
+
+        return view('planned_session.show', compact('plannedSession'))
+            ->with('plannedSession', $plannedSession);
+    }
+
     public function destroy($id) {
         $plannedSession = PlannedSession::canSee()->find($id);
         if (!$plannedSession) {

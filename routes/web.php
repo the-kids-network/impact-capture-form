@@ -93,6 +93,7 @@ Route::get('/mentee/leave/new','Event\MenteeLeaveController@create');
 Route::resource('/mentee/leave','Event\MenteeLeaveController');
 Route::get('/mentor/leave/new','Event\MentorLeaveController@create');
 Route::resource('/mentor/leave','Event\MentorLeaveController');
+Route::get('/planned-session/next','Event\PlannedSessionController@showNext');
 Route::get('/planned-session/new','Event\PlannedSessionController@create');
 Route::resource('/planned-session','Event\PlannedSessionController');
 Route::resource('/calendar','Event\CalendarController');
