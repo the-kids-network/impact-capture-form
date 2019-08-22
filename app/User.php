@@ -143,6 +143,11 @@ class User extends Authenticatable
         return $query;
     }
 
+    public function scopeAdmin($query) {
+        $query->whereRole('admin');
+        return $query;
+    }
+
     /**
      * Overrides SoftDelete, to instead redact personal details
      * instead of deleting the row.
