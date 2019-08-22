@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ExpenseClaim;
 use App\Mail\ReportSubmittedToManager;
 use App\Mail\ReportSubmittedToMentor;
+use App\Mail\SafeguardingConcernAlert;
 use App\Mentee;
 use App\User;
 use App\Report;
@@ -113,6 +114,15 @@ class SessionReportController extends Controller {
         // Send the Assigned Manager if any an Email
         if($report->mentor->manager){
             Mail::to($report->mentor->manager)->send(new ReportSubmittedToManager($report));
+        }
+
+        // Send email if safeguarding concern
+        if($report->safeguarding_concern){
+            $mail = ($report->mentor->manager) 
+                ? Mail::to($report->mentor->manager)->cc(User::admin()->get())
+                : Mail::to(User::admin()->get());
+
+            $mail ->send(new SafeguardingConcernAlert($report));
         }
 
         return redirect('/report')->with('status', 'Report Submitted');
