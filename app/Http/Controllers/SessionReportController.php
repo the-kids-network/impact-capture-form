@@ -82,7 +82,7 @@ class SessionReportController extends Controller {
                 'safeguarding_concern' => 'required|boolean',
                 'physical_appearance_id' => 'required|exists:physical_appearances,id',
                 'emotional_state_id' => 'required|exists:emotional_states,id',
-                'meeting_details' => 'required|string|max:1000',
+                'meeting_details' => 'required|string|max:20000',
                 'next_session_date' => 'required|date|date_format:m/d/Y|after_or_equal:today',
                 'next_session_location' => 'required|string|max:50',
                 'mentor_id' => 'required|exists:users,id',
