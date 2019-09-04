@@ -10,6 +10,11 @@
                     <div class="panel-body">
                         @include('shared.errors')
 
+                        @if(Auth::user()->isMentor()) 
+                        <div>This is to book leave for you. If you want to book leave for your mentee, <a href="/mentee/leave/new">use this page instead.</a></div>
+                        <br/>
+                        @endif
+
                         <form class="form-horizontal" role="form" method="POST" action="/mentor/leave">
                         {{ csrf_field() }}
 

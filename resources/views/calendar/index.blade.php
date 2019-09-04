@@ -24,10 +24,10 @@
                     <a href="/planned-session/new"><i class="fas fa-plus-circle"></i> New Planned Session</a>
                 </div>
                 <div class="new-mentor-leave">
-                    <a href="/mentor/leave/new"><i class="fas fa-plus-circle"></i> New Leave</a>
+                    <a href="/mentor/leave/new"><i class="fas fa-plus-circle"></i> New Leave - Mentor</a>
                 </div>
                 <div class="new-mentee-leave">
-                    <a href="/mentee/leave/new"><i class="fas fa-plus-circle"></i> New Leave (Mentee)</a>
+                    <a href="/mentee/leave/new"><i class="fas fa-plus-circle"></i> New Leave - Mentee</a>
                 </div>
             </div>          
         </div>
