@@ -170,7 +170,7 @@ class ExpenseClaimController extends Controller {
         $expenseItems = collect($request->expenses)->map(function($expenseItem) use(&$claim) { return 
             new Expense([
                 'expense_claim_id' => $claim->id,
-                'date' => Carbon::createFromFormat('m/d/Y',$expenseItem['date'])->setTime(0,0,0),
+                'date' => Carbon::createFromFormat('d-m-Y',$expenseItem['date'])->setTime(0,0,0),
                 'description' => $expenseItem['description'],
                 'amount' => $expenseItem['amount']
                 ]

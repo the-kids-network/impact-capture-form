@@ -30,7 +30,7 @@
                                     Session Date <i class="fas fa-info-circle"></i>
                                 </label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control datepicker" name="next_session_date" value="{{ old('next_session_date', $plannedSession->date->format('m/d/Y')) }}" autocomplete="off">
+                                    <input type="text" class="form-control datepicker" name="next_session_date" value="{{ old('next_session_date', $plannedSession->date->format('d-m-Y')) }}" autocomplete="off">
                                 </div>
                             </div>
 
@@ -61,29 +61,20 @@
     </div>
 @endsection
 
-
-
-@section('scripts')
-    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
-@endsection
-
-
 @section('body-scripts')
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-
     <script>
-        $( function() {
+        $(function() {
             $( ".datepicker" ).datepicker({
-                format: 'yyyy-mm-dd'
+                dateFormat: 'dd-mm-yy'
             });
-        } );
+        });
 
         $(document).ready(function() {
             $('[data-toggle="popover"]').popover({
               html: true,
               placement: 'auto left'
             });
-          });
+        });
     </script>
 
 @endsection

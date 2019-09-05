@@ -46,14 +46,14 @@
                         @endif
                         <td class="start-date">
                             @if (isset($mentor->start_date)) 
-                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->start_date)->format('d-m-y') }} 
+                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->start_date)->format('d-m-Y') }} 
                             @else 
                                 Unknown 
                             @endif
                         </td>
                         <td class="last-session-date">
                             @if (isset($mentor->last_session_date)) 
-                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->last_session_date)->format('d-m-y') }} 
+                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->last_session_date)->format('d-m-Y') }} 
                             @else 
                                 Unknown 
                             @endif
@@ -67,7 +67,7 @@
                         </td>
                         <td class="next-planned-session-date">
                             @if (isset($mentor->next_planned_session_date)) 
-                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->next_planned_session_date)->format('d-m-y') }} 
+                                {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->next_planned_session_date)->format('d-m-Y') }} 
                             @else 
                                 Unknown 
                             @endif

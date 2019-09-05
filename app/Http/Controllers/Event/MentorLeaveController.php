@@ -48,8 +48,8 @@ class MentorLeaveController extends Controller {
         $request->validate(
             [
                 'mentor_id' => 'required|exists:users,id',
-                'start_date' => 'required|date|date_format:m/d/Y|before_or_equal:end_date',
-                'end_date' => 'required|date|date_format:m/d/Y',
+                'start_date' => 'required|date|date_format:d-m-Y|before_or_equal:end_date',
+                'end_date' => 'required|date|date_format:d-m-Y',
                 'description' => 'nullable|string|max:50'
             ],
             [
@@ -67,8 +67,8 @@ class MentorLeaveController extends Controller {
         }
 
         $leave->mentor_id = $request->mentor_id;
-        $leave->start_date = Carbon::createFromFormat('m/d/Y',$request->start_date)->setTime(0,0,0);
-        $leave->end_date = Carbon::createFromFormat('m/d/Y',$request->end_date)->setTime(0,0,0);
+        $leave->start_date = Carbon::createFromFormat('d-m-Y',$request->start_date)->setTime(0,0,0);
+        $leave->end_date = Carbon::createFromFormat('d-m-Y',$request->end_date)->setTime(0,0,0);
         $leave->description = $request->description;
         $leave->save();
 

@@ -74,7 +74,7 @@ class SessionReportController extends Controller {
         $this->validate($request, 
             [
                 'mentee_id' => 'required|exists:mentees,id',
-                'session_date' => 'required|date|date_format:m/d/Y|before_or_equal:today',
+                'session_date' => 'required|date|date_format:d-m-Y|before_or_equal:today',
                 'rating_id' => 'required|exists:session_ratings,id|numeric|min:2',
                 'length_of_session' => 'required|numeric|min:1|max:24',
                 'activity_type_id' => 'required|exists:activity_types,id',
@@ -83,12 +83,12 @@ class SessionReportController extends Controller {
                 'physical_appearance_id' => 'required|exists:physical_appearances,id',
                 'emotional_state_id' => 'required|exists:emotional_states,id',
                 'meeting_details' => 'required|string|max:20000',
-                'next_session_date' => 'required|date|date_format:m/d/Y|after_or_equal:today',
+                'next_session_date' => 'required|date|date_format:d-m-Y|after_or_equal:today',
                 'next_session_location' => 'required|string|max:50',
                 'mentor_id' => 'required|exists:users,id',
                 'leave_type' => "required|in:mentor,mentee",
-                'leave_start_date' => 'nullable|date|date_format:m/d/Y|before_or_equal:leave_end_date',
-                'leave_end_date' => 'nullable|date|date_format:m/d/Y',
+                'leave_start_date' => 'nullable|date|date_format:d-m-Y|before_or_equal:leave_end_date',
+                'leave_end_date' => 'nullable|date|date_format:d-m-Y',
                 'leave_description' => 'nullable|string|max:50'
             ], 
             [
@@ -145,7 +145,7 @@ class SessionReportController extends Controller {
         $report = new Report();
         $report->mentor_id = $request->user()->id;
         $report->mentee_id = $request->mentee_id;
-        $report->session_date = Carbon::createFromFormat('m/d/Y',$request->session_date)->setTime(0,0,0);
+        $report->session_date = Carbon::createFromFormat('d-m-Y',$request->session_date)->setTime(0,0,0);
         $report->rating_id = $request->rating_id;
         $report->length_of_session = $request->length_of_session;
         $report->activity_type_id = $request->activity_type_id;
@@ -161,7 +161,7 @@ class SessionReportController extends Controller {
     private function saveNextPlannedSession(Request $request) {
         $plannedSession = new PlannedSession();
         $plannedSession->mentee_id = $request->mentee_id;
-        $plannedSession->date = Carbon::createFromFormat('m/d/Y',$request->next_session_date)->setTime(0,0,0);
+        $plannedSession->date = Carbon::createFromFormat('d-m-Y',$request->next_session_date)->setTime(0,0,0);
         $plannedSession->location = $request->next_session_location;
         $plannedSession->save();
         return $plannedSession;
@@ -180,8 +180,8 @@ class SessionReportController extends Controller {
                 $leave->mentor_id = $request->mentor_id;
             }
 
-            $leave->start_date = Carbon::createFromFormat('m/d/Y',$request->leave_start_date)->setTime(0,0,0);
-            $leave->end_date = Carbon::createFromFormat('m/d/Y',$request->leave_end_date)->setTime(0,0,0);
+            $leave->start_date = Carbon::createFromFormat('d-m-Y',$request->leave_start_date)->setTime(0,0,0);
+            $leave->end_date = Carbon::createFromFormat('d-m-Y',$request->leave_end_date)->setTime(0,0,0);
             $leave->description = $request->leave_description;
             $leave->save();
             return $leave;

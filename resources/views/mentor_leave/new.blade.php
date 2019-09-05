@@ -79,29 +79,20 @@
     </div>
 @endsection
 
-
-
-@section('scripts')
-    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
-@endsection
-
-
 @section('body-scripts')
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-
     <script>
-        $( function() {
-            $( ".datepicker" ).datepicker({
-                format: 'yyyy-mm-dd'
+        $(function() {
+            $(".datepicker" ).datepicker({
+                dateFormat: 'dd-mm-yy'
             });
-        } );
+        });
 
         $(document).ready(function() {
             $('[data-toggle="popover"]').popover({
-              html: true,
-              placement: 'auto left'
+                html: true,
+                placement: 'auto left'
             });
-          });
+        });
     </script>
 
 @endsection
