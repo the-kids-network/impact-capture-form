@@ -98,6 +98,13 @@ Route::get('/planned-session/new','Event\PlannedSessionController@create');
 Route::resource('/planned-session','Event\PlannedSessionController');
 Route::resource('/calendar','Event\CalendarController');
 
+// Documents
+Route::post('/document/{id}/share','DocumentController@share');
+Route::post('/document/{id}/restore','DocumentController@restore');
+Route::delete('/document/{id}','DocumentController@destroy');
+Route::get('/document/upload','DocumentController@uploadIndex');
+Route::resource('/document','DocumentController');
+
 // Old routes to deprecate eventually once people's symlinks are updated
 Route::redirect('/my-reports', '/report/new');
 Route::redirect('/own-reports', '/report');

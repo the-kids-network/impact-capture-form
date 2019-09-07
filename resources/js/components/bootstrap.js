@@ -10,6 +10,7 @@ import security from './settings/security';
 import updatePassword from './settings/security/update-password';
 import register from './register/register';
 import calendar from './calendar/calendar';
+import documentUpload from './document/upload';
 
 // Load all specific globally registered Vue components
 Vue.component('nav-bar', navbar)
@@ -29,9 +30,11 @@ Vue.use(LocalStorage, {
   }
 );
 Vue.use(VueSessionStorage)
+
 new Vue({
     mixins: [app],
     components: {
-        'calendar': calendar
+        'calendar': calendar,
+        'document-upload': documentUpload
     }
 });
