@@ -7,7 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <p><b>Welcome to the Calendar!</b> From here you can create and change planned sessions and leave.
-                    <br/></br>
+                    <br/><br/>
                     Click on an event in the calendar to change/delete it. Or use the links on the right to add a new event.
                 </p>
         </div>

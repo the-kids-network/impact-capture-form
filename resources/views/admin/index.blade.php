@@ -86,6 +86,30 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <h3>Document Sharing</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-cloud-upload-alt text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/document/upload') }}">Upload</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-folder-open text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/document') }}">Browse & Manage</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
                 <h3>Reporting</h3>
             </div>
 

@@ -38,11 +38,11 @@ class SessionSubmissionPageTest extends DuskTestCase
             $browser->loginAs($user)->visit(new SessionSubmissionPage());
 
             $browser->value('[name=rating_id]', '2'); // Poor
-            $browser->value('[name=session_date]', '08/29/2018');
+            $browser->value('[name=session_date]', '29-08-2018');
             $browser->value('[name=length_of_session]', '1');
             $browser->value('[name=location]', 'Home');
             $browser->value('[name=meeting_details]', 'Here are the meeting details');
-            $browser->value('[name=next_session_date]', Carbon::now()->addDay()->format('m/d/Y'));
+            $browser->value('[name=next_session_date]', Carbon::now()->addDay()->format('d-m-Y'));
             $browser->value('[name=next_session_location]', 'Next location');
 
             $browser->element('[name=report_submit]')->click();

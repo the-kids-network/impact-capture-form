@@ -16,7 +16,7 @@ use Carbon\Carbon;
 class PlannedSessionController extends Controller {
 
     private $validationRules = [
-        'next_session_date' => 'required|date|date_format:m/d/Y',
+        'next_session_date' => 'required|date|date_format:d-m-Y',
         'next_session_location' => 'required|string|max:50'
     ];
 
@@ -130,7 +130,7 @@ class PlannedSessionController extends Controller {
 
     private function mapRequestToPlannedSession($plannedSession, $request) {
         $plannedSession->mentee_id = $request->mentee_id;
-        $plannedSession->date = Carbon::createFromFormat('m/d/Y', $request->next_session_date)->setTime(0,0,0);
+        $plannedSession->date = Carbon::createFromFormat('d-m-Y', $request->next_session_date)->setTime(0,0,0);
         $plannedSession->location = $request->next_session_location;
         return $plannedSession;
     }

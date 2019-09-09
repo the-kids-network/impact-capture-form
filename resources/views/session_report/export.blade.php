@@ -32,7 +32,7 @@
                             <td>{{ $report->id }}</td>
                             <td>{{ $report->mentor->name }}</td>
                             <td>{{ $report->mentee->name }}</td>
-                            <td>{{ $report->session_date->format('d-m-y') }}</td>
+                            <td>{{ $report->session_date->format('d-m-Y') }}</td>
                             <td>{{ $report->length_of_session }}</td>
                             <td>{{ $report->activity_type->name }}</td>
                             <td>{{ $report->location }}</td>
