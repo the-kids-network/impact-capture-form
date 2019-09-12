@@ -156,20 +156,15 @@ jQuery.fn.TableCSVExport = function (options) {
     function popup(data) {
         if (options.delivery == 'download') {
             var blob = new Blob(['\ufeff'+data], { type: 'text/csv;charset=utf-8;' });
-            if (navigator.msSaveBlob) { // IE 10+
+            if (navigator.msSaveOrOpenBlob) { // IE 10+
                 navigator.msSaveBlob(blob, options.filename);
             } else {
-                var link = document.createElement("a");
-                var url = URL.createObjectURL(blob);
-                var isSafari = navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1;
-                if (isSafari) //if Safari open in new window to save file with random filename.
-                    link.setAttribute("target", "_blank");
-                link.setAttribute("href", url);
-                link.setAttribute("download", options.filename);
-                link.style = "visibility:hidden";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                var elem = window.document.createElement('a');
+                elem.href = window.URL.createObjectURL(blob);
+                elem.download = options.filename;        
+                document.body.appendChild(elem);
+                elem.click();        
+                document.body.removeChild(elem);
             }
             return true;
         } else {
