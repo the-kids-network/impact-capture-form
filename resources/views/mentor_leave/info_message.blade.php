@@ -1,5 +1,5 @@
 <div class="mentee-leave-info alert alert-info" role="alert">
-    Please make sure that you have informed your mentee and their parent / caregiver about your time away. 
+    Please make sure that you have informed your mentee, their parent / caregiver and TKN about your time away. 
     <a data-toggle="popover" 
         data-trigger="hover" 
         data-content="We encourage you to make up the sessions before and after going away by having additional sessions.<br/><br/>
