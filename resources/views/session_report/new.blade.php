@@ -89,7 +89,8 @@
                                 <div class="col-md-6">
                                     <select class="form-control" name="safeguarding_concern">
                                         <option value="0" @if( old('safeguarding_concern') == 0) selected="selected" @endif>No</option>
-                                        <option value="1" @if( old('safeguarding_concern') == 1) selected="selected" @endif>Yes</option>
+                                        <option value="1" @if( old('safeguarding_concern') == 1) selected="selected" @endif>Yes - Serious concern (please complete safeguarding cause for concern form)</option>
+                                        <option value="2" @if( old('safeguarding_concern') == 2) selected="selected" @endif>Yes - Mild concern (please outline in report)</option>
                                     </select>
                                 </div>
                             </div>

@@ -77,7 +77,7 @@ class SessionReportController extends Controller {
                 'length_of_session' => 'required|numeric|min:1|max:24',
                 'activity_type_id' => 'required|exists:activity_types,id',
                 'location' => 'required|string|max:50',
-                'safeguarding_concern' => 'required|boolean',
+                'safeguarding_concern' => 'required|numeric|min:0|max:2',
                 'emotional_state_id' => 'required|exists:emotional_states,id',
                 'meeting_details' => 'required|string|max:20000',
                 'next_session_date' => 'required|date|date_format:d-m-Y|after_or_equal:today',
@@ -92,7 +92,8 @@ class SessionReportController extends Controller {
                 'session_date.before_or_equal' => 'The session date should be before or equal to today.',
                 'rating_id.min' => 'The session rating field is required.',
                 'next_session_date.after_or_equal' => 'The next session date should be in the future.',
-                'leave_start_date.before_or_equal' => 'The leave start date should be before or equal to the end date.'
+                'leave_start_date.before_or_equal' => 'The leave start date should be before or equal to the end date.',
+                'safeguarding_concern' => 'Please pick a safeguarding option.'
             ]
         );
 

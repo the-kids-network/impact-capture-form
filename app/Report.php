@@ -9,7 +9,6 @@ class Report extends Model
 {
 
     protected $casts = [
-      'safeguarding_concern' => 'boolean'
     ];
 
     protected $dates = [
@@ -40,6 +39,15 @@ class Report extends Model
 
     public function session_rating() {
         return $this->belongsTo('App\SessionRating', 'rating_id');
+    }
+
+    public function safeguardingConcernTypeAttribute() {
+        if ($this->safeguarding_concern == 1)
+            return "Serious";
+        else if ($this->safeguarding_concern == 2)
+            return "Mild";
+        else
+            return "None";
     }
 
     public function scopeCanSee($query) {

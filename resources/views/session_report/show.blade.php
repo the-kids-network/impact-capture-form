@@ -54,7 +54,13 @@
 
                         <tr>
                             <td>Safeguarding Concern</td>
-                            <td>@if($report->safeguarding_concern) Yes @else No @endif</td>
+                            <td>
+                                @if($report->safeguarding_concern) 
+                                    Yes - {{$report->safeguardingConcernTypeAttribute()}}
+                                @else 
+                                    No
+                                @endif
+                            </td>
                         </tr>
 
                         <tr>
