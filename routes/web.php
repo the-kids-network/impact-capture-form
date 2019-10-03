@@ -58,9 +58,7 @@ Route::delete('/delete-all','HomeController@deleteAll');
 
 // Admin session form lookups
 Route::post('/activity-type/restore/{id}','ActivityTypeController@restore');
-Route::post('/physical-appearance/restore/{id}','PhysicalAppearanceController@restore');
 Route::post('/emotional-state/restore/{id}','EmotionalStateController@restore');
-Route::resource('/physical-appearance','PhysicalAppearanceController');
 Route::resource('/emotional-state','EmotionalStateController');
 Route::resource('/activity-type','ActivityTypeController');
 

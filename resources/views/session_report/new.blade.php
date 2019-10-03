@@ -94,20 +94,6 @@
                                 </div>
                             </div>
 
-                            <!-- Mentee's Physical Appearance -->
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Mentee's Physical Appearance</label>
-                                <div class="col-md-6">
-                                    <select class="form-control" name="physical_appearance_id">
-                                        @foreach($physical_appearances as $physical_appearance)
-                                            <option value="{{ $physical_appearance->id }}" @if( old('physical_appearance_id') == $physical_appearance->id ) selected="selected" @endif>
-                                                {{ $physical_appearance->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
                             <!-- Emotional State -->
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Mentee's Emotional State</label>

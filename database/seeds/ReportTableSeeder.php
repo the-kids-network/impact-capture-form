@@ -28,7 +28,6 @@ class ReportTableSeeder extends Seeder
             'activity_type_id' => 1,
             'location' => 'Location',
             'safeguarding_concern' => false,
-            'physical_appearance_id' => 1,
             'emotional_state_id' => 1,
             'meeting_details' => $meeting_details,
             'rating_id' => $rating_id

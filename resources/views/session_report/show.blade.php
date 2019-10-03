@@ -58,11 +58,6 @@
                         </tr>
 
                         <tr>
-                            <td>Mentee's Physical Appearance</td>
-                            <td>{{ $report->physical_appearance->name }}</td>
-                        </tr>
-
-                        <tr>
                             <td>Mentee's Emotional State</td>
                             <td>{{ $report->emotional_state->name }}</td>
                         </tr>

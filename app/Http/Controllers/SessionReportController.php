@@ -12,7 +12,6 @@ use App\Report;
 use App\PlannedSession;
 use App\ActivityType;
 use App\EmotionalState;
-use App\PhysicalAppearance;
 use App\SessionRating;
 use App\MentorLeave;
 use App\MenteeLeave;
@@ -37,7 +36,6 @@ class SessionReportController extends Controller {
         return view('session_report.new')
             ->with('mentees',$request->user()->mentees)
             ->with('activity_types', ActivityType::all())
-            ->with('physical_appearances',PhysicalAppearance::all())
             ->with('emotional_states',EmotionalState::all())
             ->with('session_ratings',SessionRating::selectable())
             ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() );
@@ -80,7 +78,6 @@ class SessionReportController extends Controller {
                 'activity_type_id' => 'required|exists:activity_types,id',
                 'location' => 'required|string|max:50',
                 'safeguarding_concern' => 'required|boolean',
-                'physical_appearance_id' => 'required|exists:physical_appearances,id',
                 'emotional_state_id' => 'required|exists:emotional_states,id',
                 'meeting_details' => 'required|string|max:20000',
                 'next_session_date' => 'required|date|date_format:d-m-Y|after_or_equal:today',
@@ -151,7 +148,6 @@ class SessionReportController extends Controller {
         $report->activity_type_id = $request->activity_type_id;
         $report->location = $request->location;
         $report->safeguarding_concern = $request->safeguarding_concern;
-        $report->physical_appearance_id = $request->physical_appearance_id;
         $report->emotional_state_id = $request->emotional_state_id;
         $report->meeting_details = $request->meeting_details;
         $report->save();

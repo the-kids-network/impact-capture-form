@@ -22,7 +22,6 @@
                         <th>Activity Type</th>
                         <th>Location</th>
                         <th>Safeguarding Concern</th>
-                        <th>Physical Appearance</th>
                         <th>Emotional State</th>
                         <th>Meeting Details</th>
                     </tr>
@@ -37,7 +36,6 @@
                             <td>{{ $report->activity_type->name }}</td>
                             <td>{{ $report->location }}</td>
                             <td>@if($report->safeguarding_concern) Yes @else No @endif</td>
-                            <td>{{ $report->physical_appearance->name }}</td>
                             <td>{{ $report->emotional_state->name }}</td>
                             <td>{{ $report->meeting_details }}</td>
                         </tr>

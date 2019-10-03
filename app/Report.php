@@ -34,10 +34,6 @@ class Report extends Model
         return $this->belongsTo('App\EmotionalState')->withTrashed();
     }
 
-    public function physical_appearance(){
-        return $this->belongsTo('App\PhysicalAppearance')->withTrashed();
-    }
-
     public function expense_claims(){
         return $this->hasMany('App\ExpenseClaim');
     }
