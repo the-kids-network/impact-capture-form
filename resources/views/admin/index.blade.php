@@ -30,15 +30,6 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
-                        <i class="fa fa-eye text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/physical-appearance') }}">Physical Appearance</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
                         <i class="fa fa-smile text-feature"></i>
                         <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/emotional-state') }}">Emotional State</a>
                     </div>

@@ -16,7 +16,6 @@ use Tests\Browser\Pages\ExpenseClaimsPage;
 use Tests\Browser\Pages\ManagerPage;
 use Tests\Browser\Pages\MenteePage;
 use Tests\Browser\Pages\MentorPage;
-use Tests\Browser\Pages\PhysicalAppearancePage;
 use Tests\Browser\Pages\RegisterUserPage;
 use Tests\Browser\Pages\SessionReportsPage;
 
@@ -60,7 +59,7 @@ class MainMenuTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $testing = [['ONE' => 2]];
-            $availableActions = ['ACTIVITY TYPES', 'MENTEE', 'PHYSICAL APPEARANCE', 'EMOTIONAL STATE', 'SESSION REPORTS',
+            $availableActions = ['ACTIVITY TYPES', 'MENTEE', 'EMOTIONAL STATE', 'SESSION REPORTS',
                                  'EXPENSE CLAIMS', 'MENTOR', 'MANAGER', 'ADMIN'];
             $user = User::where('email', 'admin@example.com')->firstOrFail();
 
@@ -75,7 +74,7 @@ class MainMenuTest extends DuskTestCase
     public function testCanFollowLinks()
     {
         $this->browse(function (Browser $browser) {
-            $actions = [new ActivityTypesPage(), new AdminPage(), new EmotionalStatePage(), new ExpenseClaimsPage(), new ManagerPage(), new MenteePage(), new PhysicalAppearancePage(),
+            $actions = [new ActivityTypesPage(), new AdminPage(), new EmotionalStatePage(), new ExpenseClaimsPage(), new ManagerPage(), new MenteePage(),
                         new RegisterUserPage(), new SessionReportsPage()];
 
             $user = User::where('email', 'admin@example.com')->firstOrFail();

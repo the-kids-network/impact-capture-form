@@ -54,12 +54,13 @@
 
                         <tr>
                             <td>Safeguarding Concern</td>
-                            <td>@if($report->safeguarding_concern) Yes @else No @endif</td>
-                        </tr>
-
-                        <tr>
-                            <td>Mentee's Physical Appearance</td>
-                            <td>{{ $report->physical_appearance->name }}</td>
+                            <td>
+                                @if($report->safeguarding_concern) 
+                                    Yes - {{$report->safeguardingConcernTypeAttribute()}}
+                                @else 
+                                    No
+                                @endif
+                            </td>
                         </tr>
 
                         <tr>

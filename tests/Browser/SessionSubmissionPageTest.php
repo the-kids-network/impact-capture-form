@@ -25,7 +25,6 @@ class SessionSubmissionPageTest extends DuskTestCase
             $browser->assertSelected('rating_id', 0); // Empty String
             $browser->assertSelected('activity_type_id', 1); // Basketball
             $browser->assertSelected('safeguarding_concern', 0); // No
-            $browser->assertSelected('physical_appearance_id', 1); // Strong
             $browser->assertSelected('emotional_state_id', 1); // Happy
         });
     }
@@ -58,7 +57,6 @@ class SessionSubmissionPageTest extends DuskTestCase
             $browser->assertSee('Basketball');
             $browser->assertSee('Home');
             $browser->assertSee('No');
-            $browser->assertSee('Strong');
             $browser->assertSee('Happy');
             $browser->assertSee('Here are the meeting details');
         });

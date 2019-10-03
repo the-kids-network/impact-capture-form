@@ -89,21 +89,8 @@
                                 <div class="col-md-6">
                                     <select class="form-control" name="safeguarding_concern">
                                         <option value="0" @if( old('safeguarding_concern') == 0) selected="selected" @endif>No</option>
-                                        <option value="1" @if( old('safeguarding_concern') == 1) selected="selected" @endif>Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Mentee's Physical Appearance -->
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Mentee's Physical Appearance</label>
-                                <div class="col-md-6">
-                                    <select class="form-control" name="physical_appearance_id">
-                                        @foreach($physical_appearances as $physical_appearance)
-                                            <option value="{{ $physical_appearance->id }}" @if( old('physical_appearance_id') == $physical_appearance->id ) selected="selected" @endif>
-                                                {{ $physical_appearance->name }}
-                                            </option>
-                                        @endforeach
+                                        <option value="1" @if( old('safeguarding_concern') == 1) selected="selected" @endif>Yes - Serious concern (please complete safeguarding cause for concern form)</option>
+                                        <option value="2" @if( old('safeguarding_concern') == 2) selected="selected" @endif>Yes - Mild concern (please outline in report)</option>
                                     </select>
                                 </div>
                             </div>

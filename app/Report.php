@@ -9,7 +9,6 @@ class Report extends Model
 {
 
     protected $casts = [
-      'safeguarding_concern' => 'boolean'
     ];
 
     protected $dates = [
@@ -34,16 +33,21 @@ class Report extends Model
         return $this->belongsTo('App\EmotionalState')->withTrashed();
     }
 
-    public function physical_appearance(){
-        return $this->belongsTo('App\PhysicalAppearance')->withTrashed();
-    }
-
     public function expense_claims(){
         return $this->hasMany('App\ExpenseClaim');
     }
 
     public function session_rating() {
         return $this->belongsTo('App\SessionRating', 'rating_id');
+    }
+
+    public function safeguardingConcernTypeAttribute() {
+        if ($this->safeguarding_concern == 1)
+            return "Serious";
+        else if ($this->safeguarding_concern == 2)
+            return "Mild";
+        else
+            return "None";
     }
 
     public function scopeCanSee($query) {

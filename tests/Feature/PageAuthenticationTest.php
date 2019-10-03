@@ -25,7 +25,6 @@ class PageAuthenticationTest extends TestCase
 
                               ['/activity-type'                 , 302   , 401   , 401       , 200],
                               ['/emotional-state'               , 302   , 401   , 401       , 200],
-                              ['/physical-appearance'           , 302   , 401   , 401       , 200],
 
                               ['/finance/expense-claim/export'  , 302   , 401   , 401       , 200],
                               ['/finance/process-expense-claims', 302   , 401   , 401       , 200],
