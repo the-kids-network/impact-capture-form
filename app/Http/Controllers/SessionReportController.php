@@ -74,7 +74,7 @@ class SessionReportController extends Controller {
                 'mentee_id' => 'required|exists:mentees,id',
                 'session_date' => 'required|date|date_format:d-m-Y|before_or_equal:today',
                 'rating_id' => 'required|exists:session_ratings,id|numeric|min:2',
-                'length_of_session' => 'required|numeric|min:1|max:24',
+                'length_of_session' => 'required|numeric|min:0|max:24',
                 'activity_type_id' => 'required|exists:activity_types,id',
                 'location' => 'required|string|max:50',
                 'safeguarding_concern' => 'required|numeric|min:0|max:2',
