@@ -29,16 +29,17 @@ window.moment.defineLocale('en-short', {
 });
 window.moment.locale('en');
 
-
+// JQuery
 if (window.$ === undefined || window.jQuery === undefined) {
     window.$ = window.jQuery = require('jquery');
 }
-
 require('jquery-ui/ui/widgets/datepicker');
 
+// Bootstrap things
 require('bootstrap/dist/js/npm');
 require('bootstrap-table/dist/bootstrap-table');
 
+// Full calendar
 require('@fullcalendar/core');
 require('@fullcalendar/daygrid');
 require('@fullcalendar/timegrid');
