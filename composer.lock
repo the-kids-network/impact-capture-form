@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f35d6e6c54cd01b6d7d6a6bcb4e9dc73",
+    "content-hash": "d247090ff86cc7ca93a909b976c92f16",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -159,16 +159,16 @@
         },
         {
             "name": "components/font-awesome",
-            "version": "5.9.0",
+            "version": "5.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/font-awesome.git",
-                "reference": "1be57c473b964c8130f2dbd9edc4f64db5394114"
+                "reference": "f4f114c4ab37d101e6a15370769bc0af681792fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/font-awesome/zipball/1be57c473b964c8130f2dbd9edc4f64db5394114",
-                "reference": "1be57c473b964c8130f2dbd9edc4f64db5394114",
+                "url": "https://api.github.com/repos/components/font-awesome/zipball/f4f114c4ab37d101e6a15370769bc0af681792fa",
+                "reference": "f4f114c4ab37d101e6a15370769bc0af681792fa",
                 "shasum": ""
             },
             "type": "component",
@@ -190,7 +190,7 @@
                 "OFL-1.1"
             ],
             "description": "Font Awesome, the iconic SVG, font, and CSS framework.",
-            "time": "2019-06-07T02:02:10+00:00"
+            "time": "2019-11-13T10:33:06+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

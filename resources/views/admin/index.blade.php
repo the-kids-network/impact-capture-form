@@ -4,45 +4,8 @@
 
     <div class="container">
         <div class="row">
-
             <div class="col-md-12">
-                <h3>Modify Session Report Form</h3>
-            </div>
-
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
-                        <i class="fa fa-child text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/mentee') }}">Mentee</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
-                        <i class="fa fa-bicycle text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/activity-type') }}">Activity Types</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
-                        <i class="fa fa-smile text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/emotional-state') }}">Emotional State</a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h3>View / Export Data</h3>
+                <h3>Main</h3>
             </div>
 
             <div class="col-md-4">
@@ -101,6 +64,57 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <h3>Funding</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fab fa-gratipay text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/funder') }}">Funders</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-money-bill-alt text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/funding') }}">Mentor Funding</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Finance</h3>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-credit-card text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/finance/process-expense-claims') }}">Process Expense Claims</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-download text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/finance/expense-claim/export') }}">Download Expense Claims</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
                 <h3>Reporting</h3>
             </div>
 
@@ -119,6 +133,15 @@
         <div class="row">
             <div class="col-md-12">
                 <h3>Manage Roles</h3>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-child text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/mentee') }}">Mentee</a>
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-4">
@@ -161,15 +184,16 @@
 
     <div class="container">
         <div class="row">
+
             <div class="col-md-12">
-                <h3>Finance</h3>
+                <h3>Modify Session Report Form</h3>
             </div>
 
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
-                        <i class="fa fa-credit-card text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/finance/process-expense-claims') }}">Process Expense Claims</a>
+                        <i class="fa fa-bicycle text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/activity-type') }}">Activity Types</a>
                     </div>
                 </div>
             </div>
@@ -177,8 +201,8 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
-                        <i class="fa fa-download text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/finance/expense-claim/export') }}">Download Expense Claims</a>
+                        <i class="fa fa-smile text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/emotional-state') }}">Emotional State</a>
                     </div>
                 </div>
             </div>
