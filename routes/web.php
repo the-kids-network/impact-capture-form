@@ -103,6 +103,12 @@ Route::delete('/document/{id}','DocumentController@destroy');
 Route::get('/document/upload','DocumentController@uploadIndex');
 Route::resource('/document','DocumentController');
 
+// Funding
+Route::get('/funding/export','Funding\FundingController@export')->name('funding.export');
+Route::post('/funder/{id}/restore','Funding\FunderController@restore');
+Route::resource('/funding','Funding\FundingController');
+Route::resource('/funder','Funding\FunderController');
+
 // Old routes to deprecate eventually once people's symlinks are updated
 Route::redirect('/my-reports', '/report/new');
 Route::redirect('/own-reports', '/report');

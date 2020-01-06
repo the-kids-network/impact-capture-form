@@ -5,20 +5,15 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
-                        <i class="fa fa-credit-card text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/expense-claim') }}">View Expense Claims</a>
-                    </div>
-                </div>
+            <div class="col-md-12">
+                <h3>Main</h3>
             </div>
 
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-book text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/report') }}">View Session Reports</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/report') }}">Session Reports</a>
                     </div>
                 </div>
             </div>
@@ -26,17 +21,8 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
-                        <i class="fa fa-download text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/report/export') }}">Download Session Reports</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body text-center">
-                        <i class="fa fa-download text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/expense-claim/export') }}">Download Expense Claims</a>
+                        <i class="fa fa-credit-card text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/expense-claim') }}">Expense Claims</a>
                     </div>
                 </div>
             </div>
@@ -49,7 +35,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
+    <div class="container">
+        <div class="row">
             <div class="col-md-12">
                 <h3>Document Sharing</h3>
             </div>
@@ -69,7 +59,27 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Funding</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-money-bill-alt text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/funding') }}">Mentor Funding</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
             <div class="col-md-12">
                 <h3>Reporting</h3>
             </div>
