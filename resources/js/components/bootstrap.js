@@ -11,6 +11,8 @@ import updatePassword from './settings/security/update-password';
 import register from './register/register';
 import calendar from './calendar/calendar';
 import documentUpload from './document/upload';
+import documentList from './document/list';
+
 
 // Load all specific globally registered Vue components
 Vue.component('nav-bar', navbar)
@@ -21,6 +23,10 @@ Vue.component('update-profile-photo', updateProfilePhoto)
 Vue.component('security', security)
 Vue.component('update-password', updatePassword)
 Vue.component('register', register)
+Vue.component('calendar', calendar)
+Vue.component('document-upload', documentUpload)
+Vue.component('document-list', documentList)
+
 
 // Load Vue app
 Vue.use(LocalStorage, {
@@ -34,7 +40,6 @@ Vue.use(VueSessionStorage)
 new Vue({
     mixins: [app],
     components: {
-        'calendar': calendar,
-        'document-upload': documentUpload
+
     }
 });

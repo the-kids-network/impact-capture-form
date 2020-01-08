@@ -17,9 +17,15 @@ class Document extends Model {
 
     protected $fillable = ['user_id'];
 
-    public function extension() {
+    protected $appends = ['extension', 'trashed'];
+
+    public function getExtensionAttribute() {
         $infoPath = pathinfo($this->path);
         return $infoPath['extension'];
+    }
+
+    public function getTrashedAttribute() {
+        return $this->trashed();
     }
 
     public function user() {
