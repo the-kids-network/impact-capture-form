@@ -97,11 +97,11 @@ Route::resource('/planned-session','Event\PlannedSessionController');
 Route::resource('/calendar','Event\CalendarController');
 
 // Documents
-Route::post('/document/{id}/share','DocumentController@share');
-Route::post('/document/{id}/restore','DocumentController@restore');
-Route::delete('/document/{id}','DocumentController@destroy');
-Route::get('/document/upload','DocumentController@uploadIndex');
-Route::resource('/document','DocumentController');
+Route::post('/document/{id}/share','\App\Domains\Documents\Controllers\DocumentController@share');
+Route::post('/document/{id}/restore','\App\Domains\Documents\Controllers\DocumentController@restore');
+Route::delete('/document/{id}','\App\Domains\Documents\Controllers\DocumentController@destroy');
+Route::get('/document/upload','\App\Domains\Documents\Controllers\DocumentController@uploadIndex');
+Route::resource('/document','\App\Domains\Documents\Controllers\DocumentController');
 
 // Funding
 Route::get('/funding/export','\App\Domains\Funding\Controllers\FundingController@export')->name('funding.export');
