@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Funding;
+namespace App\Domains\Funding\Controllers;
 
-use App\Funder;
-use App\Funding;
+use App\Domains\Funding\Models\Funder;
+use App\Domains\Funding\Models\Funding;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +51,7 @@ class FunderController extends Controller {
                 $status = 'Funder deleted.';
             }
 
-        } else{
+        } else {
             $funder = Funder::find($id);
             $funder->delete();
             $status = 'Funder deactivated.';

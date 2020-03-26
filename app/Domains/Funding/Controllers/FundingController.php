@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Funding;
+namespace App\Domains\Funding\Controllers;
 
-use App\Funder;
-use App\Funding;
+use App\Domains\Funding\Models\Funder;
+use App\Domains\Funding\Models\Funding;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -29,7 +29,6 @@ class FundingController extends Controller {
     }
 
     public function store(Request $request) {
-        // dd($request);
         $request->validate([
             'mentor_id'    => 'required|exists:users,id',
             'funder_id'    => 'required|exists:funders,id',

@@ -104,10 +104,10 @@ Route::get('/document/upload','DocumentController@uploadIndex');
 Route::resource('/document','DocumentController');
 
 // Funding
-Route::get('/funding/export','Funding\FundingController@export')->name('funding.export');
-Route::post('/funder/{id}/restore','Funding\FunderController@restore');
-Route::resource('/funding','Funding\FundingController');
-Route::resource('/funder','Funding\FunderController');
+Route::get('/funding/export','\App\Domains\Funding\Controllers\FundingController@export')->name('funding.export');
+Route::post('/funder/{id}/restore','\App\Domains\Funding\Controllers\FunderController@restore');
+Route::resource('/funding','\App\Domains\Funding\Controllers\FundingController');
+Route::resource('/funder','\App\Domains\Funding\Controllers\FunderController');
 
 // Old routes to deprecate eventually once people's symlinks are updated
 Route::redirect('/my-reports', '/report/new');
