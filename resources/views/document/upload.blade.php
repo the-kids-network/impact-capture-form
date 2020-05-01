@@ -10,7 +10,7 @@
                     <div class="panel-body">
                         <document-upload> </document-upload>
                         <br />
-                        <a href="{{ url('/document') }}">Browse Documents</a>
+                        <a href="{{ url('/documents/index') }}">Browse Documents</a>
                     </div>
                 </div>
             </div>

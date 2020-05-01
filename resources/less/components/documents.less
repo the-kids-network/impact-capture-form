@@ -62,7 +62,7 @@
     width:100%
 }
 
-// Document browser
+// Document browser / manager
 .preview {
     text-align:center;
 }
@@ -73,4 +73,50 @@
 
 .actions .item {
     display: inline-block;
+}
+
+
+// Document tagger
+.document-tagger {
+    margin: 15px;
+}
+
+.document-tagger .entry {
+    .tags-input {
+        margin-top: 15px;
+        width: 100%;
+        max-width: none;
+
+        .ti-input {
+            .ti-tags {
+                .ti-tag {
+                    font-size: 15px;
+                    background-color: #A41250;
+                }
+                .ti-tag.ti-deletion-mark {
+                    background-color: #ff0000;
+                }
+            }
+        }
+
+        .ti-autocomplete {
+            // to enable scroll on long autocomplete list
+            overflow-y: auto; 
+            max-height: 200px;
+
+            .ti-selected-item {
+                background-color: #e84e1b;
+            }
+        }
+    } 
+}
+
+.document-tagger .spacer {
+    height: 200px;
+    border: 0px;
+}
+
+.document-tagger .done {
+    margin-top: 15px;
+    width: 100%;
 }

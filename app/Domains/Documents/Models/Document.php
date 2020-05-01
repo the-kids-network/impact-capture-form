@@ -32,7 +32,7 @@ class Document extends Model {
         return $this->belongsTo('App\User');
     }
 
-    public function scopeCanModify($query) {
+    public function scopeModifiable($query) {
         if (Auth::user()->isAdmin()) {
             $query->withTrashed();
         } else if (Auth::user()->isManager()){
@@ -45,7 +45,7 @@ class Document extends Model {
         return $query;
     }
 
-    public function scopeCanSee($query) {
+    public function scopeViewable($query) {
         if (Auth::user()->isMentor()) {
             $query->whereIsShared(true);
         } else {

@@ -38,7 +38,7 @@
                         </tr>
 
                         <tr>
-                            <td>Session Length</td>
+                            <td>Session Length (Hours)</td>
                             <td>{{ $report->length_of_session }}</td>
                         </tr>
 

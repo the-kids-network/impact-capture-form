@@ -42,10 +42,7 @@ const Component = {
             <br />
 
             <div class="uploads" v-if="documentCount > 0">
-                <table class="table documents upload" 
-                    data-toggle="table" 
-                    data-search="false" 
-                    data-pagination="false">
+                <table class="table documents upload">
                     <thead>
                         <tr>
                             <th></th>
@@ -179,7 +176,7 @@ const Component = {
             }
 
             // submit form
-            axios.post( '/document',
+            axios.post( '/documents',
                 formData, 
                 {
                     headers: {

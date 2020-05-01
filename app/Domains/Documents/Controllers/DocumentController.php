@@ -3,51 +3,51 @@
 namespace App\Domains\Documents\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Domains\Documents\Models\Document;
+use App\Domains\Documents\Services\DocumentService;
+use App\Exceptions\NotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class DocumentController extends Controller {
 
-    public function __construct() {
+    private $documentService;
+
+    public function __construct(DocumentService $documentService) {
+        $this->documentService = $documentService;
+
         $this->middleware('auth');
         $this->middleware('hasAnyOfRoles:admin,manager')->only('uploadIndex', 'store', 'share', 'destroy', 'restore');
     }
 
-    public function uploadIndex(Request $request) {
+    public function uploadIndex() {
         return view('document.upload');
     }
 
-    public function index(Request $request) {
-        $documents = Document::canSee()->orderBy('updated_at', 'desc')->get();
-
-        return view('document.index')->with('documents', $documents);
+    public function index() {
+        return view('document.index');
     }
 
-    public function show(Request $request, $id) {
-        $document = Document::canSee()->whereId($id)->first();
-        if (!$document) abort(401,'Unauthorized');
+    public function getAll() {
+        $documents = $this->documentService->getAll();
 
-        // get temporary url for download direct from storage
-        $url = Storage::temporaryUrl(
-            $document->path,
-            now()->addMinutes(2),
-            ['ResponseContentType' => 'application/octet-stream']
-        );
-
-        return redirect($url);
+        return response()->json($documents);
     }
 
-    public function share($id, Request $request) {
-        $document = Document::canModify()->whereId($id)->first();
-        if (!$document) abort(401,'Unauthorized');
+    public function getOne(Request $reuqest, $id) {
+        abort(405, 'Method not allowed');
+    }
 
-        $document->is_shared = filter_var($request->share, FILTER_VALIDATE_BOOLEAN);;
-        $document->save();
+    public function download($id) {
+        $url = null;
+        try {
+            $url = $this->documentService->getViewableUrlFor($id);
+        } catch (NotFoundException $e) {
+            abort(401,'Unauthorized');
+        }
 
-        return redirect('/document')->with('status', 'Document '.(($document->is_shared) ? 'shared' : 'unshared').' to mentors.');
+        return response()->json([
+            'id' => $id,
+            'download_url' => $url
+        ]);
     }
 
     public function store(Request $request) {
@@ -59,30 +59,7 @@ class DocumentController extends Controller {
             'file.*' => 'mimes:jpeg,jpg,png,gif,bmp,pdf,doc,docx,dot,txt,text,mp4,avi,mkv,xls,xlsx,ppt,pptx,pps|max:200000'
         ]);
 
-        $failedKeys = [];
-        foreach (array_keys($request->file_attributes) as $key) {
-            try {
-                $attributes = $request->file_attributes[$key];
-                $file = $request->file('file')[$key];
-
-                // store/replace file in s3
-                $path = Storage::putFileAs('documents', $file, $file->getClientOriginalName());
-
-                // create/update document model
-                $doc = Document::canModify()->wherePath($path)->first();
-                if (!$doc) $doc = new Document();
-                $doc->user_id = Auth::id();
-                $doc->title = $attributes['title'];
-                $doc->is_shared = filter_var($attributes['shared'], FILTER_VALIDATE_BOOLEAN);
-                $doc->path = $path;
-                $doc->save();
-
-            } catch (\Exception $e) {
-                Log::error("Failed to store file ".$key." with attributes ".json_encode($attributes));
-                Log::error($e->getMessage());
-                $failedKeys[$key] = ["Failed to store file ".$key];
-            }
-        }
+        $failedKeys = $this->documentService->store($request->file_attributes, $request->file('file'));
 
         if ($failedKeys) {
             return response()->json(
@@ -102,27 +79,40 @@ class DocumentController extends Controller {
         }
     }
 
-    public function destroy(Request $request) {
-        $document = Document::canModify()->whereId($request->id)->first();
-        if (!$document) abort(401,'Unauthorized');
+    public function share(Request $request, $id) {
+        $share = filter_var($request->json()->all()['share'], FILTER_VALIDATE_BOOLEAN);
 
-        if ($request->really_delete) {
-            $document->forceDelete();
-            Storage::delete($document->path);
-        } else {
-            $document->delete();
+        $document = null;
+        try {
+            $document = $this->documentService->share($id, $share);
+        } catch (NotFoundException $e) {
+            abort(401,'Unauthorized');
         }
 
-        return redirect('/document')
-            ->with('status', ($request->really_delete) ? 'Document permanently deleted' : 'Document trashed');
+        return response()->json($document);
+    }
+
+    public function delete(Request $request) {
+        $reallyDelete = filter_var($request->really_delete, FILTER_VALIDATE_BOOLEAN);
+
+        $document = null;
+        try {
+            $document = $this->documentService->delete($request->id, $reallyDelete);
+        } catch (NotFoundException $e) {
+            abort(401,'Unauthorized');
+        }
+
+        return response()->json($document);
     }
 
     public function restore($id) {
-        $document = Document::canModify()->whereId($id)->first();
-        if (!$document) abort(401,'Unauthorized');
+        $document = null;
+        try {
+            $document = $this->documentService->restore($id);
+        } catch (NotFoundException $e) {
+            abort(401,'Unauthorized');
+        }
 
-        $document->restore();
-
-        return redirect('/document')->with('status','Document restored');
+        return response()->json($document);
     }
 }

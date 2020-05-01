@@ -29,7 +29,9 @@ Create database and user for app:
 mysql -uroot
 mysql> CREATE DATABASE homestead;
 mysql> CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';
+mysql> CREATE USER 'homestead'@'%' IDENTIFIED BY 'secret';
 mysql> GRANT ALL PRIVILEGES ON homestead.* TO 'homestead'@'localhost';
+mysql> GRANT ALL PRIVILEGES ON homestead.* TO 'homestead'@'%';
 ```
 
 Connect to database as user so that you can explore:
@@ -39,7 +41,7 @@ mysql -uhomestead -psecret -Dhomestead
 
 ### Install PHP 7.2
 
-It's likely you OS may not have PHP installed, or it is the wrong version. So use homebrew (or equivalent) to install the right version of PHP and make sure it is activated e.g. on the path.
+It's likely your OS may not have PHP installed, or it is the wrong version. So use homebrew (or equivalent) to install the right version of PHP and make sure it is activated e.g. on the path.
 
 ```bash
 brew install php72
@@ -63,7 +65,7 @@ mv composer.phar /usr/local/bin/composer
 brew install node
 ```
 
-### Install 'PHP' dependencies via composer
+### Install 'PHP' dependencies via Composer
 
 To install the backend dependencies (this will create a composer.lock file to fix versions - this should be checked into source control):
 

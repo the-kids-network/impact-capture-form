@@ -1,0 +1,220 @@
+import _ from 'lodash'
+import fileIconFor from "./fileicons";
+import Tagger from "./tagger";
+
+const Component = {
+
+    props: {
+        usertype: {     
+        },
+        documentIdsToFilter: {
+            default: () => []        
+        }
+    },
+
+    template: `
+        <div>
+            <table class="table documents">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="(document) in documents">   
+                        <td class="preview">
+                            <span class="hidden">{{ document.extension }}</span>
+                            <span :class="'file-icon far fa-2x ' + fileIconFor(document.extension)"
+                                data-toggle="popover" data-trigger="hover" data-placement="top" :data-content="'File type: ' + document.extension">
+                            </span>
+                        </td>
+                        <td class="title">
+                            {{ document.title }}
+                        </td>
+                        <td class="actions">
+                            <div>
+                                <a 
+                                    :id="'download-' + document.id"
+                                    class="item" 
+                                    @click="downloadDocument(document.id)"
+                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Download">
+                                    <span class="glyphicon glyphicon-download"></span>
+                                </a>
+                                <a 
+                                    v-if="isAdminUser && document.trashed"    
+                                    :id="'restore-' + document.id"
+                                    class="item"
+                                    @click="restoreDocument(document.id)"
+                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Restore">
+                                    <span class="glyphicon glyphicon-backward"></span>
+                                </a>
+                                <a 
+                                    v-if="isAdminUser && document.trashed"    
+                                    :id="'delete-' + document.id"
+                                    class="item"
+                                    @click="deleteDocument(document.id, true)"
+                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Permenantly Delete">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                                <a 
+                                    v-if="isAdminUser && !document.trashed"    
+                                    :id="'trash-' + document.id"
+                                    class="item"
+                                    @click="deleteDocument(document.id, false)"
+                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Trash">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                                <a 
+                                    v-if="!document.is_shared"
+                                    :id="'share-' + document.id"
+                                    class="item" 
+                                    @click="shareDocument(document.id, true)"
+                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Share">
+                                    <span class="glyphicon glyphicon-share-alt"></span>
+                                </a>
+                                <a 
+                                    v-else
+                                    :id="'unshare-' + document.id"
+                                    class="item"  
+                                    @click="shareDocument(document.id, false)"
+                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Unshare">
+                                    <span class="glyphicon glyphicon-share-alt icon-flipped"></span>
+                                </a>
+                                <a 
+                                    v-if="isAdminUser"
+                                    :id="'tag-' + document.id"
+                                    class="item" 
+                                    @click="openDocumentTagger(document.id)"
+                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Tag">
+                                    <span class="glyphicon glyphicon-tags"></span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <modals-container/>
+        </div>
+    `,
+
+    data() {
+        return {
+            documents: []
+        }
+    },
+
+    computed: {
+        isAdminUser() {
+            return this.usertype === 'manager' || this.usertype === 'admin';
+        },
+    },
+
+    async created() {
+        this.getDocuments()
+    },
+
+    mounted() {
+
+    },
+
+    methods: {
+        async getDocuments() {
+            const filterDocumentsIfNecessary = (documents, idsToFilter) => (idsToFilter.length !== 0) 
+                    ? documents.filter(doc => idsToFilter.includes(doc.id)) 
+                    : documents
+
+            const urlGetDocuments = `/documents`
+            try {
+                const documents = (await axios.get(urlGetDocuments)).data
+                this.documents = filterDocumentsIfNecessary(documents, this.documentIdsToFilter)
+            } catch (err) {
+                this.$emit('error', "Unable to fetch documents list")
+            }
+        },
+
+        async downloadDocument(documentId) {
+            const urlGetDownloadUrl = `/documents/${documentId}/download`
+            try {
+                const downloadData = (await axios.get(urlGetDownloadUrl)).data
+                window.open(downloadData.download_url);  
+            } catch (err) {
+                this.$emit('error', "Download unsuccessful")
+            }
+        },
+
+        async deleteDocument(documentId, hardDelete=false) {
+            const urlDeleteDocument = `/documents/${documentId}`
+            try {
+                const updatedDoc = (await axios.delete(
+                    urlDeleteDocument, { params: { 'really_delete': hardDelete } })
+                ).data
+
+                if (hardDelete) {
+                    this.documents = this.documents.filter(d => d.id !== documentId)
+                } else {
+                    this.documents = this.documents.map(d => (d.id === documentId) ? updatedDoc: d)
+                }
+
+                this.$emit('success', 
+                            (hardDelete) ? "Permenantly deleted successfully" : "Trashed successfully")
+            } catch (err) {
+                this.$emit('error', "Delete unsuccessful")
+            }
+        },
+
+        async restoreDocument(documentId) {
+            const urlRestoreDocument = `/documents/${documentId}/restore`
+            try {
+                const updatedDoc = (await axios.post(urlRestoreDocument)).data
+                this.documents = this.documents.map(d => (d.id === documentId) ? updatedDoc: d)
+                this.$emit('success', "Restored successfully")
+            } catch (err) {
+                this.$emit('error', "Restored unsuccessful")
+            }
+        },
+
+        async shareDocument(documentId, share=true) {
+            const urlShareDocument = `/documents/${documentId}/share`
+            try {
+                const updatedDoc = (await axios.post(urlShareDocument, { 'share': share })).data
+                this.documents = this.documents.map(d => (d.id === documentId) ? updatedDoc: d)
+                this.$emit('success', (share) ? "Shared successfully" : "Unshared successfully")
+            } catch (err) {
+                this.$emit('error', "Unable to share document")
+            }
+        },
+
+        fileIconFor(extension) {
+            return fileIconFor(extension);
+        },
+
+        openDocumentTagger(documentId) {
+            this.$modal.show(
+                Tagger, 
+                { 
+                    // props to modal component
+                    documentId: documentId    
+                }, 
+                {
+                    // modal parameters
+                    classes: ['document-tagger-modal'],
+                    adaptive: true,
+                    draggable: true,
+                    clickToClose: true,
+                    height: "auto"
+                }, 
+                {
+                    // modal event listeners
+                    'opened': () => {},
+                    'closed': () => {}
+                }
+            )
+        }
+    }
+};
+
+
+export default Component;

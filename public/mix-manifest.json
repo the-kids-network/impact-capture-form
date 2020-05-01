@@ -1,10 +1,10 @@
 {
-    "/js/app.js": "/js/app.js?id=22de91c29cbe839ad06e",
-    "/css/app.css": "/css/app.css?id=ec7afadb8cbdf0fb2d4d",
-    "/js/sweetalert.min.js": "/js/sweetalert.min.js?id=0068f44b0aa1b83fa767",
-    "/css/sweetalert.css": "/css/sweetalert.css?id=196c08c89f0c8a9b688a",
-    "/favicon.ico": "/favicon.ico?id=245e34e65210efcfd46d",
-    "/favicon.png": "/favicon.png?id=0b082253985078cf2cfc",
-    "/index.php": "/index.php?id=b9901d13f00ef92e0793",
-    "/robots.txt": "/robots.txt?id=b6216d61c03e6ce0c9ae"
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/js/sweetalert.min.js": "/js/sweetalert.min.js",
+    "/css/sweetalert.css": "/css/sweetalert.css",
+    "/favicon.ico": "/favicon.ico",
+    "/favicon.png": "/favicon.png",
+    "/index.php": "/index.php",
+    "/robots.txt": "/robots.txt"
 }

@@ -6,9 +6,6 @@ use App\Domains\Funding\Models\Funder;
 use App\Domains\Funding\Models\Funding;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class FundingController extends Controller {
@@ -46,7 +43,7 @@ class FundingController extends Controller {
         $funding->funding_year = $request->funding_year;
         $funding->save();
 
-        return redirect('/funding')->with('status','Funding added.');
+        return redirect('/fundings')->with('status','Funding added.');
     }
 
     public function destroy(Request $request, $id) {
@@ -57,7 +54,7 @@ class FundingController extends Controller {
 
         $funder->delete();
         
-        return redirect('/funding')->with('status', 'Funding deleted.');
+        return redirect('/fundings')->with('status', 'Funding deleted.');
     }
 
     public function export(Request $request){
