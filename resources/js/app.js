@@ -2,7 +2,7 @@ window._ = require('lodash');
 window.URI = require('urijs');
 window.axios = require('axios');
 window._ = require('underscore');
-window.moment = require('moment');
+window.moment = require('moment/moment');
 window.Promise = require('promise');
 window.Cookies = require('js-cookie');
 

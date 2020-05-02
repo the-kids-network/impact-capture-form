@@ -2,23 +2,179 @@
 #
 # Check https://circleci.com/docs/2.0/language-php/ for more details
 #
-version: 2
-jobs:
+version: 2.1
+
+commands:
+  restore_node_modules_cache:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-npm-dependencies-{{ checksum "package-lock.json" }}
+            - v1-npm-dependencies-
+  save_node_modules_cache:
+    steps:
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: v1-npm-dependencies-{{ checksum "package-lock.json" }}
+  restore_composer_cache:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-composer-dependencies-{{ checksum "composer.lock" }}
+            - v1-composer-dependencies-
+  save_composer_cache:
+    steps:
+      - save_cache:
+          paths:
+            - ./vendor
+          key: v1-composer-dependencies-{{ checksum "composer.lock" }}
+  install_v8_node:
+    steps:
+      - run: 
+          name: Install Node
+          command: |
+            curl -sSL "https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v8.9.4-linux-x64/bin/node
+      - run: 
+          name: Install NPM
+          command: |
+            curl https://www.npmjs.com/install.sh | sudo bash
+      - run: 
+          name: Print Node Versions
+          command: |
+            node -v
+            npm -v
+  install_composer:
+    steps:
+      - run: 
+          name: Install Composer
+          command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            php composer-setup.php
+            php -r "unlink('composer-setup.php');"
+      - run: 
+          name: Print PHP Versions
+          command: |
+            php -v
+            php composer.phar --version
+  install_php_extensions:
+    steps:
+      - run:
+          name: Install System Packages For PHP Extensions
+          command: sudo apt update && sudo apt install libpng-dev -y
+      - run:
+          name: Install PHP Extensions
+          command: |
+            sudo docker-php-ext-install pdo
+            sudo docker-php-ext-install gd
+            sudo docker-php-ext-install pdo_mysql
+  install_dockerize:
+    steps:
+      - run:
+          name: Install Dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.6.1
+  install_chrome_driver:
+    steps:
+      - run: 
+          name: Install Chrome Driver
+          command: |
+            php artisan dusk:chrome-driver
+  start_chrome_driver:
+    steps:
+      - run:
+          name: Start Chrome Driver
+          command: ./vendor/laravel/dusk/bin/chromedriver-linux
+          background: true
+  install_application_env_file:
+    steps:
+      - run: 
+          name: Install .env File
+          command: cp -f .env.circleci .env
+  install_application_dependencies:
+    steps:
+      - restore_node_modules_cache
+      - run: 
+          name: Install App NPM Dependencies
+          command: npm install
+      - save_node_modules_cache
+      - restore_composer_cache
+      - run: 
+          name: Install App Composer Dependencies
+          command: php composer.phar install
+      - save_composer_cache
+  generate_app_key:
+    steps:
+      - run: 
+          name: Generate App Secure Key
+          command: php artisan key:generate
+  apply_database_migrations:
+    steps:
+      - run: 
+          name: Wait For Database To Come Online
+          command: |
+            dockerize -wait tcp://localhost:3306 -timeout 1m
+      - run: 
+          name: Run Database Schema Migration
+          command: |
+            php artisan migrate:refresh
+  seed_database_with_test_data:
+    steps:
+      - run: 
+          name: Seed Database With Test Data
+          command: |
+            php artisan db:seed
+  start_application:
+    steps:
+      - run:
+          name: Start Application
+          command: php artisan serve
+          background: true
+  compile_web_assets:
+    steps:
+      - run: 
+          name: Compile Web Assets
+          command: npm run prod
+  run_unit_tests: 
+    steps:
+      - run:
+          name: Run Unit Tests
+          command: vendor/bin/phpunit --log-junit test-reports/unit/report.xml
+  run_browser_tests:
+    steps:
+      - install_chrome_driver
+      - start_chrome_driver
+      - seed_database_with_test_data
+      - start_application
+      - run: 
+          name: Run Dusk Browser Tests
+          command: php artisan dusk --log-junit test-reports/browser/report.xml
+
+  # Main build top-level steps
+  setup:
+    steps:
+      - install_php_extensions
+      - install_dockerize
+      - install_v8_node
+      - checkout
+      - install_composer
   build:
+    steps:
+      - install_application_env_file
+      - install_application_dependencies
+      - generate_app_key
+      - compile_web_assets
+      - apply_database_migrations
+  test:
+    steps:
+      - run_unit_tests
+      - run_browser_tests
+
+executors:
+  docker-executor:
     docker:
-      # specify the version you desire here
       - image: circleci/php:7.2-browsers
-        environment:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_DATABASE: homestead
-          DB_USERNAME: homestead
-          DB_PASSWORD: secret
-          APP_ENV: circleci
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
       - image: circleci/mysql:5.7.23
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
@@ -26,84 +182,26 @@ jobs:
           MYSQL_DATABASE: homestead
           MYSQL_PASSWORD: secret
 
+jobs:
+  build_and_test:
+    executor: docker-executor
     working_directory: ~/repo
-
     steps:
-      - run:
-          name: Install system packages
-          command: sudo apt-get update && sudo apt-get -y install git libpng-dev
-      - run:
-          name: Install PHP extensions
-          command: |
-            sudo docker-php-ext-install pdo
-            sudo docker-php-ext-install gd
-            sudo docker-php-ext-install pdo_mysql
-      - checkout
-      - run:
-          name: Copy .env file
-          command: |
-            cp .env.circleci .env
-      - run:
-          name: Install Composer
-          command: |
-            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-            php composer-setup.php
-            php -r "unlink('composer-setup.php');"
-      - run:
-          name: Display PHP information
-          command: |
-            php -v
-            php composer.phar --version
-      - run:
-          name: Install project dependencies
-          command: php composer.phar install
-      - run:
-          name: PHP artisan commands
-          command: |
-            php artisan key:generate
-            php artisan config:cache
-      - run: composer install -n --prefer-dist
-      - run:
-          name: install dockerize
-          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-          environment:
-            DOCKERIZE_VERSION: v0.3.0
-      - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:3306 -timeout 1m
-
-      - run: 
-          name: Refresh application database
-          command: php artisan migrate:refresh --seed
-      # run tests!
-      - run:
-          name: Run Unit tests
-          command: vendor/bin/phpunit
-      - run:
-          name: Upgrade Chrome Driver
-          command: php artisan dusk:chrome-driver 78
-      - run:
-          name: Start Chrome Driver
-          command: ./vendor/laravel/dusk/bin/chromedriver-linux
-          background: true
-      - run:
-          name: Artisan Server
-          command: php artisan serve
-          background: true
-      - run:
-          name: Run Dusk tests
-          command: php artisan dusk
+      - setup
+      - build
+      - test
       - store_artifacts:
-          path: ~/repo/storage
-    notify:
-      branches:
-        only:
-          - develop
-        webhooks:
-          - url: https://forge.laravel.com/servers/221686/sites/590178/deploy/http?token=ERc7OEgerd7WuPB59WRNAqk2mFBqGY1PgRQkmYfQ
+          path: ~/repo/storage/logs
+      - store_artifacts:
+          path: ~/repo/tests/Browser/screenshots
+      - store_test_results:
+          path: ~/repo/test-reports
 
 workflows:
-  version: 2
   build_and_test:
     jobs:
-      - build
+      - build_and_test
+
+
+
+      
