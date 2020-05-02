@@ -21,7 +21,7 @@
     "bootstrap-table": "^1.16.0",
     "cross-env": "^5.2.1",
     "filesize": "^4.2.1",
-    "jquery": "3.4.1",
+    "jquery": "3.5.0",
     "jquery-ui": "^1.12.1",
     "js-cookie": "^2.2.1",
     "laravel-mix": "^4.1.2",
