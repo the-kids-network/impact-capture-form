@@ -115,6 +115,10 @@ Route::get('/tags','\App\Domains\Tagging\Controllers\TagController@getTags');
 Route::post('/tags','\App\Domains\Tagging\Controllers\TagController@createTags');
 Route::delete('/tags/{id}','\App\Domains\Tagging\Controllers\TagController@deleteTag');
 
+Route::get('/tag-labels/associated', '\App\Domains\Tagging\Controllers\TagLabelController@getAssociatedTagLabels');
+
+Route::get('/tagged-items', '\App\Domains\Tagging\Controllers\TaggedItemController@getTaggedItems');
+
 // Funding
 Route::get('/fundings/export','\App\Domains\Funding\Controllers\FundingController@export')->name('funding.export');
 Route::post('/funders/{id}/restore','\App\Domains\Funding\Controllers\FunderController@restore');

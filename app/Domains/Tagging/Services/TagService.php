@@ -3,7 +3,6 @@
 namespace App\Domains\Tagging\Services;
 
 use App\Domains\Tagging\Models\Tag;
-use App\Domains\Tagging\Models\TaggedItem;
 use App\Domains\Tagging\Models\TagSearch;
 use App\Domains\Tagging\Repositories\TagRepository;
 use Illuminate\Support\Facades\DB;
@@ -53,5 +52,9 @@ class TagService {
 
     public function deleteTag($id) {
         return Tag::whereId($id)->delete();
+    }
+
+    public function getAssociatedTagLabels($tagLabels) {
+        return $this->tagRepository->fetchTagLabelsAssociatedWith($tagLabels);
     }
 }

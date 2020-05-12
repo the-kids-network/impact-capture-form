@@ -26,4 +26,21 @@ class TagRepository {
         // Get tags based on query
         return $query->get();
     }
+
+    public function fetchTagLabelsAssociatedWith($tagLabels) {
+        $data =  DB::table('tags as t')
+                    ->join('tags as t2', 't.tagged_item_id', '=', 't2.tagged_item_id')
+                    ->select('t.label', 't2.label as associated_label')->distinct()
+                    ->whereColumn('t.label', '!=', 't2.label')
+                    ->whereIn('t.label', $tagLabels)
+                    ->orderBy('t.label', 'asc')
+                    ->orderBy('t2.label', 'asc')
+                    ->get();
+
+        return $data->groupBy('label')->map(function($group) {
+            return $group->map(function($item) {
+                return $item->associated_label;
+            });
+        });
+    }
 }

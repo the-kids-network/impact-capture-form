@@ -147,7 +147,7 @@ const Component = {
                 urlGetTags,
                 { params: { resource_type: "document" } }
             )).data
-            return Set(tags.map(t => t.tag_label))
+            return Set(tags.map(t => t.label))
         },
 
         async getTagsForDocument(documentId) {
@@ -157,7 +157,7 @@ const Component = {
                 resource_id: `${documentId}`
             }
             const tagsPayload = (await axios.get(urlGetTags, { params: params })).data
-            const tags = Object.assign({}, ...tagsPayload.map(t => ({ [t.tag_label]: t.tag_id })))
+            const tags = Object.assign({}, ...tagsPayload.map(t => ({ [t.label]: t.id })))
             return Map(tags)
         },
 
@@ -172,7 +172,7 @@ const Component = {
                 }
             ];
             const createdTagsPayload = (await axios.post(`/tags`, tagsBody)).data
-            return Object.assign({}, ...createdTagsPayload.map(t => ({ [t.tag_label]: t.tag_id })))
+            return Object.assign({}, ...createdTagsPayload.map(t => ({ [t.label]: t.id })))
         },
 
         async deleteTag(tagId) {        

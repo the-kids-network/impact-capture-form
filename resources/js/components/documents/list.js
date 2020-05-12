@@ -1,19 +1,26 @@
 import _ from 'lodash'
 import fileIconFor from "./fileicons";
 import Tagger from "./tagger";
+import DocumentSearch from './search'
 
 const Component = {
 
     props: {
         usertype: {     
-        },
-        documentIdsToFilter: {
-            default: () => []        
         }
+    },
+
+    components: {
+        DocumentSearch
     },
 
     template: `
         <div>
+            <document-search 
+                @results="filterDocuments($event)"
+                @clear="removeDocumentFilter"
+                @error="$emit('error', $event)" />
+
             <table class="table documents">
                 <thead>
                     <tr>
@@ -24,7 +31,7 @@ const Component = {
                 </thead>
 
                 <tbody>
-                    <tr v-for="(document) in documents">   
+                    <tr v-for="(document) in _documents">   
                         <td class="preview">
                             <span class="hidden">{{ document.extension }}</span>
                             <span :class="'file-icon far fa-2x ' + fileIconFor(document.extension)"
@@ -102,11 +109,15 @@ const Component = {
 
     data() {
         return {
+            documentIdsToFilter: undefined,
             documents: []
         }
     },
 
     computed: {
+        _documents() {
+            return (!this.documentIdsToFilter) ? this.documents : filterDocuments(this.documents, this.documentIdsToFilter)
+        },
         isAdminUser() {
             return this.usertype === 'manager' || this.usertype === 'admin';
         },
@@ -121,15 +132,19 @@ const Component = {
     },
 
     methods: {
-        async getDocuments() {
-            const filterDocumentsIfNecessary = (documents, idsToFilter) => (idsToFilter.length !== 0) 
-                    ? documents.filter(doc => idsToFilter.includes(doc.id)) 
-                    : documents
+        removeDocumentFilter() {
+            this.documentIdsToFilter = undefined
+        },
 
+        filterDocuments(documentIdsToFilter) {
+            this.documentIdsToFilter = documentIdsToFilter;
+        },
+
+        async getDocuments() {
             const urlGetDocuments = `/documents`
             try {
                 const documents = (await axios.get(urlGetDocuments)).data
-                this.documents = filterDocumentsIfNecessary(documents, this.documentIdsToFilter)
+                this.documents = documents
             } catch (err) {
                 this.$emit('error', "Unable to fetch documents list")
             }
@@ -139,7 +154,7 @@ const Component = {
             const urlGetDownloadUrl = `/documents/${documentId}/download`
             try {
                 const downloadData = (await axios.get(urlGetDownloadUrl)).data
-                window.open(downloadData.download_url);  
+                window.open(downloadData.download_url)
             } catch (err) {
                 this.$emit('error', "Download unsuccessful")
             }
@@ -216,5 +231,6 @@ const Component = {
     }
 };
 
-
 export default Component;
+
+const filterDocuments = (documents, idsToFilter) => documents.filter(doc => idsToFilter.includes(doc.id)) 

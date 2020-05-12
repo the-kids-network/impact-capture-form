@@ -43,8 +43,8 @@ class TagController extends Controller {
                         'resource_type' => $tag->resource_type,
                         'resource_id' => $tag->resource_id,
                     ],
-                    'tag_id' => $tag->id,
-                    'tag_label' => $tag->label
+                    'id' => $tag->id,
+                    'label' => $tag->label
                 ];
             });
    
@@ -73,8 +73,8 @@ class TagController extends Controller {
                         'resource_type' => $createdTag->taggedItem->resource_type,
                         'resource_id' => $createdTag->taggedItem->resource_id
                     ],
-                    'tag_id' => $createdTag->id,
-                    'tag_label' => $createdTag->label
+                    'id' => $createdTag->id,
+                    'label' => $createdTag->label
                 ];
             });
 
@@ -85,7 +85,7 @@ class TagController extends Controller {
         $deletedTag = $this->tagService->deleteTag($id);
 
         return response()->json([
-            'tag_id' => $id,
+            'id' => $id,
         ]);
     }
 

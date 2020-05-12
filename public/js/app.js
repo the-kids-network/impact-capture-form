@@ -103915,6 +103915,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _fileicons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fileicons */ "./resources/js/components/documents/fileicons.js");
 /* harmony import */ var _tagger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tagger */ "./resources/js/components/documents/tagger.js");
+/* harmony import */ var _search__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./search */ "./resources/js/components/documents/search.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -103924,22 +103925,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 var Component = {
   props: {
-    usertype: {},
-    documentIdsToFilter: {
-      "default": function _default() {
-        return [];
-      }
-    }
+    usertype: {}
   },
-  template: "\n        <div>\n            <table class=\"table documents\">\n                <thead>\n                    <tr>\n                        <th>Type</th>\n                        <th>Title</th>\n                        <th>Actions</th>\n                    </tr>\n                </thead>\n\n                <tbody>\n                    <tr v-for=\"(document) in documents\">   \n                        <td class=\"preview\">\n                            <span class=\"hidden\">{{ document.extension }}</span>\n                            <span :class=\"'file-icon far fa-2x ' + fileIconFor(document.extension)\"\n                                data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" :data-content=\"'File type: ' + document.extension\">\n                            </span>\n                        </td>\n                        <td class=\"title\">\n                            {{ document.title }}\n                        </td>\n                        <td class=\"actions\">\n                            <div>\n                                <a \n                                    :id=\"'download-' + document.id\"\n                                    class=\"item\" \n                                    @click=\"downloadDocument(document.id)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Download\">\n                                    <span class=\"glyphicon glyphicon-download\"></span>\n                                </a>\n                                <a \n                                    v-if=\"isAdminUser && document.trashed\"    \n                                    :id=\"'restore-' + document.id\"\n                                    class=\"item\"\n                                    @click=\"restoreDocument(document.id)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Restore\">\n                                    <span class=\"glyphicon glyphicon-backward\"></span>\n                                </a>\n                                <a \n                                    v-if=\"isAdminUser && document.trashed\"    \n                                    :id=\"'delete-' + document.id\"\n                                    class=\"item\"\n                                    @click=\"deleteDocument(document.id, true)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Permenantly Delete\">\n                                    <span class=\"glyphicon glyphicon-remove\"></span>\n                                </a>\n                                <a \n                                    v-if=\"isAdminUser && !document.trashed\"    \n                                    :id=\"'trash-' + document.id\"\n                                    class=\"item\"\n                                    @click=\"deleteDocument(document.id, false)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Trash\">\n                                    <span class=\"glyphicon glyphicon-trash\"></span>\n                                </a>\n                                <a \n                                    v-if=\"!document.is_shared\"\n                                    :id=\"'share-' + document.id\"\n                                    class=\"item\" \n                                    @click=\"shareDocument(document.id, true)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Share\">\n                                    <span class=\"glyphicon glyphicon-share-alt\"></span>\n                                </a>\n                                <a \n                                    v-else\n                                    :id=\"'unshare-' + document.id\"\n                                    class=\"item\"  \n                                    @click=\"shareDocument(document.id, false)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Unshare\">\n                                    <span class=\"glyphicon glyphicon-share-alt icon-flipped\"></span>\n                                </a>\n                                <a \n                                    v-if=\"isAdminUser\"\n                                    :id=\"'tag-' + document.id\"\n                                    class=\"item\" \n                                    @click=\"openDocumentTagger(document.id)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Tag\">\n                                    <span class=\"glyphicon glyphicon-tags\"></span>\n                                </a>\n                            </div>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n            <modals-container/>\n        </div>\n    ",
+  components: {
+    DocumentSearch: _search__WEBPACK_IMPORTED_MODULE_4__["default"]
+  },
+  template: "\n        <div>\n            <document-search \n                @results=\"filterDocuments($event)\"\n                @clear=\"removeDocumentFilter\"\n                @error=\"$emit('error', $event)\" />\n\n            <table class=\"table documents\">\n                <thead>\n                    <tr>\n                        <th>Type</th>\n                        <th>Title</th>\n                        <th>Actions</th>\n                    </tr>\n                </thead>\n\n                <tbody>\n                    <tr v-for=\"(document) in _documents\">   \n                        <td class=\"preview\">\n                            <span class=\"hidden\">{{ document.extension }}</span>\n                            <span :class=\"'file-icon far fa-2x ' + fileIconFor(document.extension)\"\n                                data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" :data-content=\"'File type: ' + document.extension\">\n                            </span>\n                        </td>\n                        <td class=\"title\">\n                            {{ document.title }}\n                        </td>\n                        <td class=\"actions\">\n                            <div>\n                                <a \n                                    :id=\"'download-' + document.id\"\n                                    class=\"item\" \n                                    @click=\"downloadDocument(document.id)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Download\">\n                                    <span class=\"glyphicon glyphicon-download\"></span>\n                                </a>\n                                <a \n                                    v-if=\"isAdminUser && document.trashed\"    \n                                    :id=\"'restore-' + document.id\"\n                                    class=\"item\"\n                                    @click=\"restoreDocument(document.id)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Restore\">\n                                    <span class=\"glyphicon glyphicon-backward\"></span>\n                                </a>\n                                <a \n                                    v-if=\"isAdminUser && document.trashed\"    \n                                    :id=\"'delete-' + document.id\"\n                                    class=\"item\"\n                                    @click=\"deleteDocument(document.id, true)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Permenantly Delete\">\n                                    <span class=\"glyphicon glyphicon-remove\"></span>\n                                </a>\n                                <a \n                                    v-if=\"isAdminUser && !document.trashed\"    \n                                    :id=\"'trash-' + document.id\"\n                                    class=\"item\"\n                                    @click=\"deleteDocument(document.id, false)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Trash\">\n                                    <span class=\"glyphicon glyphicon-trash\"></span>\n                                </a>\n                                <a \n                                    v-if=\"!document.is_shared\"\n                                    :id=\"'share-' + document.id\"\n                                    class=\"item\" \n                                    @click=\"shareDocument(document.id, true)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Share\">\n                                    <span class=\"glyphicon glyphicon-share-alt\"></span>\n                                </a>\n                                <a \n                                    v-else\n                                    :id=\"'unshare-' + document.id\"\n                                    class=\"item\"  \n                                    @click=\"shareDocument(document.id, false)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Unshare\">\n                                    <span class=\"glyphicon glyphicon-share-alt icon-flipped\"></span>\n                                </a>\n                                <a \n                                    v-if=\"isAdminUser\"\n                                    :id=\"'tag-' + document.id\"\n                                    class=\"item\" \n                                    @click=\"openDocumentTagger(document.id)\"\n                                    data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"Tag\">\n                                    <span class=\"glyphicon glyphicon-tags\"></span>\n                                </a>\n                            </div>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n            <modals-container/>\n        </div>\n    ",
   data: function data() {
     return {
+      documentIdsToFilter: undefined,
       documents: []
     };
   },
   computed: {
+    _documents: function _documents() {
+      return !this.documentIdsToFilter ? this.documents : filterDocuments(this.documents, this.documentIdsToFilter);
+    },
     isAdminUser: function isAdminUser() {
       return this.usertype === 'manager' || this.usertype === 'admin';
     }
@@ -103970,43 +103974,43 @@ var Component = {
   }(),
   mounted: function mounted() {},
   methods: {
+    removeDocumentFilter: function removeDocumentFilter() {
+      this.documentIdsToFilter = undefined;
+    },
+    filterDocuments: function filterDocuments(documentIdsToFilter) {
+      this.documentIdsToFilter = documentIdsToFilter;
+    },
     getDocuments: function () {
       var _getDocuments = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var filterDocumentsIfNecessary, urlGetDocuments, documents;
+        var urlGetDocuments, documents;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                filterDocumentsIfNecessary = function filterDocumentsIfNecessary(documents, idsToFilter) {
-                  return idsToFilter.length !== 0 ? documents.filter(function (doc) {
-                    return idsToFilter.includes(doc.id);
-                  }) : documents;
-                };
-
                 urlGetDocuments = "/documents";
-                _context2.prev = 2;
-                _context2.next = 5;
+                _context2.prev = 1;
+                _context2.next = 4;
                 return axios.get(urlGetDocuments);
 
-              case 5:
+              case 4:
                 documents = _context2.sent.data;
-                this.documents = filterDocumentsIfNecessary(documents, this.documentIdsToFilter);
-                _context2.next = 12;
+                this.documents = documents;
+                _context2.next = 11;
                 break;
 
-              case 9:
-                _context2.prev = 9;
-                _context2.t0 = _context2["catch"](2);
+              case 8:
+                _context2.prev = 8;
+                _context2.t0 = _context2["catch"](1);
                 this.$emit('error', "Unable to fetch documents list");
 
-              case 12:
+              case 11:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[2, 9]]);
+        }, _callee2, this, [[1, 8]]);
       }));
 
       function getDocuments() {
@@ -104226,6 +104230,12 @@ var Component = {
 };
 /* harmony default export */ __webpack_exports__["default"] = (Component);
 
+var filterDocuments = function filterDocuments(documents, idsToFilter) {
+  return documents.filter(function (doc) {
+    return idsToFilter.includes(doc.id);
+  });
+};
+
 /***/ }),
 
 /***/ "./resources/js/components/documents/root.js":
@@ -104318,6 +104328,365 @@ var Component = {
       this.resetStatusBox();
       successes instanceof Array ? this.successes = successes : this.successes.push(successes);
     }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/components/documents/search.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/documents/search.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _johmun_vue_tags_input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @johmun/vue-tags-input */ "./node_modules/@johmun/vue-tags-input/dist/vue-tags-input.js");
+/* harmony import */ var _johmun_vue_tags_input__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_johmun_vue_tags_input__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! immutable */ "./node_modules/immutable/dist/immutable.es.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+var Component = {
+  props: [],
+  components: {
+    VueTagsInput: _johmun_vue_tags_input__WEBPACK_IMPORTED_MODULE_1___default.a
+  },
+  template: "\n        <div class=\"search\">\n            <vue-tags-input class='tags-input'\n                v-model=\"inputText\"\n                :tags=\"_tagsSelected\"\n                :max-tags=\"maximumTagsAllowed\"\n                :autocomplete-items=\"_tagSuggestions\"\n                :autocomplete-min-length=\"autoCompleteMinLength\"\n                :add-only-from-autocomplete=\"autoCompleteStrict\"\n                @tags-changed=\"newTags => updateSelectedTags(newTags)\"\n                />\n\n            <span :class=\"'search btn btn-primary ' + (!_searchEnabled ? 'disabled' : '')\" \n                @click=\"submitSearch\"><span class=\"glyphicon glyphicon-search\"></span> Search</span>\n            <span class=\"clear btn btn-secondary\" \n                @click=\"clearSearch\"><span class=\"glyphicon glyphicon-remove\"></span> Reset</span>\n        </div>\n    ",
+  data: function data() {
+    return {
+      autoCompleteMinLength: 0,
+      autoCompleteStrict: true,
+      maximumTagsAllowed: 5,
+      // tag input key state
+      inputText: '',
+      tagsSelected: Object(immutable__WEBPACK_IMPORTED_MODULE_3__["Set"])(),
+      tagSuggestions: Object(immutable__WEBPACK_IMPORTED_MODULE_3__["Set"])()
+    };
+  },
+  computed: {
+    _tagsSelected: function _tagsSelected() {
+      return this.tagsSelected.map(function (i) {
+        return {
+          text: i
+        };
+      }).toArray();
+    },
+    _tagSuggestions: function _tagSuggestions() {
+      var _this = this;
+
+      return this.tagSuggestions // filter to entered characters
+      .filter(function (i) {
+        return i.toLowerCase().indexOf(_this.inputText.toLowerCase()) !== -1;
+      }).map(function (i) {
+        return {
+          text: i
+        };
+      }).toArray();
+    },
+    _searchEnabled: function _searchEnabled() {
+      return this.tagsSelected.size;
+    }
+  },
+  created: function () {
+    var _created = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              this.setTagSuggestions();
+
+            case 1:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function created() {
+      return _created.apply(this, arguments);
+    }
+
+    return created;
+  }(),
+  mounted: function () {
+    var _mounted = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    function mounted() {
+      return _mounted.apply(this, arguments);
+    }
+
+    return mounted;
+  }(),
+  methods: {
+    setTagSuggestions: function () {
+      var _setTagSuggestions = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var associations;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (this.tagsSelected.size) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _context3.next = 3;
+                return this.getAllTags();
+
+              case 3:
+                this.tagSuggestions = _context3.sent;
+                _context3.next = 10;
+                break;
+
+              case 6:
+                _context3.next = 8;
+                return this.getAssociatedTagsFor(this.tagsSelected.toArray());
+
+              case 8:
+                associations = _context3.sent;
+                this.tagSuggestions = immutable__WEBPACK_IMPORTED_MODULE_3__["Set"].intersect(associations.toSetSeq());
+
+              case 10:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function setTagSuggestions() {
+        return _setTagSuggestions.apply(this, arguments);
+      }
+
+      return setTagSuggestions;
+    }(),
+    updateSelectedTags: function updateSelectedTags(newTags) {
+      this.tagsSelected = Object(immutable__WEBPACK_IMPORTED_MODULE_3__["Set"])(newTags.map(function (t) {
+        return t.text;
+      }));
+      this.setTagSuggestions();
+    },
+    submitSearch: function () {
+      var _submitSearch = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var tagToSearch, matchingDocumentIds;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (this._searchEnabled) {
+                  _context4.next = 2;
+                  break;
+                }
+
+                return _context4.abrupt("return");
+
+              case 2:
+                // reset any errors for new search
+                this.$emit('error', []);
+                tagToSearch = this.tagsSelected.toArray();
+                _context4.prev = 4;
+                _context4.next = 7;
+                return this.getDocumentsMatchingTags(tagToSearch);
+
+              case 7:
+                matchingDocumentIds = _context4.sent;
+                // send to parent component to handle filtering based on results
+                this.$emit('results', matchingDocumentIds);
+                _context4.next = 14;
+                break;
+
+              case 11:
+                _context4.prev = 11;
+                _context4.t0 = _context4["catch"](4);
+                this.$emit('error', "Search failed.");
+
+              case 14:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this, [[4, 11]]);
+      }));
+
+      function submitSearch() {
+        return _submitSearch.apply(this, arguments);
+      }
+
+      return submitSearch;
+    }(),
+    clearSearch: function () {
+      var _clearSearch = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                this.tagsSelected = Object(immutable__WEBPACK_IMPORTED_MODULE_3__["Set"])();
+                this.setTagSuggestions(); // send event to parent to clear filtering
+
+                this.$emit('error', []);
+                this.$emit('clear');
+
+              case 4:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function clearSearch() {
+        return _clearSearch.apply(this, arguments);
+      }
+
+      return clearSearch;
+    }(),
+
+    /**
+    * Non view state-reading/changing functions below.
+    * 
+    * These should not modify the view state to remain as pure as possible, and more easily testable in isolation.
+    */
+    getAllTags: function () {
+      var _getAllTags = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+        var tags;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return axios.get("/tags", {
+                  params: {
+                    resource_type: "document"
+                  }
+                });
+
+              case 2:
+                tags = _context6.sent.data;
+                return _context6.abrupt("return", Object(immutable__WEBPACK_IMPORTED_MODULE_3__["Set"])(tags.map(function (t) {
+                  return t.label;
+                })));
+
+              case 4:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }));
+
+      function getAllTags() {
+        return _getAllTags.apply(this, arguments);
+      }
+
+      return getAllTags;
+    }(),
+    getAssociatedTagsFor: function () {
+      var _getAssociatedTagsFor = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(tags) {
+        var data;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.next = 2;
+                return axios.get("/tag-labels/associated", {
+                  params: {
+                    tag_labels: tags
+                  }
+                });
+
+              case 2:
+                data = _context7.sent.data;
+                return _context7.abrupt("return", Object(immutable__WEBPACK_IMPORTED_MODULE_3__["Map"])(data));
+
+              case 4:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
+      }));
+
+      function getAssociatedTagsFor(_x) {
+        return _getAssociatedTagsFor.apply(this, arguments);
+      }
+
+      return getAssociatedTagsFor;
+    }(),
+    getDocumentsMatchingTags: function () {
+      var _getDocumentsMatchingTags = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8(tags) {
+        var data;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                _context8.next = 2;
+                return axios.get("/tagged-items", {
+                  params: {
+                    resource_type: "document",
+                    tag_labels: tags
+                  }
+                });
+
+              case 2:
+                data = _context8.sent.data;
+                return _context8.abrupt("return", data.map(function (ti) {
+                  return ti.resource_id;
+                }));
+
+              case 4:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8);
+      }));
+
+      function getDocumentsMatchingTags(_x2) {
+        return _getDocumentsMatchingTags.apply(this, arguments);
+      }
+
+      return getDocumentsMatchingTags;
+    }()
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (Component);
@@ -104654,7 +105023,7 @@ var Component = {
               case 3:
                 tags = _context7.sent.data;
                 return _context7.abrupt("return", Object(immutable__WEBPACK_IMPORTED_MODULE_3__["Set"])(tags.map(function (t) {
-                  return t.tag_label;
+                  return t.label;
                 })));
 
               case 5:
@@ -104693,7 +105062,7 @@ var Component = {
               case 4:
                 tagsPayload = _context8.sent.data;
                 tags = Object.assign.apply(Object, [{}].concat(_toConsumableArray(tagsPayload.map(function (t) {
-                  return _defineProperty({}, t.tag_label, t.tag_id);
+                  return _defineProperty({}, t.label, t.id);
                 }))));
                 return _context8.abrupt("return", Object(immutable__WEBPACK_IMPORTED_MODULE_3__["Map"])(tags));
 
@@ -104733,7 +105102,7 @@ var Component = {
               case 3:
                 createdTagsPayload = _context9.sent.data;
                 return _context9.abrupt("return", Object.assign.apply(Object, [{}].concat(_toConsumableArray(createdTagsPayload.map(function (t) {
-                  return _defineProperty({}, t.tag_label, t.tag_id);
+                  return _defineProperty({}, t.label, t.id);
                 })))));
 
               case 5:
