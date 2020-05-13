@@ -32,4 +32,15 @@ class TaggedItemService {
     public function getTaggedItems(TaggedItemSearch $search) {
         return $this->taggedItemRepository->fetchTaggedItemsMatching($search);
     }
+
+    public function deleteTaggedItem($resourceType, $resourceId) {
+        $taggedItem = TaggedItem::whereResourceType($resourceType)
+                    ->whereResourceId($resourceId)
+                    ->first();
+                  
+        if ($taggedItem) {
+            $taggedItem->tags()->delete();
+            $taggedItem->delete();
+        }
+    }
 }
