@@ -11,7 +11,7 @@ const Component = {
     },
 
     template: `
-        <div class="document-tagger">
+        <div class="tagger">
             <status-box class="status" 
                 :errors="errors" />
 

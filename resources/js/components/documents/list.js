@@ -15,13 +15,14 @@ const Component = {
     },
 
     template: `
-        <div>
+        <div class="documents list">
             <document-search 
+                class="list-search"
                 @results="filterDocuments($event)"
                 @clear="removeDocumentFilter"
                 @error="$emit('error', $event)" />
 
-            <table class="table documents">
+            <table class="items table">
                 <thead>
                     <tr>
                         <th>Type</th>
@@ -31,7 +32,7 @@ const Component = {
                 </thead>
 
                 <tbody>
-                    <tr v-for="(document) in _documents">   
+                    <tr class="item" v-for="(document) in _documents">   
                         <td class="preview">
                             <span class="hidden">{{ document.extension }}</span>
                             <span :class="'file-icon far fa-2x ' + fileIconFor(document.extension)"
@@ -45,7 +46,7 @@ const Component = {
                             <div>
                                 <a 
                                     :id="'download-' + document.id"
-                                    class="item" 
+                                    class="action" 
                                     @click="downloadDocument(document.id)"
                                     data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Download">
                                     <span class="glyphicon glyphicon-download"></span>
@@ -53,7 +54,7 @@ const Component = {
                                 <a 
                                     v-if="isAdminUser && document.trashed"    
                                     :id="'restore-' + document.id"
-                                    class="item"
+                                    class="action"
                                     @click="restoreDocument(document.id)"
                                     data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Restore">
                                     <span class="glyphicon glyphicon-backward"></span>
@@ -61,7 +62,7 @@ const Component = {
                                 <a 
                                     v-if="isAdminUser && document.trashed"    
                                     :id="'delete-' + document.id"
-                                    class="item"
+                                    class="action"
                                     @click="deleteDocument(document.id, true)"
                                     data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Permenantly Delete">
                                     <span class="glyphicon glyphicon-remove"></span>
@@ -69,7 +70,7 @@ const Component = {
                                 <a 
                                     v-if="isAdminUser && !document.trashed"    
                                     :id="'trash-' + document.id"
-                                    class="item"
+                                    class="action"
                                     @click="deleteDocument(document.id, false)"
                                     data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Trash">
                                     <span class="glyphicon glyphicon-trash"></span>
@@ -77,7 +78,7 @@ const Component = {
                                 <a 
                                     v-if="!document.is_shared"
                                     :id="'share-' + document.id"
-                                    class="item" 
+                                    class="action" 
                                     @click="shareDocument(document.id, true)"
                                     data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Share">
                                     <span class="glyphicon glyphicon-share-alt"></span>
@@ -85,7 +86,7 @@ const Component = {
                                 <a 
                                     v-else
                                     :id="'unshare-' + document.id"
-                                    class="item"  
+                                    class="action"  
                                     @click="shareDocument(document.id, false)"
                                     data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Unshare">
                                     <span class="glyphicon glyphicon-share-alt icon-flipped"></span>
@@ -93,7 +94,7 @@ const Component = {
                                 <a 
                                     v-if="isAdminUser"
                                     :id="'tag-' + document.id"
-                                    class="item" 
+                                    class="action" 
                                     @click="openDocumentTagger(document.id)"
                                     data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Tag">
                                     <span class="glyphicon glyphicon-tags"></span>

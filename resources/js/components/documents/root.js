@@ -10,8 +10,9 @@ const Component = {
     },
 
     template: `
-        <div>
+        <div class="documents browse">
             <status-box
+                class="documents-status"
                 :errors="errors"
                 :successes="successes">
             </status-box>   

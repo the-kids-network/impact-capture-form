@@ -1,89 +1,122 @@
 // Document upload
-.dropbox {
-    outline: 2px dashed white; /* the dash box */
-    outline-offset: -10px;
-    background: @brand-primary;
-    color: white;
-    padding: 10px 10px;
-    min-height: 200px; /* minimum height */
-    position: relative;
-    cursor: pointer;
+.documents.upload {
+    .dropbox {
+        outline: 2px dashed white; /* the dash box */
+        outline-offset: -10px;
+        background: @brand-primary;
+        color: white;
+        padding: 10px 10px;
+        min-height: 200px; /* minimum height */
+        position: relative;
+        cursor: pointer;
+
+        .input-file {
+            opacity: 0; /* invisible but it's there! */
+            width: 100%;
+            height: 200px;
+            position: absolute;
+            cursor: pointer;
+        }
+        p {
+            font-size: 2.0em;
+            text-align: center;
+            padding: 50px 0;
+        }
+    }
+
+    .dropbox:hover {
+        background: lighten(@brand-primary, 15%); /* when mouse over to the drop zone, change color */
+    }
+
+    .uploads.container {
+        width:100%;
+
+        .uploads.table {
+            .large-file {
+                color: red;
+            }
+            .remove { 
+                max-width: 20px;
+            }
+            .file-size { 
+                max-width: 60px;
+            }
+            .file-name {
+                max-width: 100px;
+            }
+            .file-name span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: inline-block;
+                max-width: 100%;
+            }
+            .title input {
+                width:100%
+            }
+        }
+    }
 }
 
-.input-file {
-    opacity: 0; /* invisible but it's there! */
-    width: 100%;
-    height: 200px;
-    position: absolute;
-    cursor: pointer;
-}
-
-.dropbox:hover {
-    background: lighten(@brand-primary, 15%); /* when mouse over to the drop zone, change color */
-}
-
-.dropbox p {
-    font-size: 2.0em;
-    text-align: center;
-    padding: 50px 0;
-}
-
-.icon-flipped {
-    transform: scaleX(-1);
-    -moz-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    -ms-transform: scaleX(-1);
-}
-
-.large-file {
-    color: red;
-}
-
-.table td.remove { 
-    max-width: 20px;
-}
-
-.table td.file-size { 
-    max-width: 60px;
-}
-
-.table td.file-name {
-    max-width: 100px;
-}
-.table td.file-name span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    max-width: 100%;
-}
-
-.table td.title input {
-    width:100%
-}
 
 // Document browser / manager
-.preview {
-    text-align:center;
+.documents.home {
+    .upload.link {
+        margin-bottom: 10px;
+    }
 }
+.documents.browse {
+    .list {
+        .preview {
+            text-align:center;
+        }
+        .actions {
+            width: auto;
 
-.actions {
-    width: auto;
-}
+            .action {
+                display: inline-block;
+            }
+        }
+    }
+    .search {
+        display: flex;
+        margin-top: 10px;
+        margin-bottom: 10px;
 
-.actions .item {
-    display: inline-block;
-}
+        .glyphicon {
+            margin-right: 5px;
+        }
 
+        .submit {
+            margin-left: 10px;
+            display: inline-flex;
+            align-items: center;
+        }
 
-// Document tagger
-.document-tagger {
-    margin: 15px;
-}
+        .clear {
+            margin-left: 5px;
+            display: inline-flex;
+            align-items: center;
+        }
+    }
+    .tagger {
+        margin: 15px;
 
-.document-tagger .entry {
+        .spacer {
+            height: 200px;
+            border: 0px;
+        }
+        .done {
+            margin-top: 15px;
+            width: 100%;
+        }
+        .entry {
+            .description {
+                margin-bottom: 15px;
+            }
+        }
+    }
     .tags-input {
-        margin-top: 15px;
         width: 100%;
         max-width: none;
 
@@ -111,12 +144,9 @@
     } 
 }
 
-.document-tagger .spacer {
-    height: 200px;
-    border: 0px;
-}
-
-.document-tagger .done {
-    margin-top: 15px;
-    width: 100%;
+.icon-flipped {
+    transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
 }

@@ -12,7 +12,7 @@ const Component = {
     props: [],
 
     template: `
-        <form novalidate>
+        <form class="documents upload" novalidate>
             
             <!-- Status messages -->
             <div class="alert alert-success" v-show="hasSuccessMessage">
@@ -41,8 +41,8 @@ const Component = {
 
             <br />
 
-            <div class="uploads" v-if="documentCount > 0">
-                <table class="table documents upload">
+            <div class="uploads container" v-if="documentCount > 0">
+                <table class="uploads table">
                     <thead>
                         <tr>
                             <th></th>
@@ -80,7 +80,7 @@ const Component = {
                     </tbody>
                 </table>
                 <div>
-                    <span v-on:click="upload()" class="btn btn-success" :disabled="isSaving">
+                    <span v-on:click="upload()" class="upload btn btn-success" :disabled="isSaving">
                     <span class="glyphicon glyphicon-upload" /> Upload</span>
                 </div>
             </div>

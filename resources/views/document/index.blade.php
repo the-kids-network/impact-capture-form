@@ -9,9 +9,11 @@
             
                 <div class="panel-heading">Documents</div>
 
-                <div class="panel-body">
+                <div class="panel-body documents home">
                     @if(Auth::user()->isAdmin() || Auth::user()->isManager())
-                    <a href="{{ url('/documents/upload/index') }}">Upload Documents</a>
+                    <div class="upload link">
+                        <a href="{{ url('/documents/upload/index') }}">Upload Documents</a>
+                    </div>
                     @endif
 
                     <documents

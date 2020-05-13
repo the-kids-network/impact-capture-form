@@ -10826,7 +10826,7 @@ body {
 .fc-button-primary:not(:disabled).fc-button-active:focus {
   box-shadow: 0 0 0 0.2rem #1c5b7f;
 }
-.dropbox {
+.documents.upload .dropbox {
   outline: 2px dashed white;
   /* the dash box */
   outline-offset: -10px;
@@ -10838,7 +10838,7 @@ body {
   position: relative;
   cursor: pointer;
 }
-.input-file {
+.documents.upload .dropbox .input-file {
   opacity: 0;
   /* invisible but it's there! */
   width: 100%;
@@ -10846,79 +10846,110 @@ body {
   position: absolute;
   cursor: pointer;
 }
-.dropbox:hover {
-  background: #6fb6df;
-  /* when mouse over to the drop zone, change color */
-}
-.dropbox p {
+.documents.upload .dropbox p {
   font-size: 2em;
   text-align: center;
   padding: 50px 0;
 }
-.icon-flipped {
-  transform: scaleX(-1);
-  -moz-transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-  -ms-transform: scaleX(-1);
+.documents.upload .dropbox:hover {
+  background: #6fb6df;
+  /* when mouse over to the drop zone, change color */
 }
-.large-file {
+.documents.upload .uploads.container {
+  width: 100%;
+}
+.documents.upload .uploads.container .uploads.table .large-file {
   color: red;
 }
-.table td.remove {
+.documents.upload .uploads.container .uploads.table .remove {
   max-width: 20px;
 }
-.table td.file-size {
+.documents.upload .uploads.container .uploads.table .file-size {
   max-width: 60px;
 }
-.table td.file-name {
+.documents.upload .uploads.container .uploads.table .file-name {
   max-width: 100px;
 }
-.table td.file-name span {
+.documents.upload .uploads.container .uploads.table .file-name span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
   max-width: 100%;
 }
-.table td.title input {
+.documents.upload .uploads.container .uploads.table .title input {
   width: 100%;
 }
-.preview {
+.documents.home .upload.link {
+  margin-bottom: 10px;
+}
+.documents.browse .list .preview {
   text-align: center;
 }
-.actions {
+.documents.browse .list .actions {
   width: auto;
 }
-.actions .item {
+.documents.browse .list .actions .action {
   display: inline-block;
 }
-.document-tagger {
+.documents.browse .search {
+  display: -webkit-box;
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.documents.browse .search .glyphicon {
+  margin-right: 5px;
+}
+.documents.browse .search .submit {
+  margin-left: 10px;
+  display: -webkit-inline-box;
+  display: inline-flex;
+  -webkit-box-align: center;
+          align-items: center;
+}
+.documents.browse .search .clear {
+  margin-left: 5px;
+  display: -webkit-inline-box;
+  display: inline-flex;
+  -webkit-box-align: center;
+          align-items: center;
+}
+.documents.browse .tagger {
   margin: 15px;
 }
-.document-tagger .entry .tags-input {
-  margin-top: 15px;
-  width: 100%;
-  max-width: none;
-}
-.document-tagger .entry .tags-input .ti-input .ti-tags .ti-tag {
-  font-size: 15px;
-  background-color: #A41250;
-}
-.document-tagger .entry .tags-input .ti-input .ti-tags .ti-tag.ti-deletion-mark {
-  background-color: #ff0000;
-}
-.document-tagger .entry .tags-input .ti-autocomplete {
-  overflow-y: auto;
-  max-height: 200px;
-}
-.document-tagger .entry .tags-input .ti-autocomplete .ti-selected-item {
-  background-color: #e84e1b;
-}
-.document-tagger .spacer {
+.documents.browse .tagger .spacer {
   height: 200px;
   border: 0px;
 }
-.document-tagger .done {
+.documents.browse .tagger .done {
   margin-top: 15px;
   width: 100%;
+}
+.documents.browse .tagger .entry .description {
+  margin-bottom: 15px;
+}
+.documents.browse .tags-input {
+  width: 100%;
+  max-width: none;
+}
+.documents.browse .tags-input .ti-input .ti-tags .ti-tag {
+  font-size: 15px;
+  background-color: #A41250;
+}
+.documents.browse .tags-input .ti-input .ti-tags .ti-tag.ti-deletion-mark {
+  background-color: #ff0000;
+}
+.documents.browse .tags-input .ti-autocomplete {
+  overflow-y: auto;
+  max-height: 200px;
+}
+.documents.browse .tags-input .ti-autocomplete .ti-selected-item {
+  background-color: #e84e1b;
+}
+.icon-flipped {
+  transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
 }
