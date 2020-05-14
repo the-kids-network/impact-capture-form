@@ -94,10 +94,8 @@ const Component = {
             // reset any errors for new search
             this.$emit('error', [])
 
-            const tagToSearch = this.tagsSelected.toArray();
-
             try {
-                const matchingDocumentIds = await this.getDocumentsMatchingTags(tagToSearch);
+                const matchingDocumentIds = await this.getDocumentsMatchingTags(this.tagsSelected.toArray());
                 // send to parent component to handle filtering based on results
                 this.$emit('results', matchingDocumentIds)
             } catch(e) {

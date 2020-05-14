@@ -168,7 +168,7 @@ const Component = {
 
     computed: {
         _documents() {
-            return (!this.documentIdsToFilter) ? this.documents : filterDocuments(this.documents, this.documentIdsToFilter)
+            return (!this.documentIdsToFilter) ? this.documents : filterDocumentsToIds(this.documents, this.documentIdsToFilter)
         },
         isAdminUser() {
             return this.usertype === 'manager' || this.usertype === 'admin';
@@ -183,7 +183,7 @@ const Component = {
         
     },
 
-    methods: {
+    methods: { 
         removeDocumentFilter() {
             this.documentIdsToFilter = undefined
         },
@@ -194,8 +194,7 @@ const Component = {
 
         async setDocuments() {
             try {
-                const documents = await this.getDocuments();
-                this.documents = documents
+                this.documents = await this.getDocuments()
             } catch (err) {
                 this.$emit('error', "Unable to fetch documents list")
             }
@@ -216,8 +215,8 @@ const Component = {
                     const updatedDoc = await this.deleteDocument(doc.id, hardDelete)
 
                     hardDelete
-                        ? this.documents = this.documents.filter(d => d.id !== doc.id)
-                        : this.documents = this.documents.map(d => (d.id === updatedDoc.id) ? updatedDoc: d)
+                        ? this.documents = deleteFromDocuments(this.documents, document)
+                        : this.documents = updateDocuments(this.documents, updatedDoc)
 
                     this.$emit('success', 
                                 (hardDelete) ? "Permanent delete successful" : "Trash successful")
@@ -231,7 +230,7 @@ const Component = {
             this.locking(document, async doc => {
                 try {
                     const updatedDoc = await this.restoreDocument(doc.id)
-                    this.documents = this.documents.map(d => (d.id === updatedDoc.id) ? updatedDoc: d)  
+                    this.documents = updateDocuments(this.documents, updatedDoc)  
                     this.$emit('success', "Restore successful")
                 } catch (err) {
                     this.$emit('error', "Restore unsuccessful")
@@ -243,7 +242,7 @@ const Component = {
             this.locking(document, async doc => {
                 try {
                     const updatedDoc = await this.shareDocument(doc.id, share)
-                    this.documents = this.documents.map(d => (d.id === document.id) ? updatedDoc: d)
+                    this.documents = updateDocuments(this.documents, updatedDoc)
                     this.$emit('success', (share) ? "Share successful" : "Unshare successful")
                 } catch (err) {
                     this.$emit('error', (share) ? "Share not successful" : "Unshare not successful")
@@ -324,4 +323,8 @@ const Component = {
 
 export default Component;
 
-const filterDocuments = (documents, idsToFilter) => documents.filter(doc => idsToFilter.includes(doc.id)) 
+const filterDocumentsToIds = (documents, idsToFilter) => documents.filter(doc => idsToFilter.includes(doc.id)) 
+
+const updateDocuments = (documents, updatedDocument) => documents.map(d => (d.id === updatedDocument.id) ? updatedDocument: d)
+
+const deleteFromDocuments = (documents, toDelete) => documents.filter(d => d.id !== toDelete.id)
