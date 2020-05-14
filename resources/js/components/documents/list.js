@@ -175,9 +175,9 @@ const Component = {
                 }
 
                 this.$emit('success', 
-                            (hardDelete) ? "Permenantly deleted successfully" : "Trashed successfully")
+                            (hardDelete) ? "Permanent delete successful" : "Trash successful")
             } catch (err) {
-                this.$emit('error', "Delete unsuccessful")
+                this.$emit('error', (hardDelete) ? "Permanent delete unsuccessful" : "Trash unsuccessful")
             }
         },
 
@@ -186,9 +186,9 @@ const Component = {
             try {
                 const updatedDoc = (await axios.post(urlRestoreDocument)).data
                 this.documents = this.documents.map(d => (d.id === documentId) ? updatedDoc: d)
-                this.$emit('success', "Restored successfully")
+                this.$emit('success', "Restore successful")
             } catch (err) {
-                this.$emit('error', "Restored unsuccessful")
+                this.$emit('error', "Restore unsuccessful")
             }
         },
 
@@ -197,9 +197,9 @@ const Component = {
             try {
                 const updatedDoc = (await axios.post(urlShareDocument, { 'share': share })).data
                 this.documents = this.documents.map(d => (d.id === documentId) ? updatedDoc: d)
-                this.$emit('success', (share) ? "Shared successfully" : "Unshared successfully")
+                this.$emit('success', (share) ? "Share successful" : "Unshare successful")
             } catch (err) {
-                this.$emit('error', "Unable to share document")
+                this.$emit('error', (share) ? "Share not successful" : "Unshare not successful")
             }
         },
 
