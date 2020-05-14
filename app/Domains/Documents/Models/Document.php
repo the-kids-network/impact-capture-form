@@ -20,8 +20,11 @@ class Document extends Model {
     protected $appends = ['extension', 'trashed'];
 
     public function getExtensionAttribute() {
-        $infoPath = pathinfo($this->path);
-        return $infoPath['extension'];
+        $path_parts = pathinfo($this->path);
+        if (array_key_exists('extension', $path_parts)) {
+            return $path_parts['extension'];
+        }
+        return null;
     }
 
     public function getTrashedAttribute() {

@@ -1,4 +1,8 @@
 export default (fileExtension) => {
+    if (fileExtension === null || fileExtension == undefined) {
+        fileExtension = ''
+    }
+
     switch(fileExtension.toLowerCase()) {
         case 'jpg':
         case 'jpeg':

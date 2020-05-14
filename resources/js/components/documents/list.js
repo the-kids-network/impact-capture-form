@@ -44,7 +44,7 @@ const Component = {
                             <popper
                                 :trigger="popover.trigger"
                                 :options="popover.options">
-                                <div class="popper">File type: {{ document.extension }}</div>
+                                <div class="popper">File type: {{ document.extension ? document.extension : 'unknown' }}</div>
                             
                                 <span slot="reference">
                                     <span class="hidden">{{ document.extension }}</span>
