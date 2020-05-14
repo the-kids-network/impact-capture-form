@@ -113,11 +113,9 @@ const Component = {
             this.$emit('clear')
         },
 
-         /**
-         * Non view state-reading/changing functions below.
-         * 
-         * These should not modify the view state to remain as pure as possible, and more easily testable in isolation.
-         */ 
+        /*
+        * Functions that do not interact with component state directly
+        */
         async getAllTags() {
             const tags = (await axios.get(
                 `/tags`,

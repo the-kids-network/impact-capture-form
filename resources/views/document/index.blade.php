@@ -32,14 +32,6 @@
 
 @section('body-scripts')
 <script>
-    jQuery(document).ready(function($) {
-        $('[data-toggle="popover"]').popover({
-            html: true,
-            placement: 'auto top'
-        });
-        $('.table').on('post-body.bs.table', function () {
-            $('[data-toggle="popover"]').popover()
-        });
-    });
+    
 </script>
 @endsection

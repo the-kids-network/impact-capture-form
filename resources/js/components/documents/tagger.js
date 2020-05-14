@@ -106,7 +106,7 @@ const Component = {
             this.clearError()
 
             // validate tag
-            const { valid, reasons } = this.validateTagLabel(this.tags, tagLabel)
+            const { valid, reasons } = this.validateTagLabel(this.tags, tagLabel, this.maximumTagsAllowed)
             if (!valid) {
                 this.handleError({messages: reasons})
                 return;
@@ -136,11 +136,9 @@ const Component = {
             }
         },
 
-        /**
-         * Non view state-reading/changing functions below.
-         * 
-         * These should not modify the view state to remain as pure as possible, and more easily testable in isolation.
-         */ 
+        /*
+        * Functions that do not interact with component state directly
+        */
         async getTagSuggestions() {
             const urlGetTags = `/tags`
             const tags = (await axios.get(
@@ -179,7 +177,7 @@ const Component = {
             return (await axios.delete(`/tags/${tagId}`)).data
         },
 
-        validateTagLabel(existingTags, tagLabel) {
+        validateTagLabel(existingTags, tagLabel, maximumTagsAllowed) {
             const rules = {
                 duplicate : {
                     rule: (existingTags, tagToAdd)  => existingTags.keySeq().contains(tagToAdd),
@@ -190,8 +188,8 @@ const Component = {
                     message: "Tag cannot be more than 10 characters long"
                 },
                 tagLimitReached: {
-                    rule: (existingTags, tagToAdd) => existingTags.size >= this.maximumTagsAllowed,
-                    message: `Can only have ${this.maximumTagsAllowed} tags per document (try removing one to make space)`
+                    rule: (existingTags, tagToAdd) => existingTags.size >= maximumTagsAllowed,
+                    message: `Can only have ${maximumTagsAllowed} tags per document (try removing one to make space)`
                 }
             }
 

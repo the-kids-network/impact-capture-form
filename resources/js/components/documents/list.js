@@ -2,6 +2,8 @@ import _ from 'lodash'
 import fileIconFor from "./fileicons";
 import Tagger from "./tagger";
 import DocumentSearch from './search'
+import Popper from 'vue-popperjs';
+import 'vue-popperjs/dist/vue-popper.css';
 
 const Component = {
 
@@ -11,14 +13,15 @@ const Component = {
     },
 
     components: {
-        DocumentSearch
+        'document-search': DocumentSearch,
+        'popper': Popper
     },
 
     template: `
         <div class="documents list">
             <document-search 
                 class="list-search"
-                @results="filterDocuments($event)"
+                @results="setDocumentFilter($event)"
                 @clear="removeDocumentFilter"
                 @error="$emit('error', $event)" />
 
@@ -32,73 +35,114 @@ const Component = {
                 </thead>
 
                 <tbody>
-                    <tr class="item" v-for="(document) in _documents">   
+                    <tr 
+                        v-for="(document) in _documents"
+                        :id="'item-' + document.id"
+                        class="item" >   
+
                         <td class="preview">
-                            <span class="hidden">{{ document.extension }}</span>
-                            <span :class="'file-icon far fa-2x ' + fileIconFor(document.extension)"
-                                data-toggle="popover" data-trigger="hover" data-placement="top" :data-content="'File type: ' + document.extension">
-                            </span>
+                            <popper
+                                :trigger="popover.trigger"
+                                :options="popover.options">
+                                <div class="popper">File type: {{ document.extension }}</div>
+                            
+                                <span slot="reference">
+                                    <span class="hidden">{{ document.extension }}</span>
+                                    <span :class="'file-icon far fa-2x ' + fileIconFor(document.extension)" />
+                                </span>
+                            </popper>
                         </td>
                         <td class="title">
                             {{ document.title }}
                         </td>
                         <td class="actions">
-                            <div>
-                                <a 
-                                    :id="'download-' + document.id"
-                                    class="action" 
-                                    @click="downloadDocument(document.id)"
-                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Download">
-                                    <span class="glyphicon glyphicon-download"></span>
-                                </a>
-                                <a 
-                                    v-if="isAdminUser && document.trashed"    
-                                    :id="'restore-' + document.id"
-                                    class="action"
-                                    @click="restoreDocument(document.id)"
-                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Restore">
-                                    <span class="glyphicon glyphicon-backward"></span>
-                                </a>
-                                <a 
-                                    v-if="isAdminUser && document.trashed"    
-                                    :id="'delete-' + document.id"
-                                    class="action"
-                                    @click="deleteDocument(document.id, true)"
-                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Permenantly Delete">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                </a>
-                                <a 
-                                    v-if="isAdminUser && !document.trashed"    
-                                    :id="'trash-' + document.id"
-                                    class="action"
-                                    @click="deleteDocument(document.id, false)"
-                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Trash">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a>
-                                <a 
+                            <div v-if="document.wip"
+                                 class="spinner" />
+                            <div v-else
+                                 class="actions-row">
+                                 <popper
+                                    :trigger="popover.trigger"
+                                    :options="popover.options">
+                                    <div class="popper">Download</div>
+                                    <a  slot="reference"
+                                        :id="'download-' + document.id"
+                                        class="action download" 
+                                        @click="handleDownloadDocument(document)">
+                                        <span class="glyphicon glyphicon-download"></span>
+                                    </a>
+                                </popper>
+                                <popper
+                                    v-if="isAdminUser && document.trashed"
+                                    :trigger="popover.trigger"
+                                    :options="popover.options">
+                                    <div class="popper">Restore</div>
+                                    <a  slot="reference"
+                                        :id="'restore-' + document.id"
+                                        class="action restore"
+                                        @click="handleRestoreDocument(document)">
+                                        <span class="glyphicon glyphicon-backward"></span>
+                                    </a>
+                                </popper>
+                                <popper
+                                    v-if="isAdminUser && document.trashed" 
+                                    :trigger="popover.trigger"
+                                    :options="popover.options">
+                                    <div class="popper">Permenantly Delete</div>
+                                    <a  slot="reference"
+                                        :id="'delete-' + document.id"
+                                        class="action delete"
+                                        @click="handleDeleteDocument(document, true)">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                </popper>
+                                <popper
+                                    v-if="isAdminUser && !document.trashed"
+                                    :trigger="popover.trigger"
+                                    :options="popover.options">
+                                    <div class="popper">Trash</div>
+                                    <a  slot="reference"
+                                        :id="'trash-' + document.id"
+                                        class="action trash"
+                                        @click="handleDeleteDocument(document, false)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </popper>
+                                <popper
                                     v-if="!document.is_shared"
-                                    :id="'share-' + document.id"
-                                    class="action" 
-                                    @click="shareDocument(document.id, true)"
-                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Share">
-                                    <span class="glyphicon glyphicon-share-alt"></span>
-                                </a>
-                                <a 
+                                    :trigger="popover.trigger"
+                                    :options="popover.options">
+                                    <div class="popper">Share</div>
+                                    <a  slot="reference"
+                                        :id="'share-' + document.id"
+                                        class="action share" 
+                                        @click="handleShareDocument(document, true)">
+                                        <span class="glyphicon glyphicon-share-alt"></span>
+                                    </a>
+                                </popper>
+                                <popper
                                     v-else
-                                    :id="'unshare-' + document.id"
-                                    class="action"  
-                                    @click="shareDocument(document.id, false)"
-                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Unshare">
-                                    <span class="glyphicon glyphicon-share-alt icon-flipped"></span>
-                                </a>
-                                <a 
+                                    :trigger="popover.trigger"
+                                    :options="popover.options">
+                                    <div class="popper">Unshare</div>
+                                    <a  slot="reference"
+                                        :id="'unshare-' + document.id"
+                                        class="action unshare"  
+                                        @click="handleShareDocument(document, false)">
+                                        <span class="glyphicon glyphicon-share-alt icon-flipped"></span>
+                                    </a>
+                                </popper>
+                                <popper
                                     v-if="isAdminUser"
-                                    :id="'tag-' + document.id"
-                                    class="action" 
-                                    @click="openDocumentTagger(document.id)"
-                                    data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Tag">
-                                    <span class="glyphicon glyphicon-tags"></span>
-                                </a>
+                                    :trigger="popover.trigger"
+                                    :options="popover.options">
+                                    <div class="popper">Tag</div>
+                                    <a  slot="reference"
+                                        :id="'tag-' + document.id"
+                                        class="action tag" 
+                                        @click="handleOpenTagger(document.id)">
+                                        <span class="glyphicon glyphicon-tags"></span>
+                                    </a>
+                                </popper>
                             </div>
                         </td>
                     </tr>
@@ -110,6 +154,13 @@ const Component = {
 
     data() {
         return {
+            popover: {
+                trigger: 'hover',
+                options: {
+                    placement: 'top',
+                    modifiers: { offset: { offset: '0,10px' } }
+                }
+            },
             documentIdsToFilter: undefined,
             documents: []
         }
@@ -125,11 +176,11 @@ const Component = {
     },
 
     async created() {
-        this.getDocuments()
+        this.setDocuments()
     },
 
     mounted() {
-
+        
     },
 
     methods: {
@@ -137,77 +188,70 @@ const Component = {
             this.documentIdsToFilter = undefined
         },
 
-        filterDocuments(documentIdsToFilter) {
+        setDocumentFilter(documentIdsToFilter) {
             this.documentIdsToFilter = documentIdsToFilter;
         },
 
-        async getDocuments() {
-            const urlGetDocuments = `/documents`
+        async setDocuments() {
             try {
-                const documents = (await axios.get(urlGetDocuments)).data
+                const documents = await this.getDocuments();
                 this.documents = documents
             } catch (err) {
                 this.$emit('error', "Unable to fetch documents list")
             }
         },
 
-        async downloadDocument(documentId) {
-            const urlGetDownloadUrl = `/documents/${documentId}/download`
+        async handleDownloadDocument(document) {
             try {
-                const downloadData = (await axios.get(urlGetDownloadUrl)).data
-                window.open(downloadData.download_url)
+                const url = await this.getDocumentDownloadUrl(document.id)
+                window.open(url)
             } catch (err) {
                 this.$emit('error', "Download unsuccessful")
             }
         },
 
-        async deleteDocument(documentId, hardDelete=false) {
-            const urlDeleteDocument = `/documents/${documentId}`
-            try {
-                const updatedDoc = (await axios.delete(
-                    urlDeleteDocument, { params: { 'really_delete': hardDelete } })
-                ).data
+        handleDeleteDocument(document, hardDelete=false) {
+            this.locking(document, async doc => {
+                try {
+                    const updatedDoc = await this.deleteDocument(doc.id, hardDelete)
 
-                if (hardDelete) {
-                    this.documents = this.documents.filter(d => d.id !== documentId)
-                } else {
-                    this.documents = this.documents.map(d => (d.id === documentId) ? updatedDoc: d)
+                    hardDelete
+                        ? this.documents = this.documents.filter(d => d.id !== doc.id)
+                        : this.documents = this.documents.map(d => (d.id === updatedDoc.id) ? updatedDoc: d)
+
+                    this.$emit('success', 
+                                (hardDelete) ? "Permanent delete successful" : "Trash successful")
+                } catch (err) {
+                    this.$emit('error', (hardDelete) ? "Permanent delete unsuccessful" : "Trash unsuccessful")
                 }
-
-                this.$emit('success', 
-                            (hardDelete) ? "Permanent delete successful" : "Trash successful")
-            } catch (err) {
-                this.$emit('error', (hardDelete) ? "Permanent delete unsuccessful" : "Trash unsuccessful")
-            }
+            })
         },
 
-        async restoreDocument(documentId) {
-            const urlRestoreDocument = `/documents/${documentId}/restore`
-            try {
-                const updatedDoc = (await axios.post(urlRestoreDocument)).data
-                this.documents = this.documents.map(d => (d.id === documentId) ? updatedDoc: d)
-                this.$emit('success', "Restore successful")
-            } catch (err) {
-                this.$emit('error', "Restore unsuccessful")
-            }
+        handleRestoreDocument(document) {
+            this.locking(document, async doc => {
+                try {
+                    const updatedDoc = await this.restoreDocument(doc.id)
+                    this.documents = this.documents.map(d => (d.id === updatedDoc.id) ? updatedDoc: d)  
+                    this.$emit('success', "Restore successful")
+                } catch (err) {
+                    this.$emit('error', "Restore unsuccessful")
+                }
+            })
         },
 
-        async shareDocument(documentId, share=true) {
-            const urlShareDocument = `/documents/${documentId}/share`
-            try {
-                const updatedDoc = (await axios.post(urlShareDocument, { 'share': share })).data
-                this.documents = this.documents.map(d => (d.id === documentId) ? updatedDoc: d)
-                this.$emit('success', (share) ? "Share successful" : "Unshare successful")
-            } catch (err) {
-                this.$emit('error', (share) ? "Share not successful" : "Unshare not successful")
-            }
+        async handleShareDocument(document, share=true) {
+            this.locking(document, async doc => {
+                try {
+                    const updatedDoc = await this.shareDocument(doc.id, share)
+                    this.documents = this.documents.map(d => (d.id === document.id) ? updatedDoc: d)
+                    this.$emit('success', (share) ? "Share successful" : "Unshare successful")
+                } catch (err) {
+                    this.$emit('error', (share) ? "Share not successful" : "Unshare not successful")
+                }
+            })
         },
 
-        fileIconFor(extension) {
-            return fileIconFor(extension);
-        },
-
-        openDocumentTagger(documentId) {
+        handleOpenTagger(documentId) {
             this.$modal.show(
                 Tagger, 
                 { 
@@ -228,6 +272,52 @@ const Component = {
                     'closed': () => {}
                 }
             )
+        },
+
+        /*
+        * Functions that do not interact with component state directly
+        */
+
+        async getDocuments() {
+            const urlGetDocuments = `/documents`
+            return (await axios.get(urlGetDocuments)).data
+        },
+
+        async getDocumentDownloadUrl(documentId) {
+            const urlGetDownloadUrl = `/documents/${documentId}/download`
+            const downloadData = (await axios.get(urlGetDownloadUrl)).data
+            return downloadData.download_url
+        },
+
+        async deleteDocument(documentId, hardDelete=false) {
+            const urlDeleteDocument = `/documents/${documentId}`
+            const updatedDoc = (await axios.delete(
+                urlDeleteDocument, { params: { 'really_delete': hardDelete } })
+            ).data
+            return updatedDoc
+        },
+        async restoreDocument(documentId) {
+            const urlRestoreDocument = `/documents/${documentId}/restore`
+            const updatedDoc = (await axios.post(urlRestoreDocument)).data
+            return updatedDoc
+        },
+
+        async shareDocument(documentId, share=true) {
+            const urlShareDocument = `/documents/${documentId}/share`
+            return (await axios.post(urlShareDocument, { 'share': share })).data
+        },
+
+        fileIconFor(extension) {
+            return fileIconFor(extension);
+        },
+
+        async locking(document, func) {
+            this.$set(document, 'wip', true)
+            try {
+                await func(document);
+            } finally {
+                this.$set(document, 'wip', false)
+            }
         }
     }
 };
