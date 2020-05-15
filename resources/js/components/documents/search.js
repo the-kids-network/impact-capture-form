@@ -1,6 +1,6 @@
-import VueTagsInput from '@johmun/vue-tags-input';
 import _ from 'lodash'
 import {Set, Map} from 'immutable';
+import VueTagsInput from '@johmun/vue-tags-input';
 
 const Component = {
 

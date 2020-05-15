@@ -1,9 +1,11 @@
 import _ from 'lodash'
+import Popper from 'vue-popperjs';
+import 'vue-popperjs/dist/vue-popper.css';
+
 import fileIconFor from "./fileicons";
 import Tagger from "./tagger";
 import DocumentSearch from './search'
-import Popper from 'vue-popperjs';
-import 'vue-popperjs/dist/vue-popper.css';
+
 
 const Component = {
 
@@ -43,7 +45,8 @@ const Component = {
                         <td class="preview">
                             <popper
                                 :trigger="popover.trigger"
-                                :options="popover.options">
+                                :options="popover.options"
+                                :delay-on-mouse-over="popover.delayOnMouseOver">
                                 <div class="popper">File type: {{ document.extension ? document.extension : 'unknown' }}</div>
                             
                                 <span slot="reference">
@@ -62,7 +65,8 @@ const Component = {
                                  class="actions-row">
                                  <popper
                                     :trigger="popover.trigger"
-                                    :options="popover.options">
+                                    :options="popover.options"
+                                    :delay-on-mouse-over="popover.delayOnMouseOver">
                                     <div class="popper">Download</div>
                                     <a  slot="reference"
                                         :id="'download-' + document.id"
@@ -74,7 +78,8 @@ const Component = {
                                 <popper
                                     v-if="isAdminUser && document.trashed"
                                     :trigger="popover.trigger"
-                                    :options="popover.options">
+                                    :options="popover.options"
+                                    :delay-on-mouse-over="popover.delayOnMouseOver">
                                     <div class="popper">Restore</div>
                                     <a  slot="reference"
                                         :id="'restore-' + document.id"
@@ -86,7 +91,8 @@ const Component = {
                                 <popper
                                     v-if="isAdminUser && document.trashed" 
                                     :trigger="popover.trigger"
-                                    :options="popover.options">
+                                    :options="popover.options"
+                                    :delay-on-mouse-over="popover.delayOnMouseOver">
                                     <div class="popper">Permenantly Delete</div>
                                     <a  slot="reference"
                                         :id="'delete-' + document.id"
@@ -98,7 +104,8 @@ const Component = {
                                 <popper
                                     v-if="isAdminUser && !document.trashed"
                                     :trigger="popover.trigger"
-                                    :options="popover.options">
+                                    :options="popover.options"
+                                    :delay-on-mouse-over="popover.delayOnMouseOver">
                                     <div class="popper">Trash</div>
                                     <a  slot="reference"
                                         :id="'trash-' + document.id"
@@ -110,7 +117,8 @@ const Component = {
                                 <popper
                                     v-if="!document.is_shared"
                                     :trigger="popover.trigger"
-                                    :options="popover.options">
+                                    :options="popover.options"
+                                    :delay-on-mouse-over="popover.delayOnMouseOver">
                                     <div class="popper">Share</div>
                                     <a  slot="reference"
                                         :id="'share-' + document.id"
@@ -122,7 +130,8 @@ const Component = {
                                 <popper
                                     v-else
                                     :trigger="popover.trigger"
-                                    :options="popover.options">
+                                    :options="popover.options"
+                                    :delay-on-mouse-over="popover.delayOnMouseOver">
                                     <div class="popper">Unshare</div>
                                     <a  slot="reference"
                                         :id="'unshare-' + document.id"
@@ -134,7 +143,8 @@ const Component = {
                                 <popper
                                     v-if="isAdminUser"
                                     :trigger="popover.trigger"
-                                    :options="popover.options">
+                                    :options="popover.options"
+                                    :delay-on-mouse-over="popover.delayOnMouseOver">
                                     <div class="popper">Tag</div>
                                     <a  slot="reference"
                                         :id="'tag-' + document.id"
@@ -156,6 +166,7 @@ const Component = {
         return {
             popover: {
                 trigger: 'hover',
+                delayOnMouseOver: 500,
                 options: {
                     placement: 'top',
                     modifiers: { offset: { offset: '0,10px' } }
