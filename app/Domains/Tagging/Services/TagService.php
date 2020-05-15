@@ -29,7 +29,7 @@ class TagService {
         if (!$tag) {
             $tag = new Tag();
             $tag->tagged_item_id = $taggedItem->id;
-            $tag->label = strtolower(trim($tagLabel));
+            $tag->label = strip_tags(strtolower(trim($tagLabel)));
             $tag->save();
         } 
 

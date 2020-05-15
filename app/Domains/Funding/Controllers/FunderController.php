@@ -30,8 +30,8 @@ class FunderController extends Controller {
         ]);
 
         $funder = new Funder();
-        $funder->code = $request->code;
-        $funder->description = $request->description;
+        $funder->code = strip_tags($request->code);
+        $funder->description = strip_tags($request->description);
         $funder->save();
 
         return redirect('/funders')->with('status','Funder Added');

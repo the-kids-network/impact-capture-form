@@ -56,7 +56,7 @@ class DocumentService {
                 $doc = Document::modifiable()->wherePath($path)->first();
                 if (!$doc) $doc = new Document();
                 $doc->user_id = Auth::id();
-                $doc->title = $attributes['title'];
+                $doc->title = strip_tags($attributes['title']);
                 $doc->is_shared = filter_var($attributes['shared'], FILTER_VALIDATE_BOOLEAN);
                 $doc->path = $path;
                 $doc->save();
