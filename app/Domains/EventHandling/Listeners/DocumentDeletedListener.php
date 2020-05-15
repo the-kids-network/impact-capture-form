@@ -2,7 +2,7 @@
 
 namespace App\Domains\EventHandling\Listeners;
 
-use App\Domains\Documents\Event\DocumentDeleted;
+use App\Domains\Documents\Events\DocumentDeleted;
 use App\Domains\Tagging\Services\TaggedItemService;
 
 class DocumentDeletedListener {

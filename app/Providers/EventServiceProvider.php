@@ -12,7 +12,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Domains\Documents\Event\DocumentDeleted' => [
+        'App\Domains\Documents\Events\DocumentDeleted' => [
             'App\Domains\EventHandling\Listeners\DocumentDeletedListener'
         ],
     ];

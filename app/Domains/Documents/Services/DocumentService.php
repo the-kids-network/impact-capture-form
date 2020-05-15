@@ -2,7 +2,7 @@
 
 namespace App\Domains\Documents\Services;
 
-use App\Domains\Documents\Event\DocumentDeleted;
+use App\Domains\Documents\Events\DocumentDeleted;
 use App\Domains\Documents\Models\Document;
 use App\Exceptions\NotFoundException;
 use Illuminate\Support\Facades\Storage;
