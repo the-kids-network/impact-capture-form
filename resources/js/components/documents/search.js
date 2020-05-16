@@ -22,11 +22,12 @@ const Component = {
                 :add-only-from-autocomplete="autoCompleteStrict"
                 @tags-changed="newTags => updateSelectedTags(newTags)"
                 />
-
-            <span :class="'submit btn btn-primary ' + (!_searchEnabled ? 'disabled' : '')" 
-                @click="submitSearch"><span class="glyphicon glyphicon-search"></span> Search</span>
-            <span class="clear btn btn-secondary" 
-                @click="clearSearch"><span class="glyphicon glyphicon-remove"></span> Reset</span>
+            <div class="buttons">
+                <span :class="'submit btn btn-primary ' + (!_searchEnabled ? 'disabled' : '')" 
+                    @click="submitSearch"><span class="glyphicon glyphicon-search"></span> Search</span>
+                <span class="clear btn btn-secondary" 
+                    @click="clearSearch"><span class="glyphicon glyphicon-remove"></span> Reset</span>
+            </div>
         </div>
     `,
 

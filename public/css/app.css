@@ -10883,14 +10883,72 @@ body {
 .documents.home .upload.link {
   margin-bottom: 10px;
 }
-.documents.browse .list .preview {
+.documents.browse .list .popper {
+  color: inherit;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: rgba(102, 96, 96, 0.74) 0 0 5px 0;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.documents.browse .list .item .preview {
+  width: 20px;
   text-align: center;
 }
-.documents.browse .list .actions {
-  width: auto;
+.documents.browse .list .item .title {
+  max-width: 200px;
 }
-.documents.browse .list .actions .action {
+.documents.browse .list .item .title .title-container {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: inline-block;
+  max-width: 100%;
+}
+.documents.browse .list .item .actions {
+  width: 200px;
+}
+.documents.browse .list .item .actions .spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3097D1;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+.documents.browse .list .item .actions .action {
+  display: -webkit-inline-box;
+  display: inline-flex;
+}
+.documents.browse .list .pagination-bar .page-size-list {
+  float: left !important;
+}
+.documents.browse .list .pagination-bar .page-selector {
+  float: right !important;
+}
+.documents.browse .list .pagination-bar .page-selector .pagination {
+  margin: inherit;
 }
 .documents.browse .search {
   display: -webkit-box;
@@ -10898,20 +10956,18 @@ body {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.documents.browse .search .glyphicon {
-  margin-right: 5px;
-}
-.documents.browse .search .submit {
+.documents.browse .search .buttons {
   margin-left: 10px;
-  display: -webkit-inline-box;
-  display: inline-flex;
+  display: inherit;
+}
+.documents.browse .search .buttons .submit {
+  max-height: 35px;
   -webkit-box-align: center;
           align-items: center;
 }
-.documents.browse .search .clear {
+.documents.browse .search .buttons .clear {
   margin-left: 5px;
-  display: -webkit-inline-box;
-  display: inline-flex;
+  max-height: 35px;
   -webkit-box-align: center;
           align-items: center;
 }

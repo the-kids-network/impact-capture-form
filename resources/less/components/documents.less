@@ -75,26 +75,52 @@
             padding-left: 5px;
             padding-right: 5px;
         }
-        .preview {
-            text-align:center;
-        }
-        .actions {
-            width: auto;
-
-            .spinner {
-                border: 2px solid #f3f3f3;
-                border-top: 2px solid @brand-primary;
-                border-radius: 50%;
-                width: 15px;
-                height: 15px;
-                animation: spin 2s linear infinite;
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
+        .item {
+            .preview {
+                width: 20px;
+                text-align:center;
+            }
+            .title {
+                max-width: 200px;
+                
+                .title-container {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: inline-block;
+                    max-width: 100%;
                 }
             }
-            .action {
-                display: inline-block;
+            .actions {
+                width: 200px;
+
+                .spinner {
+                    border: 2px solid #f3f3f3;
+                    border-top: 2px solid @brand-primary;
+                    border-radius: 50%;
+                    width: 15px;
+                    height: 15px;
+                    animation: spin 2s linear infinite;
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                }
+                .action {
+                    display: inline-flex;
+                }
+            }
+        }
+        .pagination-bar {
+            .page-size-list {
+                float: left !important;
+            }
+            .page-selector {
+                float: right !important;
+
+                .pagination {
+                    margin: inherit;
+                }
             }
         }
     }
@@ -103,20 +129,20 @@
         margin-top: 10px;
         margin-bottom: 10px;
 
-        .glyphicon {
-            margin-right: 5px;
-        }
-
-        .submit {
+        .buttons {
             margin-left: 10px;
-            display: inline-flex;
-            align-items: center;
-        }
+            display: inherit;
 
-        .clear {
-            margin-left: 5px;
-            display: inline-flex;
-            align-items: center;
+            .submit {
+                max-height: 35px;
+                align-items: center;
+            }
+
+            .clear {
+                margin-left: 5px;
+                max-height: 35px;
+                align-items: center;
+            }
         }
     }
     .tagger {

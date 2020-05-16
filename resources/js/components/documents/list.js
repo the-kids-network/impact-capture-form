@@ -6,7 +6,6 @@ import fileIconFor from "./fileicons";
 import Tagger from "./tagger";
 import DocumentSearch from './search'
 
-
 const Component = {
 
     props: {
@@ -38,7 +37,7 @@ const Component = {
 
                 <tbody>
                     <tr 
-                        v-for="(document) in _documents"
+                        v-for="(document) in _documentsForCurrentPage"
                         :id="'item-' + document.id"
                         class="item" >   
 
@@ -56,7 +55,7 @@ const Component = {
                             </popper>
                         </td>
                         <td class="title">
-                            {{ document.title }}
+                            <span class="title-container"><span class="title-text">{{ document.title }}</span></span>
                         </td>
                         <td class="actions">
                             <div v-if="document.wip"
@@ -158,6 +157,42 @@ const Component = {
                     </tr>
                 </tbody>
             </table>
+            <div class="pagination-bar">
+                <div class="page-size-list">
+                    <span class="btn-group dropdown dropup">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                            <span class="page-size">{{currentPageSize}}</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li v-for="size in pageSizes"
+                                :class="'page-size ' + ((size === currentPageSize) ? 'active' : '')"
+                                @click="currentPageSize = size"
+                                role="menuitem"><a href="#">{{size}}</a></li>
+                           
+                        </ul>
+                    </span> rows per page
+                </div>
+                <div class="page-selector" v-if="_pages.length > 1">
+                    <ul class="pagination pages-list">
+                        <li class="page-item" 
+                            v-if="currentPage != 1" 
+                            @click="currentPage--">
+                            <a class="page-link"  href="#"> &lt; </a>
+                        </li>
+                        <li :class="'page-item ' + ((page === currentPage) ? 'active' : '')" 
+                            v-for="page in _pages" 
+                            @click="currentPage = page">
+                            <a class="page-link"  href="#"> {{page}} </a>
+                        </li>
+                        <li class="page-item" 
+                            @click="currentPage++" 
+                            v-if="currentPage < _pages.length">
+                            <a class="page-link" href="#"> &gt; </a>
+                        </li>
+                    </ul>
+                </div>	
+            </div>
             <modals-container/>
         </div>
     `,
@@ -172,18 +207,49 @@ const Component = {
                     modifiers: { offset: { offset: '0,10px' } }
                 }
             },
+
+            // core document state
             documentIdsToFilter: undefined,
-            documents: []
+            documents: [],
+
+            // client-side pagination state
+            currentPage: 1,
+            pageSizes: [10, 25, 50, 100],
+            currentPageSize: 25
         }
     },
 
     computed: {
-        _documents() {
-            return (!this.documentIdsToFilter) ? this.documents : filterDocumentsToIds(this.documents, this.documentIdsToFilter)
+        _documentsFiltered() {
+           return this.documentIdsToFilter ? filterToIds(this.documents, this.documentIdsToFilter) : this.documents
         },
+        _documentsForCurrentPage() {
+             return itemsForPage(this._documentsFiltered, this.currentPage, this.currentPageSize)
+        },
+        _pages() {
+            const numberOfPages = Math.ceil(this._documentsFiltered.length / this.currentPageSize);
+            const range = (start, end) => [...Array(end - start + 1)].map((_, i) => start + i);
+            return range(1, numberOfPages);
+        },
+
         isAdminUser() {
             return this.usertype === 'manager' || this.usertype === 'admin';
         },
+    },
+
+    watch: {
+        documentIdsToFilter() {
+            this.currentPage = 1
+        },
+        _pages () {
+            if (this.currentPage > this._pages.length) {
+                this.currentPage = this._pages.length
+            }
+        },
+        currentPage() {
+            // clear status box
+            this.$emit('error', [])
+        }
     },
 
     async created() {
@@ -191,7 +257,6 @@ const Component = {
     },
 
     mounted() {
-        
     },
 
     methods: { 
@@ -226,8 +291,8 @@ const Component = {
                     const updatedDoc = await this.deleteDocument(doc.id, hardDelete)
 
                     hardDelete
-                        ? this.documents = deleteFromDocuments(this.documents, document)
-                        : this.documents = updateDocuments(this.documents, updatedDoc)
+                        ? this.documents = deleteUsingId(this.documents, document)
+                        : this.documents = updateUsingId(this.documents, updatedDoc)
 
                     this.$emit('success', 
                                 (hardDelete) ? "Permanent delete successful" : "Trash successful")
@@ -241,7 +306,7 @@ const Component = {
             this.locking(document, async doc => {
                 try {
                     const updatedDoc = await this.restoreDocument(doc.id)
-                    this.documents = updateDocuments(this.documents, updatedDoc)  
+                    this.documents = updateUsingId(this.documents, updatedDoc)  
                     this.$emit('success', "Restore successful")
                 } catch (err) {
                     this.$emit('error', "Restore unsuccessful")
@@ -253,7 +318,7 @@ const Component = {
             this.locking(document, async doc => {
                 try {
                     const updatedDoc = await this.shareDocument(doc.id, share)
-                    this.documents = updateDocuments(this.documents, updatedDoc)
+                    this.documents = updateUsingId(this.documents, updatedDoc)
                     this.$emit('success', (share) ? "Share successful" : "Unshare successful")
                 } catch (err) {
                     this.$emit('error', (share) ? "Share not successful" : "Unshare not successful")
@@ -334,8 +399,14 @@ const Component = {
 
 export default Component;
 
-const filterDocumentsToIds = (documents, idsToFilter) => documents.filter(doc => idsToFilter.includes(doc.id)) 
+const filterToIds = (items, idsToFilter) => items.filter(item => idsToFilter.includes(item.id)) 
 
-const updateDocuments = (documents, updatedDocument) => documents.map(d => (d.id === updatedDocument.id) ? updatedDocument: d)
+const updateUsingId = (items, updated) => items.map(i => (i.id === updated.id) ? updated : i)
 
-const deleteFromDocuments = (documents, toDelete) => documents.filter(d => d.id !== toDelete.id)
+const deleteUsingId = (items, toDelete) => items.filter(i => i.id !== toDelete.id)
+
+const itemsForPage = (allItems, page, itemsPerPage) => {
+    let from = (page * itemsPerPage) - itemsPerPage;
+    let to = (page * itemsPerPage);
+    return allItems.slice(from, to);
+}
