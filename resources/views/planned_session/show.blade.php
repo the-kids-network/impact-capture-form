@@ -13,7 +13,6 @@
                         <form class="form-horizontal" role="form" method="POST" action="/planned-session/{{ $plannedSession->id }}">
                         {{ csrf_field() }}
                             <input type="hidden" name="_method" value="PUT"/>
-
                             <input type="hidden" name="mentee_id" value="{{ $plannedSession->mentee->id }}"/>
 
                             <!-- Mentee Name -->

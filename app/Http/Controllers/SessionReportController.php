@@ -8,19 +8,22 @@ use App\Mail\SafeguardingConcernAlert;
 use App\Mentee;
 use App\User;
 use App\Report;
-use App\PlannedSession;
 use App\ActivityType;
 use App\EmotionalState;
 use App\SessionRating;
-use App\MentorLeave;
-use App\MenteeLeave;
+use App\Domains\Calendar\Models\MentorLeave;
+use App\Domains\Calendar\Models\MenteeLeave;
+use App\Domains\Calendar\Services\PlannedSessionService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class SessionReportController extends Controller {
 
-    public function __construct() {
+    private $plannedSessionService;
+
+    public function __construct(PlannedSessionService $plannedSessionService) {
+        $this->plannedSessionService = $plannedSessionService;
         $this->middleware('auth');
         $this->middleware('mentor')->only('newReportForm', 'createReport');
         $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('getReports', 'getReport', 'exportReports');
@@ -150,12 +153,11 @@ class SessionReportController extends Controller {
     }
 
     private function saveNextPlannedSession(Request $request) {
-        $plannedSession = new PlannedSession();
-        $plannedSession->mentee_id = $request->mentee_id;
-        $plannedSession->date = Carbon::createFromFormat('d-m-Y',$request->next_session_date)->setTime(0,0,0);
-        $plannedSession->location = $request->next_session_location;
-        $plannedSession->save();
-        return $plannedSession;
+        return $this->plannedSessionService->createPlannedSession(
+            $request->mentee_id,
+            $request->next_session_date,
+            $request->next_session_location
+        );
     }
 
     private function saveLeave(Request $request) {

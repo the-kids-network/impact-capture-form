@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Mail;
+namespace App\Domains\Calendar\Emails;
 
-use App\ExpenseClaim;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\User;
-use App\Mentee;
-use App\PlannedSession;
+use App\Domains\Calendar\Models\PlannedSession;
 
-class MissingReportReminder extends Mailable implements ShouldQueue
+class MissingReportForPlannedSession extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $isReportLate;
+    public $ccManager;
     public $plannedSession;
     public $mentee;
     public $mentor;
@@ -27,8 +24,8 @@ class MissingReportReminder extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($isLate, PlannedSession $plannedSession) {
-        $this->isReportLate = $isLate;
+    public function __construct($ccManager, PlannedSession $plannedSession) {
+        $this->ccManager = $ccManager;
         $this->plannedSession = $plannedSession;
         $this->mentee = $this->plannedSession->mentee;
         $this->mentor = $this->mentee->mentor;
@@ -41,14 +38,13 @@ class MissingReportReminder extends Mailable implements ShouldQueue
      * @return $this
      */
     public function build() {
-
         $mail = $this
             ->subject('Report Submission Reminder')
             ->markdown('emails.report.missing_report_reminder');
 
         if (isset($this->manager)){
             $mail->replyTo($this->manager);
-            if ($this->isReportLate) {
+            if ($this->ccManager) {
                 $mail->cc($this->manager);
             }
         }

@@ -74,7 +74,7 @@ Route::resource('/mentee','MenteeController');
 
 // Session reports
 Route::get('/report/new','SessionReportController@newReportForm');
-Route::get('/report', 'SessionReportController@getReports');
+Route::get('/report', 'SessionReportController@getReports')->name('reports.get');
 Route::get('/report/export','SessionReportController@exportReports')->name('report.export');
 Route::get('/report/{id}', 'SessionReportController@getReport');
 Route::post('/report', 'SessionReportController@createReport');
@@ -92,14 +92,26 @@ Route::get('/reporting/mentor','MentorReportingController@generateIndexReport')-
 Route::get('/reporting/mentor/export','MentorReportingController@generateExportableReport')->name('mentor-reporting-export');
 
 // Calendar and events
-Route::get('/mentee/leave/new','Event\MenteeLeaveController@create');
-Route::resource('/mentee/leave','Event\MenteeLeaveController');
-Route::get('/mentor/leave/new','Event\MentorLeaveController@create');
-Route::resource('/mentor/leave','Event\MentorLeaveController');
-Route::get('/planned-session/next','Event\PlannedSessionController@showNext');
-Route::get('/planned-session/new','Event\PlannedSessionController@create');
-Route::resource('/planned-session','Event\PlannedSessionController');
-Route::resource('/calendar','Event\CalendarController');
+Route::get('/mentee/leave/new','\App\Domains\Calendar\Controllers\MenteeLeaveController@newLeave');
+Route::get('/mentee/leave/{id}','\App\Domains\Calendar\Controllers\MenteeLeaveController@getOne');
+Route::post('/mentee/leave','\App\Domains\Calendar\Controllers\MenteeLeaveController@create');
+Route::put('/mentee/leave/{id}','\App\Domains\Calendar\Controllers\MenteeLeaveController@update');
+Route::delete('/mentee/leave/{id}','\App\Domains\Calendar\Controllers\MenteeLeaveController@delete');
+
+Route::get('/mentor/leave/new','\App\Domains\Calendar\Controllers\MentorLeaveController@newLeave');
+Route::get('/mentor/leave/{id}','\App\Domains\Calendar\Controllers\MentorLeaveController@getOne');
+Route::post('/mentor/leave','\App\Domains\Calendar\Controllers\MentorLeaveController@create');
+Route::put('/mentor/leave/{id}','\App\Domains\Calendar\Controllers\MentorLeaveController@update');
+Route::delete('/mentor/leave/{id}','\App\Domains\Calendar\Controllers\MentorLeaveController@delete');
+
+Route::get('/planned-session/new','\App\Domains\Calendar\Controllers\PlannedSessionController@newPlannedSession');
+Route::get('/planned-session/next','\App\Domains\Calendar\Controllers\PlannedSessionController@getNext');
+Route::get('/planned-session/{id}','\App\Domains\Calendar\Controllers\PlannedSessionController@getOne');
+Route::post('/planned-session','\App\Domains\Calendar\Controllers\PlannedSessionController@create');
+Route::put('/planned-session/{id}','\App\Domains\Calendar\Controllers\PlannedSessionController@update');
+Route::delete('/planned-session/{id}','\App\Domains\Calendar\Controllers\PlannedSessionController@delete');
+
+Route::resource('/calendar','\App\Domains\Calendar\Controllers\CalendarController');
 
 // Documents
 Route::get('/documents/upload/index','\App\Domains\Documents\Controllers\DocumentController@uploadIndex');

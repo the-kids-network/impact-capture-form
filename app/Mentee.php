@@ -42,11 +42,6 @@ class Mentee extends Model
         return $this->belongsTo('App\User','mentor_id');
     }
 
-    public function plannedSessions()
-    {
-        return $this->hasMany('App\PlannedSession')->get();
-    }
-
     public function scopeCanSee($query) {
         if (Auth::user()->isManager()) {
             $mentorIds = Auth::user()->assignedMentors->map(function($m) { return $m->id; });

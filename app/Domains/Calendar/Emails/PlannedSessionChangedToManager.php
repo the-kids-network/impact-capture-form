@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Mail;
+namespace App\Domains\Calendar\Emails;
 
-use App\Report;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\PlannedSession;
+use App\Domains\Calendar\Models\PlannedSession;
 
 class PlannedSessionChangedToManager extends Mailable implements ShouldQueue
 {

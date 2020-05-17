@@ -1,19 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Event;
+namespace App\Domains\Calendar\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\PlannedSession;
-use App\MentorLeave;
-use App\MenteeLeave;
+use App\Domains\Calendar\Services\MenteeLeaveService;
+use App\Domains\Calendar\Services\MentorLeaveService;
+use App\Domains\Calendar\Services\PlannedSessionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
 
 class CalendarController extends Controller {
 
-    public function __construct() {
+    private $plannedSessionService;
+    private $mentorLeaveService;
+    private $menteeLeaveService;
+
+    public function __construct(PlannedSessionService $plannedSessionService,
+                                MentorLeaveService $mentorLeaveService,
+                                MenteeLeaveService $menteeLeaveService) {
+        $this->plannedSessionService = $plannedSessionService;
+        $this->mentorLeaveService = $mentorLeaveService;
+        $this->menteeLeaveService = $menteeLeaveService;
+        
         $this->middleware('auth');
         $this->middleware('hasAnyOfRoles:admin,manager,mentor');
     }
@@ -31,8 +38,7 @@ class CalendarController extends Controller {
     }
 
     private function getPlannedSessions() {
-        $plannedSessions =  PlannedSession::canSee()
-                            ->get()
+        $plannedSessions =  $this->plannedSessionService->getPlannedSessions()
                             ->map(function($plannedSession) {
                                 return $this->transformPlannedSession($plannedSession);
                             })
@@ -56,8 +62,7 @@ class CalendarController extends Controller {
     }
 
     private function getMentorLeaves() {
-        $leaves =  MentorLeave::canSee()
-                        ->get()
+        $leaves = $this->mentorLeaveService->getMentorLeaves()
                         ->map(function($leave) {
                             return $this->transformMentorLeaves($leave);
                         })
@@ -77,8 +82,7 @@ class CalendarController extends Controller {
     }
 
     private function getMenteeLeaves() {
-        $leaves =  MenteeLeave::canSee()
-                        ->get()
+        $leaves =  $this->menteeLeaveService->getMenteeLeaves()
                         ->map(function($leave) {
                             return $this->transformMenteeLeaves($leave);
                         })

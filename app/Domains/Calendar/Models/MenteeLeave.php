@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Domains\Calendar\Models;
 
+use App\Mentee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
