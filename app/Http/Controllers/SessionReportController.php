@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\ExpenseClaim;
 use App\Mail\ReportSubmittedToManager;
 use App\Mail\ReportSubmittedToMentor;
 use App\Mail\SafeguardingConcernAlert;
@@ -18,21 +17,16 @@ use App\MenteeLeave;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
-
-use Illuminate\Support\Facades\Log;
-
-use Debugbar;
 
 class SessionReportController extends Controller {
 
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('mentor')->only('store', 'create');
-        $this->middleware('hasAnyOfRoles:admin,mentor,manager')->only('index', 'show', 'export');
+        $this->middleware('mentor')->only('newReportForm', 'createReport');
+        $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('getReports', 'getReport', 'exportReports');
     }
 
-    public function create(Request $request) {
+    public function newReportForm(Request $request) {
         return view('session_report.new')
             ->with('mentees',$request->user()->mentees)
             ->with('activity_types', ActivityType::all())
@@ -41,7 +35,7 @@ class SessionReportController extends Controller {
             ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() );
     }
 
-    public function index(Request $request) {
+    public function getReports(Request $request) {
         // apply role permission scope
         $query = Report::canSee()->orderBy('created_at','desc');
 
@@ -56,7 +50,7 @@ class SessionReportController extends Controller {
         return view('session_report.index')->with('reports',  $reports);
     }
 
-    public function show($id) {
+    public function getReport($id) {
         if (!Report::find($id)) abort(404);
 
         $report = Report::canSee()->whereId($id)->first();
@@ -68,7 +62,7 @@ class SessionReportController extends Controller {
             ->with('claims', $claims);
     }
 
-    public function store(Request $request) {
+    public function createReport(Request $request) {
         $this->validate($request, 
             [
                 'mentee_id' => 'required|exists:mentees,id',
@@ -126,7 +120,7 @@ class SessionReportController extends Controller {
         return redirect('/report')->with('status', 'Report Submitted');
     }
 
-    public function export(Request $request){
+    public function exportReports(Request $request){
         $query = Report::canSee()->orderBy('created_at','desc');
 
         if ($request->mentor_id) {

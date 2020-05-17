@@ -73,9 +73,12 @@ Route::post('/mentee/restore/{id}','MenteeController@restore');
 Route::resource('/mentee','MenteeController');
 
 // Session reports
-Route::get('/report/new','SessionReportController@create');
-Route::get('/report/export','SessionReportController@export')->name('report.export');
-Route::resource('/report','SessionReportController');
+Route::get('/report/new','SessionReportController@newReportForm');
+Route::get('/report', 'SessionReportController@getReports');
+Route::get('/report/export','SessionReportController@exportReports')->name('report.export');
+Route::get('/report/{id}', 'SessionReportController@getReport');
+Route::post('/report', 'SessionReportController@createReport');
+
 
 // Expense claims
 Route::get('/expense-claim/export','ExpenseClaimController@export')->name('expense-claim.export');
