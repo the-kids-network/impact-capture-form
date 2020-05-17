@@ -12,8 +12,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        'App\Domains\Documents\Events\DocumentDeleted' => [
+            'App\Domains\EventHandling\Listeners\DocumentDeletedListener'
         ],
     ];
 

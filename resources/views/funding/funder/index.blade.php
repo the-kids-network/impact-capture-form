@@ -15,7 +15,7 @@
             <div></div>
             <div class="col-md-8 col-md-offset-2">
 
-                <form class="form-horizontal" role="form" method="GET" action="/funder">
+                <form class="form-horizontal" role="form" method="GET" action="/funders">
                     {{ csrf_field() }}
                     @if(Request()->deactivated == "true") 
                     <input name="deactivated" type="hidden" value="false">
@@ -57,19 +57,19 @@
                                     <td class="actions">
 
                                     @if($funder->trashed())
-                                        <form style="display: inline-block" action="{{ url('/funder/'.$funder->id.'/restore') }}" id="restore-{{$funder->id}}" method="post">
+                                        <form style="display: inline-block" action="{{ url('/funders/'.$funder->id.'/restore') }}" id="restore-{{$funder->id}}" method="post">
                                             {{ csrf_field() }}
                                             <a href="javascript:{}" onclick="document.getElementById('restore-{{$funder->id}}').submit(); return false;">Restore</a>
                                         </form>
                                         |
-                                        <form style="display: inline-block" action="{{ url('/funder/'.$funder->id) }}" id="delete-{{$funder->id}}" class="delete-funder" method="post">
+                                        <form style="display: inline-block" action="{{ url('/funders/'.$funder->id) }}" id="delete-{{$funder->id}}" class="delete-funder" method="post">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             <input type="hidden" name="really_delete" value="1">
                                             <a href="javascript:{}" onclick="document.getElementById('delete-{{$funder->id}}').submit(); return false;">Delete</a>
                                         </form>
                                     @else
-                                        <form style="display: inline-block" action="{{ url('/funder/'.$funder->id) }}" id="deactivate-{{$funder->id}}" method="post">
+                                        <form style="display: inline-block" action="{{ url('/funders/'.$funder->id) }}" id="deactivate-{{$funder->id}}" method="post">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             <input type="hidden" name="really_delete" value="0">
@@ -93,7 +93,7 @@
                     <div class="panel-heading">Add Funder</div>
                     <div class="panel-body">
 
-                        <form class="form-horizontal" role="form" method="POST" action="/funder">
+                        <form class="form-horizontal" role="form" method="POST" action="/funders">
                         {{ csrf_field() }}
 
                             <!-- Funder code -->

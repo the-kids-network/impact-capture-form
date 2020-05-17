@@ -1,12 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Domains\Funding\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Carbon;
-
 class Funding extends Model
 {
     use SoftDeletes;
@@ -27,7 +26,7 @@ class Funding extends Model
     }
 
     public function funder() {
-        return $this->belongsTo('App\Funder', 'funder_id')->withTrashed();
+        return $this->belongsTo('App\Domains\Funding\Models\Funder', 'funder_id')->withTrashed();
     }
 
     public function scopeCanSee($query) {

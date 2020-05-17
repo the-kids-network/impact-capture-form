@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Domains\Documents\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -17,16 +17,25 @@ class Document extends Model {
 
     protected $fillable = ['user_id'];
 
-    public function extension() {
-        $infoPath = pathinfo($this->path);
-        return $infoPath['extension'];
+    protected $appends = ['extension', 'trashed'];
+
+    public function getExtensionAttribute() {
+        $path_parts = pathinfo($this->path);
+        if (array_key_exists('extension', $path_parts)) {
+            return $path_parts['extension'];
+        }
+        return null;
+    }
+
+    public function getTrashedAttribute() {
+        return $this->trashed();
     }
 
     public function user() {
         return $this->belongsTo('App\User');
     }
 
-    public function scopeCanModify($query) {
+    public function scopeModifiable($query) {
         if (Auth::user()->isAdmin()) {
             $query->withTrashed();
         } else if (Auth::user()->isManager()){
@@ -39,7 +48,7 @@ class Document extends Model {
         return $query;
     }
 
-    public function scopeCanSee($query) {
+    public function scopeViewable($query) {
         if (Auth::user()->isMentor()) {
             $query->whereIsShared(true);
         } else {

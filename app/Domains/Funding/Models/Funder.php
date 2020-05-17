@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Domains\Funding\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,7 +21,7 @@ class Funder extends Model {
     ];
 
     public function fundings() {
-        return $this->hasMany('App\Funding','funder_id');
+        return $this->hasMany('App\Domains\Funding\Models\Funding','funder_id');
     }
 
     public function scopeCanSee($query) {

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 // Home Page
 Route::get('/', 'WelcomeController@show');
 
@@ -97,17 +99,31 @@ Route::resource('/planned-session','Event\PlannedSessionController');
 Route::resource('/calendar','Event\CalendarController');
 
 // Documents
-Route::post('/document/{id}/share','DocumentController@share');
-Route::post('/document/{id}/restore','DocumentController@restore');
-Route::delete('/document/{id}','DocumentController@destroy');
-Route::get('/document/upload','DocumentController@uploadIndex');
-Route::resource('/document','DocumentController');
+Route::get('/documents/upload/index','\App\Domains\Documents\Controllers\DocumentController@uploadIndex');
+Route::get('/documents/index','\App\Domains\Documents\Controllers\DocumentController@index');
+
+Route::post('/documents/{id}/share','\App\Domains\Documents\Controllers\DocumentController@share');
+Route::post('/documents/{id}/restore','\App\Domains\Documents\Controllers\DocumentController@restore');
+Route::delete('/documents/{id}','\App\Domains\Documents\Controllers\DocumentController@delete');
+Route::post('/documents','\App\Domains\Documents\Controllers\DocumentController@store');
+Route::get('/documents/{id}/download','\App\Domains\Documents\Controllers\DocumentController@download');
+Route::get('/documents/{id}','\App\Domains\Documents\Controllers\DocumentController@getOne');
+Route::get('/documents','\App\Domains\Documents\Controllers\DocumentController@getAll');
+
+// Resource Tagging
+Route::get('/tags','\App\Domains\Tagging\Controllers\TagController@getTags');
+Route::post('/tags','\App\Domains\Tagging\Controllers\TagController@createTags');
+Route::delete('/tags/{id}','\App\Domains\Tagging\Controllers\TagController@deleteTag');
+
+Route::get('/tag-labels/associated', '\App\Domains\Tagging\Controllers\TagLabelController@getAssociatedTagLabels');
+
+Route::get('/tagged-items', '\App\Domains\Tagging\Controllers\TaggedItemController@getTaggedItems');
 
 // Funding
-Route::get('/funding/export','Funding\FundingController@export')->name('funding.export');
-Route::post('/funder/{id}/restore','Funding\FunderController@restore');
-Route::resource('/funding','Funding\FundingController');
-Route::resource('/funder','Funding\FunderController');
+Route::get('/fundings/export','\App\Domains\Funding\Controllers\FundingController@export')->name('funding.export');
+Route::post('/funders/{id}/restore','\App\Domains\Funding\Controllers\FunderController@restore');
+Route::resource('/fundings','\App\Domains\Funding\Controllers\FundingController');
+Route::resource('/funders','\App\Domains\Funding\Controllers\FunderController');
 
 // Old routes to deprecate eventually once people's symlinks are updated
 Route::redirect('/my-reports', '/report/new');

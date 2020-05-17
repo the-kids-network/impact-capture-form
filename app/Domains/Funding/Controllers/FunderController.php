@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Funding;
+namespace App\Domains\Funding\Controllers;
 
-use App\Funder;
-use App\Funding;
+use App\Domains\Funding\Models\Funder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class FunderController extends Controller {
@@ -34,11 +30,11 @@ class FunderController extends Controller {
         ]);
 
         $funder = new Funder();
-        $funder->code = $request->code;
-        $funder->description = $request->description;
+        $funder->code = strip_tags($request->code);
+        $funder->description = strip_tags($request->description);
         $funder->save();
 
-        return redirect('/funder')->with('status','Funder Added');
+        return redirect('/funders')->with('status','Funder Added');
     }
 
     public function destroy(Request $request, $id) {
@@ -51,13 +47,13 @@ class FunderController extends Controller {
                 $status = 'Funder deleted.';
             }
 
-        } else{
+        } else {
             $funder = Funder::find($id);
             $funder->delete();
             $status = 'Funder deactivated.';
         }
 
-        return redirect('/funder')->with('status', $status);
+        return redirect('/funders')->with('status', $status);
     }
 
     public function restore($id) {
@@ -65,6 +61,6 @@ class FunderController extends Controller {
             ->where('id', $id)
             ->restore();
 
-        return redirect('/funder')->with('status','Funder restored.');
+        return redirect('/funders')->with('status','Funder restored.');
     }
 }

@@ -43,7 +43,7 @@
                                         {{$funding->funding_year}}
                                     </td>
                                     <td class="actions">
-                                        <form style="display: inline-block" action="{{ url('/funding/'.$funding->id) }}" id="delete-{{$funding->id}}" class="delete-funding" method="post">
+                                        <form style="display: inline-block" action="{{ url('/fundings/'.$funding->id) }}" id="delete-{{$funding->id}}" class="delete-funding" method="post">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             <a href="javascript:{}" onclick="document.getElementById('delete-{{$funding->id}}').submit(); return false;">Delete</a>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="panel-body">
 
-                        <form class="form-horizontal" role="form" method="POST" action="/funding">
+                        <form class="form-horizontal" role="form" method="POST" action="/fundings">
                         {{ csrf_field() }}
 
                             <!-- Mentor's Name -->

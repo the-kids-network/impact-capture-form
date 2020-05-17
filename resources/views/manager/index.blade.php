@@ -47,7 +47,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-cloud-upload-alt text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/document/upload') }}">Upload</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/documents/upload/index') }}">Upload</a>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-folder-open text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/document') }}">Browse & Manage</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/documents/index') }}">Browse & Manage</a>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-money-bill-alt text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/funding') }}">Mentor Funding</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/fundings') }}">Mentor Funding</a>
                     </div>
                 </div>
             </div>

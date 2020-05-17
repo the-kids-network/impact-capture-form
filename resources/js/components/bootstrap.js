@@ -1,6 +1,9 @@
 import LocalStorage from 'vue-ls';
 import VueSessionStorage from 'vue-sessionstorage'
-import app from './app'
+import VModal from 'vue-js-modal'
+
+import app from './app';
+import statusBox from './status-box/root';
 import navbar from './layout/navbar/navbar';
 import settings from './settings/settings';
 import profile from './settings/profile';
@@ -10,9 +13,11 @@ import security from './settings/security';
 import updatePassword from './settings/security/update-password';
 import register from './register/register';
 import calendar from './calendar/calendar';
-import documentUpload from './document/upload';
+import documentUpload from './documents/upload';
+import documents from './documents/root';
 
 // Load all specific globally registered Vue components
+Vue.component('status-box', statusBox)
 Vue.component('nav-bar', navbar)
 Vue.component('settings', settings)
 Vue.component('profile', profile)
@@ -21,6 +26,9 @@ Vue.component('update-profile-photo', updateProfilePhoto)
 Vue.component('security', security)
 Vue.component('update-password', updatePassword)
 Vue.component('register', register)
+Vue.component('calendar', calendar)
+Vue.component('document-upload', documentUpload)
+Vue.component('documents', documents)
 
 // Load Vue app
 Vue.use(LocalStorage, {
@@ -31,10 +39,11 @@ Vue.use(LocalStorage, {
 );
 Vue.use(VueSessionStorage)
 
+Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false } })
+
 new Vue({
     mixins: [app],
     components: {
-        'calendar': calendar,
-        'document-upload': documentUpload
+
     }
 });

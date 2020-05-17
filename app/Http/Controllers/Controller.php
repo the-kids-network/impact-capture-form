@@ -18,4 +18,12 @@ class Controller extends BaseController
 
         return $interaction->handle($request->user(), $request->all());
     }
+
+    public function handleError($validator) {
+        $error = [
+            "message" => "The given data was invalid.",
+            "errors" => $validator->errors()
+        ];
+        return response()->json($error, 422);
+    }
 }
