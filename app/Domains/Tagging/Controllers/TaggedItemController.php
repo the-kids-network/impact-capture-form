@@ -14,7 +14,6 @@ class TaggedItemController extends Controller {
     public function __construct(TaggedItemService $taggedItemService) {
         $this->taggedItemService = $taggedItemService;
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,manager');
     }
 
     // get documents matching

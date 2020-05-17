@@ -55,7 +55,15 @@ const Component = {
                             </popper>
                         </td>
                         <td class="title">
-                            <span class="title-container"><span class="title-text">{{ document.title }}</span></span>
+                            <popper
+                                :trigger="popover.trigger"
+                                :options="popover.options"
+                                :delay-on-mouse-over="popover.delayOnMouseOver">
+                                <div class="popper">{{document.title}}</div>
+                                <span slot="reference" class="title-container">
+                                    <span class="title-text">{{ document.title }}</span>
+                                </span>
+                            </popper>
                         </td>
                         <td class="actions">
                             <div v-if="document.wip"
@@ -114,7 +122,7 @@ const Component = {
                                     </a>
                                 </popper>
                                 <popper
-                                    v-if="!document.is_shared"
+                                    v-if="isAdminUser && !document.is_shared"
                                     :trigger="popover.trigger"
                                     :options="popover.options"
                                     :delay-on-mouse-over="popover.delayOnMouseOver">
@@ -127,7 +135,7 @@ const Component = {
                                     </a>
                                 </popper>
                                 <popper
-                                    v-else
+                                    v-if="isAdminUser && document.is_shared"
                                     :trigger="popover.trigger"
                                     :options="popover.options"
                                     :delay-on-mouse-over="popover.delayOnMouseOver">

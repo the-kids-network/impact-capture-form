@@ -15,7 +15,7 @@ class DocumentController extends Controller {
         $this->documentService = $documentService;
 
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,manager')->only('uploadIndex', 'store', 'share', 'destroy', 'restore');
+        $this->middleware('hasAnyOfRoles:admin,manager')->only('uploadIndex', 'store', 'share', 'delete', 'restore');
     }
 
     public function uploadIndex() {

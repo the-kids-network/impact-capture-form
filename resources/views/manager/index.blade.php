@@ -55,7 +55,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body text-center">
                         <i class="fa fa-folder-open text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/documents/home') }}">Browse & Manage</a>
+                        <a class="btn btn-primary btn-block btn-lg m-t-lg" href="{{ url('/documents/index') }}">Browse & Manage</a>
                     </div>
                 </div>
             </div>

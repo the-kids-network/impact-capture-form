@@ -14,7 +14,6 @@ class TagLabelController extends Controller {
         $this->tagService = $tagService;
 
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,manager,mentor');
     }
 
     public function getAssociatedTagLabels(Request $request) {

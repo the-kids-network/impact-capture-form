@@ -16,7 +16,7 @@ class TagController extends Controller {
         $this->tagService = $tagService;
 
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,manager');
+        $this->middleware('hasAnyOfRoles:admin,manager')->only('createTags', 'deleteTag');
     }
 
     // Right now, only supports finding by resource type and id
