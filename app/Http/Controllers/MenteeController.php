@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Domains\SessionReports\Services\SessionReportService;
 use App\Mentee;
 use App\User;
 use Illuminate\Http\Request;
 
 class MenteeController extends Controller {
 
-    public function __construct() {
+    private $sessionReportService;
+
+    public function __construct(SessionReportService $sessionReportService) {
+        $this->sessionReportService = $sessionReportService;
         $this->middleware('auth');
         $this->middleware('admin');
     }
@@ -72,15 +76,17 @@ class MenteeController extends Controller {
      */
     public function destroy(Request $request, $id) {
         if ($request->really_delete){
-            $mentee = Mentee::withTrashed()->withCount('reports')->where('id',$id)->first();
-            if ($mentee->reports_count > 0 ) {
-                return redirect('/mentee')->with('status','Mentee cannot be deleted.');
+            $mentee = Mentee::withTrashed()->where('id',$id)->first();
+
+            $menteeHasSessionReports = $this->sessionReportService->menteeHasReports($id);
+            if ($menteeHasSessionReports) {
+                return redirect('/mentee')->with('status','Mentee cannot be deleted as session reports associated with mentee');
             }
 
             Mentee::withTrashed()->where('id',$id)->forceDelete();
             return redirect('/mentee')->with('status','Mentee Deleted');
 
-        } else{
+        } else {
             $mentee = Mentee::find($id);
             $mentee->delete();
             return redirect('/mentee')->with('status','Mentee Deactivated');

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Mail;
+namespace App\Domains\SessionReports\Emails;
 
-use App\Report;
+use App\Domains\SessionReports\Models\Report;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ReportSubmittedToManager extends Mailable implements ShouldQueue
+class ReportSubmittedToMentor extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-
     public $report;
+
     /**
      * Create a new message instance.
      *
@@ -31,8 +31,14 @@ class ReportSubmittedToManager extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this
-            ->subject('Report Received from Mentor')
-            ->markdown('emails.report.submitted_to_manager');
+        $mail = $this
+            ->subject('Report Received')
+            ->markdown('emails.report.submitted_to_mentor');
+
+        if (isset($this->report->mentor->manager)){
+            $mail->replyTo($this->report->mentor->manager);
+        }
+
+        return $mail;
     }
 }

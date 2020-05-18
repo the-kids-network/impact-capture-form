@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Mail;
+namespace App\Domains\SessionReports\Emails;
 
-use App\Report;
+use App\Domains\SessionReports\Models\Report;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SafeguardingConcernAlert extends Mailable implements ShouldQueue
+class ReportSubmittedToManager extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -32,7 +32,7 @@ class SafeguardingConcernAlert extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Safeguarding Concern')
-            ->markdown('emails.report.safeguarding_concern');
+            ->subject('Report Received from Mentor')
+            ->markdown('emails.report.submitted_to_manager');
     }
 }

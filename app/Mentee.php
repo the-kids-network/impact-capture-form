@@ -21,17 +21,6 @@ class Mentee extends Model
         'deleted_at'
     ];
 
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-
-    public function reports(){
-        return $this->hasMany('App\Report');
-    }
-
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";

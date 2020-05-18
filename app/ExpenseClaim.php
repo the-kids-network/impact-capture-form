@@ -23,14 +23,6 @@ class ExpenseClaim extends Model {
     }
 
     /**
-     * Returns the Report associated with this Expense Claim
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function report() {
-        return $this->belongsTo('App\Report');
-    }
-
-    /**
      * Returns the Receipts associated with the Claim
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

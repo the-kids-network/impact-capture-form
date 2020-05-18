@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Domains\SessionReports\Controllers;
 
-use App\ActivityType;
+use App\Domains\SessionReports\Models\ActivityType;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ActivityTypeController extends Controller {

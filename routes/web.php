@@ -56,13 +56,6 @@ Route::delete('/roles/admin','RoleController@delete_admin_role');
 
 // Home
 Route::get('/home', 'HomeController@show');
-Route::delete('/delete-all','HomeController@deleteAll');
-
-// Admin session form lookups
-Route::post('/activity-type/restore/{id}','ActivityTypeController@restore');
-Route::post('/emotional-state/restore/{id}','EmotionalStateController@restore');
-Route::resource('/emotional-state','EmotionalStateController');
-Route::resource('/activity-type','ActivityTypeController');
 
 // Finance
 Route::get('/finance/expense-claim/export','FinanceController@exportExpenseClaims');
@@ -73,12 +66,18 @@ Route::post('/mentee/restore/{id}','MenteeController@restore');
 Route::resource('/mentee','MenteeController');
 
 // Session reports
-Route::get('/report/new','SessionReportController@newReportForm');
-Route::get('/report', 'SessionReportController@getReports')->name('reports.get');
-Route::get('/report/export','SessionReportController@exportReports')->name('report.export');
-Route::get('/report/{id}', 'SessionReportController@getReport');
-Route::post('/report', 'SessionReportController@createReport');
+Route::post('/activity-type/restore/{id}','\App\Domains\SessionReports\Controllers\ActivityTypeController@restore');
+Route::post('/emotional-state/restore/{id}','\App\Domains\SessionReports\Controllers\EmotionalStateController@restore');
+Route::resource('/emotional-state','\App\Domains\SessionReports\Controllers\EmotionalStateController');
+Route::resource('/activity-type','\App\Domains\SessionReports\Controllers\ActivityTypeController');
 
+Route::get('/report/new','\App\Domains\SessionReports\Controllers\SessionReportController@newReportForm');
+Route::get('/report/export','\App\Domains\SessionReports\Controllers\SessionReportController@export')->name('report.export');
+Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@getMany')->name('reports.get');
+Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@getOne');
+Route::post('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@create');
+Route::put('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@update');
+Route::delete('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@delete');
 
 // Expense claims
 Route::get('/expense-claim/export','ExpenseClaimController@export')->name('expense-claim.export');

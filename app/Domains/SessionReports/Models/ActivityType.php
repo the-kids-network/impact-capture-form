@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Domains\SessionReports\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EmotionalState extends Model
+class ActivityType extends Model
 {
     use SoftDeletes;
 
@@ -20,7 +20,4 @@ class EmotionalState extends Model
         'deleted_at'
     ];
 
-    public function reports(){
-        return $this->hasMany('App\Report');
-    }
 }

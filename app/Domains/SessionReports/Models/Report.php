@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Domains\SessionReports\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -26,19 +26,15 @@ class Report extends Model
     }
 
     public function activity_type(){
-        return $this->belongsTo('App\ActivityType')->withTrashed();
+        return $this->belongsTo('App\Domains\SessionReports\Models\ActivityType')->withTrashed();
     }
 
     public function emotional_state(){
-        return $this->belongsTo('App\EmotionalState')->withTrashed();
-    }
-
-    public function expense_claims(){
-        return $this->hasMany('App\ExpenseClaim');
+        return $this->belongsTo('App\Domains\SessionReports\Models\EmotionalState')->withTrashed();
     }
 
     public function session_rating() {
-        return $this->belongsTo('App\SessionRating', 'rating_id');
+        return $this->belongsTo('App\Domains\SessionReports\Models\SessionRating', 'rating_id');
     }
 
     public function safeguardingConcernTypeAttribute() {

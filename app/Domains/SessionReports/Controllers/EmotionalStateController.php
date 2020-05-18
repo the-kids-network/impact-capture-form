@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Domains\SessionReports\Controllers;
 
-use App\EmotionalState;
+use App\Domains\SessionReports\Models\EmotionalState;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class EmotionalStateController extends Controller {

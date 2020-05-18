@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Report;
+use App\Domains\SessionReports\Models\Report;
 use App\Domains\Calendar\Services\PlannedSessionService;
 
 class MissingReportReminderEmailSendCommand extends Command

@@ -1,3 +1,5 @@
+@inject('sessionReportService', 'App\Domains\SessionReports\Services\SessionReportService')
+
 @extends('layout.app')
 
 @section('content')
@@ -67,7 +69,6 @@
                                 </div>
                             </div>
 
-
                             <!-- Submit Button -->
                             <p>
                                 I certify that the above details are true and accurate and that I incurred the expenses wholly, necessarily and exclusively whilst engaged in TKN activity. I attach copies of true, itemised and accurate receipts for these claims.
@@ -80,18 +81,12 @@
                                     </button>
                                 </div>
                             </div>
-
-
-
                         </form>
-
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="container">
         <div class="row">
@@ -100,8 +95,11 @@
                     <div class="panel-heading">Submitted Expense Claims</div>
                     <ul class="list-group">
                         @foreach($claims as $claim)
+                            @php
+                                $claimReport = $sessionReportService->getReport($claim->report_id)
+                            @endphp
                             <li class="list-group-item">
-                                <span class="submitted-date">Claim for Session with {{ $claim->report->mentee->name }} on {{ $claim->report->session_date->toFormattedDateString() }} submitted on {{ $claim->created_at->toFormattedDateString() }}</span>
+                                <span class="submitted-date">Claim for Session with {{ $claimReport->mentee->name }} on {{ $claimReport->session_date->toFormattedDateString() }} submitted on {{ $claim->created_at->toFormattedDateString() }}</span>
                                 <div class="pull-right text-capitalize">
                                     {{ $claim->status }}
                                 </div>
