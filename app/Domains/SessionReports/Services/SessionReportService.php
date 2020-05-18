@@ -2,6 +2,7 @@
 
 namespace App\Domains\SessionReports\Services;
 
+use App\Domains\SessionReports\Events\SessionReportDeleted;
 use App\Domains\SessionReports\Emails\ReportSubmittedToManager;
 use App\Domains\SessionReports\Emails\ReportSubmittedToMentor;
 use App\Domains\SessionReports\Emails\SafeguardingConcernAlert;
@@ -11,7 +12,7 @@ use App\Exceptions\NotFoundException;
 use App\Mentee;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class SessionReportService {
@@ -52,7 +53,7 @@ class SessionReportService {
 
         // Create report
         $report = new Report();
-        $report->mentor_id = Auth::user()->id;
+        $report->mentor_id = $keyValuePairs['mentor_id'];
         $report->mentee_id = $keyValuePairs['mentee_id'];
         $report->session_date = Carbon::createFromFormat('d-m-Y',$keyValuePairs['session_date'])->setTime(0,0,0);
         $report->rating_id = $keyValuePairs['rating_id'];
@@ -80,5 +81,37 @@ class SessionReportService {
 
             $mail ->send(new SafeguardingConcernAlert($report));
         }
+    }
+
+    public function updateReport($id, $keyValuePairs) {
+        $reportToUpdate = Report::canSee()->find($id);
+
+        if (!$reportToUpdate) throw new NotFoundException("Session report not found");
+        if (!User::canSee()->find($keyValuePairs['mentor_id'])) throw new NotAuthorisedException("User not authorised to change mentor's session report");
+
+        // update session report
+        $reportToUpdate->mentor_id = $keyValuePairs['mentor_id'];
+        $reportToUpdate->mentee_id = $keyValuePairs['mentee_id'];
+        $reportToUpdate->session_date = Carbon::createFromFormat('d-m-Y',$keyValuePairs['session_date'])->setTime(0,0,0);
+        $reportToUpdate->rating_id = $keyValuePairs['rating_id'];
+        $reportToUpdate->length_of_session = $keyValuePairs['length_of_session'];
+        $reportToUpdate->activity_type_id = $keyValuePairs['activity_type_id'];
+        $reportToUpdate->location = $keyValuePairs['location'];
+        $reportToUpdate->safeguarding_concern = $keyValuePairs['safeguarding_concern'];
+        $reportToUpdate->emotional_state_id = $keyValuePairs['emotional_state_id'];
+        $reportToUpdate->meeting_details = $keyValuePairs['meeting_details'];
+        $reportToUpdate->save();
+    }
+
+    public function deleteReport($id) {
+        $report = Report::canSee()->whereId($id)->first();
+        if (!$report) throw new NotFoundException("Session report not found");
+
+        return DB::transaction(function() use ($report) {
+            $report->delete();
+            event(new SessionReportDeleted($report->id));
+        });
+
+        return $report;
     }
 }

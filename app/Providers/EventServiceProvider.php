@@ -15,6 +15,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Domains\Documents\Events\DocumentDeleted' => [
             'App\Domains\EventHandling\Listeners\DocumentDeletedListener'
         ],
+        'App\Domains\SessionReports\Events\SessionReportDeleted' => [
+            'App\Domains\EventHandling\Listeners\SessionReportDeletedListener'
+        ],
     ];
 
     /**

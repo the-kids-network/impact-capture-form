@@ -3,10 +3,12 @@
 namespace App\Domains\SessionReports\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 class Report extends Model
 {
+    use SoftDeletes;
 
     protected $casts = [
     ];
@@ -14,6 +16,7 @@ class Report extends Model
     protected $dates = [
         'created_at',
         'updated_at',
+        'deleted_at',
         'session_date'
     ];
 

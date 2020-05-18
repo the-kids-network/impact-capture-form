@@ -38,6 +38,7 @@ class SessionReportController extends Controller {
         $this->middleware('auth');
         $this->middleware('mentor')->only('newReportForm', 'create');
         $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('getMany', 'getOne', 'export');
+        $this->middleware('hasAnyOfRoles:admin,manager')->only('update', 'delete');
     }
 
     public function newReportForm(Request $request) {
@@ -81,7 +82,6 @@ class SessionReportController extends Controller {
 
     public function create(Request $request) {
         list($validations, $messages) = SessionReportValidation::getRulesFor(['users', 'session_report', 'planned_session', 'leave']);
-
         $this->validate($request, 
             $validations,
             $messages
@@ -99,6 +99,33 @@ class SessionReportController extends Controller {
         $this->createLeave($request);
 
         return redirect('/report')->with('status', 'Report Submitted');
+    }
+
+    public function update(Request $request, $id) {
+        list($validations, $messages) = SessionReportValidation::getRulesFor(['users', 'session_report']);
+        $this->validate($request, 
+            $validations,
+            $messages
+        );
+        
+        // Update the session report
+        try {
+            $this->sessionReportService->updateReport($id, $request->all());
+        } catch (NotAuthorisedException $e) {
+            abort(401,'Unauthorized');
+        }
+
+        return redirect('/report/'.$id)->with('status', 'Report Updated');
+    }
+
+    public function delete($id) {
+        try {
+            $this->sessionReportService->deleteReport($id);
+        } catch (NotFoundException $e) {
+            abort(401,'Unauthorized');
+        }
+
+        return redirect('/report')->with('status', 'Report Deleted');
     }
 
     public function export(Request $request){

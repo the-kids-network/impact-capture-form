@@ -73,6 +73,45 @@
                             <td>{{ $report->meeting_details }}</td>
                         </tr>
                     </table>
+                    @if(Auth::user()->isAdmin() || Auth::user()->isManager())
+                    <div>
+                        <a class="submit btn btn-primary" 
+                            href="/report/{{ $report->id }}/edit"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+
+
+                        <form class="form-horizontal" role="form" method="POST" action="/report/{{$report->id}}">
+                            {{ csrf_field() }}
+                            {{ method_field('delete') }}
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-confirmation">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span>Delete</span>
+                            </button>
+
+                            <div class="modal fade" id="delete-confirmation" tabindex="-1" role="dialog" aria-labelledby="delete report" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title" id="exampleModalLabel">Confirm deletion of report</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete the session report?</p>
+
+                                            <p>This will <b>delete all associated expense claims</b>, so make sure they have not been processed / paid already.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                                <span>Delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
