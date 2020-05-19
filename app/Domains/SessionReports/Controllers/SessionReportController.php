@@ -16,8 +16,8 @@ use App\Exceptions\NotFoundException;
 use App\ExpenseClaim;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Domains\SessionReports\Controllers\SessionReportValidation;
+use Illuminate\Support\Facades\Validator;
 
 class SessionReportController extends Controller {
 
@@ -38,7 +38,7 @@ class SessionReportController extends Controller {
         $this->middleware('auth');
         $this->middleware('mentor')->only('newReportForm', 'create');
         $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('getMany', 'getOne', 'export');
-        $this->middleware('hasAnyOfRoles:admin,manager')->only('update', 'delete');
+        $this->middleware('hasAnyOfRoles:admin,manager')->only('editReportForm', 'update', 'delete');
     }
 
     public function newReportForm(Request $request) {
@@ -50,6 +50,17 @@ class SessionReportController extends Controller {
             ->with('emotional_states',EmotionalState::all())
             ->with('session_ratings',SessionRating::selectable())
             ->with('reports', $reports);
+    }
+
+    public function editReportForm(Request $request, $id) {
+        $report = $this->sessionReportService->getReport($id);
+        $report->mentee = $report->mentee;
+        
+        return view('session_report.edit')
+            ->with('activity_types',  ActivityType::all())
+            ->with('emotional_states', EmotionalState::all())
+            ->with('session_ratings', SessionRating::selectable())
+            ->with('report', $report);
     }
 
     public function getMany(Request $request) {
@@ -101,21 +112,25 @@ class SessionReportController extends Controller {
         return redirect('/report')->with('status', 'Report Submitted');
     }
 
+    // The only REST endpoint right now
     public function update(Request $request, $id) {
         list($validations, $messages) = SessionReportValidation::getRulesFor(['users', 'session_report']);
-        $this->validate($request, 
-            $validations,
-            $messages
-        );
+        $bodyJson = $request->json()->all();
+        $validator = Validator::make($bodyJson, $validations, $messages);
+        if ($validator->fails()) {
+            return $this->handleError($validator);
+        }
         
         // Update the session report
+        $report = null;
         try {
-            $this->sessionReportService->updateReport($id, $request->all());
+            $report = $this->sessionReportService->updateReport($id, $request->all());
         } catch (NotAuthorisedException $e) {
             abort(401,'Unauthorized');
         }
 
-        return redirect('/report/'.$id)->with('status', 'Report Updated');
+        // return update report
+        return response()->json($report);
     }
 
     public function delete($id) {

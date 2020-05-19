@@ -11009,3 +11009,25 @@ body {
   -webkit-transform: scaleX(-1);
   -ms-transform: scaleX(-1);
 }
+.session-report-modify-container {
+  display: -webkit-box;
+  display: flex;
+  margin: 10px;
+}
+.session-report-modify-container .delete-report {
+  margin-left: 10px;
+}
+.session-report-edit .entry {
+  display: -webkit-box;
+  display: flex;
+}
+.session-report-edit .entry .revert {
+  margin-left: 10px;
+}
+.session-report-edit .entry .revert span {
+  vertical-align: middle;
+}
+.session-report-edit .edited {
+  background-color: #A41250;
+  color: white;
+}

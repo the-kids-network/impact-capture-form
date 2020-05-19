@@ -74,12 +74,11 @@
                         </tr>
                     </table>
                     @if(Auth::user()->isAdmin() || Auth::user()->isManager())
-                    <div>
-                        <a class="submit btn btn-primary" 
+                    <div class="session-report-modify-container">
+                        <a class="submit btn btn-primary edit-report" 
                             href="/report/{{ $report->id }}/edit"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
 
-
-                        <form class="form-horizontal" role="form" method="POST" action="/report/{{$report->id}}">
+                        <form class="form-horizontal delete-report" role="form" method="POST" action="/report/{{$report->id}}">
                             {{ csrf_field() }}
                             {{ method_field('delete') }}
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-confirmation">
@@ -109,7 +108,6 @@
                                 </div>
                             </div>
                         </form>
-
                     </div>
                     @endif
                 </div>

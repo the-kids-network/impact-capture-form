@@ -72,6 +72,7 @@ Route::resource('/emotional-state','\App\Domains\SessionReports\Controllers\Emot
 Route::resource('/activity-type','\App\Domains\SessionReports\Controllers\ActivityTypeController');
 
 Route::get('/report/new','\App\Domains\SessionReports\Controllers\SessionReportController@newReportForm');
+Route::get('/report/{id}/edit','\App\Domains\SessionReports\Controllers\SessionReportController@editReportForm');
 Route::get('/report/export','\App\Domains\SessionReports\Controllers\SessionReportController@export')->name('report.export');
 Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@getMany')->name('reports.get');
 Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@getOne');

@@ -26513,6 +26513,243 @@ function toComment(sourceMap) {
 
 /***/ }),
 
+/***/ "./node_modules/dateformat/lib/dateformat.js":
+/*!***************************************************!*\
+  !*** ./node_modules/dateformat/lib/dateformat.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_RESULT__;/*
+ * Date Format 1.2.3
+ * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
+ * MIT license
+ *
+ * Includes enhancements by Scott Trenda <scott.trenda.net>
+ * and Kris Kowal <cixar.com/~kris.kowal/>
+ *
+ * Accepts a date, a mask, or a date and a mask.
+ * Returns a formatted version of the given date.
+ * The date defaults to the current date/time.
+ * The mask defaults to dateFormat.masks.default.
+ */
+
+(function(global) {
+  'use strict';
+
+  var dateFormat = (function() {
+      var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|"[^"]*"|'[^']*'/g;
+      var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
+      var timezoneClip = /[^-+\dA-Z]/g;
+  
+      // Regexes and supporting functions are cached through closure
+      return function (date, mask, utc, gmt) {
+  
+        // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
+        if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
+          mask = date;
+          date = undefined;
+        }
+  
+        date = date || new Date;
+  
+        if(!(date instanceof Date)) {
+          date = new Date(date);
+        }
+  
+        if (isNaN(date)) {
+          throw TypeError('Invalid date');
+        }
+  
+        mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
+  
+        // Allow setting the utc/gmt argument via the mask
+        var maskSlice = mask.slice(0, 4);
+        if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
+          mask = mask.slice(4);
+          utc = true;
+          if (maskSlice === 'GMT:') {
+            gmt = true;
+          }
+        }
+  
+        var _ = utc ? 'getUTC' : 'get';
+        var d = date[_ + 'Date']();
+        var D = date[_ + 'Day']();
+        var m = date[_ + 'Month']();
+        var y = date[_ + 'FullYear']();
+        var H = date[_ + 'Hours']();
+        var M = date[_ + 'Minutes']();
+        var s = date[_ + 'Seconds']();
+        var L = date[_ + 'Milliseconds']();
+        var o = utc ? 0 : date.getTimezoneOffset();
+        var W = getWeek(date);
+        var N = getDayOfWeek(date);
+        var flags = {
+          d:    d,
+          dd:   pad(d),
+          ddd:  dateFormat.i18n.dayNames[D],
+          dddd: dateFormat.i18n.dayNames[D + 7],
+          m:    m + 1,
+          mm:   pad(m + 1),
+          mmm:  dateFormat.i18n.monthNames[m],
+          mmmm: dateFormat.i18n.monthNames[m + 12],
+          yy:   String(y).slice(2),
+          yyyy: y,
+          h:    H % 12 || 12,
+          hh:   pad(H % 12 || 12),
+          H:    H,
+          HH:   pad(H),
+          M:    M,
+          MM:   pad(M),
+          s:    s,
+          ss:   pad(s),
+          l:    pad(L, 3),
+          L:    pad(Math.round(L / 10)),
+          t:    H < 12 ? dateFormat.i18n.timeNames[0] : dateFormat.i18n.timeNames[1],
+          tt:   H < 12 ? dateFormat.i18n.timeNames[2] : dateFormat.i18n.timeNames[3],
+          T:    H < 12 ? dateFormat.i18n.timeNames[4] : dateFormat.i18n.timeNames[5],
+          TT:   H < 12 ? dateFormat.i18n.timeNames[6] : dateFormat.i18n.timeNames[7],
+          Z:    gmt ? 'GMT' : utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
+          o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+          S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10],
+          W:    W,
+          N:    N
+        };
+  
+        return mask.replace(token, function (match) {
+          if (match in flags) {
+            return flags[match];
+          }
+          return match.slice(1, match.length - 1);
+        });
+      };
+    })();
+
+  dateFormat.masks = {
+    'default':               'ddd mmm dd yyyy HH:MM:ss',
+    'shortDate':             'm/d/yy',
+    'mediumDate':            'mmm d, yyyy',
+    'longDate':              'mmmm d, yyyy',
+    'fullDate':              'dddd, mmmm d, yyyy',
+    'shortTime':             'h:MM TT',
+    'mediumTime':            'h:MM:ss TT',
+    'longTime':              'h:MM:ss TT Z',
+    'isoDate':               'yyyy-mm-dd',
+    'isoTime':               'HH:MM:ss',
+    'isoDateTime':           'yyyy-mm-dd\'T\'HH:MM:sso',
+    'isoUtcDateTime':        'UTC:yyyy-mm-dd\'T\'HH:MM:ss\'Z\'',
+    'expiresHeaderFormat':   'ddd, dd mmm yyyy HH:MM:ss Z'
+  };
+
+  // Internationalization strings
+  dateFormat.i18n = {
+    dayNames: [
+      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
+      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    ],
+    monthNames: [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+    ],
+    timeNames: [
+      'a', 'p', 'am', 'pm', 'A', 'P', 'AM', 'PM'
+    ]
+  };
+
+function pad(val, len) {
+  val = String(val);
+  len = len || 2;
+  while (val.length < len) {
+    val = '0' + val;
+  }
+  return val;
+}
+
+/**
+ * Get the ISO 8601 week number
+ * Based on comments from
+ * http://techblog.procurios.nl/k/n618/news/view/33796/14863/Calculate-ISO-8601-week-and-year-in-javascript.html
+ *
+ * @param  {Object} `date`
+ * @return {Number}
+ */
+function getWeek(date) {
+  // Remove time components of date
+  var targetThursday = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+  // Change date to Thursday same week
+  targetThursday.setDate(targetThursday.getDate() - ((targetThursday.getDay() + 6) % 7) + 3);
+
+  // Take January 4th as it is always in week 1 (see ISO 8601)
+  var firstThursday = new Date(targetThursday.getFullYear(), 0, 4);
+
+  // Change date to Thursday same week
+  firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3);
+
+  // Check if daylight-saving-time-switch occurred and correct for it
+  var ds = targetThursday.getTimezoneOffset() - firstThursday.getTimezoneOffset();
+  targetThursday.setHours(targetThursday.getHours() - ds);
+
+  // Number of weeks between target Thursday and first Thursday
+  var weekDiff = (targetThursday - firstThursday) / (86400000*7);
+  return 1 + Math.floor(weekDiff);
+}
+
+/**
+ * Get ISO-8601 numeric representation of the day of the week
+ * 1 (for Monday) through 7 (for Sunday)
+ * 
+ * @param  {Object} `date`
+ * @return {Number}
+ */
+function getDayOfWeek(date) {
+  var dow = date.getDay();
+  if(dow === 0) {
+    dow = 7;
+  }
+  return dow;
+}
+
+/**
+ * kind-of shortcut
+ * @param  {*} val
+ * @return {String}
+ */
+function kindOf(val) {
+  if (val === null) {
+    return 'null';
+  }
+
+  if (val === undefined) {
+    return 'undefined';
+  }
+
+  if (typeof val !== 'object') {
+    return typeof val;
+  }
+
+  if (Array.isArray(val)) {
+    return 'array';
+  }
+
+  return {}.toString.call(val)
+    .slice(8, -1).toLowerCase();
+};
+
+
+
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+      return dateFormat;
+    }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else {}
+})(this);
+
+
+/***/ }),
+
 /***/ "./node_modules/fast-deep-equal/index.js":
 /*!***********************************************!*\
   !*** ./node_modules/fast-deep-equal/index.js ***!
@@ -106938,6 +107175,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _calendar_calendar__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./calendar/calendar */ "./resources/js/components/calendar/calendar.js");
 /* harmony import */ var _documents_upload__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./documents/upload */ "./resources/js/components/documents/upload.js");
 /* harmony import */ var _documents_root__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./documents/root */ "./resources/js/components/documents/root.js");
+/* harmony import */ var _session_reports_edit__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./session-reports/edit */ "./resources/js/components/session-reports/edit.js");
+
 
 
 
@@ -106966,7 +107205,8 @@ Vue.component('update-password', _settings_security_update_password__WEBPACK_IMP
 Vue.component('register', _register_register__WEBPACK_IMPORTED_MODULE_12__["default"]);
 Vue.component('calendar', _calendar_calendar__WEBPACK_IMPORTED_MODULE_13__["default"]);
 Vue.component('document-upload', _documents_upload__WEBPACK_IMPORTED_MODULE_14__["default"]);
-Vue.component('documents', _documents_root__WEBPACK_IMPORTED_MODULE_15__["default"]); // Load Vue app
+Vue.component('documents', _documents_root__WEBPACK_IMPORTED_MODULE_15__["default"]);
+Vue.component('session-report-editor', _session_reports_edit__WEBPACK_IMPORTED_MODULE_16__["default"]); // Load Vue app
 
 Vue.use(vue_ls__WEBPACK_IMPORTED_MODULE_0___default.a, {
   namespace: 'tkn',
@@ -109350,6 +109590,243 @@ var Component = {
   },
   watch: {},
   computed: {}
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/components/session-reports/edit.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/session-reports/edit.js ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_popperjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-popperjs */ "./node_modules/vue-popperjs/dist/vue-popper.min.js");
+/* harmony import */ var vue_popperjs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_popperjs__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_popperjs_dist_vue_popper_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-popperjs/dist/vue-popper.css */ "./node_modules/vue-popperjs/dist/vue-popper.css");
+/* harmony import */ var vue_popperjs_dist_vue_popper_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_popperjs_dist_vue_popper_css__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var dateformat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dateformat */ "./node_modules/dateformat/lib/dateformat.js");
+/* harmony import */ var dateformat__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(dateformat__WEBPACK_IMPORTED_MODULE_4__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+var Component = {
+  props: ['report', 'activityTypesLookup', 'emotionalStatesLookup', 'ratingsLookup'],
+  components: {
+    'popper': vue_popperjs__WEBPACK_IMPORTED_MODULE_2___default.a
+  },
+  template: "\n        <div class=\"session-report-edit\">\n            <status-box\n                class=\"documents-status\"\n                :successes=\"successes\"\n                :errors=\"errors\">\n            </status-box>   \n\n            <form class=\"form-horizontal\" role=\"form\" method=\"POST\" :action=\"'/report/' + report.id\">\n                <input type=\"hidden\" name=\"_method\" value=\"PUT\"/>\n\n                <!-- Mentee's Name -->\n                <div class=\"form-group\">\n                    <label class=\"col-md-4 control-label\">Mentee</label>\n                    <div class=\"col-md-6\">\n                        <select class=\"form-control\" name=\"mentee_id\" disabled>\n                            <option\n                                :value=\"report.mentee.id\" selected>\n                                {{ report.mentee.first_name }} {{ report.mentee.last_name }}\n                            </option>\n                        </select>\n                    </div>\n                </div>\n\n                <!-- Date of Session -->\n                <div class=\"form-group\">\n                    <label class=\"col-md-4 control-label\">Session Date</label>\n                    <div class=\"col-md-6 entry\">\n                        <input type=\"text\" \n                               :class=\"'form-control datepicker sessiondate ' + dirtyClass('sessionDate')\"\n                               v-model=\"sessionDate\"\n                               autocomplete=\"off\">\n                        <div v-if=\"isDirty('sessionDate')\"\n                               class=\"revert\"><span class=\"glyphicon glyphicon-repeat icon-flipped\" @click=\"revert('sessionDate')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Session Rating -->\n                <div class=\"form-group\">\n                    <label class=\"col-md-4 control-label\">Session Rating</label>\n                    <div class=\"col-md-6 entry\">\n                        <select :class=\"'form-control ' + dirtyClass('ratingId')\"\n                                v-model=\"ratingId\">\n                            <option v-for=\"rating in ratingsLookup\"\n                                :value=\"rating.id\">\n                                {{ rating.value }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('ratingId')\"\n                             class=\"revert\"><span class=\"glyphicon glyphicon-repeat icon-flipped\" @click=\"revert('ratingId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Length of Session -->\n                <div class=\"form-group\">\n                    <label class=\"col-md-4 control-label\">Length of Session (hours)</label>\n                    <div class=\"col-md-6 entry\">\n                        <input type=\"text\" \n                               :class=\"'form-control ' + dirtyClass('lengthOfSession')\"\n                               v-model=\"lengthOfSession\">\n                        <div v-if=\"isDirty('lengthOfSession')\"\n                             class=\"revert\"><span class=\"glyphicon glyphicon-repeat icon-flipped\" @click=\"revert('lengthOfSession')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Type of Activity -->\n                <div class=\"form-group\">\n                    <label class=\"col-md-4 control-label\">Activity Type</label>\n                    <div class=\"col-md-6 entry\">\n                        <select :class=\"'form-control ' + dirtyClass('activityTypeId')\"\n                                v-model=\"activityTypeId\">\n                            <option v-for=\"activityType in activityTypesLookup\"\n                                :value=\"activityType.id\">\n                                {{ activityType.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('activityTypeId')\"\n                             class=\"revert\"><span class=\"glyphicon glyphicon-repeat icon-flipped\" @click=\"revert('activityTypeId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Location -->\n                <div class=\"form-group\">\n                    <label class=\"col-md-4 control-label\">Location</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <input type=\"text\" \n                               :class=\"'form-control ' + dirtyClass('location')\" \n                               v-model=\"location\">\n                        <div v-if=\"isDirty('location')\"\n                             class=\"revert\"><span class=\"glyphicon glyphicon-repeat icon-flipped\" @click=\"revert('location')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Safeguarding Concern -->\n                <div class=\"form-group\">\n                    <label class=\"col-md-4 control-label\">Safeguarding Concern</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <select :class=\"'form-control ' + dirtyClass('safeguardingConcern')\"\n                                v-model=\"safeguardingConcern\">\n                            <option v-for=\"item in safeguardingLookup\"\n                                    :value=\"item.id\">\n                                    {{ item.value }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('safeguardingConcern')\"\n                             class=\"revert\"><span class=\"glyphicon glyphicon-repeat icon-flipped\" @click=\"revert('safeguardingConcern')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Emotional State -->\n                <div class=\"form-group\">\n                    <label class=\"col-md-4 control-label\">Mentee's Emotional State</label>\n                    <div class=\"col-md-6 entry\">\n                        <select :class=\"'form-control ' + dirtyClass('emotionalStateId')\"\n                                v-model=\"emotionalStateId\">\n                            <option v-for=\"emotionalState in emotionalStatesLookup\"\n                                :value=\"emotionalState.id\">\n                                {{ emotionalState.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('emotionalStateId')\"\n                            class=\"revert\"><span class=\"glyphicon glyphicon-repeat icon-flipped\" @click=\"revert('emotionalStateId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Meeting Details -->\n                <div class=\"form-group\">\n                    <label class=\"col-md-4 control-label\">Meeting Details</label>\n                    <div class=\"col-md-6 entry\">\n                        <textarea :class=\"'form-control ' + dirtyClass('meetingDetails')\" rows=\"10\"\n                                  v-model=\"meetingDetails\"/>\n                        <div v-if=\"isDirty('meetingDetails')\"\n                            class=\"revert\"><span class=\"glyphicon glyphicon-repeat icon-flipped\" @click=\"revert('meetingDetails')\"/></div>\n                    </div>\n                </div>\n\n                <div>\n                    <span v-on:click=\"save()\" class=\"save btn btn-success\" :disabled=\"isSaving\">\n                    <span class=\"glyphicon glyphicon-ok\" /> Save</span>\n\n                    <span v-on:click=\"cancel()\" class=\"cancel btn btn-secondary\" :disabled=\"isSaving\">\n                    <span class=\"glyphicon glyphicon-remove\" /> Cancel</span>\n                </div>\n\n            </form>\n        </div>\n    ",
+  data: function data() {
+    return {
+      successes: [],
+      errors: [],
+      safeguardingLookup: [{
+        id: 0,
+        value: "No"
+      }, {
+        id: 1,
+        value: "Yes - Serious concern (please complete safeguarding cause for concern form)"
+      }, {
+        id: 2,
+        value: "Yes - Mild concern (please outline in report)"
+      }],
+      originalState: this.buildOriginalState(this.report),
+      // editable (current) state
+      sessionDate: this.formatDate(this.report.session_date),
+      ratingId: this.report.rating_id,
+      lengthOfSession: this.report.length_of_session.toString(),
+      activityTypeId: this.report.activity_type_id,
+      location: this.report.location,
+      safeguardingConcern: this.report.safeguarding_concern,
+      emotionalStateId: this.report.emotional_state_id,
+      meetingDetails: this.report.meeting_details,
+      // saving
+      isSaving: false
+    };
+  },
+  computed: {},
+  watch: {},
+  created: function () {
+    var _created = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    function created() {
+      return _created.apply(this, arguments);
+    }
+
+    return created;
+  }(),
+  mounted: function mounted() {
+    var vm = this;
+    $(document).ready(function () {
+      $(function () {
+        $(".datepicker.sessiondate").datepicker({
+          dateFormat: 'dd-mm-yy',
+          onSelect: function onSelect(dateText) {
+            vm.sessionDate = dateText;
+          }
+        });
+      });
+    });
+  },
+  methods: {
+    clearStatus: function clearStatus() {
+      this.errors = [];
+      this.successes = [];
+    },
+    formatDate: function formatDate(dateString) {
+      var date = new Date(dateString);
+      return dateformat__WEBPACK_IMPORTED_MODULE_4___default()(date, "dd-mm-yyyy");
+    },
+    isDirty: function isDirty(editableFieldName) {
+      return this.originalState[editableFieldName] !== this[editableFieldName];
+    },
+    dirtyClass: function dirtyClass(editableFieldName) {
+      return this.isDirty(editableFieldName) ? 'edited' : '';
+    },
+    revert: function revert(editableFieldName) {
+      if (this.hasOwnProperty(editableFieldName)) {
+        this[editableFieldName] = this.originalState[editableFieldName];
+      }
+    },
+    buildOriginalState: function buildOriginalState(report) {
+      return {
+        reportId: report.id,
+        mentorId: report.mentor_id,
+        menteeId: report.mentee_id,
+        sessionDate: this.formatDate(report.session_date),
+        ratingId: report.rating_id,
+        lengthOfSession: report.length_of_session.toString(),
+        activityTypeId: report.activity_type_id,
+        location: report.location,
+        safeguardingConcern: report.safeguarding_concern,
+        emotionalStateId: report.emotional_state_id,
+        meetingDetails: report.meeting_details
+      };
+    },
+    save: function () {
+      var _save = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var reportBody, updatedReport, errors;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.clearStatus();
+                reportBody = {
+                  mentor_id: this.originalState.mentorId,
+                  mentee_id: this.originalState.menteeId,
+                  session_date: this.sessionDate,
+                  rating_id: this.ratingId,
+                  length_of_session: this.lengthOfSession,
+                  activity_type_id: this.activityTypeId,
+                  location: this.location,
+                  safeguarding_concern: this.safeguardingConcern,
+                  emotional_state_id: this.emotionalStateId,
+                  meeting_details: this.meetingDetails
+                };
+                _context2.prev = 2;
+                this.isSaving = true;
+                _context2.next = 6;
+                return this.updateSessionReport(this.originalState.reportId, reportBody);
+
+              case 6:
+                updatedReport = _context2.sent;
+                this.originalState = this.buildOriginalState(updatedReport);
+                this.successes = ['Report was saved successfully'];
+                _context2.next = 14;
+                break;
+
+              case 11:
+                _context2.prev = 11;
+                _context2.t0 = _context2["catch"](2);
+
+                if (lodash__WEBPACK_IMPORTED_MODULE_1___default.a.has(_context2.t0, 'response.data.errors')) {
+                  errors = _context2.t0.response.data.errors;
+                  this.errors = Object.values(errors).reduce(function (a, b) {
+                    return a.concat(b);
+                  }, []);
+                } else {
+                  this.errors = ['Unknown problem saving the session report'];
+                }
+
+              case 14:
+                _context2.prev = 14;
+                this.isSaving = false;
+                return _context2.finish(14);
+
+              case 17:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[2, 11, 14, 17]]);
+      }));
+
+      function save() {
+        return _save.apply(this, arguments);
+      }
+
+      return save;
+    }(),
+    cancel: function cancel() {
+      window.location.href = "/report/".concat(this.report.id);
+    },
+    updateSessionReport: function () {
+      var _updateSessionReport = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(id, sessionReport) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.put("/report/".concat(id), sessionReport);
+
+              case 2:
+                return _context3.abrupt("return", _context3.sent.data);
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      function updateSessionReport(_x, _x2) {
+        return _updateSessionReport.apply(this, arguments);
+      }
+
+      return updateSessionReport;
+    }()
+  }
 };
 /* harmony default export */ __webpack_exports__["default"] = (Component);
 

@@ -101,6 +101,8 @@ class SessionReportService {
         $reportToUpdate->emotional_state_id = $keyValuePairs['emotional_state_id'];
         $reportToUpdate->meeting_details = $keyValuePairs['meeting_details'];
         $reportToUpdate->save();
+
+        return $reportToUpdate;
     }
 
     public function deleteReport($id) {
