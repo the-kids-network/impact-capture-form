@@ -10,10 +10,10 @@
                     <div class="panel-body">
                         @include('shared.errors')
 
-                        <form class="form-horizontal" role="form" method="POST" action="/mentor/leave">
+                        <form class="form-horizontal" role="form" method="POST" action="/mentor/leave/{{ $mentorLeave->id }}">
                         {{ csrf_field() }}
 
-                            <input type="hidden" name="id" value="{{ $mentorLeave->id }}"/>
+                            <input type="hidden" name="_method" value="PUT"/>
                             <input type="hidden" name="mentor_id" value="{{ $mentorLeave->mentor->id }}"/>
 
                             <!-- Start date -->

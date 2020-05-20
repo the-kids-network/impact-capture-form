@@ -21,17 +21,6 @@ class Mentee extends Model
         'deleted_at'
     ];
 
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-
-    public function reports(){
-        return $this->hasMany('App\Report');
-    }
-
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
@@ -40,11 +29,6 @@ class Mentee extends Model
     public function mentor()
     {
         return $this->belongsTo('App\User','mentor_id');
-    }
-
-    public function plannedSessions()
-    {
-        return $this->hasMany('App\PlannedSession')->get();
     }
 
     public function scopeCanSee($query) {

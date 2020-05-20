@@ -10,10 +10,10 @@
                     <div class="panel-body">
                         @include('shared.errors')
 
-                        <form class="form-horizontal" role="form" method="POST" action="/mentee/leave">
+                    <form class="form-horizontal" role="form" method="POST" action="/mentee/leave/{{ $menteeLeave->id }}">
                         {{ csrf_field() }}
 
-                            <input type="hidden" name="id" value="{{ $menteeLeave->id }}"/>
+                            <input type="hidden" name="_method" value="PUT"/>
                             <input type="hidden" name="mentee_id" value="{{ $menteeLeave->mentee->id }}"/>
 
                             <!-- Start date -->
@@ -32,7 +32,7 @@
                                     End Date <i class="fas fa-info-circle"></i>
                                 </label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="end_date" value="{{ old('end_date',  $menteeLeave->end_date->format('d-m-Y')) }}" autocomplete="off">
+                                    <input type="text" class="form-control datepicker" name="end_date" value="{{ old('end_date',  $menteeLeave->end_date->format('d-m-Y')) }}" autocomplete="off">
                                 </div>
                             </div>
 

@@ -88,7 +88,7 @@
                                 @foreach($mentors as $mentor)
                                     <tr>
                                         <td class="mentor-name">
-                                            <a href={{ route('report.index', [ 'mentor_id'=>$mentor->mentor_id ]) }}>
+                                            <a href={{ route('reports.get', [ 'mentor_id'=>$mentor->mentor_id ]) }}>
                                                     {{ $mentor->mentor_name }}
                                             </a>
                                         </td>

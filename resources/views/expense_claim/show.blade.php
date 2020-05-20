@@ -1,3 +1,9 @@
+@inject('sessionReportService', 'App\Domains\SessionReports\Services\SessionReportService')
+
+@php
+    $expense_claim_report = $sessionReportService->getReport($expense_claim->report_id)
+@endphp
+
 @extends('layout.app')
 
 @section('content')
@@ -18,7 +24,7 @@
                         <tr>
                             <td>Session</td>
                             <td>
-                                <a href="{{ url('/report/'.$expense_claim->report_id) }}">With {{ $expense_claim->report->mentee->name }} on {{ $expense_claim->report->session_date->toFormattedDateString() }}</a>
+                                <a href="{{ url('/report/'.$expense_claim->report_id) }}">With {{ $expense_claim_report->mentee->name }} on {{ $expense_claim_report->session_date->toFormattedDateString() }}</a>
                             </td>
                         </tr>
                         @if( $expense_claim->check_number )

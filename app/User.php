@@ -81,10 +81,6 @@ class User extends Authenticatable
         return $array;
     }
 
-    public function reports(){
-        return $this->hasMany('App\Report','mentor_id');
-    }
-
     public function expense_claims(){
         return $this->hasMany('App\ExpenseClaim','mentor_id');
     }

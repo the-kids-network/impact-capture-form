@@ -3,13 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 class ExpenseClaim extends Model {
+    use SoftDeletes;
 
     protected $dates = [
         'created_at',
         'updated_at',
+        'deleted_at',
         'approved_at',
         'processed_at'
     ];
@@ -20,14 +23,6 @@ class ExpenseClaim extends Model {
      */
     public function mentor() {
         return $this->belongsTo('App\User')->withTrashed();
-    }
-
-    /**
-     * Returns the Report associated with this Expense Claim
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function report() {
-        return $this->belongsTo('App\Report');
     }
 
     /**

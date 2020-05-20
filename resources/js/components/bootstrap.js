@@ -15,6 +15,7 @@ import register from './register/register';
 import calendar from './calendar/calendar';
 import documentUpload from './documents/upload';
 import documents from './documents/root';
+import sessionReportEdit from './session-reports/edit'
 
 // Load all specific globally registered Vue components
 Vue.component('status-box', statusBox)
@@ -29,6 +30,7 @@ Vue.component('register', register)
 Vue.component('calendar', calendar)
 Vue.component('document-upload', documentUpload)
 Vue.component('documents', documents)
+Vue.component('session-report-editor', sessionReportEdit)
 
 // Load Vue app
 Vue.use(LocalStorage, {

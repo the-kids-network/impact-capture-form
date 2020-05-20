@@ -55,7 +55,6 @@ class PageAuthenticationTest extends TestCase
                               ['/roles/admin'                   , 302   , 401   , 401       , 200],
                               
                               //TODO: Manager and mentor roles
-                              //TODO: DELETE ALL - Admin only
                               //TODO: View individual reports, add items, etc
                              ]);
     }

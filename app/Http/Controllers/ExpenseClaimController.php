@@ -8,20 +8,23 @@ use App\Mail\ClaimProcessedToMentor;
 use App\Mail\ClaimRejectedToMentor;
 use App\Mail\ClaimSubmittedToMentor;
 use App\Receipt;
-use App\Report;
+use App\Domains\SessionReports\Services\SessionReportService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class ExpenseClaimController extends Controller {
+
+    private $sessionReportService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct(SessionReportService $sessionReportService) {
+        $this->sessionReportService = $sessionReportService;
+
         $this->middleware('auth');
         $this->middleware('admin')->only('update');
         $this->middleware('hasAnyOfRoles:admin,manager')->only('index','export', 'show');
@@ -52,8 +55,9 @@ class ExpenseClaimController extends Controller {
      * @return $this
      */
     public function newExpenseClaim(Request $request) {
+        $reports = $this->sessionReportService->getReports();
         return view('expense_claim.new')
-            ->with('reports', $request->user()->reports()->orderBy('created_at','desc')->get() )
+            ->with('reports', $reports)
             ->with('claims', $request->user()->expense_claims()->orderBy('created_at','desc')->get() );
     }
 
@@ -89,7 +93,7 @@ class ExpenseClaimController extends Controller {
         ]);
 
         // Validate user can actually save expense against session
-        $report = Report::canSee()->whereId($request->report_id)->first();
+        $report = $this->sessionReportService->getReport($request->report_id);
         if (!$report) {
             abort(401,'Unauthorized');
         }
