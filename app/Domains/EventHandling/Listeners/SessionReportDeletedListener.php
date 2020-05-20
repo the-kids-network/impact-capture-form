@@ -13,12 +13,12 @@ class SessionReportDeletedListener {
     public function handle(SessionReportDeleted $event) {
 
         // This logic needs to go into a service in the expenses domain once it is created
-        $expenseClaim = ExpenseClaim::whereReportId($event->reportId)->first();
+        $expenseClaims = ExpenseClaim::whereReportId($event->reportId)->get();
 
-        if ($expenseClaim) {
-            $expenseClaim->expenses()->delete();
-            $expenseClaim->receipts()->delete();
-            $expenseClaim->delete();
+        foreach ($expenseClaims as $claim) {
+            $claim->expenses()->delete();
+            $claim->receipts()->delete();
+            $claim->delete();
         }
     }
 }
