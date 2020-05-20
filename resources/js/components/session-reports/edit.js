@@ -14,6 +14,7 @@ const Component = {
     template: `
         <div class="session-report-edit">
             <status-box
+                ref="status-box"
                 class="documents-status"
                 :successes="successes"
                 :errors="errors">
@@ -154,7 +155,7 @@ const Component = {
                     <span class="glyphicon glyphicon-ok" /> Save</span>
 
                     <span v-on:click="cancel()" class="cancel btn btn-secondary" :disabled="isSaving">
-                    <span class="glyphicon glyphicon-remove" /> Cancel</span>
+                    <span class="glyphicon glyphicon-remove" /> Go Back</span>
                 </div>
 
             </form>
@@ -223,6 +224,12 @@ const Component = {
     },
 
     methods: { 
+        scrollTo(refName) {
+            var element = this.$refs[refName];
+            var top = element.offsetTop;
+            window.scrollTo(0, top);
+        },
+
         clearStatus() {
             this.errors = [];
             this.successes = [];
@@ -293,6 +300,7 @@ const Component = {
                 }
             } finally {
                 this.isSaving = false
+                this.scrollTo('status-box')
             }
         },
 
