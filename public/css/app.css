@@ -10957,16 +10957,9 @@ body {
   margin-bottom: 10px;
 }
 .documents.browse .search .buttons {
-  margin-left: 10px;
   display: inherit;
 }
-.documents.browse .search .buttons .submit {
-  max-height: 35px;
-  -webkit-box-align: center;
-          align-items: center;
-}
 .documents.browse .search .buttons .clear {
-  margin-left: 5px;
   max-height: 35px;
   -webkit-box-align: center;
           align-items: center;

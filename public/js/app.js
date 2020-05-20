@@ -108186,7 +108186,7 @@ var Component = {
   components: {
     VueTagsInput: _johmun_vue_tags_input__WEBPACK_IMPORTED_MODULE_3___default.a
   },
-  template: "\n        <div class=\"search\">\n            <vue-tags-input class='tags-input'\n                v-model=\"inputText\"\n                placeholder=\"Add Search Tag\"\n                :tags=\"_tagsSelected\"\n                :max-tags=\"maximumTagsAllowed\"\n                :autocomplete-items=\"_tagSuggestions\"\n                :autocomplete-min-length=\"autoCompleteMinLength\"\n                :add-only-from-autocomplete=\"autoCompleteStrict\"\n                @tags-changed=\"newTags => updateSelectedTags(newTags)\"\n                />\n            <div class=\"buttons\">\n                <span :class=\"'submit btn btn-primary ' + (!_searchEnabled ? 'disabled' : '')\" \n                    @click=\"submitSearch\"><span class=\"glyphicon glyphicon-search\"></span> Search</span>\n                <span class=\"clear btn btn-secondary\" \n                    @click=\"clearSearch\"><span class=\"glyphicon glyphicon-remove\"></span> Reset</span>\n            </div>\n        </div>\n    ",
+  template: "\n        <div class=\"search\">\n            <vue-tags-input class='tags-input'\n                v-model=\"inputText\"\n                placeholder=\"Add Search Tag\"\n                :tags=\"_tagsSelected\"\n                :max-tags=\"maximumTagsAllowed\"\n                :autocomplete-items=\"_tagSuggestions\"\n                :autocomplete-min-length=\"autoCompleteMinLength\"\n                :add-only-from-autocomplete=\"autoCompleteStrict\"\n                @tags-changed=\"newTags => updateSelectedTags(newTags)\"\n                />\n            <div class=\"buttons\">\n                <span class=\"clear btn btn-secondary\" \n                    @click=\"clearSearch\"><span class=\"glyphicon glyphicon-remove\"></span> Reset</span>\n            </div>\n        </div>\n    ",
   data: function data() {
     return {
       autoCompleteMinLength: 0,
@@ -108317,6 +108317,7 @@ var Component = {
         return t.text;
       }));
       this.setTagSuggestions();
+      this.submitSearch();
     },
     submitSearch: function () {
       var _submitSearch = _asyncToGenerator(
