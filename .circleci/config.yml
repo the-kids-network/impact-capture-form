@@ -34,7 +34,7 @@ commands:
       - run: 
           name: Install Node
           command: |
-            curl -sSL "https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v8.9.4-linux-x64/bin/node
+            curl -sSL "https://nodejs.org/dist/v14.3.0/node-v14.3.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v14.3.0-linux-x64/bin/node
       - run: 
           name: Install NPM
           command: |
