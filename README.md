@@ -4,48 +4,63 @@
 
 ## Local Setup
 
-### Setup Local MySQL Database
+### Setup Local MySQL Database 5.7.26
 
-(Expects mySQL 5.7 to be installed with the database created.
-On OS X - simplest way is through Homebrew as follows)
-
-Install mySQL 5.7:
+Install the MySQL Docker container (only need to do this once):
 ```bash
-brew install mysql@5.7
-brew link mysql@5.7 --force
-brew tap homebrew/services
+docker run --name tkn-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.7.26
 ```
 
-Start/stop mySQL service:
+Start MySQL Docker container:
 ```bash
-brew services start mysql@5.7
-brew services stop mysql@5.7
+docker start tkn-mysql
 ```
 
-Ideally, you might want to create a mySQL docker container instead of installing via homebrew.
-
-Create database and user for app:
+Make sure it started OK:
 ```bash
-mysql -uroot
-mysql> CREATE DATABASE homestead;
-mysql> CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';
-mysql> CREATE USER 'homestead'@'%' IDENTIFIED BY 'secret';
-mysql> GRANT ALL PRIVILEGES ON homestead.* TO 'homestead'@'localhost';
-mysql> GRANT ALL PRIVILEGES ON homestead.* TO 'homestead'@'%';
+docker logs tkn-mysql
 ```
 
-Connect to database as user so that you can explore:
+Create database and user, by logging in as root user and executing the following SQL:
 ```bash
-mysql -uhomestead -psecret -Dhomestead
+sudo docker exec -it tkn-mysql mysql -uroot -p
 ```
 
-### Install PHP 7.2
+```sql
+CREATE DATABASE homestead;
+CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';
+CREATE USER 'homestead'@'%' IDENTIFIED BY 'secret';
+GRANT ALL PRIVILEGES ON homestead.* TO 'homestead'@'localhost';
+GRANT ALL PRIVILEGES ON homestead.* TO 'homestead'@'%';
+```
 
-It's likely your OS may not have PHP installed, or it is the wrong version. So use homebrew (or equivalent) to install the right version of PHP and make sure it is activated e.g. on the path.
+Get IP address of the MySQL container:
+```bash
+docker container inspect tkn-mysql
+```
+
+Connect to the 'remote' containerised database from the local MySQL client:
+```bash
+mysql --ssl-mode=DISABLED -h <ip_address_of_docker_container> -uhomestead -p homestead
+```
+
+### Install PHP 7.3
+
+It's likely your OS may not have PHP installed, or it is the wrong version - so use phpbrew to install the right version of PHP.
+
+Install phpbrew as per instructions here: https://phpbrew.github.io/phpbrew/ - specifically make sure the dependencies are installed e.g. bz2, libxml:
 
 ```bash
-brew install php72
-brew link php72 --force
+sudo apt install php build-essential libssl-dev libxml2-dev libxslt-dev libsqlite3-dev libreadline-dev libbz2-dev zlib1g-dev libzip-dev pkg-config autoconf
+```
+
+Install the correct PHP version using phpbrew (NOTE: the mysql extension needs to be compiled with the PHP build)
+
+```bash
+phpbrew install 7.3.18 +default +mysql -- --with-curl
+phpbrew switch php-7.3.18
+phpbrew extension (check pdo_mysql is enabled)
+php -v
 ```
 
 ### Install Composer (need to do this once only if you don't already have it)
@@ -59,21 +74,24 @@ php -r "unlink('composer-setup.php');"
 mv composer.phar /usr/local/bin/composer
 ```
 
-### Install Node  (need to do this once only if you don't already have it)
+### Install Node 14.3.0 (need to do this once only if you don't already have it)
 
 ```bash
-brew install node
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+nvm install 14.3.0
+nvm alias default 14.3.0
+node -v
 ```
 
 ### Install 'PHP' dependencies via Composer
 
-To install the backend dependencies (this will create a composer.lock file to fix versions - this should be checked into source control):
+To install the backend dependencies from composer.lock:
 
 ```bash
 composer install
 ```
 
-To update the composer.lock (e.g. after updating dependencies in composer.json):
+To update the composer.lock from composer.json (e.g. after updating dependency versions):
 
 ```bash
 composer update
@@ -81,13 +99,13 @@ composer update
 
 ### Install 'Javascript' dependencies via npm
 
-The following will install the dependencies from the package.json file, creating a package-lock.json file to fix the versions - this should be checked into source control.
+To install the dependencies from the package-lock.json file:
 
 ```bash
 npm install
 ```
 
-Run npm update to update dependencies e.g. if a version is changed, or a new dependency added.
+To update from the package.json file (e.g. after updating dependency versions):
 
 ```bash
 npm update
@@ -98,6 +116,15 @@ npm update
 ```bash
 cp .env.example.mysql .env
 ```
+
+There are a few things in here that can/should be configured for local development:
+
+1. Database host and credentials
+2. AWS credentials for development AWS resources
+3. Test email sending: MAIL_TEST
+4. S3 or local filesystem: FILESYSTEM_DRIVER
+
+Speak to another dev for help getting this setup right.
 
 ### Setup database schema
 
