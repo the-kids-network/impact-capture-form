@@ -54,15 +54,16 @@ Install phpbrew as per instructions here: https://phpbrew.github.io/phpbrew/ - s
 sudo apt install php build-essential libssl-dev \
     libxml2-dev libxslt-dev libsqlite3-dev \
     libreadline-dev libbz2-dev zlib1g-dev \
-    libzip-dev libonig-dev pkg-config autoconf
+    libzip-dev libonig-dev pkg-config autoconf \
+    libpng-dev libjpeg-dev 
 ```
 
-Install the correct PHP version using phpbrew (NOTE: the mysql extension needs to be compiled with the PHP build)
+Install the correct PHP version using phpbrew (NOTE: the listed extensions needs to be compiled with the PHP build)
 
 ```bash
-phpbrew install 7.4.6 +default +mysql -- --with-curl
+phpbrew install 7.4.6 +default +mysql +gd -- --with-curl
 phpbrew switch php-7.4.6
-phpbrew extension (check pdo_mysql is enabled)
+phpbrew extension (check required extensions enabled)
 php -v
 ```
 
@@ -223,11 +224,34 @@ php artisan dusk tests/Browser/SessionSubmissionPageTest.php
 
 ## Debugging
 
-I kept forgetting how to add debug lines. Start by adding the appropriate "use" line:
+### Logging
+Start by adding the appropriate "use" line:
 ```
 use Illuminate\Support\Facades\Log;
 ```
 and then add the debug statement with something like
 ```
 Log::info($message);
+```
+The logs can be found in the storage/logs directory.
+
+### Debug Bar
+In the .env file set:
+
+```
+APP_DEBUG=true
+```
+
+In the browser, the debug bar button should display on the bottom left. 
+There are lots of useful things in there to explore e.g. DB queries per page
+
+### Dump Server
+```bash
+php artisan dump-server
+```
+
+Then in the code, use:
+
+```php
+dump($someVariable)
 ```

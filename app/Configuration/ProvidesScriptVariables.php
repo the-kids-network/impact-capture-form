@@ -2,7 +2,6 @@
 
 namespace App\Configuration;
 
-use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\Auth;
 
 trait ProvidesScriptVariables
@@ -12,7 +11,6 @@ trait ProvidesScriptVariables
     {
         return [
             'csrfToken' => csrf_token(),
-            'currencySymbol' => Cashier::usesCurrencySymbol(),
             'env' => config('app.env'),
             'state' => [
                 'user' => Auth::user()
