@@ -44,21 +44,24 @@ Connect to the 'remote' containerised database from the local MySQL client:
 mysql --ssl-mode=DISABLED -h <ip_address_of_docker_container> -uhomestead -p homestead
 ```
 
-### Install PHP 7.3
+### Install PHP 7.4
 
 It's likely your OS may not have PHP installed, or it is the wrong version - so use phpbrew to install the right version of PHP.
 
 Install phpbrew as per instructions here: https://phpbrew.github.io/phpbrew/ - specifically make sure the dependencies are installed e.g. bz2, libxml:
 
 ```bash
-sudo apt install php build-essential libssl-dev libxml2-dev libxslt-dev libsqlite3-dev libreadline-dev libbz2-dev zlib1g-dev libzip-dev pkg-config autoconf
+sudo apt install php build-essential libssl-dev \
+    libxml2-dev libxslt-dev libsqlite3-dev \
+    libreadline-dev libbz2-dev zlib1g-dev \
+    libzip-dev libonig-dev pkg-config autoconf
 ```
 
 Install the correct PHP version using phpbrew (NOTE: the mysql extension needs to be compiled with the PHP build)
 
 ```bash
-phpbrew install 7.3.18 +default +mysql -- --with-curl
-phpbrew switch php-7.3.18
+phpbrew install 7.4.6 +default +mysql -- --with-curl
+phpbrew switch php-7.4.6
 phpbrew extension (check pdo_mysql is enabled)
 php -v
 ```
