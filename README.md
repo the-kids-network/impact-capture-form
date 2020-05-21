@@ -4,11 +4,11 @@
 
 ## Local Setup
 
-### Setup Local MySQL Database 5.7.26
+### Setup Local MySQL Database 8
 
 Install the MySQL Docker container (only need to do this once):
 ```bash
-docker run --name tkn-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.7.26
+docker run --name tkn-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:8.0.17
 ```
 
 Start MySQL Docker container:

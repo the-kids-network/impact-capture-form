@@ -175,7 +175,7 @@ executors:
   docker-executor:
     docker:
       - image: circleci/php:7.4.6-browsers
-      - image: circleci/mysql:5.7.26
+      - image: circleci/mysql:8.0.17
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_USER: homestead
