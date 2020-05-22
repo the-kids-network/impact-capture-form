@@ -1,8 +1,8 @@
 <update-contact-information :user="user" inline-template>
-    <div class="panel panel-default">
-        <div class="panel-heading">Contact Information</div>
+    <div class="card">
+        <div class="card-header">Contact Information</div>
 
-        <div class="panel-body">
+        <div class="card-body">
             <!-- Success Message -->
             <div class="alert alert-success" v-show="form.statusMessage">
                 @{{ form.statusMessage }}
@@ -10,38 +10,33 @@
 
             <form class="form-horizontal" role="form">
                 <!-- Name -->
-                <div class="form-group" :class="{'has-error': form.errors.has('name')}">
-                    <label class="col-md-4 control-label">Name</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="nameInput">Name</label>
 
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="name" v-model="form.name">
-
-                        <span class="help-block" v-show="form.errors.has('name')">
-                            @{{ form.errors.get('name') }}
-                        </span>
+                        <input id="nameInput" type="text" :class="{'form-control': true, 'is-invalid': form.errors.has('name')}" 
+                               name="name" v-model="form.name">
+                        <div class="invalid-feedback" v-show="form.errors.has('name')">@{{ form.errors.get('name') }}</div>
                     </div>
                 </div>
 
                 <!-- E-Mail Address -->
-                <div class="form-group" :class="{'has-error': form.errors.has('email')}">
-                    <label class="col-md-4 control-label">E-Mail Address</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label"  for="emailInput">E-Mail Address</label>
 
                     <div class="col-md-6">
-                        <input type="email" class="form-control" name="email" v-model="form.email">
-
-                        <span class="help-block" v-show="form.errors.has('email')">
-                            @{{ form.errors.get('email') }}
-                        </span>
+                        <input id="emailInput" type="email" :class="{'form-control': true, 'is-invalid': form.errors.has('email')}" 
+                               name="email" v-model="form.email">
+                        <div class="invalid-feedback" v-show="form.errors.has('email')">@{{ form.errors.get('email') }}</div>
                     </div>
                 </div>
 
                 <!-- Update Button -->
-                <div class="form-group">
-                    <div class="col-md-offset-4 col-md-6">
+                <div class="form-group row">
+                    <div class="offset-md-4 col-md-6">
                         <button type="submit" class="btn btn-primary"
                                 @click.prevent="update"
                                 :disabled="form.busy">
-
                             Update
                         </button>
                     </div>

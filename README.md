@@ -41,7 +41,7 @@ docker container inspect tkn-mysql
 
 Connect to the 'remote' containerised database from the local MySQL client:
 ```bash
-mysql --ssl-mode=DISABLED -h <ip_address_of_docker_container> -uhomestead -p homestead
+mysql -h <ip_address_of_docker_container> -uhomestead -p homestead
 ```
 
 ### Install PHP 7.4

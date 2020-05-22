@@ -1,15 +1,12 @@
 @extends('layout.app')
 
 @section('content')
-<div class="container">
+<div class="container documents-management">
     <div class="row">
-        <div></div>
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-            
-                <div class="panel-heading">Documents</div>
-
-                <div class="panel-body documents home">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Documents</div>
+                <div class="card-body">
                     @if(Auth::user()->isAdmin() || Auth::user()->isManager())
                     <div class="upload link">
                         <a href="{{ url('/documents/upload/index') }}">Upload Documents</a>

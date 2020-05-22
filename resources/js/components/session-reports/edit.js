@@ -12,7 +12,10 @@ const Component = {
     },
 
     template: `
-        <div class="session-report-edit">
+        <div class="session-report-editor">
+
+            <a :href="'/report/' + this.report.id">Go back to session report</a>
+            
             <status-box
                 ref="status-box"
                 class="documents-status"
@@ -24,10 +27,10 @@ const Component = {
                 <input type="hidden" name="_method" value="PUT"/>
 
                 <!-- Mentee's Name -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Mentee</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="menteeInput">Mentee</label>
                     <div class="col-md-6">
-                        <select class="form-control" name="mentee_id" disabled>
+                        <select id="menteeInput" class="form-control" name="mentee_id" disabled>
                             <option
                                 :value="report.mentee.id" selected>
                                 {{ report.mentee.first_name }} {{ report.mentee.last_name }}
@@ -37,23 +40,25 @@ const Component = {
                 </div>
 
                 <!-- Date of Session -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Session Date</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="sessionDateInput">Session Date</label>
                     <div class="col-md-6 entry">
-                        <input type="text" 
+                        <input id="sessionDateInput"
+                               type="text" 
                                :class="'form-control datepicker sessiondate ' + dirtyClass('sessionDate')"
                                v-model="sessionDate"
                                autocomplete="off">
                         <div v-if="isDirty('sessionDate')"
-                               class="revert"><span class="glyphicon glyphicon-repeat icon-flipped" @click="revert('sessionDate')"/></div>
+                               class="revert"><span class="fas fa-history" @click="revert('sessionDate')"/></div>
                     </div>
                 </div>
 
                 <!-- Session Rating -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Session Rating</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="ratingInput">Session Rating</label>
                     <div class="col-md-6 entry">
-                        <select :class="'form-control ' + dirtyClass('ratingId')"
+                        <select id="ratingInput" 
+                                :class="'form-control ' + dirtyClass('ratingId')"
                                 v-model="ratingId">
                             <option v-for="rating in ratingsLookup"
                                 :value="rating.id">
@@ -61,27 +66,29 @@ const Component = {
                             </option>
                         </select>
                         <div v-if="isDirty('ratingId')"
-                             class="revert"><span class="glyphicon glyphicon-repeat icon-flipped" @click="revert('ratingId')"/></div>
+                             class="revert"><span class="fas fa-history" @click="revert('ratingId')"/></div>
                     </div>
                 </div>
 
                 <!-- Length of Session -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Length of Session (hours)</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="lengthInput">Length of Session (hours)</label>
                     <div class="col-md-6 entry">
-                        <input type="text" 
+                        <input id="lengthInput"
+                               type="text" 
                                :class="'form-control ' + dirtyClass('lengthOfSession')"
                                v-model="lengthOfSession">
                         <div v-if="isDirty('lengthOfSession')"
-                             class="revert"><span class="glyphicon glyphicon-repeat icon-flipped" @click="revert('lengthOfSession')"/></div>
+                             class="revert"><span class="fas fa-history" @click="revert('lengthOfSession')"/></div>
                     </div>
                 </div>
 
                 <!-- Type of Activity -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Activity Type</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="activityTypeInput">Activity Type</label>
                     <div class="col-md-6 entry">
-                        <select :class="'form-control ' + dirtyClass('activityTypeId')"
+                        <select id="activityTypeInput"
+                                :class="'form-control ' + dirtyClass('activityTypeId')"
                                 v-model="activityTypeId">
                             <option v-for="activityType in activityTypesLookup"
                                 :value="activityType.id">
@@ -89,29 +96,31 @@ const Component = {
                             </option>
                         </select>
                         <div v-if="isDirty('activityTypeId')"
-                             class="revert"><span class="glyphicon glyphicon-repeat icon-flipped" @click="revert('activityTypeId')"/></div>
+                             class="revert"><span class="fas fa-history" @click="revert('activityTypeId')"/></div>
                     </div>
                 </div>
 
                 <!-- Location -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Location</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="locationInput">Location</label>
 
                     <div class="col-md-6 entry">
-                        <input type="text" 
+                        <input id="locationInput"
+                               type="text" 
                                :class="'form-control ' + dirtyClass('location')" 
                                v-model="location">
                         <div v-if="isDirty('location')"
-                             class="revert"><span class="glyphicon glyphicon-repeat icon-flipped" @click="revert('location')"/></div>
+                             class="revert"><span class="fas fa-history" @click="revert('location')"/></div>
                     </div>
                 </div>
 
                 <!-- Safeguarding Concern -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Safeguarding Concern</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="safeguardingInput">Safeguarding Concern</label>
 
                     <div class="col-md-6 entry">
-                        <select :class="'form-control ' + dirtyClass('safeguardingConcern')"
+                        <select id="safeguardingInput"
+                                :class="'form-control ' + dirtyClass('safeguardingConcern')"
                                 v-model="safeguardingConcern">
                             <option v-for="item in safeguardingLookup"
                                     :value="item.id">
@@ -119,15 +128,16 @@ const Component = {
                             </option>
                         </select>
                         <div v-if="isDirty('safeguardingConcern')"
-                             class="revert"><span class="glyphicon glyphicon-repeat icon-flipped" @click="revert('safeguardingConcern')"/></div>
+                             class="revert"><span class="fas fa-history" @click="revert('safeguardingConcern')"/></div>
                     </div>
                 </div>
 
                 <!-- Emotional State -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Mentee's Emotional State</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="emotionalStateInput">Mentee's Emotional State</label>
                     <div class="col-md-6 entry">
-                        <select :class="'form-control ' + dirtyClass('emotionalStateId')"
+                        <select id="emotionalStateInput"
+                                :class="'form-control ' + dirtyClass('emotionalStateId')"
                                 v-model="emotionalStateId">
                             <option v-for="emotionalState in emotionalStatesLookup"
                                 :value="emotionalState.id">
@@ -135,29 +145,28 @@ const Component = {
                             </option>
                         </select>
                         <div v-if="isDirty('emotionalStateId')"
-                            class="revert"><span class="glyphicon glyphicon-repeat icon-flipped" @click="revert('emotionalStateId')"/></div>
+                            class="revert"><span class="fas fa-history" @click="revert('emotionalStateId')"/></div>
                     </div>
                 </div>
 
                 <!-- Meeting Details -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Meeting Details</label>
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label" for="meetingDetailsInput">Meeting Details</label>
                     <div class="col-md-6 entry">
-                        <textarea :class="'form-control ' + dirtyClass('meetingDetails')" rows="10"
+                        <textarea id="meetingDetailsInput"
+                                  :class="'form-control ' + dirtyClass('meetingDetails')" rows="10"
                                   v-model="meetingDetails"/>
                         <div v-if="isDirty('meetingDetails')"
-                            class="revert"><span class="glyphicon glyphicon-repeat icon-flipped" @click="revert('meetingDetails')"/></div>
+                            class="revert"><span class="fas fa-history" @click="revert('meetingDetails')"/></div>
                     </div>
                 </div>
 
-                <div>
-                    <span v-on:click="save()" class="save btn btn-success" :disabled="isSaving">
-                    <span class="glyphicon glyphicon-ok" /> Save</span>
-
-                    <span v-on:click="cancel()" class="cancel btn btn-secondary" :disabled="isSaving">
-                    <span class="glyphicon glyphicon-remove" /> Go Back</span>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <span v-on:click="save()" class="save btn btn-success " :disabled="isSaving">
+                        <span class="fas fa-save" /> Save</span>
+                    </div>
                 </div>
-
             </form>
         </div>
     `,
@@ -302,10 +311,6 @@ const Component = {
                 this.isSaving = false
                 this.scrollTo('status-box')
             }
-        },
-
-        cancel() {
-            window.location.href = `/report/${this.report.id}`;
         },
 
         async updateSessionReport(id, sessionReport) {

@@ -1,0 +1,114 @@
+@calendar-planned-session-colour: @brand-primary;
+@calendar-mentor-leave-colour: @brand-tertiary;
+@calendar-mentee-leave-colour: @brand-secondary;
+
+// Customise tooltips.js in the calendar
+.body-cal .tooltip .tooltip-inner  {
+    background-color:rgb(66, 66, 66);
+}
+.body-cal .tooltip .tooltip-arrow {
+    border-top-color: rgb(66, 66, 66);
+}
+
+.calendar {
+   
+    .calendar-info {
+        b {
+            font-weight: 700;
+        }
+    }
+
+    .calendar-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        .new-report {
+        }
+
+        .new-planned-session {
+            text-align: right;
+
+            a {
+                color: @calendar-planned-session-colour;
+            }
+        }
+
+        .new-mentor-leave {
+            text-align: right;
+
+            a {
+                color: @calendar-mentor-leave-colour;
+            }
+        }
+
+        .new-mentee-leave {
+            text-align: right;
+
+            a {
+                color: @calendar-mentee-leave-colour;
+            }
+        }
+    }
+
+    .calendar-body {
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        // Events in the calendar view
+        .planned-session-event {
+            background-color: @calendar-planned-session-colour;
+            border-color: @calendar-planned-session-colour;
+        }
+
+        .mentor-leave-event {
+            background-color: @calendar-mentor-leave-colour;
+            border-color: @calendar-mentor-leave-colour;
+        }
+
+        .mentee-leave-event {
+            background-color: @calendar-mentee-leave-colour;
+            border-color: @calendar-mentee-leave-colour;
+        }
+
+        // Override styling from the full-calendar default theme to match brand
+        a.fc-event {
+            color: @white;
+            font-size: inherit;
+        }
+        .fc-button-primary {
+            color: @white;
+            background-color: @brand-primary;
+            border-color: @brand-primary;
+        }
+
+        .fc-button-primary:hover {
+            color: @white;
+            background-color: darken(@brand-primary, 10%);
+            border-color: darken(@brand-primary, 10%);
+        }
+
+        .fc-button-primary:focus {
+            -webkit-box-shadow: 0 0 0 0 darken(@brand-primary, 15%);
+            box-shadow: 0 0 0 0 darken(@brand-primary, 15%);
+        }
+
+        .fc-button-primary:disabled {
+            color: @white;
+            background-color: rgb(66, 66, 66);
+            border-color: rgb(66, 66, 66);
+        }
+
+        .fc-button-primary:not(:disabled):active,
+        .fc-button-primary:not(:disabled).fc-button-active {
+            color: @white;
+            background-color: darken(@brand-primary, 15%);
+            border-color: darken(@brand-primary, 15%);
+        }
+
+        .fc-button-primary:not(:disabled):active:focus,
+        .fc-button-primary:not(:disabled).fc-button-active:focus {
+            -webkit-box-shadow: 0 0 0 0.2rem darken(@brand-primary, 15%);
+            box-shadow: 0 0 0 0.2rem darken(@brand-primary, 15%);
+        }
+    }
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="tkn-app">
     <head>
         <!-- Meta Information -->
         <meta charset="utf-8">
@@ -10,33 +10,9 @@
 
         <!-- Fonts -->
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
-        <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 
         <!-- CSS -->
-        <link href="/css/sweetalert.css" rel="stylesheet">
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-
-        <style>
-            .footer{
-                font-size: 16px;
-            }
-
-            .red-links a{
-                color: #b84d45;
-            }
-
-            .bg-white{
-                background-color: white;
-            }
-
-            .p-t-xl{
-                padding-top: 40px;
-            }
-
-            .p-b-xl{
-                padding-bottom: 40px;
-            }
-        </style>
 
         <!-- Scripts -->
         @yield('scripts', '')
@@ -50,7 +26,7 @@
 
     </head>
 
-    <body class="with-navbar @unless(empty($body_class)){{$body_class}}@endunless">
+    <body class="@unless(empty($body_class)){{$body_class}}@endunless">
         <div id="app" v-cloak>
             <!-- Navigation -->
             @if (Auth::check())
@@ -62,7 +38,7 @@
             @if(session('status'))
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
+                        <div class="col-md-12">
                             <div class="alert alert-success">
                                 {{ session('status') }}
                             </div>
@@ -74,21 +50,14 @@
             <!-- Main Content -->
             @yield('content')
 
-            <!-- Footer -->
-            <div class="container-fluid p-b-xl p-t-xl m-t-md red-links bg-white footer">
-            
-            </div>
-
             <!-- Application Level Modals -->
             @if (Auth::check())
                 @include('modals.support')
-                @include('modals.session-expired')
             @endif
         </div>
 
         <!-- JavaScript -->
         <script src="{{ mix('js/app.js') }}"></script>
-        <script src="/js/sweetalert.min.js"></script>
 
         @yield('body-scripts', '')
     </body>

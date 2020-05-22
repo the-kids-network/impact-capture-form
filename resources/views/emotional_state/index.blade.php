@@ -1,16 +1,17 @@
 @extends('layout.app')
 
 @section('content')
-        <div class="container">
+        <div class="container emotional-state">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Emotional States</div>
-                        <ul class="list-group">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">Emotional States</div>
+                        <ul class="list-group list-group-flush">
                             @foreach($emotional_states as $emotional_state)
-                            <li class="list-group-item">
+                            <li class="list-group-item ">
                                 {{ $emotional_state->name }}
-                                <div class="pull-right">
+
+                                <div class="float-right">
                                     @if($emotional_state->trashed())
                                         <form action="{{ url('/emotional-state/restore/'.$emotional_state->id) }}" id="restore-{{$emotional_state->id}}" method="post">
                                             {{ csrf_field() }}
@@ -25,45 +26,35 @@
                                         </form>
                                     @endif
                                 </div>
-                                <div class="clearfix"></div>
                             </li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="container">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Add Emotional State</div>
-
-                        <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">Add Emotional State</div>
+                        <div class="card-body">
                             @include('shared.errors')
 
                             <form class="form-horizontal" role="form" method="POST" action="/emotional-state">
-                            {{ csrf_field() }}
-
+                                {{ csrf_field() }}
                                 <!-- Emotional_state's Name -->
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Emotional State</label>
-
+                                <div class="form-group row">
                                     <div class="col-md-6">
                                         <input type="text" class="form-control" name="name" value="{{ old('name') }}" autofocus>
                                     </div>
                                 </div>
-
                                 <!-- Submit Button -->
-                                <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
+                                <div class="form-group row">
+                                    <div class="col-md-8">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fa m-r-xs fa-sign-in"></i>Add Emotional State
+                                            Add Emotional State
                                         </button>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>

@@ -5,10 +5,7 @@ namespace Tests\Browser;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-
 use Tests\Browser\Pages\MentorPage;
-use Tests\Browser\Pages\SessionReportsPage;
 
 class MentorPageTest extends DuskTestCase
 {
@@ -22,22 +19,22 @@ class MentorPageTest extends DuskTestCase
             $this->assertMentorCount($browser, 10);
 
             $browser->element('.expand-all')->click();
-            $browser->waitFor('.mentor-table .mentee.name-row');
-            $browser->assertSeeIn('.mentor-table .mentee.name-row', 'Mentee');
+            $browser->waitFor('.mentors-list .mentee.row');
+            $browser->assertSeeIn('.mentors-list .mentee .name', 'Mentee One');
 
-            $browser->assertSelectHasOptions('@mentee-list', [1, 2, 3]);
+            $browser->assertSelectHasOptions('.mentee-select', [1, 2, 3]);
         });
     }
 
     private function assertMentorCount($browser, $mentorCount)
     {
         $browser->pause(1000);
-        $browser->assertElementsCountIs($mentorCount, '.mentor-table .mentor.name-row');
+        $browser->assertElementsCountIs($mentorCount, '.mentors-list .mentor.row');
     }
 
     private function assertMenteeCount($browser, $menteeCount)
     {
         $browser->pause(1000);
-        $browser->assertElementsCountIs($menteeCount, '.mentor-table .mentee.name-row');
+        $browser->assertElementsCountIs($menteeCount, '.mentors-list .mentee.row');
     }
 }

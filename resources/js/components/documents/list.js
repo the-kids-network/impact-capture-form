@@ -19,7 +19,7 @@ const Component = {
     },
 
     template: `
-        <div class="documents list">
+        <div class="documents-list">
             <document-search 
                 class="list-search"
                 @results="setDocumentFilter($event)"
@@ -49,7 +49,6 @@ const Component = {
                                 <div class="popper">File type: {{ document.extension ? document.extension : 'unknown' }}</div>
                             
                                 <span slot="reference">
-                                    <span class="hidden">{{ document.extension }}</span>
                                     <span :class="'file-icon far fa-2x ' + fileIconFor(document.extension)" />
                                 </span>
                             </popper>
@@ -79,7 +78,7 @@ const Component = {
                                         :id="'download-' + document.id"
                                         class="action download" 
                                         @click="handleDownloadDocument(document)">
-                                        <span class="glyphicon glyphicon-download"></span>
+                                        <span class="fas fa-download"></span>
                                     </a>
                                 </popper>
                                 <popper
@@ -92,7 +91,7 @@ const Component = {
                                         :id="'restore-' + document.id"
                                         class="action restore"
                                         @click="handleRestoreDocument(document)">
-                                        <span class="glyphicon glyphicon-backward"></span>
+                                        <span class="fas fa-trash-restore-alt"></span>
                                     </a>
                                 </popper>
                                 <popper
@@ -105,7 +104,7 @@ const Component = {
                                         :id="'delete-' + document.id"
                                         class="action delete"
                                         @click="handleDeleteDocument(document, true)">
-                                        <span class="glyphicon glyphicon-remove"></span>
+                                        <span class="fas fa-times-circle"></span>
                                     </a>
                                 </popper>
                                 <popper
@@ -118,7 +117,7 @@ const Component = {
                                         :id="'trash-' + document.id"
                                         class="action trash"
                                         @click="handleDeleteDocument(document, false)">
-                                        <span class="glyphicon glyphicon-trash"></span>
+                                        <span class="fas fa-trash-alt"></span>
                                     </a>
                                 </popper>
                                 <popper
@@ -131,7 +130,7 @@ const Component = {
                                         :id="'share-' + document.id"
                                         class="action share" 
                                         @click="handleShareDocument(document, true)">
-                                        <span class="glyphicon glyphicon-share-alt"></span>
+                                        <span class="fas fa-share"></span>
                                     </a>
                                 </popper>
                                 <popper
@@ -144,7 +143,7 @@ const Component = {
                                         :id="'unshare-' + document.id"
                                         class="action unshare"  
                                         @click="handleShareDocument(document, false)">
-                                        <span class="glyphicon glyphicon-share-alt icon-flipped"></span>
+                                        <span class="fas fa-share icon-flipped"></span>
                                     </a>
                                 </popper>
                                 <popper
@@ -157,7 +156,7 @@ const Component = {
                                         :id="'tag-' + document.id"
                                         class="action tag" 
                                         @click="handleOpenTagger(document.id)">
-                                        <span class="glyphicon glyphicon-tags"></span>
+                                        <span class="fas fa-tags"></span>
                                     </a>
                                 </popper>
                             </div>
@@ -168,13 +167,12 @@ const Component = {
             <div class="pagination-bar">
                 <div class="page-size-list">
                     <span class="btn-group dropdown dropup">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
                             <span class="page-size">{{currentPageSize}}</span>
-                            <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li v-for="size in pageSizes"
-                                :class="'page-size ' + ((size === currentPageSize) ? 'active' : '')"
+                                :class="'dropdown-item page-size ' + ((size === currentPageSize) ? 'active' : '')"
                                 @click="currentPageSize = size"
                                 role="menuitem"><a href="#">{{size}}</a></li>
                            
@@ -182,7 +180,7 @@ const Component = {
                     </span> rows per page
                 </div>
                 <div class="page-selector" v-if="_pages.length > 1">
-                    <ul class="pagination pages-list">
+                    <ul class="pagination pages-list justify-content-end">
                         <li class="page-item" 
                             v-if="currentPage != 1" 
                             @click="currentPage--">
@@ -223,7 +221,7 @@ const Component = {
             // client-side pagination state
             currentPage: 1,
             pageSizes: [10, 25, 50, 100],
-            currentPageSize: 25
+            currentPageSize: 2
         }
     },
 

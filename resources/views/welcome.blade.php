@@ -19,67 +19,58 @@
             background-size: 300px 200px;
             height: 100%;
             margin: 0;
-        }
-
-        .full-height {
-            min-height: 100%;
-        }
-
-        .flex-column {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .flex-fill {
-            flex: 1;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-
-        .text-center {
-            text-align: center;
+            font-family: 'Open Sans';
         }
 
         .links {
-            padding: 1em;
-            text-align: right;
+            padding-top: 1em;
+            text-align: center;
         }
-
         .links a {
             text-decoration: none;
         }
-
         .links button {
-            background-color: #3097D1;
-            border: 0;
-            border-radius: 4px;
-            color: white;
             cursor: pointer;
-            font-family: 'Open Sans';
-            font-size: 14px;
-            font-weight: 600;
-            padding: 15px;
+            padding: 1rem 1.5rem 1rem 1.5rem;
+            width: auto;
+            height: auto;
+            background-color: #34a5dd;
+            border: 0;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 3vw;
+            font-weight: 400;
             text-transform: uppercase;
-            width: 100px;
         }
 
-        .logo{
+        .main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        .logo {
             max-width: 750px;
             width: 80vw;
         }
-
-        .welcome-text{
-            font-family: 'Open Sans';
+        .welcome-text {
+            font-size: 6vw;
+            text-align: center;
+            
         }
+
+        @media screen and (min-width: 750px) {
+            .links button {
+                font-size: 1.5rem;
+            }
+            .welcome-text {
+                font-size: 3rem;
+            }
+        }
+    
     </style>
 </head>
 <body>
-    <div class="full-height flex-column">
+    <div class="container">
         <nav class="links">
             <a href="/login" style="margin-right: 15px;">
                 <button>
@@ -88,8 +79,8 @@
             </a>
         </nav>
 
-        <div class="flex-fill flex-center">
-            <h1 class="text-center welcome-text">
+        <div class="main">
+            <h1 class="welcome-text">
                 <img class="logo" src="/img/color-logo.png">
                 <br>Session Report Database
             </h1>

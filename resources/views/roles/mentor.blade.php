@@ -1,82 +1,94 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container">
+    <div class="container mentor-management">
         <div class="row">
-            <div></div>
-            <div class="col-md-8 col-md-offset-2">
-                <button class="btn btn-lg btn-default" onclick="toggle('.trashed')">
-                    Toggle Deactivated Mentors
-                </button>
-                <hr>
+            <div class="col-md-12">
+                @include('roles.include.mentor_mentee_pairing_form', ['mentors' => $assignableMentors, 'mentees' => $assignableMentees])
             </div>
         </div>
-    </div>
-
-    @include('roles.include.mentor_mentee_pairing_form', ['mentors' => $assignableMentors, 'mentees' => $assignableMentees])
-
-    <div class="container">
         <div class="row">
-            <div></div>
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Mentors<span class="pull-right"><a class="expand-all">Toggle All</a></span></div>
-                    <div class="mentor-table">
-                        @foreach($allMentors as $mentor)
-                        <div class="mentor-table-row @if($mentor->trashed()) trashed @else not-trashed @endif" style="@if($mentor->trashed()) display: none @endif"> 
-                            <span class="mentor name-row list-group-item-info">{{$mentor->name}}</span>
-                            <span class="mentor delete-row list-group-item-info">
-                                @if($mentor->trashed())
-                                    <form style="display: inline-block" action="{{ url('/user/'.$mentor->id.'/restore') }}" id="restore-{{$mentor->id}}" method="post">
-                                        {{ csrf_field() }}
-                                        <a href="javascript:{}" onclick="document.getElementById('restore-{{$mentor->id}}').submit(); return false;">Restore</a>
-                                    </form>
-                                    |
-                                    <form style="display: inline-block" action="{{ url('/user/'.$mentor->id) }}" id="delete-{{$mentor->id}}" class="delete-mentor" method="post">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
-                                        <input type="hidden" name="really_delete" value="1">
-                                        <a href="javascript:{}" onclick="document.getElementById('delete-{{$mentor->id}}').submit(); return false;">Delete</a>
-                                    </form>
-                                @else
-                                    <form style="display: inline-block" action="{{ url('/user/'.$mentor->id) }}" id="deactivate-{{$mentor->id}}" method="post">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
-                                        <input type="hidden" name="really_delete" value="0">
-                                        <a href="javascript:{}" onclick="document.getElementById('deactivate-{{$mentor->id}}').submit(); return false;">Deactivate</a>
-                                    </form>
-                                @endif
-                            </span>
-
-                            @if(!$mentor->mentees->isEmpty())
-                                <div class="mentor-expand list-group-item-info toggle-btn"
-                                            data-target="#mentee_details{{$mentor->id}}" data-toggle="collapse">
-                                    <i class="fa fa-bars"></i>
-                                </div>
-                            @else
-                                <div class="list-group-item-info spacer"></div>
-                            @endif
-                            @if(!$mentor->mentees->isEmpty())
-                                <div class="collapse mentee_details" id="mentee_details{{$mentor->id}}">
-                                    <div class="mentees">
-                                    <h3 class="title">Assigned Mentees</h3>
-                                    @forelse($mentor->mentees as $mentee)
-                                        <div class="mentee name-row">{{ $mentee->name }}</div>
-                                        <span class="mentee delete-row">
-                                            <form action="/roles/mentor/{{ $mentor->id }}/mentee/{{ $mentee->id }}" method="post">
-                                                {{ csrf_field() }}
-                                                {{ method_field('delete') }}
-                                                <input type="hidden" name="mentee_id" value="{{$mentee->id}}">
-                                                <input type="submit" value="Disassociate" class="btn btn-xs btn-danger-outline">
-                                            </form>
-                                        </span>
-                                        <div class="mentee spacer"></div>
-                                    @endforeach
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Mentors<span class="float-right"><a class="expand-all">Toggle Mentees</a></span></div>
+                    <div class="card-body">
+                        <div>
+                            <button class="btn btn btn-light" onclick="toggle('.deactivated')">
+                                Toggle Deactivated Mentors
+                            </button>
+                        </div>
+                        <br/>
+                        <div class="tkn-list-group mentors-list">
+                            @foreach($allMentors as $mentor)
+                                @php
+                                    $deactivated = $mentor->trashed()
+                                @endphp
+                                <div class="mentor-{{$mentor->id}}-container @if($deactivated) deactivated @endif" style="@if($deactivated) display: none @endif">
+                                    <div class="container">
+                                        <div class="tkn-list-group-item row mentor"> 
+                                            <!-- Name -->
+                                            <div class="col-10 order-1 col-md-5 order-md-1">
+                                                <span>{{$mentor->name}}</span>
+                                            </div>
+                                            <!-- Actions -->
+                                            <div class="col-12 order-3 col-md-6 order-md-3">
+                                                <span>
+                                                    @if($mentor->trashed())
+                                                        <form style="display: inline-block" action="{{ url('/user/'.$mentor->id.'/restore') }}" id="restore-{{$mentor->id}}" method="post">
+                                                            {{ csrf_field() }}
+                                                            <a href="javascript:{}" class="btn btn-link" onclick="document.getElementById('restore-{{$mentor->id}}').submit(); return false;">Restore</a>
+                                                        </form>
+                                                        |
+                                                        <form style="display: inline-block" action="{{ url('/user/'.$mentor->id) }}" id="delete-{{$mentor->id}}" method="post">
+                                                            {{ csrf_field() }}
+                                                            {{ method_field('DELETE') }}
+                                                            <input type="hidden" name="really_delete" value="1">
+                                                            <a href="javascript:{}" class="btn btn-link delete-mentor" onclick="deleteMentorConfirm({{$mentor->id}})">Delete</a>
+                                                        </form>
+                                                    @else
+                                                        <form style="display: inline-block" action="{{ url('/user/'.$mentor->id) }}" id="deactivate-{{$mentor->id}}" method="post">
+                                                            {{ csrf_field() }}
+                                                            {{ method_field('DELETE') }}
+                                                            <input type="hidden" name="really_delete" value="0">
+                                                            <a href="javascript:{}" class="btn btn-link" onclick="document.getElementById('deactivate-{{$mentor->id}}').submit(); return false;">Deactivate</a>
+                                                        </form>
+                                                    @endif
+                                                </span>
+                                            </div>
+                                            <!-- Mentees expand -->
+                                            @if(!$mentor->mentees->isEmpty())
+                                            <div class="expander col-2 order-2 col-md-1 order-md-3"
+                                                data-target="#mentees_for_mentor_{{$mentor->id}}" data-toggle="collapse">
+                                                <span class="fa fa-bars"></span>
+                                            </div>
+                                            @else
+                                            <div class="col-2 order-2 col-md-1 order-md-3 ml-auto"></div>
+                                            @endif
+                                        </div>
                                     </div>
+
+                                    <!-- Mentees -->
+                                    @if(!$mentor->mentees->isEmpty())
+                                    <div class="container collapse mentor_mentees" id="mentees_for_mentor_{{$mentor->id}}">
+                                        @foreach($mentor->mentees as $mentee)
+                                        <div class="row tkn-list-group-item mentee">       
+                                            <div class="col-10 col-md-5 name">{{ $mentee->name }}</div>
+                                            <div class="col-12 col-md-6">
+                                                <form action="/roles/mentor/{{ $mentor->id }}/mentee/{{ $mentee->id }}" method="post" id="disassociate-mentor{{$mentor->id}}-mentee{{$mentee->id}}">
+                                                    {{ csrf_field() }}
+                                                    {{ method_field('delete') }}
+                                                    <input type="hidden" name="mentee_id" value="{{$mentee->id}}">
+                                                    <a href="javascript:{}" class="btn btn-link" onclick="document.getElementById('disassociate-mentor{{$mentor->id}}-mentee{{$mentee->id}}').submit(); return false;">Disassociate</a>
+                                                </form>
+                                            </div>
+                                            <div class="col-2 col-md-1"></div> 
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    @endif
                                 </div>
-                            @endif
-                        </div> 
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -85,20 +97,43 @@
 @endsection
 
 @section('body-scripts')
-<script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function() {
-            $(".delete-mentor").submit(function(event) {
-                return confirm("This will permanently delete the user.\nIt cannot be undone, although their reports will remain.");
-            });
-
             $(".expand-all").click(function(event) {
-                $(".mentor-expand").click();
+                $(".expander").click()
             });
         });
     </script>
     <script>
         function toggle(selector){
-            $(selector).toggle();
+            $(selector).slideToggle(300);
+        }
+    </script>
+    <script>
+        function deleteMentorConfirm(mentorId) {
+            const swal = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-primary btn-mentor-delete-confirm',
+                        cancelButton: 'btn btn-danger btn-mentor-delete-cancel'
+                    },
+                    buttonsStyling: false
+                })
+
+                swal.fire(
+                {
+                    title: 'Are you sure?',
+                    text: "This will permanently delete the user.\nIt cannot be undone, although their reports will remain.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    reverseButtons: true
+                }
+            ).then((result) => {
+                if (result.value) {
+                    document.getElementById('delete-' + mentorId).submit();
+                }
+            })
         }
     </script>
 @endsection

@@ -1,5 +1,6 @@
 import SparkForm from './forms/form'
 import http from './forms/http'
+import Swal from 'sweetalert2'
 
 const App = {
     el: '#app',
@@ -84,12 +85,12 @@ const App = {
          * Show an alert informing the user their support request was sent.
          */
         showSupportRequestSuccessMessage() {
-            swal({
+            Swal.fire({
                 title: 'Got It!',
                 text: 'We have received your message and will respond soon!',
-                type: 'success',
+                icon: 'success',
                 showConfirmButton: false,
-                timer: 2000
+                timer: 4000
             });
         }
     },

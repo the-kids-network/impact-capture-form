@@ -3,16 +3,16 @@
 @section('content')
 
     <div class="container">
-
-        <div class="row m-b-lg">
+        <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-lg btn-primary btn-block" onclick="exportTableToCSV('data.csv')">Click to Download Data as CSV</button>
+                <button class="btn btn-lg btn-primary btn-block" onclick="exportTableToCSV('session-reports.csv')">Click to Download Data as CSV</button>
+                <br />
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <table id="test-table" class="table table-bordered table-responsive table-striped">
+                <table id="export-table" class="table table-bordered table-responsive table-striped">
                     <tr>
                         <th>Session ID</th>
                         <th>Mentor</th>
@@ -27,18 +27,18 @@
                     </tr>
 
                     @foreach($reports as $report)
-                        <tr>
-                            <td>{{ $report->id }}</td>
-                            <td>{{ $report->mentor->name }}</td>
-                            <td>{{ $report->mentee->name }}</td>
-                            <td>{{ $report->session_date->format('d-m-Y') }}</td>
-                            <td>{{ $report->length_of_session }}</td>
-                            <td>{{ $report->activity_type->name }}</td>
-                            <td>{{ $report->location }}</td>
-                            <td>@if($report->safeguarding_concern) Yes @else No @endif</td>
-                            <td>{{ $report->emotional_state->name }}</td>
-                            <td>{{ $report->meeting_details }}</td>
-                        </tr>
+                    <tr>
+                        <td>{{ $report->id }}</td>
+                        <td>{{ $report->mentor->name }}</td>
+                        <td>{{ $report->mentee->name }}</td>
+                        <td>{{ $report->session_date->format('d-m-Y') }}</td>
+                        <td>{{ $report->length_of_session }}</td>
+                        <td>{{ $report->activity_type->name }}</td>
+                        <td>{{ $report->location }}</td>
+                        <td>@if($report->safeguarding_concern) Yes @else No @endif</td>
+                        <td>{{ $report->emotional_state->name }}</td>
+                        <td>{{ $report->meeting_details }}</td>
+                    </tr>
                     @endforeach
                 </table>
             </div>
@@ -60,5 +60,4 @@
             });
         }
     </script>
-
 @endsection

@@ -1,0 +1,29 @@
+.session-report.show {
+    .modify-session-report {
+        display: flex;
+
+        .delete-report {
+            margin-left: 10px;
+        }
+    }
+}
+
+.session-report.edit {
+    .session-report-editor {
+        .entry {
+            display: flex;
+
+            .revert {
+                margin-left: 10px;
+
+                span {
+                    vertical-align: middle;
+                }
+            }
+        }
+        .edited {
+            background-color: lighten(@brand-tertiary, 10%);
+            color: @white;
+        }
+    }
+}

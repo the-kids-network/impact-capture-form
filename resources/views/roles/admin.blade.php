@@ -2,21 +2,19 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container admin-management">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Promote to Admin</div>
-                    <div class="panel-body">
-
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Promote to Admin</div>
+                    <div class="card-body">
                         @include('shared.errors')
 
                         <form class="form-horizontal" role="form" method="POST" action="/roles/admin">
-                        {{ csrf_field() }}
-
+                            {{ csrf_field() }}
                             <!-- User's Name -->
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">User Name</label>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label">User Name</label>
                                 <div class="col-md-6">
                                     <select class="form-control" name="user_id">
                                         @foreach($users as $user)
@@ -25,37 +23,30 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                    <p class="help-block">Only users that do not have a role can be promoted to Admin</p>
                                 </div>
                             </div>
-
                             <!-- Submit Button -->
-                            <div class="form-group">
-                                <div class="col-md-8 col-md-offset-4">
+                            <div class="form-group row">
+                                <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
                                         Promote to Admin
                                     </button>
                                 </div>
                             </div>
-
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Admins</div>
-                    <ul class="list-group">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Admins</div>
+                    <ul class="list-group list-group-flush">
                         @foreach($users as $user)
                             @if( $user->isAdmin() )
                                 <li class="list-group-item">{{$user->name}}
-                                    <span class="pull-right">
+                                    <span class="float-right">
                                         <form action="/roles/admin" method="post">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
@@ -71,5 +62,4 @@
             </div>
         </div>
     </div>
-
 @endsection

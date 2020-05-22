@@ -1,15 +1,20 @@
 /**
 ** Third party library CSS (~ = look in node_modules directory)
 **/
+// Font awesome
+@import (css) "~@fortawesome/fontawesome-free/css/all.css";
 
 // JQuery UI
 @import (css) "~jquery-ui/themes/base/all.css";
 
 // Bootstrap
-@import "~bootstrap/less/bootstrap";
+@import "~bootstrap/dist/css/bootstrap.css";
 
 // Bootstrap table
 @import (css) "~bootstrap-table/dist/bootstrap-table.css";
+
+// Sweetalert
+@import (css) "~sweetalert2/dist/sweetalert2.css";
 
 // Fullcalendar
 @import (css) "~@fullcalendar/core/main.css";
@@ -20,40 +25,27 @@
 ** Application CSS or overrides (below)
 **/
 
-// Import Variables
-@import "variables";
-
-// Spacing Helpers
-@import "spacing";
-
 // Utility Helpers
 @import "utilities";
-
-// HTML Elements
-@import "elements/alerts";
-@import "elements/buttons";
-@import "elements/forms";
-@import "elements/images";
-@import "elements/navbar";
-@import "elements/panels";
-@import "elements/tables";
-
-// Body Styling
-body {
-	font-weight: 300;
-}
 
 // Vue Cloak
 [v-cloak] {
     display: none;
 }
 
-// Styling for specific views
-@import "calendar";
-@import "roles-mentor";
+// Global styling
+@import "variables";
+@import "core";
+@import "navbar";
 
-// Component Styling
-@import "components/settings";
-@import "components/calendar";
-@import "components/documents";
-@import "components/session-reports.less";
+// Styling for specific views
+@import "pages/settings";
+@import "pages/user-portal";
+@import "pages/user-settings";
+@import "pages/session-reports";
+@import "pages/roles-mentor";
+@import "pages/roles-manager";
+@import "pages/roles-mentee";
+@import "pages/calendar";
+@import "pages/documents-upload";
+@import "pages/documents-management";

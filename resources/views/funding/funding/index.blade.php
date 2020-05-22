@@ -1,22 +1,19 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container">
+    <div class="container fundings">
         <div class="row">
             <div></div>
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-12">
                 @include('shared.errors')
             </div>
         </div>
-    </div>
-
-    <div class="container">
         <div class="row">
             <div></div>
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Mentor Fundings</div>
-                    <div class="panel-body">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Mentor Fundings</div>
+                    <div class="card-body">
                         <table class="table documents" 
                                 data-toggle="table" 
                                 data-search="true" 
@@ -58,25 +55,21 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
                         Create Mentor Funding
                     </div>
-                    <div class="panel-body">
-
+                    <div class="card-body">
                         <form class="form-horizontal" role="form" method="POST" action="/fundings">
                         {{ csrf_field() }}
 
                             <!-- Mentor's Name -->
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Mentor Name</label>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="mentorNameInput">Mentor Name</label>
                                 <div class="col-md-6">
-                                    <select class="form-control" name="mentor_id">
+                                    <select id="mentorNameInput" class="form-control" name="mentor_id">
                                         @foreach($mentors as $mentor)
                                             <option value="{{ $mentor->id }}" @if( old('mentor_id') == $mentor->id ) selected="selected" @endif>
                                                 {{ $mentor->name }}
@@ -87,10 +80,10 @@
                             </div>
 
                             <!-- Funder Code -->
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Funder</label>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="funderInput">Funder</label>
                                 <div class="col-md-6">
-                                    <select class="form-control" name="funder_id" dusk="funder-list">
+                                    <select id="funderInput" class="form-control" name="funder_id" dusk="funder-list">
                                         @foreach($funders as $funder)
                                             <option value="{{ $funder->id }}" @if( old('funder_id') == $funder->id ) selected="selected" @endif>
                                                 {{ $funder->code }}
@@ -101,32 +94,25 @@
                             </div>
 
                             <!-- Funding Year -->
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Funding Year</label>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="yearInput">Funding Year</label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="funding_year" value="{{ old('funding_year') }}" autofocus>
+                                    <input id="yearInput" type="text" class="form-control" name="funding_year" value="{{ old('funding_year') }}" autofocus>
                                 </div>
                             </div>
 
                             <!-- Submit Button -->
-                            <div class="form-group">
-                                <div class="col-md-8 col-md-offset-4">
+                            <div class="form-group row">
+                                <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
                                         Create Funding
                                     </button>
                                 </div>
                             </div>
-
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-@endsection
-
-@section('body-scripts')
-    
 @endsection

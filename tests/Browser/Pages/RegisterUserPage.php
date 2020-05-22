@@ -30,7 +30,9 @@ class RegisterUserPage extends Page
     public function assert(Browser $browser)
     {
         $browser->assertPathIs($this->url());
-        $browser->assertSee('I Accept The Terms Of Service');
+        $browser->assertSee('Register');
+        $browser->assertSee('Confirm Password');
+
     }
 
     /**

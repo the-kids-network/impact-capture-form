@@ -32,7 +32,7 @@ const Component = {
             <div class="spacer" />
 
             <span class="done btn btn-primary" 
-                @click="$emit('close')"><span class="glyphicon glyphicon-ok"></span> Done</span>
+                @click="$emit('close')"><span class="fas fa-check"></span> Done</span>
         </div>
     `,
 

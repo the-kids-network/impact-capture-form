@@ -23,8 +23,8 @@ const Component = {
                 @tags-changed="newTags => updateSelectedTags(newTags)"
                 />
             <div class="buttons">
-                <span class="clear btn btn-secondary" 
-                    @click="clearSearch"><span class="glyphicon glyphicon-remove"></span> Reset</span>
+                <span class="clear btn btn-light" 
+                    @click="clearSearch"><span class="fas fa-times"></span> Reset</span>
             </div>
         </div>
     `,

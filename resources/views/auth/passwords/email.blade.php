@@ -2,36 +2,32 @@
 
 <!-- Main Content -->
 @section('content')
-<div class="container">
+<div class="container password-reset-request">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Reset Password</div>
 
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
+                <div class="card-body ">
+                    <form class="form-horizontal" novalidate="true" role="form" method="POST" action="{{ url('/password/email') }}">
                         {!! csrf_field() !!}
 
                         <!-- E-Mail Address -->
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="emailInput">E-Mail Address</label>
 
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        {{ $errors->first('email') }}
-                                    </span>
-                                @endif
+                            <div class="col-md-8">
+                                <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                       id="emailInput" type="email" name="email" value="{{ old('email') }}" autofocus>
+                                <div class="invalid-feedback">{{ $errors->first('email') }}</div>    
                             </div>
                         </div>
 
                         <!-- Send Password Reset Link Button -->
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                        <div class="form-group row">
+                            <div class="col-md-8 offset-md-3">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-envelope"></i>Send Password Reset Link
+                                    <span class="fa fa-btn fa-envelope"></span> Send Password Reset Link
                                 </button>
                             </div>
                         </div>
