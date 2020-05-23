@@ -55,10 +55,6 @@ const Component = {
                 .filter(i => (i.toLowerCase().indexOf(this.inputText.toLowerCase()) !== -1))
                 .map(i => ({ text: i }))
                 .toArray();
-        },
-
-        _searchEnabled() {
-            return this.tagsSelected.size
         }
     },
 
@@ -89,13 +85,18 @@ const Component = {
         },
 
         async submitSearch() {
-            if (!this._searchEnabled) return;
+            // if no tags, clear search filter
+            if(!this.tagsSelected.size) {
+                this.clearSearch()
+                return
+            }
 
             // reset any errors for new search
             this.$emit('error', [])
 
             try {
                 const matchingDocumentIds = await this.getDocumentsMatchingTags(this.tagsSelected.toArray());
+
                 // send to parent component to handle filtering based on results
                 this.$emit('results', matchingDocumentIds)
             } catch(e) {
