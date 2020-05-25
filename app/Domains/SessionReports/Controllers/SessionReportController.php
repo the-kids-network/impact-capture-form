@@ -17,6 +17,7 @@ use App\ExpenseClaim;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Domains\SessionReports\Controllers\SessionReportValidation;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class SessionReportController extends Controller {
@@ -79,6 +80,7 @@ class SessionReportController extends Controller {
         try {
             $report = $this->sessionReportService->getReport($id);
         } catch (NotFoundException | NotAuthorisedException $e) {
+            Log::error($e);
             abort(401,'Unauthorized');
         }
 
@@ -102,6 +104,7 @@ class SessionReportController extends Controller {
         try {
             $this->sessionReportService->createReport($request->all());
         } catch (NotAuthorisedException $e) {
+            Log::error($e);
             abort(401,'Unauthorized');
         }
 
@@ -126,6 +129,7 @@ class SessionReportController extends Controller {
         try {
             $report = $this->sessionReportService->updateReport($id, $request->all());
         } catch (NotAuthorisedException $e) {
+            Log::error($e);
             abort(401,'Unauthorized');
         }
 
@@ -137,6 +141,7 @@ class SessionReportController extends Controller {
         try {
             $this->sessionReportService->deleteReport($id);
         } catch (NotFoundException $e) {
+            Log::error($e);
             abort(401,'Unauthorized');
         }
 
