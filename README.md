@@ -185,9 +185,17 @@ npm run dev
 
 ## Testing
 
+### Prequisite testing environment configuration
+Ensure the application has been configured to use the ```local.test``` env profile, which uses the corresponding .env configuration file.
+
+```
+php artisan config:cache --env=local.test
+php artisan migrate:refresh --seed
+```
+
 ### Unit tests
 
-Requires the local database to be seeded with data (see above).
+Requires the local database to be seeded with data (see above prerequisites).
 
 To run the unit test:
 
@@ -203,16 +211,13 @@ Install right version of chrome driver if needed. Check your version here: https
 php artisan dusk:chrome-driver <version>
 ```
 
-Turn off the php debug bar in the .env file, as it interferes with the browser tests.
-
 For debugging in the browser, disable headless in the DuskTestCase.
 
-To run the Dusk browser tests (note that the app needs to be running before you launch these tests): 
+To run the Dusk browser tests: 
 
 ```
-composer install
-php artisan config:cache
-php artisan migrate:refresh --seed && php artisan dusk
+php artisan serve
+php artisan dusk
 ```
 
 To run a specific test:
@@ -220,7 +225,6 @@ To run a specific test:
 ```
 php artisan dusk tests/Browser/SessionSubmissionPageTest.php 
 ```
-
 
 ## Debugging
 
@@ -233,10 +237,10 @@ and then add the debug statement with something like
 ```
 Log::info($message);
 ```
-The logs can be found in the storage/logs directory.
+The logs can be found in the storage/<env>/logs directory.
 
 ### Debug Bar
-In the .env file set:
+In the .env.local file set:
 
 ```
 APP_DEBUG=true

@@ -87,11 +87,6 @@ commands:
           name: Start Chrome Driver
           command: ./vendor/laravel/dusk/bin/chromedriver-linux
           background: true
-  install_application_env_file:
-    steps:
-      - run: 
-          name: Install .env File
-          command: cp -f .env.circleci .env
   install_application_dependencies:
     steps:
       - restore_node_modules_cache
@@ -104,11 +99,11 @@ commands:
           name: Install App Composer Dependencies
           command: php composer.phar install
       - save_composer_cache
-  generate_app_key:
+  cache_application_config:
     steps:
-      - run: 
-          name: Generate App Secure Key
-          command: php artisan key:generate
+      - run:
+          name: Use Artisan config for CI environment
+          command: php artisan config:cache --env=ci
   apply_database_migrations:
     steps:
       - run: 
@@ -161,10 +156,9 @@ commands:
       - install_composer
   build:
     steps:
-      - install_application_env_file
       - install_application_dependencies
-      - generate_app_key
       - compile_web_assets
+      - cache_application_config
       - apply_database_migrations
   test:
     steps:
