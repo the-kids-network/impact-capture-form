@@ -17,6 +17,20 @@
         <!-- Scripts -->
         @yield('scripts', '')
 
+        @if (App::environment('production'))
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167891964-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-167891964-1');
+
+            const userType = '{{ (!Auth::user()) ? "non-authenticated" : ((Auth::user()->role) ? Auth::user()->role : "mentor") }}';
+            ga('set', 'user_type', userType);   
+        </script>
+        @endif
+
         <!-- Global Spark Object -->
         <script>
             window.Spark = <?php echo json_encode(array_merge(
