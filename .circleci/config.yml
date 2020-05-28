@@ -8,24 +8,28 @@ commands:
   restore_node_modules_cache:
     steps:
       - restore_cache:
+          name: "Restore App NPM Dependencies From Cache"
           keys:
             - v1-npm-dependencies-{{ checksum "package-lock.json" }}
             - v1-npm-dependencies-
   save_node_modules_cache:
     steps:
       - save_cache:
+          name: "Save App NPM Dependencies To Cache"
           paths:
             - ./node_modules
           key: v1-npm-dependencies-{{ checksum "package-lock.json" }}
   restore_composer_cache:
     steps:
       - restore_cache:
+          name: "Restore App Composer Dependencies From Cache"
           keys:
             - v1-composer-dependencies-{{ checksum "composer.lock" }}
             - v1-composer-dependencies-
   save_composer_cache:
     steps:
       - save_cache:
+          name: "Save App Composer Dependencies To Cache"
           paths:
             - ./vendor
           key: v1-composer-dependencies-{{ checksum "composer.lock" }}
@@ -94,6 +98,9 @@ commands:
           name: Install App NPM Dependencies
           command: npm install
       - save_node_modules_cache
+      - run:
+          name: Install Cypress binary
+          command: ./node_modules/cypress/bin/cypress install
       - restore_composer_cache
       - run: 
           name: Install App Composer Dependencies
@@ -135,16 +142,21 @@ commands:
     steps:
       - run:
           name: Run Unit Tests
-          command: vendor/bin/phpunit --log-junit test-reports/unit/report.xml
+          command: vendor/bin/phpunit --log-junit tests/reports/unit/report.xml
   run_browser_tests:
     steps:
       - install_chrome_driver
       - start_chrome_driver
       - seed_database_with_test_data
       - start_application
+      - run:
+          name: Run Cypress Browser Tests
+          command: |
+            npm run cypress --reporter junit \
+            --reporter-options "mochaFile=tests/reports/cypress/report-[hash].xml"
       - run: 
           name: Run Dusk Browser Tests
-          command: php artisan dusk --log-junit test-reports/browser/report.xml
+          command: php artisan dusk --log-junit tests/reports/browser/report.xml
 
   # Main build top-level steps
   setup:
@@ -187,9 +199,13 @@ jobs:
       - store_artifacts:
           path: ~/repo/storage/logs
       - store_artifacts:
+          path: ~/repo/tests/cypress/screenshots
+      - store_artifacts:
+          path: ~/repo/tests/cypress/videos
+      - store_artifacts:
           path: ~/repo/tests/Browser/screenshots
       - store_test_results:
-          path: ~/repo/test-reports
+          path: ~/repo/tests/reports
 
 workflows:
   build_and_test:
