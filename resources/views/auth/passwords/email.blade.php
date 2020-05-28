@@ -19,7 +19,7 @@
                             <div class="col-md-8">
                                 <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
                                        id="emailInput" type="email" name="email" value="{{ old('email') }}" autofocus>
-                                <div class="invalid-feedback">{{ $errors->first('email') }}</div>    
+                                <div class="invalid-feedback invalid-email">{{ $errors->first('email') }}</div>    
                             </div>
                         </div>
 
