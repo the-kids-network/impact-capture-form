@@ -17,7 +17,7 @@
                         <a href="{{ url('report') }}">Clear mentor filter</a>
                         <br/>
                         @endif
-                        <table class="table" data-toggle="table" data-search="true" data-pagination="true">
+                        <table class="table session-reports" data-toggle="table" data-search="true" data-pagination="true">
                             <thead>
                                 <tr>
                                     <th data-sortable="true">Session ID</th>
@@ -29,7 +29,7 @@
                             </thead>
                             <tbody>
                                 @foreach($reports as $report)
-                                    <tr class="clickable-row" data-href="{{ url('/report/'.$report->id) }}">
+                                    <tr class="clickable-row session-report" data-href="{{ url('/report/'.$report->id) }}">
                                         <td class="report-id">{{ $report->id }}</td>
                                         <td class="mentor-name">{{ $report->mentor->name }}</td>
                                         <td class="mentee-name">{{ $report->mentee->name }}</td>

@@ -81,6 +81,8 @@ class SessionReportService {
 
             $mail ->send(new SafeguardingConcernAlert($report));
         }
+
+        return $report;
     }
 
     public function updateReport($id, $keyValuePairs) {

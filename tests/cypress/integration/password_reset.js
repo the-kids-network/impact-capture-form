@@ -1,11 +1,11 @@
 describe('Password reset', () => {
     beforeEach(() => {
-        cy.visit('http://127.0.0.1:8000/')
+        cy.visit('/')
         cy.contains('Login').click()
         cy.contains(/Forgot your password/i).click()
     })
 
-    it('Succeeds for know email', () => {
+    it('Succeeds for known email', () => {
         cy.fixture('users').then((users) => {
             cy.get('input[id=emailInput]').type(users.admin.email)
         }),
@@ -23,6 +23,5 @@ describe('Password reset', () => {
         cy.get('.invalid-email')
             .should('be.visible') 
             .should('contain', 'can\'t find a user with that e-mail address.')
-  
     })
 })

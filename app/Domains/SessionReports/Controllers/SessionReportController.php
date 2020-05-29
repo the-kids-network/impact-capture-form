@@ -101,8 +101,9 @@ class SessionReportController extends Controller {
         );
 
         // Save session report
+        $report = null;
         try {
-            $this->sessionReportService->createReport($request->all());
+            $report = $this->sessionReportService->createReport($request->all());
         } catch (NotAuthorisedException $e) {
             Log::error($e);
             abort(401,'Unauthorized');
@@ -112,7 +113,7 @@ class SessionReportController extends Controller {
         $this->createPlannedSession($request);
         $this->createLeave($request);
 
-        return redirect('/report')->with('status', 'Report Submitted');
+        return redirect('/report/'.$report->id)->with('status', 'Report Created');
     }
 
     // The only REST endpoint right now

@@ -8,46 +8,47 @@
                     <div class="card-header">Session by {{ $report->mentor->name }} with {{ $report->mentee->name }} on {{ $report->session_date->toFormattedDateString() }}</div>
                     
                     <div class="card-body">
+                        <a href="/report">Back to reports</a><br/><br/>
                         <table class="table">
                             <tr>
                                 <th>Field</th>
                                 <th>Value</th>
                             </tr>
-                            <tr>
-                                <td>Session ID</td>
-                                <td>{{ $report->id }}</td>
+                            <tr class="session-id">
+                                <td class="label">Session ID</td>
+                                <td class="value">{{ $report->id }}</td>
                             </tr>
-                            <tr>
-                                <td>Mentor Name</td>
-                                <td>{{ $report->mentor->name }}</td>
+                            <tr class="mentor-name">
+                                <td class="label">Mentor Name</td>
+                                <td class="value">{{ $report->mentor->name }}</td>
                             </tr>
-                            <tr>
-                                <td>Mentee Name</td>
-                                <td>{{ $report->mentee->name }}</td>
+                            <tr class="mentee-name">
+                                <td class="label">Mentee Name</td>
+                                <td class="value">{{ $report->mentee->name }}</td>
                             </tr>
-                            <tr>
-                                <td>Session Date</td>
-                                <td>{{ $report->session_date->toFormattedDateString() }}</td>
+                            <tr class="session-date">
+                                <td class="label">Session Date</td>
+                                <td class="value">{{ $report->session_date->toFormattedDateString() }}</td>
                             </tr>
-                            <tr>
-                                <td>Session Rating</td>
-                                <td>{{ $report->session_rating->value }}</td>
+                            <tr class="session-rating">
+                                <td class="label">Session Rating</td>
+                                <td class="value">{{ $report->session_rating->value }}</td>
                             </tr>
-                            <tr>
-                                <td>Session Length (Hours)</td>
-                                <td>{{ $report->length_of_session }}</td>
+                            <tr class="session-length">
+                                <td class="label">Session Length (Hours)</td>
+                                <td class="value">{{ $report->length_of_session }}</td>
                             </tr>
-                            <tr>
-                                <td>Activity Type</td>
-                                <td>{{ $report->activity_type->name }}</td>
+                            <tr class="activity-type">
+                                <td class="label">Activity Type</td>
+                                <td class="value">{{ $report->activity_type->name }}</td>
                             </tr>
-                            <tr>
-                                <td>Location</td>
-                                <td>{{ $report->location }}</td>
+                            <tr class="session-location">
+                                <td class="label">Location</td>
+                                <td class="value">{{ $report->location }}</td>
                             </tr>
-                            <tr>
-                                <td>Safeguarding Concern</td>
-                                <td>
+                            <tr class="safeguarding-concern">
+                                <td class="label">Safeguarding Concern</td>
+                                <td class="value">
                                     @if($report->safeguarding_concern) 
                                         Yes - {{$report->safeguardingConcernTypeAttribute()}}
                                     @else 
@@ -55,15 +56,15 @@
                                     @endif
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Mentee's Emotional State</td>
-                                <td>{{ $report->emotional_state->name }}</td>
+                            <tr class="mentee-emotional-state">
+                                <td class="label">Mentee's Emotional State</td>
+                                <td class="value">{{ $report->emotional_state->name }}</td>
                             </tr>
-                            <tr>
-                                <td>Meeting Details</td>
-                                <td>{{ $report->meeting_details }}</td>
+                            <tr class="meeting-details">
+                                <td class="label">Meeting Details</td>
+                                <td class="value">{{ $report->meeting_details }}</td>
                             </tr>
-                        </table>
+                        </table> 
                    
                         @if(Auth::user()->isAdmin() || Auth::user()->isManager())
                         <div class="modify-session-report">
