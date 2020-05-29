@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container">
+    <div class="container expense-claim export">
 
         <div class="row">
             <div class="col-md-12">

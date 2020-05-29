@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-        <div class="container avtivity-type">
+        <div class="container activity-type">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">

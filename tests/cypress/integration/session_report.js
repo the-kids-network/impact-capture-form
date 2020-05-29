@@ -97,7 +97,7 @@ describe('View all session reports', () => {
             cy.get('.btn').contains(/Session Reports/i).click()
         })
 
-        it('Display reports for managed mentors', () => {
+        it('Displays reports for managed mentors', () => {
             cy.get('.session-report').should('have.length.of.at.least', 3)
             cy.get('.session-report .mentor-name').should('contain', 'Mentor One')
         })
@@ -115,7 +115,7 @@ describe('View all session reports', () => {
             cy.get('.btn').contains(/Session Reports/i).click()
         })
 
-        it('Display reports for all mentors', () => {
+        it('Displays reports for all mentors', () => {
             cy.get('.session-report').should('have.length.of.at.least', 3)            
             cy.get('.session-report .mentor-name').each(item =>
                 expect(item.text()).to.be.oneOf(['Mentor One', 'Mentor Two', 'Mentor Three'])

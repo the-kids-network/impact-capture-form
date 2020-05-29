@@ -3,7 +3,7 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container expense-claim-list">
+    <div class="container expense-claim list">
         @if(Request()->mentor_id)
         <div class="row">
             <div class="col-md-12">

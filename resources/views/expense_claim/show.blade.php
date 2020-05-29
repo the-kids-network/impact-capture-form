@@ -7,7 +7,7 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container expense-claim-show">
+    <div class="container expense-claim show">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
