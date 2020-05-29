@@ -4,7 +4,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class AdminPage extends Page
+class UserManagementMentorPage extends Page
 {
     /**
      * Get the URL for the page.
@@ -13,12 +13,12 @@ class AdminPage extends Page
      */
     public function url()
     {
-        return '/roles/admin';
+        return '/roles/mentor';
     }
 
     public function name()
     {
-        return 'Admin';
+        return 'Mentor';
     }
 
     /**
@@ -30,7 +30,7 @@ class AdminPage extends Page
     public function assert(Browser $browser)
     {
         $browser->assertPathIs($this->url());
-        $browser->assertSee('Promote to Admin');
+        $browser->assertSee('Assign Mentor to Mentee');
     }
 
     /**
@@ -41,7 +41,7 @@ class AdminPage extends Page
     public function elements()
     {
         return [
-            '@element' => '#selector',
+            '@element' => '#selector'
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class HomePage extends Page
+class UserManagementAdminPage extends Page
 {
     /**
      * Get the URL for the page.
@@ -13,7 +13,12 @@ class HomePage extends Page
      */
     public function url()
     {
-        return '/';
+        return '/roles/admin';
+    }
+
+    public function name()
+    {
+        return 'Admin';
     }
 
     /**
@@ -24,7 +29,8 @@ class HomePage extends Page
      */
     public function assert(Browser $browser)
     {
-        //
+        $browser->assertPathIs($this->url());
+        $browser->assertSee('Promote to Admin');
     }
 
     /**

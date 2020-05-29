@@ -5,7 +5,7 @@ namespace Tests\Browser;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Pages\MentorPage;
+use Tests\Browser\Pages\UserManagementMentorPage;
 
 class MentorPageTest extends DuskTestCase
 {
@@ -14,7 +14,7 @@ class MentorPageTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $user = User::where('email', 'admin@example.com')->firstOrFail();
 
-            $browser->loginAs($user)->visit(new MentorPage());
+            $browser->loginAs($user)->visit(new UserManagementMentorPage());
 
             $this->assertMentorCount($browser, 10);
 

@@ -4,7 +4,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class SessionReportsPage extends Page
+class UserManagementManagerPage extends Page
 {
     /**
      * Get the URL for the page.
@@ -13,12 +13,12 @@ class SessionReportsPage extends Page
      */
     public function url()
     {
-        return '/report';
+        return '/roles/manager';
     }
 
     public function name()
     {
-        return 'Session Reports';
+        return 'Manager';
     }
 
     /**
@@ -30,7 +30,7 @@ class SessionReportsPage extends Page
     public function assert(Browser $browser)
     {
         $browser->assertPathIs($this->url());
-        $browser->assertSee('Submitted Session Reports');
+        $browser->assertSee('Promote to Manager');
     }
 
     /**

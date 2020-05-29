@@ -2,22 +2,18 @@
 
 namespace Tests\Browser;
 
-use Artisan;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Pages\Login;
 use Tests\Browser\Pages\MainMenu;
 
 use Tests\Browser\Pages\ActivityTypesPage;
-use Tests\Browser\Pages\AdminPage;
+use Tests\Browser\Pages\UserManagementAdminPage;
 use Tests\Browser\Pages\EmotionalStatePage;
 use Tests\Browser\Pages\ExpenseClaimsPage;
-use Tests\Browser\Pages\ManagerPage;
+use Tests\Browser\Pages\UserManagementManagerPage;
 use Tests\Browser\Pages\MenteePage;
-use Tests\Browser\Pages\MentorPage;
 use Tests\Browser\Pages\RegisterUserPage;
-use Tests\Browser\Pages\SessionReportsPage;
 
 
 class MainMenuTest extends DuskTestCase
@@ -74,8 +70,9 @@ class MainMenuTest extends DuskTestCase
     public function testCanFollowLinks()
     {
         $this->browse(function (Browser $browser) {
-            $actions = [new ActivityTypesPage(), new AdminPage(), new EmotionalStatePage(), new ExpenseClaimsPage(), new ManagerPage(), new MenteePage(),
-                        new RegisterUserPage(), new SessionReportsPage()];
+            $actions = [new ActivityTypesPage(), new UserManagementAdminPage(), new EmotionalStatePage(), 
+                        new ExpenseClaimsPage(), new UserManagementManagerPage(), new MenteePage(),
+                        new RegisterUserPage()];
 
             $user = User::where('email', 'admin@example.com')->firstOrFail();
             $browser->loginAs($user);
