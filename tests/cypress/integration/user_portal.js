@@ -1,13 +1,10 @@
 describe('Mentor portal index', () => {
     beforeEach(() => {
-        cy.visit('/')
-        cy.contains('Login').click()
         cy.fixture('users').then((users) => {
-            cy.get('input[id=email]').type(users.mentor.email)
-            cy.get('input[id=password]').type(users.mentor.password)
+            cy.login(users.mentor)
         })
-        cy.get('.btn').contains('Login').click()
-        cy.url().should('contain', '/home')
+
+        cy.visit('/home')
     })
 
     it('Has correct number of links', () => {
@@ -53,14 +50,11 @@ describe('Mentor portal index', () => {
 
 describe('Manager portal index', () => {
     beforeEach(() => {
-        cy.visit('/')
-        cy.contains('Login').click()
         cy.fixture('users').then((users) => {
-            cy.get('input[id=email]').type(users.manager.email)
-            cy.get('input[id=password]').type(users.manager.password)
+            cy.login(users.manager)
         })
-        cy.get('.btn').contains('Login').click()
-        cy.url().should('contain', '/home')
+
+        cy.visit('/home')
     })
 
     it('Has correct number of links', () => {
@@ -110,17 +104,13 @@ describe('Manager portal index', () => {
     })
 })
 
-
 describe('Admin portal index', () => {
     beforeEach(() => {
-        cy.visit('/')
-        cy.contains('Login').click()
         cy.fixture('users').then((users) => {
-            cy.get('input[id=email]').type(users.admin.email)
-            cy.get('input[id=password]').type(users.admin.password)
+            cy.login(users.admin)
         })
-        cy.get('.btn').contains('Login').click()
-        cy.url().should('contain', '/home')
+
+        cy.visit('/home')
     })
 
     it('Has correct number of links', () => {

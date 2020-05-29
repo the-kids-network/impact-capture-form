@@ -23,3 +23,30 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+
+Cypress.Commands.add('login', (user) => {
+    Cypress.log({
+      name: 'login',
+      message: `${user.email} | ${user.password}`,
+    })
+
+    cy.visit("/login")
+
+    cy.window()
+      .then(window => {
+        const csrf = window.Spark.csrfToken
+
+        cy.request(
+            {
+                method: 'POST',
+                url: '/login',
+                form: true,
+                body: {
+                _token: csrf,
+                email: user.email,
+                password: user.password
+            }
+        })
+    })    
+  })

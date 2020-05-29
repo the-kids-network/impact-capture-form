@@ -1,23 +1,13 @@
 describe('Submit a session report', () => {
-    beforeEach(() => {
-        cy.visit('/')
-        cy.contains('Login').click()
-    })
-
     describe('As a mentor', () => {
         beforeEach(() => {
             // Login
             cy.fixture('users').then((users) => {
-                cy.get('input[id=email]').type(users.mentor.email)
-                cy.get('input[id=password]').type(users.mentor.password)
+                cy.login(users.mentor)
             })
-            cy.get('.btn').contains('Login').click()
-            cy.url().should('contain', '/home')
 
-            // Click submit session report
-            const button = cy.get('.btn').contains(/Submit a session report/i)
-            button.should('exist')
-            button.click()
+            // submit session report page
+            cy.visit('/report/new')
             cy.url().should('contain', '/report/new')
         })
 
@@ -62,21 +52,16 @@ describe('Submit a session report', () => {
 })
 
 describe('View all session reports', () => {
-    beforeEach(() => {
-        cy.visit('/')
-        cy.contains('Login').click()
-    })
-
     describe('As a mentor', () => {
         beforeEach(() => {
             // Login
             cy.fixture('users').then((users) => {
-                cy.get('input[id=email]').type(users.mentor.email)
-                cy.get('input[id=password]').type(users.mentor.password)
+                cy.login(users.mentor)
             })
-            cy.get('.btn').contains('Login').click()
-            cy.url().should('contain', '/home')
-            cy.get('.btn').contains(/View Reports/i).click()
+
+            // session reports page
+            cy.visit('/report')
+            cy.url().should('contain', '/report')
         })
 
         it('Displays reports for mentor only', () => {
@@ -89,12 +74,12 @@ describe('View all session reports', () => {
         beforeEach(() => {
             // Login
             cy.fixture('users').then((users) => {
-                cy.get('input[id=email]').type(users.manager.email)
-                cy.get('input[id=password]').type(users.manager.password)
+                cy.login(users.manager)
             })
-            cy.get('.btn').contains('Login').click()
-            cy.url().should('contain', '/home')
-            cy.get('.btn').contains(/Session Reports/i).click()
+           
+            // session reports page
+            cy.visit('/report')
+            cy.url().should('contain', '/report')
         })
 
         it('Displays reports for managed mentors', () => {
@@ -107,12 +92,12 @@ describe('View all session reports', () => {
         beforeEach(() => {
             // Login
             cy.fixture('users').then((users) => {
-                cy.get('input[id=email]').type(users.admin.email)
-                cy.get('input[id=password]').type(users.admin.password)
+                cy.login(users.admin)
             })
-            cy.get('.btn').contains('Login').click()
-            cy.url().should('contain', '/home')
-            cy.get('.btn').contains(/Session Reports/i).click()
+        
+            // session reports page
+            cy.visit('/report')
+            cy.url().should('contain', '/report')
         })
 
         it('Displays reports for all mentors', () => {
@@ -125,20 +110,11 @@ describe('View all session reports', () => {
 })
 
 describe('View a single session report details', () => {
-    beforeEach(() => {
-        cy.visit('/')
-        cy.contains('Login').click()
-    })
-
     describe('As a mentor', ()=> {
         beforeEach(() => {
-            // Login
             cy.fixture('users').then((users) => {
-                cy.get('input[id=email]').type(users.mentor.email)
-                cy.get('input[id=password]').type(users.mentor.password)
+                cy.login(users.mentor)
             })
-            cy.get('.btn').contains('Login').click()
-            cy.url().should('contain', '/home')
         })
         
         it("Displays report owned by them", () => {
@@ -157,13 +133,9 @@ describe('View a single session report details', () => {
 
     describe('As a manager', ()=> {
         beforeEach(() => {
-            // Login
             cy.fixture('users').then((users) => {
-                cy.get('input[id=email]').type(users.manager.email)
-                cy.get('input[id=password]').type(users.manager.password)
+                cy.login(users.manager)
             })
-            cy.get('.btn').contains('Login').click()
-            cy.url().should('contain', '/home')
         })
         
         it("Displays report for mentor managed by them", () => {
@@ -182,13 +154,9 @@ describe('View a single session report details', () => {
 
     describe('As an admin', ()=> {
         beforeEach(() => {
-            // Login
             cy.fixture('users').then((users) => {
-                cy.get('input[id=email]').type(users.admin.email)
-                cy.get('input[id=password]').type(users.admin.password)
+                cy.login(users.admin)
             })
-            cy.get('.btn').contains('Login').click()
-            cy.url().should('contain', '/home')
         })
         
         it("Displays report from any mentor", () => {
