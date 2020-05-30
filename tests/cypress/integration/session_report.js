@@ -11,7 +11,7 @@ describe('Session report submission', () => {
             cy.url().should('contain', '/report/new')
         })
 
-        it('Succeeds for minimum data requirements', () => {
+        it('Succeeds for full data', () => {
             // Fill in form
             cy.get('select[id=menteeSelect]').select('Mentee One')
             cy.get('input[id=sessionDateInput]').type('28-05-2020')
@@ -29,11 +29,16 @@ describe('Session report submission', () => {
             cy.get('.card-body').click({force: true})
             cy.get('input[id=nextSessionLocationInput]').type('Hyde Park')
 
+            cy.get('input[id=leaveStartDateInput]').type('29-05-2020')
+            cy.get('.card-body').click({force: true})
+            cy.get('input[id=leaveEndDateInput]').type('31-05-2020')
+            cy.get('.card-body').click({force: true})
+            cy.get('input[id=leaveDescriptionInput]').type('Holiday')
+
             // Submit report
             cy.get('.btn').contains('Submit').click()
 
             // Check on report page with success message
-            cy.url().should('contain', '/report')
             cy.get('.alert-success').should('contain', 'Report Created')
           
             // Check details of saved report
