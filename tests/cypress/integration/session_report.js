@@ -124,6 +124,13 @@ describe('Session report details', () => {
             cy.get('.session-id .value').should('contain', '1')
         })
 
+
+        it('Does not allow modify / delete', () => {
+            cy.visit('/report/1')
+
+            cy.get('.modify-session-report').should('not.exist')
+        })
+
         it("Errors for report not owned by them", () => {
             cy.visit('/report/2', {failOnStatusCode: false})
 
@@ -143,6 +150,12 @@ describe('Session report details', () => {
 
             cy.url().should('contain', '/report/1')
             cy.get('.session-id .value').should('contain', '1')
+        })
+
+        it('Does allow modify / delete', () => {
+            cy.visit('/report/1')
+
+            cy.get('.modify-session-report').should('exist')
         })
 
         it("Errors for report from mentor not managed by them", () => {
@@ -167,6 +180,12 @@ describe('Session report details', () => {
             cy.visit('/report/2')
             cy.url().should('contain', '/report/2')
             cy.get('.session-id .value').should('contain', '2')
+        })
+
+        it('Does allow modify / delete', () => {
+            cy.visit('/report/1')
+
+            cy.get('.modify-session-report').should('exist')
         })
     })
 })
