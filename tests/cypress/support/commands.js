@@ -23,7 +23,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-
+import 'cypress-file-upload';
 
 Cypress.Commands.add('login', (user) => {
     Cypress.log({
@@ -50,3 +50,12 @@ Cypress.Commands.add('login', (user) => {
         })
     })    
   })
+
+Cypress.Commands.add('dbSeed', () => {
+  Cypress.log({
+    name: 'db-seed',
+    message: `Reseeding database with test data`,
+  })
+
+  cy.exec('npm run db:seed').its('code').should('eq', 0)
+})

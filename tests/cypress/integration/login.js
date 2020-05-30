@@ -4,7 +4,7 @@ describe('Login', () => {
         cy.contains('Login').click()
     })
 
-    describe('Successfull log in', () => {
+    describe('Successful log in', () => {
         beforeEach(() => {
             
         })

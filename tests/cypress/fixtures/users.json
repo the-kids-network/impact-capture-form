@@ -4,11 +4,11 @@
     "password": "secret"
   },
   "manager" : {
-    "email": "manager1@example.com",
+    "email": "manager-1@example.com",
     "password": "secret"
   },
   "mentor" : {
-    "email": "mentor1@example.com",
+    "email": "mentor-1@example.com",
     "password": "secret"
   }
 }

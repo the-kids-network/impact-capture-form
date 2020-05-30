@@ -13,7 +13,7 @@ describe('Session report submission', () => {
 
         it('Succeeds for full data', () => {
             // Fill in form
-            cy.get('select[id=menteeSelect]').select('Mentee One')
+            cy.get('select[id=menteeSelect]').select('mentee 1')
             cy.get('input[id=sessionDateInput]').type('28-05-2020')
             cy.get('.card-body').click({force: true})
             cy.get('select[id=ratingSelect]').select('Good')
@@ -42,8 +42,8 @@ describe('Session report submission', () => {
             cy.get('.alert-success').should('contain', 'Report Created')
           
             // Check details of saved report
-            cy.get('.mentor-name .value').should('contain', 'Mentor One')
-            cy.get('.mentee-name .value').should('contain', 'Mentee One')
+            cy.get('.mentor-name .value').should('contain', 'mentor-1')
+            cy.get('.mentee-name .value').should('contain', 'mentee 1')
             cy.get('.session-date .value').should('contain', 'May 28')
             cy.get('.session-rating .value').should('contain', 'Good')
             cy.get('.session-length .value').should('contain', '0.5')
@@ -70,8 +70,8 @@ describe('View session reports', () => {
         })
 
         it('Displays reports for mentor only', () => {
-            cy.get('.session-report').should('have.length.of.at.least', 1)
-            cy.get('.session-report .mentor-name').should('contain', 'Mentor One')
+            cy.get('.session-report.item ').should('have.length', 1)
+            cy.get('.session-report.item .mentor-name').should('contain', 'mentor-1')
         })
     })
 
@@ -88,8 +88,8 @@ describe('View session reports', () => {
         })
 
         it('Displays reports for managed mentors', () => {
-            cy.get('.session-report').should('have.length.of.at.least', 3)
-            cy.get('.session-report .mentor-name').should('contain', 'Mentor One')
+            cy.get('.session-report.item').should('have.length', 1)
+            cy.get('.session-report.item .mentor-name').should('contain', 'mentor-1')
         })
     })
 
@@ -106,9 +106,9 @@ describe('View session reports', () => {
         })
 
         it('Displays reports for all mentors', () => {
-            cy.get('.session-report').should('have.length.of.at.least', 3)            
-            cy.get('.session-report .mentor-name').each(item =>
-                expect(item.text()).to.be.oneOf(['Mentor One', 'Mentor Two', 'Mentor Three'])
+            cy.get('.session-report.item').should('have.length', 4)            
+            cy.get('.session-report.item .mentor-name').each(item =>
+                expect(item.text()).to.be.oneOf(['mentor-1', 'mentor-2', 'mentor-3', 'mentor-4'])
             )
         })
     })
