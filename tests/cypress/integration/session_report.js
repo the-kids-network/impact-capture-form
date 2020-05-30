@@ -1,5 +1,5 @@
-describe('Submit a session report', () => {
-    describe('As a mentor', () => {
+describe('Session report submission', () => {
+    describe('For mentor', () => {
         beforeEach(() => {
             // Login
             cy.fixture('users').then((users) => {
@@ -11,7 +11,7 @@ describe('Submit a session report', () => {
             cy.url().should('contain', '/report/new')
         })
 
-        it('Succeeds when all minimum data requirements supplied', () => {
+        it('Succeeds for minimum data requirements', () => {
             // Fill in form
             cy.get('select[id=menteeSelect]').select('Mentee One')
             cy.get('input[id=sessionDateInput]').type('28-05-2020')
@@ -51,8 +51,8 @@ describe('Submit a session report', () => {
     })
 })
 
-describe('View all session reports', () => {
-    describe('As a mentor', () => {
+describe('View session reports', () => {
+    describe('For mentor', () => {
         beforeEach(() => {
             // Login
             cy.fixture('users').then((users) => {
@@ -70,7 +70,7 @@ describe('View all session reports', () => {
         })
     })
 
-    describe('As a manager', () => {
+    describe('For a manager', () => {
         beforeEach(() => {
             // Login
             cy.fixture('users').then((users) => {
@@ -88,7 +88,7 @@ describe('View all session reports', () => {
         })
     })
 
-    describe('As an admin', () => {
+    describe('For an admin', () => {
         beforeEach(() => {
             // Login
             cy.fixture('users').then((users) => {
@@ -109,8 +109,8 @@ describe('View all session reports', () => {
     })
 })
 
-describe('View a single session report details', () => {
-    describe('As a mentor', ()=> {
+describe('Session report details', () => {
+    describe('View as a mentor', ()=> {
         beforeEach(() => {
             cy.fixture('users').then((users) => {
                 cy.login(users.mentor)
@@ -131,7 +131,7 @@ describe('View a single session report details', () => {
         })
     })
 
-    describe('As a manager', ()=> {
+    describe('View as a manager', ()=> {
         beforeEach(() => {
             cy.fixture('users').then((users) => {
                 cy.login(users.manager)
@@ -152,7 +152,7 @@ describe('View a single session report details', () => {
         })
     })
 
-    describe('As an admin', ()=> {
+    describe('View as an admin', ()=> {
         beforeEach(() => {
             cy.fixture('users').then((users) => {
                 cy.login(users.admin)

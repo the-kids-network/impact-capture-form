@@ -4,12 +4,12 @@ describe('Login', () => {
         cy.contains('Login').click()
     })
 
-    describe('Successfully logs in', () => {
+    describe('Successfull log in', () => {
         beforeEach(() => {
             
         })
 
-        it('For admin user', () => {
+        it('Logs in admin user', () => {
             cy.fixture('users').then((users) => {
                 cy.get('input[id=email]').type(users.admin.email)
                 cy.get('input[id=password]').type(users.admin.password)
@@ -19,7 +19,7 @@ describe('Login', () => {
             cy.url().should('contain', '/home')
         })
 
-        it('For manager user', () => {
+        it('Logs in manager user', () => {
             cy.fixture('users').then((users) => {
                 cy.get('input[id=email]').type(users.manager.email)
                 cy.get('input[id=password]').type(users.manager.password)
@@ -29,7 +29,7 @@ describe('Login', () => {
             cy.url().should('contain', '/home')
         })
 
-        it('For mentor user', () => {
+        it('Logs in mentor user', () => {
             cy.fixture('users').then((users) => {
                 cy.get('input[id=email]').type(users.mentor.email)
                 cy.get('input[id=password]').type(users.mentor.password)
@@ -40,8 +40,8 @@ describe('Login', () => {
         })
     })
 
-    describe('Fails with alert', () => {
-        it('For incorrect password', () => {
+    describe('Unsuccessful login', () => {
+        it('Fails for incorrect password', () => {
             cy.fixture('users').then((users) => {
                 cy.get('input[id=email]').type(users.admin.email)
                 cy.get('input[id=password]').type("incorrect")
@@ -51,7 +51,7 @@ describe('Login', () => {
             cy.url().should('contain', '/login')
             cy.get('.alert').should('contain', 'These credentials do not match our records')
         })
-        it('For email not supplied', () => {
+        it('Fails for email not supplied', () => {
             cy.fixture('users').then((users) => {
                 cy.get('input[id=password]').type("incorrect")
             }),
@@ -60,7 +60,7 @@ describe('Login', () => {
             cy.url().should('contain', '/login')
             cy.get('.alert').should('contain', 'The email field is required')
         })
-        it('For password not supplied', () => {
+        it('Fails for password not supplied', () => {
             cy.fixture('users').then((users) => {
                 cy.get('input[id=email]').type(users.admin.email)
             }),
@@ -70,5 +70,4 @@ describe('Login', () => {
             cy.get('.alert').should('contain', 'The password field is required')
         })
     })
-    
 })
