@@ -16,13 +16,13 @@ class MentorPageTest extends DuskTestCase
 
             $browser->loginAs($user)->visit(new UserManagementMentorPage());
 
-            $this->assertMentorCount($browser, 10);
+            $this->assertMentorCount($browser, 4);
 
             $browser->element('.expand-all')->click();
             $browser->waitFor('.mentors-list .mentee.row');
-            $browser->assertSeeIn('.mentors-list .mentee .name', 'Mentee One');
+            $browser->assertSeeIn('.mentors-list .mentee .name', 'mentee 1');
 
-            $browser->assertSelectHasOptions('.mentee-select', [1, 2, 3]);
+            $browser->assertSelectHasOptions('.mentee-select', [1, 2, 3, 4]);
         });
     }
 

@@ -14,7 +14,7 @@
         @endif
         <div class="row">
             <div class="col-md-12">
-                <div class="card" id="expense-claim-list">
+                <div class="card" id="expense-claim items">
                     <div class="card-header">Submitted Expense Claims</div>
                     <div class="card-body">
                         <table class="table" data-toggle="table" data-search="true" data-pagination="true">
@@ -34,13 +34,13 @@
                                     @php
                                         $claimReport = $sessionReportService->getReport($claim->report_id)
                                     @endphp
-                                    <tr class="clickable-row" data-href="{{ url('/expense-claim/'.$claim->id) }}">
-                                        <td>{{ $claim->id }}</td>
-                                        <td>{{ $claim->mentor->name }}</td>
-                                        <td>With {{ $claimReport->mentee->name }} on {{ $claimReport->session_date->toFormattedDateString() }}</td>
-                                        <td>{{ $claim->created_at->toFormattedDateString() }}</td>
-                                        <td class="text-capitalize">{{ $claim->status }}</td>
-                                        <td>{{ $claim->expenses->sum('amount') }}</td>
+                                    <tr class="clickable-row expense-claim item" data-href="{{ url('/expense-claim/'.$claim->id) }}">
+                                        <td class="claim-id">{{ $claim->id }}</td>
+                                        <td class="mentor-name">{{ $claim->mentor->name }}</td>
+                                        <td class="session">With {{ $claimReport->mentee->name }} on {{ $claimReport->session_date->toFormattedDateString() }}</td>
+                                        <td class="created-date">{{ $claim->created_at->toFormattedDateString() }}</td>
+                                        <td class="text-capitalize status">{{ $claim->status }}</td>
+                                        <td class="amount">{{ $claim->expenses->sum('amount') }}</td>
                                     </td>
                                 @endforeach
                             </tbody>

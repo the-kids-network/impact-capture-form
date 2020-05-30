@@ -31,16 +31,16 @@
 
                             <!-- Expense items -->
                             <div class="form-group">
-                                <table class="table table-bordered" id="expense-form-table">
+                                <table class="table table-bordered expense-list" id="expense-form-table">
                                     <tr>
                                         <th class="w-25">Date</th>
                                         <th>Description</th>
                                         <th class="w-25">Amount</th>
                                     </tr>
                                     <tr>
-                                        <td><input type="text" class="form-control datepicker" name="expenses[1][date]"></td>
-                                        <td><textarea class="form-control" rows="5" name="expenses[1][description]"></textarea></td>
-                                        <td><input type="text" class="form-control" name="expenses[1][amount]"></td>
+                                        <td><input type="text" class="form-control datepicker expense-date" name="expenses[1][date]"></td>
+                                        <td><textarea class="form-control expense-description" rows="5" name="expenses[1][description]"></textarea></td>
+                                        <td><input type="text" class="form-control expense-amount" name="expenses[1][amount]"></td>
                                     </tr>
                                 </table>
                             </div>
@@ -117,7 +117,7 @@
 
 @section('scripts')
     <style>
-        #expense-form-table textarea {
+        .expense-list textarea {
             resize: vertical;
         }
     </style>
@@ -135,13 +135,13 @@
                 // New Row
                 new_row = '<tr>'+
                         '<td>'+
-                            '<input type="text" class="form-control datepicker" name="expenses[' + number_rows + '][date]">'+
+                            '<input type="text" class="form-control datepicker expense-date" name="expenses[' + number_rows + '][date]">'+
                         '</td>'+
                         '<td>'+
-                            '<textarea class="form-control" rows="5" name="expenses[' + number_rows + '][description]"></textarea>'+
+                            '<textarea class="form-control expense-description" rows="5" name="expenses[' + number_rows + '][description]"></textarea>'+
                         '</td>'+
                         '<td>'+
-                            '<input type="text" class="form-control" name="expenses[' + number_rows +'][amount]">'+
+                            '<input type="text" class="form-control expense-amount" name="expenses[' + number_rows +'][amount]">'+
                         '</td>'+
                         '</tr>';
 

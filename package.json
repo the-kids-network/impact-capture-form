@@ -53,6 +53,7 @@
     "vue-template-compiler": "^2.6.11",
     "laravel-mix": "^5.0",
     "cypress": "^4.7.0",
+    "cypress-file-upload": "^4.0.7",
     "faker": "^4.1.0"
   }
 }

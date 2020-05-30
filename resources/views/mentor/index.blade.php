@@ -22,8 +22,16 @@
             <div class="col-md-6">
                 <div class="card link-panel">
                     <div class="card-body text-center">
-                        <i class="fa fa-credit-card text-feature"></i>
+                        <i class="fa fa-receipt text-feature"></i>
                         <a class="btn btn-primary btn-block btn-lg" href="{{ url('/expense-claim/new') }}">Submit an Expense Claim</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card link-panel">
+                    <div class="card-body text-center">
+                        <i class="fa fa-credit-card text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/expense-claim') }}">View Expense Claims</a>
                     </div>
                 </div>
             </div>

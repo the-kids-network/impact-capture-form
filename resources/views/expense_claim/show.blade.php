@@ -18,25 +18,29 @@
                                 <th>Field</th>
                                 <th>Value</th>
                             </tr>
-                            <tr>
-                                <td>Mentor Name</td>
-                                <td>{{ $expense_claim->mentor->name }}</td>
+                            <tr class="claim-id">
+                                <td class="label">Expense Claim ID</td>
+                                <td class="value">{{ $expense_claim->id }}</td>
                             </tr>
-                            <tr>
-                                <td>Session</td>
-                                <td>
+                            <tr class="mentor-name">
+                                <td class="label">Mentor Name</td>
+                                <td class="value">{{ $expense_claim->mentor->name }}</td>
+                            </tr>
+                            <tr class="session">
+                                <td class="label">Session</td>
+                                <td class="value">
                                     <a href="{{ url('/report/'.$expense_claim->report_id) }}">With {{ $expense_claim_report->mentee->name }} on {{ $expense_claim_report->session_date->toFormattedDateString() }}</a>
                                 </td>
                             </tr>
-                            @if( $expense_claim->check_number )
-                            <tr>
-                                <td>Finance Code</td>
-                                <td>{{ $expense_claim->check_number }}</td>
+                            @if( $expense_claim->check_number && !Auth::user()->isMentor())
+                            <tr class="finance-code">
+                                <td class="label">Finance Code</td>
+                                <td class="value">{{ $expense_claim->check_number }}</td>
                             </tr>
                             @endif
-                            <tr>
-                                <td>Status</td>
-                                <td class="text-capitalize">{{ $expense_claim->status }}</td>
+                            <tr class="status">
+                                <td class="label">Status</td>
+                                <td class="text-capitalize value">{{ $expense_claim->status }}</td>
                             </tr>
                         </table>
 
@@ -49,9 +53,9 @@
 
                             @foreach($expense_claim->expenses as $expense)
                             <tr>
-                                <td>{{ $expense->date->toFormattedDateString() }}</td>
-                                <td>{{ $expense->description }}</td>
-                                <td>{{ $expense->amount }}</td>
+                                <td class="expense-date">{{ $expense->date->toFormattedDateString() }}</td>
+                                <td class="expense-description">{{ $expense->description }}</td>
+                                <td class="expense-amount">{{ $expense->amount }}</td>
                             </tr>
                             @endforeach
                         </table>
@@ -64,7 +68,7 @@
                             <tr>
                                 <td colspan="2">
                                     @foreach($expense_claim->receipts as $receipt)
-                                        <a href="{{ url('/receipt/' . $receipt->id) }}"><img class="preview-receipt" width="100" height="100" src="{{ url('/receipt/' . $receipt->id) }}"></a>
+                                        <a class="receipt-link" href="{{ url('/receipt/' . $receipt->id) }}"><img class="preview-receipt" width="100" height="100" src="{{ url('/receipt/' . $receipt->id) }}"></a>
                                     @endforeach
                                 </td>
                             </tr>
@@ -77,7 +81,6 @@
 
                         @if($expense_claim->status == 'pending' && Auth::user()->isAdmin())
                         @include('shared.errors')
-
                         <form id="process-form" class="form-horizontal" role="form" method="post" action="{{url('/expense-claim/'.$expense_claim->id)}}">
                             {{ csrf_field() }}
                             {{ method_field('PATCH') }}
@@ -106,7 +109,11 @@
                     </div>
                     <div class="card-footer">
                         @if($expense_claim->status == 'rejected' || $expense_claim->status == 'processed')
+                            @if(Auth::user()->isMentor())
+                            This claim has been {{$expense_claim->status}} 
+                            @else
                             This claim has been {{$expense_claim->status}} by {{ $expense_claim->processedBy->name }}.
+                            @endif
                         @endif
                     </div>
                 </div>

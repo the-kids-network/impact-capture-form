@@ -27,7 +27,7 @@ class ExpenseClaimController extends Controller {
 
         $this->middleware('auth');
         $this->middleware('admin')->only('update');
-        $this->middleware('hasAnyOfRoles:admin,manager')->only('index','export', 'show');
+        $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('index','export', 'show');
         $this->middleware('mentor')->only('newExpenseClaim', 'store');
     }
 
@@ -104,7 +104,7 @@ class ExpenseClaimController extends Controller {
         // Send an Email to the Mentor
         Mail::to($request->user())->send(new ClaimSubmittedToMentor($claim));
 
-        return redirect('/expense-claim/new')->with('status','Expense Claim Submitted for Processing');
+        return redirect('/expense-claim/'.$claim->id)->with('status','Expense Claim Submitted for Processing');
     }
 
     /**

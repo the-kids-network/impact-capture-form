@@ -152,8 +152,7 @@ commands:
       - run:
           name: Run Cypress Browser Tests
           command: |
-            npm run cypress --reporter junit \
-            --reporter-options "mochaFile=tests/reports/cypress/report-[hash].xml"
+            npm run cypress -- --reporter junit --reporter-options "mochaFile=tests/reports/cypress/report-[hash].xml,toConsole=true"
       - run: 
           name: Run Dusk Browser Tests
           command: php artisan dusk --log-junit tests/reports/browser/report.xml
@@ -204,6 +203,8 @@ jobs:
           path: ~/repo/tests/cypress/videos
       - store_artifacts:
           path: ~/repo/tests/Browser/screenshots
+      - store_artifacts:
+          path: ~/repo/tests/reports
       - store_test_results:
           path: ~/repo/tests/reports
 

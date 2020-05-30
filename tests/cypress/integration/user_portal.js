@@ -8,7 +8,7 @@ describe('Mentor portal index', () => {
     })
 
     it('Has correct number of links', () => {
-        cy.get('.link-panel').should('have.length', 6)
+        cy.get('.link-panel').should('have.length', 7)
     })
 
     it('Can navigate to submit a session report', () => {
@@ -27,6 +27,12 @@ describe('Mentor portal index', () => {
         cy.get('.btn').contains(/Submit An Expense Claim/i).click()
 
         cy.get('.expense-claim.new').should('exist')
+    })
+
+    it('Can navigate to view expense claims', () => {
+        cy.get('.btn').contains(/View Expense Claims/i).click()
+
+        cy.get('.expense-claim.list').should('exist')
     })
 
     it('Can navigate to calendar', () => {
