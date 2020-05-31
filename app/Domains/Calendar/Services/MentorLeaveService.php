@@ -35,6 +35,8 @@ class MentorLeaveService {
         $leave->end_date = Carbon::createFromFormat('d-m-Y',$keyValues['end_date'])->setTime(0,0,0);
         $leave->description = $keyValues['description'];
         $leave->save();
+
+        return $leave;
     } 
 
     public function updateMentorLeave($id, $keyValues) {
@@ -50,6 +52,8 @@ class MentorLeaveService {
         $toUpdate->end_date = Carbon::createFromFormat('d-m-Y',$keyValues['end_date'])->setTime(0,0,0);
         $toUpdate->description = $keyValues['description'];
         $toUpdate->save();
+
+        return $toUpdate;
     } 
  
 }

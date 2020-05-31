@@ -88,9 +88,10 @@ describe('View session reports', () => {
         })
 
         it('Displays reports for managed mentors', () => {
-            cy.get('.session-report.item').should('have.length', 1)
-            cy.get('.session-report.item .mentor-name').should('contain', 'mentor-1')
-        })
+            cy.get('.session-report.item').should('have.length', 2)
+            cy.get('.session-report.item .mentor-name').each(item =>
+                expect(item.text()).to.be.oneOf(['mentor-1', 'mentor-2'])
+            )        })
     })
 
     describe('For an admin', () => {
@@ -168,7 +169,7 @@ describe('Session report details', () => {
         })
 
         it("Errors for report from mentor not managed by them", () => {
-            cy.visit('/report/2', {failOnStatusCode: false})
+            cy.visit('/report/3', {failOnStatusCode: false})
 
             cy.get('body .message').should('contain', 'Unauthorized')
         })

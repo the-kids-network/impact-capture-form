@@ -18,6 +18,16 @@
                             <input type="hidden" name="_method" value="PUT"/>
                             <input type="hidden" name="mentor_id" value="{{ $mentorLeave->mentor->id }}"/>
 
+                            @if(Auth::user()->isAdmin() | Auth::user()->isManager())
+                            <!-- Mentor Name -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="mentorInput">Mentor</label>
+                                <div class="col-md-6">
+                                    <input id="mentorInput" type="text" class="form-control" name="mentor_name" value="{{ $mentorLeave->mentor->name }}" readonly="true">
+                                </div>
+                            </div>
+                            @endif
+
                             <!-- Start date -->
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="startDateInput"

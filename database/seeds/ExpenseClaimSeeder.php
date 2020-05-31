@@ -6,6 +6,7 @@ use App\ExpenseClaim;
 use App\Mentee;
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ExpenseClaimSeeder extends Seeder
@@ -17,26 +18,28 @@ class ExpenseClaimSeeder extends Seeder
      */
     public function run() {
 
+        $todaysDate = Carbon::now()->toDateString();  
+
         // mentor 1
-        $claim = $this->addExpenseClaim('mentor-1', 'mentee-1', '2020-05-28', 'pending');
-        $this->addExpense($claim, '2020-05-28', 5.10);
-        $this->addExpense($claim, '2020-05-28', 5.10);
+        $claim = $this->addExpenseClaim('mentor-1', 'mentee-1', $todaysDate, 'pending');
+        $this->addExpense($claim, $todaysDate, 5.10);
+        $this->addExpense($claim, $todaysDate, 5.10);
         $this->rejectExpenseClaim($claim);
 
-        $claim = $this->addExpenseClaim('mentor-1', 'mentee-1', '2020-05-28', 'pending');
-        $this->addExpense($claim, '2020-05-28', 4.10);
-        $this->addExpense($claim, '2020-05-28', 3.10);
+        $claim = $this->addExpenseClaim('mentor-1', 'mentee-1', $todaysDate, 'pending');
+        $this->addExpense($claim, $todaysDate, 4.10);
+        $this->addExpense($claim, $todaysDate, 3.10);
         $this->processExpenseClaim($claim);
 
         // mentor 2
-        $claim = $this->addExpenseClaim('mentor-2', 'mentee-2', '2020-05-28', 'pending');
-        $this->addExpense($claim, '2020-05-28', 1.10);
-        $this->addExpense($claim, '2020-05-28', 2.10);
+        $claim = $this->addExpenseClaim('mentor-2', 'mentee-2', $todaysDate, 'pending');
+        $this->addExpense($claim, $todaysDate, 1.10);
+        $this->addExpense($claim, $todaysDate, 2.10);
 
         // mentor 3
-        $claim = $this->addExpenseClaim('mentor-3', 'mentee-3', '2020-05-28', 'pending');
-        $this->addExpense($claim, '2020-05-28', 1.10);
-        $this->addExpense($claim, '2020-05-28', 2.10);
+        $claim = $this->addExpenseClaim('mentor-3', 'mentee-3', $todaysDate, 'pending');
+        $this->addExpense($claim, $todaysDate, 1.10);
+        $this->addExpense($claim, $todaysDate, 2.10);
     }
 
     private function addExpense($expense_claim, $date, $amount, $description="Some expense item") {

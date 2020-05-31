@@ -19144,6 +19144,9 @@ be a descendant of the grid when it is being dragged.
   height: 50px;
   width: 50px;
 }
+.login .password-reset {
+  margin-left: 1rem;
+}
 .settings .settings-tabs li {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;

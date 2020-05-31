@@ -49,25 +49,29 @@ class MenteeLeaveController extends Controller {
     public function create(Request $request) {  
         $this->validateMenteeLeave($request); 
 
+        $leave = null;
         try {
-            $this->menteeLeaveService->createMenteeLeave($request->all());
+            $leave = $this->menteeLeaveService->createMenteeLeave($request->all());
         } catch (NotFoundException | NotAuthorisedException $e) {
             abort(401, 'Unauthorized'); 
         }
 
-        return redirect('/calendar');
+        return redirect('/mentee/leave/'.$leave->id)
+                ->with('status', "Leave Created");  
     }
 
     public function update(Request $request, $id) {  
         $this->validateMenteeLeave($request);
 
+        $leave = null;
         try {
-            $this->menteeLeaveService->updateMenteeLeave($id, $request->all());
+            $leave = $this->menteeLeaveService->updateMenteeLeave($id, $request->all());
         } catch (NotFoundException | NotAuthorisedException $e) {
             abort(401, 'Unauthorized'); 
         }
 
-        return redirect('/calendar');
+        return redirect('/mentee/leave/'.$leave->id)
+                ->with('status', "Leave Updated");
     }
 
     private function validateMenteeLeave(Request $request) {

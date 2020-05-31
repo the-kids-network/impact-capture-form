@@ -4,6 +4,7 @@ use App\Domains\SessionReports\Models\Report;
 use App\Mentee;
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ReportTableSeeder extends Seeder
@@ -14,14 +15,15 @@ class ReportTableSeeder extends Seeder
      * @return void
      */
     public function run() {
-        $this->addReport('mentor-1', 'mentee-1', '2020-05-28');
-        $this->addReport('mentor-2', 'mentee-2', '2020-05-28');
-        $this->addReport('mentor-3', 'mentee-3', '2020-05-28');
-        $this->addReport('mentor-4', 'mentee-4', '2020-05-28');
+        $todaysDate = Carbon::now()->toDateString();  
+
+        $this->addReport('mentor-1', 'mentee-1', $todaysDate);
+        $this->addReport('mentor-2', 'mentee-2', $todaysDate);
+        $this->addReport('mentor-3', 'mentee-3', $todaysDate);
+        $this->addReport('mentor-4', 'mentee-4', $todaysDate);
     }
 
     private function addReport($mentorName, $menteeName, $meetingDate) {
-
         $mentor = User::whereName($mentorName)->first();
         $mentee = Mentee::whereFirstName(explode('-', $menteeName)[0])->whereLastName(explode('-', $menteeName)[1])->first();
 

@@ -19,6 +19,14 @@
                             <input type="hidden" name="_method" value="PUT"/>
                             <input type="hidden" name="mentee_id" value="{{ $menteeLeave->mentee->id }}"/>
 
+                            <!-- Mentee Name -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="mentorInput">Mentee</label>
+                                <div class="col-md-6">
+                                    <input id="menteeInput" type="text" class="form-control" name="mentee_name" value="{{ $menteeLeave->mentee->name }}" readonly="true">
+                                </div>
+                            </div>
+
                             <!-- Start date -->
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="startDateInput"

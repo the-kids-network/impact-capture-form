@@ -80,8 +80,10 @@ describe('View expense claims', () => {
         })
 
         it('Displays claims for managed mentors', () => {
-            cy.get('.expense-claim.item').should('have.length', 2)
-            cy.get('.expense-claim.item .mentor-name').should('contain', 'mentor-1')
+            cy.get('.expense-claim.item').should('have.length', 3)
+            cy.get('.expense-claim.item .mentor-name').each(item =>
+                expect(item.text()).to.be.oneOf(['mentor-1', 'mentor-2'])
+            )
         })
     })
 
@@ -143,7 +145,7 @@ describe('Expense claim details', () => {
         })
 
         it("Errors for claim from mentor not managed by them", () => {
-            cy.visit('/expense-claim/3', {failOnStatusCode: false})
+            cy.visit('/expense-claim/4', {failOnStatusCode: false})
 
             cy.get('body .message').should('contain', 'Unauthorized')
         })

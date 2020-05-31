@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\SessionReports\Models\ActivityType;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -19,10 +20,8 @@ class ActivityTypeSeeder extends Seeder {
     }
 
     private function addActivity($activity) {
-        DB::table('activity_types')->insert([
-            'name' => $activity,
-            'created_at' => '2018-02-08 20:07:39',
-            'updated_at' => '2018-02-08 20:07:39'
-        ]);
+        $act = new ActivityType();
+        $act->name = $activity;
+        $act->save();
     }
 }

@@ -25,8 +25,8 @@ class UsersTableSeeder extends Seeder {
 
         // Mentors
         $this->addMentor('mentor-1', 'manager-1');
-        $this->addMentor('mentor-2', 'manager-2');
-        $this->addMentor('mentor-3', 'manager-3');
+        $this->addMentor('mentor-2', 'manager-1');
+        $this->addMentor('mentor-3', 'manager-2');
         $this->addMentor('mentor-4', 'manager-3');
 
         // Mentees

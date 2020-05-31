@@ -50,25 +50,29 @@ class MentorLeaveController extends Controller {
     public function create(Request $request) {  
         $this->validateMentorLeave($request);  
 
+        $leave = null;
         try {
-            $this->mentorLeaveService->createMentorLeave($request->all());
+            $leave = $this->mentorLeaveService->createMentorLeave($request->all());
         } catch (NotFoundException | NotAuthorisedException $e) {
             abort(401, 'Unauthorized'); 
         }
 
-        return redirect('/calendar');
+        return redirect('/mentor/leave/'.$leave->id)
+                ->with('status', "Leave Created");
     }
 
     public function update(Request $request, $id) {  
         $this->validateMentorLeave($request);  
 
+        $leave = null;
         try {
-            $this->mentorLeaveService->updateMentorLeave($id, $request->all());
+            $leave = $this->mentorLeaveService->updateMentorLeave($id, $request->all());
         } catch (NotFoundException | NotAuthorisedException $e) {
             abort(401, 'Unauthorized'); 
         }
 
-        return redirect('/calendar');
+        return redirect('/mentor/leave/'.$leave->id)
+            ->with('status', "Leave Updated");
     }
 
     private function validateMentorLeave(Request $request) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\SessionReports\Models\EmotionalState;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -19,11 +20,9 @@ class EmotionalStateSeeder extends Seeder {
     }
 
     private function addEmotionalState($state) {
-        DB::table('emotional_states')->insert([
-            'name' => $state,
-            'created_at' => '2018-02-08 20:07:39',
-            'updated_at' => '2018-02-08 20:07:39'
-        ]);
+        $em = new EmotionalState();
+        $em->name = $state;
+        $em->save();
     }
 
 }

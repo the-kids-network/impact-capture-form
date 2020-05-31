@@ -45,11 +45,11 @@
                         <!-- Login Button -->
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-3">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary login-submit">
                                     <i class="fa fa-sign-in"></i>Login
                                 </button>
 
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
+                                <a class="btn btn-link password-reset" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
                             </div>
                         </div>
                     </form>
