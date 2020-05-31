@@ -45,15 +45,17 @@
   },
   "devDependencies": {
     "cross-env": "^5.2.1",
-    "less": "^3.11.1",
-    "less-loader": "^5.0.0",
-    "sass": "^1.26.5",
-    "sass-loader": "^7.3.1",
-    "resolve-url-loader": "^2.3.1",
-    "vue-template-compiler": "^2.6.11",
-    "laravel-mix": "^5.0",
     "cypress": "^4.7.0",
     "cypress-file-upload": "^4.0.7",
-    "faker": "^4.1.0"
+    "cypress-multi-reporters": "^1.4.0",
+    "faker": "^4.1.0",
+    "laravel-mix": "^5.0",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "mocha-junit-reporter": "^1.23.3",
+    "resolve-url-loader": "^2.3.1",
+    "sass": "^1.26.5",
+    "sass-loader": "^7.3.1",
+    "vue-template-compiler": "^2.6.11"
   }
 }

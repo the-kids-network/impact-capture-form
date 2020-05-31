@@ -152,7 +152,7 @@ commands:
       - run:
           name: Run Cypress Browser Tests
           command: |
-            npm run cypress -- --reporter junit --reporter-options "mochaFile=tests/reports/cypress/report-[hash].xml,toConsole=true"
+            npm run cypress -- --reporter cypress-multi-reporters --reporter-options configFile=cypress-reporter-config.json
       - run: 
           name: Run Dusk Browser Tests
           command: php artisan dusk --log-junit tests/reports/browser/report.xml
