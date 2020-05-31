@@ -1,5 +1,5 @@
 <update-contact-information :user="user" inline-template>
-    <div class="card">
+    <div class="card contact-info">
         <div class="card-header">Contact Information</div>
 
         <div class="card-body">

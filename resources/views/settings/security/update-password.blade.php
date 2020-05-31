@@ -1,5 +1,5 @@
 <update-password inline-template>
-    <div class="card">
+    <div class="card security">
         <div class="card-header">Update Password</div>
 
         <div class="card-body">

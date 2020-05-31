@@ -31,7 +31,7 @@
                                     <input id="nameInput" type="text" 
                                            :class="{'form-control': true, 'is-invalid': registerForm.errors.has('name')}" 
                                            name="name" v-model="registerForm.name" autofocus>
-                                    <div class="invalid-feedback" v-show="registerForm.errors.has('name')">@{{ registerForm.errors.get('name') }}</div>
+                                    <div class="invalid-feedback invalid-name" v-show="registerForm.errors.has('name')">@{{ registerForm.errors.get('name') }}</div>
                                 </div>
                             </div>
                         
@@ -42,7 +42,7 @@
                                     <input id="emailInput" type="email" 
                                            :class="{'form-control': true, 'is-invalid': registerForm.errors.has('email')}" 
                                            name="email" v-model="registerForm.email">
-                                    <div class="invalid-feedback" v-show="registerForm.errors.has('email')">@{{ registerForm.errors.get('email') }}</div>
+                                    <div class="invalid-feedback invalid-email" v-show="registerForm.errors.has('email')">@{{ registerForm.errors.get('email') }}</div>
                                 </div>
                             </div>
                         
@@ -53,7 +53,7 @@
                                     <input id="passwordInput" type="password" 
                                            :class="{'form-control': true, 'is-invalid': registerForm.errors.has('password')}" 
                                            name="password" v-model="registerForm.password">
-                                    <div class="invalid-feedback" v-show="registerForm.errors.has('password')">@{{ registerForm.errors.get('password') }}</div>
+                                    <div class="invalid-feedback invalid-password" v-show="registerForm.errors.has('password')">@{{ registerForm.errors.get('password') }}</div>
                                 </div>
                             </div>
                         
@@ -64,7 +64,7 @@
                                     <input id="passwordConfirmInput" type="password" 
                                            :class="{'form-control': true, 'is-invalid': registerForm.errors.has('password_confirmation')}"
                                            name="password_confirmation" v-model="registerForm.password_confirmation">
-                                    <div class="invalid-feedback" v-show="registerForm.errors.has('password_confirmation')">@{{ registerForm.errors.get('password_confirmation') }}</div>
+                                    <div class="invalid-feedback invalid-password-confirmation" v-show="registerForm.errors.has('password_confirmation')">@{{ registerForm.errors.get('password_confirmation') }}</div>
                                 </div>
                             </div>
                         

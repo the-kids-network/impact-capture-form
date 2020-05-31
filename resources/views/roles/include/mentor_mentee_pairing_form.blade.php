@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card mentee-assign">
     <div class="card-header">
         Assign Mentor to Mentee
     </div>

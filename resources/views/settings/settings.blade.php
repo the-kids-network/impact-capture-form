@@ -9,23 +9,23 @@
         <div class="row">
             <!-- Tabs -->
             <div class="col-md-4">
-                <div class="card card-flush">
+                <div class="card card-flush menu">
                     <div class="card-header">
                         Settings
                     </div>
 
                     <div class="card-body">
                         <div class="settings-tabs">
-                            <ul class="nav flex-column" role="tablist">
+                            <ul class="nav flex-column menu-list" role="tablist">
                                 <!-- Profile Link -->
-                                <li role="presentation">
+                                <li role="presentation" class="menu-item">
                                     <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
                                         <span class="fas fa-edit"></span> Profile
                                     </a>
                                 </li>
 
                                 <!-- Security Link -->
-                                <li role="presentation">
+                                <li role="presentation" class="menu-item">
                                     <a href="#security" aria-controls="security" role="tab" data-toggle="tab">
                                         <span class="fas fa-key"></span> Security
                                     </a>

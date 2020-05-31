@@ -4,7 +4,7 @@
     <div class="container mentee-management">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card mentee-existing">
                     <div class="card-header">Mentees</div>
 
                     <div class="card-body">
@@ -12,13 +12,13 @@
                             Toggle Deactivated Mentees
                         </button>
                         <br/><br/>
-                        <div class="tkn-list-group container">
+                        <div class="tkn-list-group mentee-list container">
                             @foreach($allMentees as $mentee)
-                            <div class="tkn-list-group-item row @if($mentee->trashed()) trashed @else not-trashed @endif" style="@if($mentee->trashed()) display: none @endif">
-                                <div class="col-md-4">
+                            <div class="tkn-list-group-item row mentee @if($mentee->trashed()) trashed @else not-trashed @endif" style="@if($mentee->trashed()) display: none @endif">
+                                <div class="col-md-4 name">
                                     {{ $mentee->name }}
                                 </div>
-                                <div class="col-md-auto ml-auto">
+                                <div class="col-md-auto ml-auto actions">
                                     @if($mentee->trashed())
                                         <form style="display: inline-block" action="{{ url('/mentee/restore/'.$mentee->id) }}" id="restore-{{$mentee->id}}" method="post">
                                             {{ csrf_field() }}
@@ -49,7 +49,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card mentee-add">
                     <div class="card-header">Add Mentee</div>
 
                     <div class="card-body">
@@ -59,18 +59,18 @@
                             {{ csrf_field() }}
                             <!-- Mentee's First Name -->
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label">Mentee First Name</label>
+                                <label class="col-md-4 col-form-label" for="firstNameInput">Mentee First Name</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus>
+                                    <input id="firstNameInput" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus>
                                 </div>
                             </div>
                             <!-- Mentee's Last Name -->
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label">Mentee Last Name</label>
+                                <label class="col-md-4 col-form-label" for="lastNameInput">Mentee Last Name</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus>
+                                    <input id="lastNameInput" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus>
                                 </div>
                             </div>
                             <!-- Submit Button -->
