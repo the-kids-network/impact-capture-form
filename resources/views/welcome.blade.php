@@ -9,9 +9,6 @@
 
     <title>@yield('title', config('app.name'))</title>
 
-    <!-- Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
-
     <style>
         body, html {
             background: url('/img/landing-bg.png');
@@ -19,7 +16,7 @@
             background-size: 300px 200px;
             height: 100%;
             margin: 0;
-            font-family: 'Open Sans';
+            font-family: 'Arial';
         }
 
         .links {
