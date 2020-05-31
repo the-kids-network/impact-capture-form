@@ -132,8 +132,10 @@ describe('Session report details', () => {
 
         it('Does not allow modify / delete', () => {
             cy.visit('/report/1')
-
             cy.get('.modify-session-report').should('not.exist')
+
+            cy.visit('/report/1/edit', {failOnStatusCode: false})
+            cy.get('body .message').should('contain', 'Unauthorized')
         })
 
         it("Errors for report not owned by them", () => {
@@ -159,8 +161,10 @@ describe('Session report details', () => {
 
         it('Does allow modify / delete', () => {
             cy.visit('/report/1')
-
             cy.get('.modify-session-report').should('exist')
+
+            cy.visit('/report/1/edit', {failOnStatusCode: false})
+            cy.get('body .message').should('not.contain', 'Unauthorized')
         })
 
         it("Errors for report from mentor not managed by them", () => {
@@ -189,8 +193,10 @@ describe('Session report details', () => {
 
         it('Does allow modify / delete', () => {
             cy.visit('/report/1')
-
             cy.get('.modify-session-report').should('exist')
+
+            cy.visit('/report/1/edit', {failOnStatusCode: false})
+            cy.get('body .message').should('not.contain', 'Unauthorized')
         })
     })
 })
