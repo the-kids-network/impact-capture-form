@@ -129,29 +129,53 @@
     }
 
     // Pagination
-    .page-item.active {
-        .page-link {
-            background-color: @brand-primary;
-            border-color: @brand-primary;
-        }
-    }
+    .page-item {
+        &.active {
+            .page-link {
+                background-color: @brand-primary;
+                border-color: @brand-primary;
+                color: @white;
 
-    .page-link:focus {
-        box-shadow: 0 0 0 0.2rem lighten(@brand-primary, 30%);
+                &:hover {
+                    color: @white;
+                    background-color: @brand-primary;
+                }
+            }
+        }
+
+        .page-link {
+            background-color: @white;
+            color: @brand-primary;
+
+            &:hover {
+                color: @brand-primary;
+                background-color: @brand-neutral;
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 0.2rem lighten(@brand-primary, 30%);
+            }
+        }
     }
 
     // Dropdown
     .dropdown-menu {
         font-size: inherit;
-    }
 
-    .dropdown-item.hover, .dropdown-item:hover {
-        background-color: @brand-neutral;
-    }
+        .dropdown-item {
+            &.hover, &:hover {
+                background-color: @brand-neutral;
+            }
+        
+            &.active, &:active {
+                text-decoration: none;
+                background-color: darken(@brand-neutral, 5%)
+            }
 
-    .dropdown-item.active, .dropdown-item:active {
-        text-decoration: none;
-        background-color: darken(@brand-neutral, 5%)
+            a {
+                color: @brand-primary
+            }
+        }
     }
 
     // Forms

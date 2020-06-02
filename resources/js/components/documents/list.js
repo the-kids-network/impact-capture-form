@@ -221,7 +221,7 @@ const Component = {
             // client-side pagination state
             currentPage: 1,
             pageSizes: [10, 25, 50, 100],
-            currentPageSize: 2
+            currentPageSize: 25
         }
     },
 
