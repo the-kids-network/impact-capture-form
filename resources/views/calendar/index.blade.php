@@ -17,26 +17,28 @@
             </div>  
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="calendar-header">
-                    <div class="new-report">
+            <div class="calendar-header col-md-12">
+                <div class="row">
+                    <div class="links-group left-links col-md">
                     @if (Auth::user()->isMentor())
-                        <a href="/report/new"><i class="fas fa-plus-circle"></i> New Session Report</a>
+                        <a class="new-report" href="/report/new"><i class="fas fa-plus-circle"></i> New Session Report</a>
                     @endif
                     </div>
 
-                    <div class="new-event">
-                        <div class="new-planned-session">
-                            <a href="/planned-session/new"><i class="fas fa-plus-circle"></i> New Planned Session</a>
-                        </div>
-                        <div class="new-mentor-leave">
-                            <a href="/mentor/leave/new"><i class="fas fa-plus-circle"></i> New Leave - Mentor</a>
-                        </div>
-                        <div class="new-mentee-leave">
-                            <a href="/mentee/leave/new"><i class="fas fa-plus-circle"></i> New Leave - Mentee</a>
-                        </div>
-                    </div>          
-                </div>
+                    <div class="links-group right-links col-md-4">
+                        <div class="row">
+                            <div class="col-4 col-md-12 text-md-right">
+                                <a class="new-planned-session" href="/planned-session/new"><i class="fas fa-plus-circle"></i> New Planned Session</a>
+                            </div>
+                            <div class="col-4 col-md-12 text-md-right">
+                                <a class="new-mentor-leave" href="/mentor/leave/new"><i class="fas fa-plus-circle"></i> New Leave - Mentor</a>
+                            </div>
+                            <div class="col-4 col-md-12 text-md-right">
+                                <a class="new-mentee-leave" href="/mentee/leave/new"><i class="fas fa-plus-circle"></i> New Leave - Mentee</a>
+                            </div>
+                        </div>  
+                    </div>
+                </div>    
             </div>
         </div>
         <div class="row">

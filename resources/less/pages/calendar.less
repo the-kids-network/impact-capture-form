@@ -19,34 +19,24 @@
     }
 
     .calendar-header {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-
+        .links-group {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        
         .new-report {
         }
 
         .new-planned-session {
-            text-align: right;
-
-            a {
-                color: @calendar-planned-session-colour;
-            }
+            color: @calendar-planned-session-colour;
         }
 
         .new-mentor-leave {
-            text-align: right;
-
-            a {
-                color: @calendar-mentor-leave-colour;
-            }
+            color: @calendar-mentor-leave-colour;
         }
 
         .new-mentee-leave {
-            text-align: right;
-
-            a {
-                color: @calendar-mentee-leave-colour;
-            }
+            color: @calendar-mentee-leave-colour;
         }
     }
 

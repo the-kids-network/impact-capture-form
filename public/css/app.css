@@ -19152,8 +19152,8 @@ be a descendant of the grid when it is being dragged.
   height: 50px;
   width: 50px;
 }
-.login .password-reset {
-  margin-left: 1rem;
+.login .login-submit {
+  margin-right: 1rem;
 }
 .settings .settings-tabs li {
   padding-top: 0.5rem;
@@ -19217,26 +19217,17 @@ be a descendant of the grid when it is being dragged.
 .calendar .calendar-info b {
   font-weight: 700;
 }
-.calendar .calendar-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.calendar .calendar-header .links-group {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .calendar .calendar-header .new-planned-session {
-  text-align: right;
-}
-.calendar .calendar-header .new-planned-session a {
   color: #34a5dd;
 }
 .calendar .calendar-header .new-mentor-leave {
-  text-align: right;
-}
-.calendar .calendar-header .new-mentor-leave a {
   color: #9e1350;
 }
 .calendar .calendar-header .new-mentee-leave {
-  text-align: right;
-}
-.calendar .calendar-header .new-mentee-leave a {
   color: #e84e1b;
 }
 .calendar .calendar-body {
@@ -19354,7 +19345,7 @@ be a descendant of the grid when it is being dragged.
   text-align: center;
 }
 .documents-management .documents-list .item .title {
-  max-width: 200px;
+  max-width: 150px;
 }
 .documents-management .documents-list .item .title .title-container {
   white-space: nowrap;
