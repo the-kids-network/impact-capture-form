@@ -170,13 +170,13 @@ const Component = {
                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
                             <span class="page-size">{{currentPageSize}}</span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li v-for="size in pageSizes"
-                                :class="'dropdown-item page-size ' + ((size === currentPageSize) ? 'active' : '')"
+                        <div class="dropdown-menu" role="menu">
+                            <a  v-for="size in pageSizes"
+                                :class="'dropdown-item page-size ' + ((size === currentPageSize) ? 'active' : '')" 
                                 @click="currentPageSize = size"
-                                role="menuitem"><a href="#">{{size}}</a></li>
-                           
-                        </ul>
+                                role="menuitem"
+                                href="#">{{size}}</a>
+                        </div>
                     </span> rows per page
                 </div>
                 <div class="page-selector" v-if="_pages.length > 1">
