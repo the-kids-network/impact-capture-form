@@ -10,7 +10,7 @@ const Component = {
     },
 
     template: `
-        <div class="documents browse">
+        <div>
             <status-box
                 class="documents-status"
                 :errors="errors"

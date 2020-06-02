@@ -62,11 +62,16 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['photo'];
+    protected $appends = ['photo', 'photoType'];
 
     public function getPhotoAttribute()
     {
         return $this->getProfilePhoto();
+    }
+
+    public function getPhotoTypeAttribute() {
+        $path = $this->photo_url;
+        return ($path && Storage::exists($path)) ? "custom" : "default";
     }
 
     /**

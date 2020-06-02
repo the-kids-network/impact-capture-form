@@ -17,8 +17,16 @@ Homestead.json
 Homestead.yaml
 
 .env
+.env.local*
+!.env.local.example
+!.env.ci
 
 .phpunit.*
 
 
 .circleci/config_local.yml
+
+/tests/Browser/screenshots
+/tests/reports
+/tests/cypress/screenshots
+/tests/cypress/videos

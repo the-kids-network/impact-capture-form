@@ -12,8 +12,7 @@ const Component = {
     props: [],
 
     template: `
-        <form class="documents upload" novalidate>
-            
+        <form novalidate>
             <!-- Status messages -->
             <div class="alert alert-success" v-show="hasSuccessMessage">
                 {{ uploadSuccess }}
@@ -38,10 +37,8 @@ const Component = {
                     Uploading {{ documentCount }} files. <br/><br/>Please be patient as large files take a few minutes.
                 </p>
             </div>
-
             <br />
-
-            <div class="uploads container" v-if="documentCount > 0">
+            <div class="uploads-container" v-if="documentCount > 0">
                 <table class="uploads table">
                     <thead>
                         <tr>
@@ -56,7 +53,7 @@ const Component = {
                         <tr v-for="(document, key) in documentsToUpload">
                             <td class="remove">
                                 <a href="#" @click.prevent="removeFile(key)" v-if="!isSaving">
-                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span class="fa fa-trash-alt"></span>
                                 </a>
                             </td>
                             <td v-if="isFileLarge(document.file)"
@@ -84,7 +81,6 @@ const Component = {
                     <span class="glyphicon glyphicon-upload" /> Upload</span>
                 </div>
             </div>
-            
         </form>
     `,
 

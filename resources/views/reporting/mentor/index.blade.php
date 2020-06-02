@@ -1,68 +1,65 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container">
+    <div class="container mentor-reporting">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Filters</div>
+            <div class="col-md-12">
 
-                    <div class="panel-body">
+                <div class="card report-filter">
+                    <div class="card-header">Filters</div>
+                    <div class="card-body">
                         @include('shared.errors')
-
                         <form class="form-horizontal" role="form" method="GET" action="/reporting/mentor">
-                        {{ csrf_field() }}
-
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Start Date</label>
+                            {{ csrf_field() }}
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="startDateInput">Start Date</label>
                                 <div class="col-md-6">
-                                    <input type="text" 
+                                    <input id="startDateInput"
+                                           type="text" 
                                            class="form-control datepicker" 
                                            name="start_date" 
                                            autocomplete="off" 
                                            value="{{ Request()->start_date }}">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">End Date</label>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="endDateInput">End Date</label>
                                 <div class="col-md-6">
-                                    <input type="text" 
+                                    <input id="endDateInput"
+                                           type="text" 
                                            class="form-control datepicker" 
                                            name="end_date" 
                                            value="{{ Request()->end_date }}"
                                            autocomplete="off" >
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Show Inactive</label>
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="showInactiveInput">Show Inactive</label>
                                 <div class="col-md-6">
-                                    <input type="checkbox" 
+                                    <input  id="showInactiveInput"
+                                            type="checkbox" 
                                             name="show_inactive"
                                             autocomplete="off"
                                             {{ (Request()->show_inactive) ? 'checked' : ''}} />
                                     </label>
                                 </div>
                             </div>
-
                             <!-- Submit Button -->
-                            <div class="form-group">
-                                <div class="col-md-8 col-md-offset-4">
+                            <div class="form-group row">
+                                <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa m-r-xs fa-sign-in"></i>Submit
+                                        <span class="fa fa-search"></span> Search
                                     </button>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>    
-            </div>
-            @isset($mentors)
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Report Data</div>
+            
+                @isset($mentors)
+                <div class="card">
+                    <div class="card-header">Report Data</div>
+                    <div class="card-body">
                         <table class="table" data-toggle="table" data-search="true" data-pagination="true">
                             <thead>
                                 <tr>
@@ -83,7 +80,6 @@
                                     <th data-sortable="true">Expenses Total (£)</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach($mentors as $mentor)
                                     <tr>
@@ -103,7 +99,7 @@
                                         </td>
                                         @endif
                                         <td class="start-date">
-                                            <span class="hidden">{{ $mentor->start_date }}</span>
+                                            <span class="d-none">{{ $mentor->start_date }}</span>
                                             @if (isset($mentor->start_date)) 
                                                 {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->start_date)->toFormattedDateString() }} 
                                             @else 
@@ -111,7 +107,7 @@
                                             @endif
                                         </td>
                                         <td class="last-session-date">
-                                            <span class="hidden">{{ $mentor->last_session_date }}</span>
+                                            <span class="d-none">{{ $mentor->last_session_date }}</span>
                                             @if (isset($mentor->last_session_date)) 
                                                 {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->last_session_date)->toFormattedDateString() }} 
                                             @else 
@@ -122,7 +118,7 @@
                                             @if (isset($mentor->days_since_last_session)) {{ $mentor->days_since_last_session}} @else Unknown @endif
                                         </td>
                                         <td class="next-planned-session-date">
-                                            <span class="hidden">{{ $mentor->next_planned_session_date }}</span>
+                                            <span class="d-none">{{ $mentor->next_planned_session_date }}</span>
                                             @if (isset($mentor->next_planned_session_date)) 
                                                 {{ \Carbon\Carbon::createFromFormat('Y-m-d', $mentor->next_planned_session_date)->toFormattedDateString() }} 
                                             @else 
@@ -144,19 +140,16 @@
                             </tbody>
                         </table>
 
-                        <div class="panel-body">
-                            <a href="{{ route('mentor-reporting-export', 
-                                        [ 'start_date' => Request()->start_date,
-                                            'end_date' => Request()->end_date,
-                                            'show_inactive' => Request()->show_inactive
-                                        ]) 
-                                        }}">Download All Data as CSV</a>
-                        </div>
-
+                        <a href="{{ route('mentor-reporting-export', 
+                                    [ 'start_date' => Request()->start_date,
+                                        'end_date' => Request()->end_date,
+                                        'show_inactive' => Request()->show_inactive
+                                    ]) 
+                                    }}">Download All Data as CSV</a>
                     </div>
                 </div>
+                @endisset
             </div>
-            @endisset
         </div>
     </div>
 @endsection

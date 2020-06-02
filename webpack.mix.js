@@ -12,8 +12,6 @@ let mix = require('laravel-mix');
  */
 
 mix
-   .copy('node_modules/sweetalert/dist/sweetalert.min.js', 'public/js/sweetalert.min.js')
-   .copy('node_modules/sweetalert/dist/sweetalert.css', 'public/css/sweetalert.css')
    .copy('resources/js/lib', 'public/js')
    .copy('resources/img', 'public/img')
    .copy('resources/favicon*', 'public')

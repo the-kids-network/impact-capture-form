@@ -11,7 +11,8 @@ class ReceiptController extends Controller {
 
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,manager')->only('show', 'downloadAll');
+        $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('show');
+        $this->middleware('hasAnyOfRoles:admin,manager')->only('downloadAll');
     }
 
     /**

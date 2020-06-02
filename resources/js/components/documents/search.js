@@ -23,8 +23,8 @@ const Component = {
                 @tags-changed="newTags => updateSelectedTags(newTags)"
                 />
             <div class="buttons">
-                <span class="clear btn btn-secondary" 
-                    @click="clearSearch"><span class="glyphicon glyphicon-remove"></span> Reset</span>
+                <span class="clear btn btn-light" 
+                    @click="clearSearch"><span class="fas fa-times"></span> Reset</span>
             </div>
         </div>
     `,
@@ -55,10 +55,6 @@ const Component = {
                 .filter(i => (i.toLowerCase().indexOf(this.inputText.toLowerCase()) !== -1))
                 .map(i => ({ text: i }))
                 .toArray();
-        },
-
-        _searchEnabled() {
-            return this.tagsSelected.size
         }
     },
 
@@ -89,13 +85,18 @@ const Component = {
         },
 
         async submitSearch() {
-            if (!this._searchEnabled) return;
+            // if no tags, clear search filter
+            if(!this.tagsSelected.size) {
+                this.clearSearch()
+                return
+            }
 
             // reset any errors for new search
             this.$emit('error', [])
 
             try {
                 const matchingDocumentIds = await this.getDocumentsMatchingTags(this.tagsSelected.toArray());
+
                 // send to parent component to handle filtering based on results
                 this.$emit('results', matchingDocumentIds)
             } catch(e) {

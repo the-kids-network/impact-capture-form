@@ -8,24 +8,28 @@ commands:
   restore_node_modules_cache:
     steps:
       - restore_cache:
+          name: "Restore App NPM Dependencies From Cache"
           keys:
             - v1-npm-dependencies-{{ checksum "package-lock.json" }}
             - v1-npm-dependencies-
   save_node_modules_cache:
     steps:
       - save_cache:
+          name: "Save App NPM Dependencies To Cache"
           paths:
             - ./node_modules
           key: v1-npm-dependencies-{{ checksum "package-lock.json" }}
   restore_composer_cache:
     steps:
       - restore_cache:
+          name: "Restore App Composer Dependencies From Cache"
           keys:
             - v1-composer-dependencies-{{ checksum "composer.lock" }}
             - v1-composer-dependencies-
   save_composer_cache:
     steps:
       - save_cache:
+          name: "Save App Composer Dependencies To Cache"
           paths:
             - ./vendor
           key: v1-composer-dependencies-{{ checksum "composer.lock" }}
@@ -87,11 +91,6 @@ commands:
           name: Start Chrome Driver
           command: ./vendor/laravel/dusk/bin/chromedriver-linux
           background: true
-  install_application_env_file:
-    steps:
-      - run: 
-          name: Install .env File
-          command: cp -f .env.circleci .env
   install_application_dependencies:
     steps:
       - restore_node_modules_cache
@@ -99,16 +98,19 @@ commands:
           name: Install App NPM Dependencies
           command: npm install
       - save_node_modules_cache
+      - run:
+          name: Install Cypress binary
+          command: ./node_modules/cypress/bin/cypress install
       - restore_composer_cache
       - run: 
           name: Install App Composer Dependencies
           command: php composer.phar install
       - save_composer_cache
-  generate_app_key:
+  cache_application_config:
     steps:
-      - run: 
-          name: Generate App Secure Key
-          command: php artisan key:generate
+      - run:
+          name: Use Artisan config for CI environment
+          command: php artisan config:cache --env=ci
   apply_database_migrations:
     steps:
       - run: 
@@ -140,16 +142,20 @@ commands:
     steps:
       - run:
           name: Run Unit Tests
-          command: vendor/bin/phpunit --log-junit test-reports/unit/report.xml
+          command: vendor/bin/phpunit --log-junit tests/reports/unit/report.xml
   run_browser_tests:
     steps:
       - install_chrome_driver
       - start_chrome_driver
       - seed_database_with_test_data
       - start_application
+      - run:
+          name: Run Cypress Browser Tests
+          command: |
+            npm run cypress -- --reporter cypress-multi-reporters --reporter-options configFile=cypress-reporter-config.json
       - run: 
           name: Run Dusk Browser Tests
-          command: php artisan dusk --log-junit test-reports/browser/report.xml
+          command: php artisan dusk --log-junit tests/reports/browser/report.xml
 
   # Main build top-level steps
   setup:
@@ -161,10 +167,9 @@ commands:
       - install_composer
   build:
     steps:
-      - install_application_env_file
       - install_application_dependencies
-      - generate_app_key
       - compile_web_assets
+      - cache_application_config
       - apply_database_migrations
   test:
     steps:
@@ -175,7 +180,7 @@ executors:
   docker-executor:
     docker:
       - image: circleci/php:7.4.6-browsers
-      - image: circleci/mysql:5.7.26
+      - image: circleci/mysql:8.0.17
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
           MYSQL_USER: homestead
@@ -193,9 +198,15 @@ jobs:
       - store_artifacts:
           path: ~/repo/storage/logs
       - store_artifacts:
+          path: ~/repo/tests/cypress/screenshots
+      - store_artifacts:
+          path: ~/repo/tests/cypress/videos
+      - store_artifacts:
           path: ~/repo/tests/Browser/screenshots
+      - store_artifacts:
+          path: ~/repo/tests/reports
       - store_test_results:
-          path: ~/repo/test-reports
+          path: ~/repo/tests/reports
 
 workflows:
   build_and_test:

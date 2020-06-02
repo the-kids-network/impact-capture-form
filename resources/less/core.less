@@ -1,0 +1,178 @@
+.tkn-app {
+    body {
+        background-color: @body-bg;
+        font-weight: 400;
+        font-size: 1.0rem;
+        font-family:Open Sans,Helvetica,Arial,sans-serif;
+        color: @font-colour;
+    }
+
+    a {
+        color: @brand-quaternary;
+        text-decoration: none;
+
+        &:hover {
+            color: darken(@brand-quaternary, 10%);
+        }
+    }
+
+    .table {
+        color: inherit;
+    }
+
+    .page-nav {
+        margin-bottom: 1em;
+        background-color: @brand-neutral;
+        border: 1px solid darken(@brand-neutral, 10%);
+    }
+
+    /** 
+     **Boostrap overrides - applied globally
+     */
+
+    // Card
+    .card {
+        overflow: hidden;
+        margin-bottom: 22px;
+        border: 1px solid darken(@brand-neutral, 10%);
+    }
+
+    .card-header {
+        font-weight: 500;
+        background-color: @brand-neutral;
+        border-bottom: 1px solid darken(@brand-neutral, 10%);
+    }
+
+    // Buttons
+    .btn {
+        text-transform: uppercase;
+        font-size: inherit;
+        color: @white;
+    }
+
+    .btn-light {
+        color: inherit;
+        background-color: darken(@white, 10%);
+        border-color: darken(@white, 15%);
+
+        &:hover {
+            background-color: darken(@white, 15%);
+            border-color: darken(@white, 15%);
+        }
+
+        &:focus, &.focus {
+            background-color: darken(@white, 15%);
+            border-color: darken(@white, 15%);
+            box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
+        }
+
+        &:not(:disabled):not(.disabled):active, 
+        &:not(:disabled):not(.disabled).active {
+            color: inherit;
+            background-color: darken(@white, 20%);
+            border-color: darken(@white, 20%);
+        }
+
+        &:not(:disabled):not(.disabled):active:focus, 
+        &:not(:disabled):not(.disabled).active:focus {
+            box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
+        }
+    }
+
+    .btn-primary {
+        background-color: @brand-primary;
+        border-color: @brand-primary;
+
+        &:hover {
+            color: @white;
+            background-color: darken(@brand-primary, 10%);
+            border-color: darken(@brand-primary, 10%);
+        }
+
+        &:focus, &.focus {
+            background-color: darken(@brand-primary, 10%);
+            border-color: darken(@brand-primary, 10%);
+            box-shadow: 0 0 0 0.2rem lighten(@brand-primary, 30%)
+        }
+
+        &:not(:disabled):not(.disabled):active,
+        &:not(:disabled):not(.disabled).active {
+            background-color: darken(@brand-primary, 20%);
+            border-color: darken(@brand-primary, 20%);
+        }
+
+        &:not(:disabled):not(.disabled):active:focus, 
+        &:not(:disabled):not(.disabled).active:focus {
+            box-shadow: 0 0 0 0.2rem lighten(@brand-primary, 30%)
+        }
+
+        &.dropdown-toggle {
+            background-color: @brand-primary;
+
+            &:hover {
+                background-color: darken(@brand-primary, 10%);
+                border-color: darken(@brand-primary, 10%);
+            }
+            &:focus {
+                box-shadow: 0 0 0 0.2rem lighten(@brand-primary, 30%)
+            }
+        }
+    }
+
+    .btn-link {
+        color: @brand-primary;
+        padding: 0rem 0rem;
+
+        &:hover {
+            color: darken(@brand-primary, 10%);
+        }
+    }
+
+    // Pagination
+    .page-item.active {
+        .page-link {
+            background-color: @brand-primary;
+            border-color: @brand-primary;
+        }
+    }
+
+    .page-link:focus {
+        box-shadow: 0 0 0 0.2rem lighten(@brand-primary, 30%);
+    }
+
+    // Dropdown
+    .dropdown-menu {
+        font-size: inherit;
+    }
+
+    .dropdown-item.hover, .dropdown-item:hover {
+        background-color: @brand-neutral;
+    }
+
+    .dropdown-item.active, .dropdown-item:active {
+        text-decoration: none;
+        background-color: darken(@brand-neutral, 5%)
+    }
+
+    // Forms
+    .form-control {
+        color: inherit;
+        &:focus {
+            border-color: darken(@brand-primary, 10%);
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem lighten(@brand-primary, 30%)
+        }
+    }
+
+    // Custom list group
+    .tkn-list-group {
+        .tkn-list-group-item {
+          background-color: darken(@brand-neutral, 5%);
+          border-bottom: 1px solid lighten(@brand-primary, 30%);
+          > div {
+            margin-top: auto;
+            margin-bottom: auto;
+          }
+        }
+    }
+}

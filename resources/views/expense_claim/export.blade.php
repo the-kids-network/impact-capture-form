@@ -1,19 +1,21 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container">
+    <div class="container expense-claim export">
 
-        <div class="row m-b-lg">
+        <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-lg btn-primary btn-block" onclick="exportTableToCSV('data.csv')">Click to Download Data as CSV</button>
+                <button class="btn btn-lg btn-primary btn-block" onclick="exportTableToCSV('expenses-data.csv')">Click to Download Data as CSV</button>
+                <br/>
             </div>
         </div>
 
         @if(Request()->mentor_id || Auth::user()->isManager())
-        <div class="row m-t-lg m-b-lg">
+        <div class="row">
             <div class="col-md-12">
                 <a class="btn btn-lg btn-primary btn-block" 
                    href="{{ route('receipt.download-all', ['mentor_id'=>Request()->mentor_id]) }}">Click to Download Receipts</a>
+                <br />
             </div>
         </div>
         @endif

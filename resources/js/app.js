@@ -35,9 +35,15 @@ if (window.$ === undefined || window.jQuery === undefined) {
 }
 require('jquery-ui/ui/widgets/datepicker');
 
-// Bootstrap things
-require('bootstrap/dist/js/npm');
+// Popper.js
+require('popper.js/dist/popper')
+
+// Bootstrap
+require('bootstrap/dist/js/bootstrap');
 require('bootstrap-table/dist/bootstrap-table');
+
+// Sweetalert
+window.Swal = require('sweetalert2/dist/sweetalert2');
 
 // Full calendar
 require('@fullcalendar/core');
@@ -62,21 +68,3 @@ window.axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
     'X-CSRF-TOKEN': Spark.csrfToken
 };
-
-/**
- * Intercept the incoming responses.
- *
- * Handle any unexpected HTTP errors and pop up modals, etc.
- */
-window.axios.interceptors.response.use(function (response) {
-    return response;
-}, function (error) {
-    switch (error.response.status) {
-        case 401:
-            window.axios.get('/logout');
-            $('#modal-session-expired').modal('show');
-            break;
-    }
-
-    return Promise.reject(error);
-});

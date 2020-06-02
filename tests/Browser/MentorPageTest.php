@@ -5,10 +5,7 @@ namespace Tests\Browser;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-
-use Tests\Browser\Pages\MentorPage;
-use Tests\Browser\Pages\SessionReportsPage;
+use Tests\Browser\Pages\UserManagementMentorPage;
 
 class MentorPageTest extends DuskTestCase
 {
@@ -17,27 +14,27 @@ class MentorPageTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $user = User::where('email', 'admin@example.com')->firstOrFail();
 
-            $browser->loginAs($user)->visit(new MentorPage());
+            $browser->loginAs($user)->visit(new UserManagementMentorPage());
 
-            $this->assertMentorCount($browser, 10);
+            $this->assertMentorCount($browser, 4);
 
             $browser->element('.expand-all')->click();
-            $browser->waitFor('.mentor-table .mentee.name-row');
-            $browser->assertSeeIn('.mentor-table .mentee.name-row', 'Mentee');
+            $browser->waitFor('.mentors-list .mentee.row');
+            $browser->assertSeeIn('.mentors-list .mentee .name', 'mentee 1');
 
-            $browser->assertSelectHasOptions('@mentee-list', [1, 2, 3]);
+            $browser->assertSelectHasOptions('.mentee-select', [1, 2, 3, 4]);
         });
     }
 
     private function assertMentorCount($browser, $mentorCount)
     {
         $browser->pause(1000);
-        $browser->assertElementsCountIs($mentorCount, '.mentor-table .mentor.name-row');
+        $browser->assertElementsCountIs($mentorCount, '.mentors-list .mentor.row');
     }
 
     private function assertMenteeCount($browser, $menteeCount)
     {
         $browser->pause(1000);
-        $browser->assertElementsCountIs($menteeCount, '.mentor-table .mentee.name-row');
+        $browser->assertElementsCountIs($menteeCount, '.mentors-list .mentee.row');
     }
 }

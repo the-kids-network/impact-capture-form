@@ -1,15 +1,13 @@
 @extends('layout.app')
 
 @section('content')
-
     <div class="container">
-
-        <div class="row m-b-lg">
+        <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-lg btn-primary btn-block" onclick="exportTableToCSV('data.csv')">Click to Download Data as CSV</button>
+                <button class="btn btn-lg btn-primary btn-block" onclick="exportTableToCSV('reporting.csv')">Click to Download Data as CSV</button>
+                <br />
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-12">
                 <table id="data-table" class="table table-bordered table-responsive table-striped">
@@ -86,12 +84,9 @@
             </div>
         </div>
     </div>
-
 @endsection
 
-
 @section('body-scripts')
-
     <script src="/js/jquery.TableCSVExport.js"></script>
 
     <script>
@@ -104,5 +99,4 @@
             });
         }
     </script>
-
 @endsection

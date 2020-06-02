@@ -71,8 +71,9 @@ class PlannedSessionController extends Controller {
         }
         
         // Create planned session
+        $plannedSession = null;
         try {
-            $this->plannedSessionService->createPlannedSession(
+            $plannedSession = $this->plannedSessionService->createPlannedSession(
                 $request->mentee_id,
                 $request->next_session_date,
                 $request->next_session_location
@@ -83,14 +84,16 @@ class PlannedSessionController extends Controller {
                     <a href="/planned-session/'.$e->duplicateObjectId.'">Change it here.</a>');
         }
 
-        return redirect('/calendar');
+        return redirect('/planned-session/'.$plannedSession->id)
+                    ->with('status', "Planned Session Created");
     }
 
     public function update(Request $request, $id) {
         $request->validate($this->validationRules);   
 
+        $plannedSession = null;
         try {
-            $this->plannedSessionService->updatePlannedSession(
+            $plannedSession = $this->plannedSessionService->updatePlannedSession(
                 $id,
                 $request->mentee_id,
                 $request->next_session_date,
@@ -105,6 +108,7 @@ class PlannedSessionController extends Controller {
                     <a href="/planned-session/'.$e->duplicateObjectId.'">Change it here.</a>');
         }
 
-        return redirect('/calendar');
+        return redirect('/planned-session/'.$plannedSession->id)
+                ->with('status', "Planned Session Updated");
     }
 }

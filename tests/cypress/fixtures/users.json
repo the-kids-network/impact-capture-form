@@ -1,0 +1,14 @@
+{
+  "admin" : {
+    "email": "admin@example.com",
+    "password": "secret"
+  },
+  "manager" : {
+    "email": "manager-1@example.com",
+    "password": "secret"
+  },
+  "mentor" : {
+    "email": "mentor-1@example.com",
+    "password": "secret"
+  }
+}

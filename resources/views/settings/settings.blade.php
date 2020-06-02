@@ -1,34 +1,33 @@
 @extends('layout.app')
 
 @section('scripts')
-   
 @endsection
 
 @section('content')
 <settings :user="user" inline-template>
-    <div class="spark-screen container">
+    <div class="container settings">
         <div class="row">
             <!-- Tabs -->
             <div class="col-md-4">
-                <div class="panel panel-default panel-flush">
-                    <div class="panel-heading">
+                <div class="card card-flush menu">
+                    <div class="card-header">
                         Settings
                     </div>
 
-                    <div class="panel-body">
-                        <div class="spark-settings-tabs">
-                            <ul class="nav spark-settings-stacked-tabs" role="tablist">
+                    <div class="card-body">
+                        <div class="settings-tabs">
+                            <ul class="nav flex-column menu-list" role="tablist">
                                 <!-- Profile Link -->
-                                <li role="presentation">
+                                <li role="presentation" class="menu-item">
                                     <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
-                                        <i class="fa fa-fw fa-btn fa-edit"></i>Profile
+                                        <span class="fas fa-edit"></span> Profile
                                     </a>
                                 </li>
 
                                 <!-- Security Link -->
-                                <li role="presentation">
+                                <li role="presentation" class="menu-item">
                                     <a href="#security" aria-controls="security" role="tab" data-toggle="tab">
-                                        <i class="fa fa-fw fa-btn fa-lock"></i>Security
+                                        <span class="fas fa-key"></span> Security
                                     </a>
                                 </li>
                             </ul>

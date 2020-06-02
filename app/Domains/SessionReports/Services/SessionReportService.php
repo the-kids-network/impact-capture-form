@@ -81,13 +81,15 @@ class SessionReportService {
 
             $mail ->send(new SafeguardingConcernAlert($report));
         }
+
+        return $report;
     }
 
     public function updateReport($id, $keyValuePairs) {
         $reportToUpdate = Report::canSee()->find($id);
-
+        
         if (!$reportToUpdate) throw new NotFoundException("Session report not found");
-        if (!User::canSee()->find($keyValuePairs['mentor_id'])) throw new NotAuthorisedException("User not authorised to change mentor's session report");
+        if (!User::canSee()->withTrashed()->find($keyValuePairs['mentor_id'])) throw new NotAuthorisedException("User not authorised to change mentor's session report");
 
         // update session report
         $reportToUpdate->mentor_id = $keyValuePairs['mentor_id'];

@@ -2,16 +2,15 @@
 
 @section('content')
     <div class="container">
-
-        <div class="row m-b-lg">
-            <div class="col-md-12">
-                <button class="btn btn-lg btn-primary btn-block" onclick="exportTableToCSV('data.csv')">Click to Download Data as CSV</button>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-md-12">
-                <table id="test-table" class="table table-bordered table-responsive table-striped">
+                <button class="btn btn-lg btn-primary btn-block" onclick="exportTableToCSV('funding-data.csv')">Click to Download Data as CSV</button>
+                <br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table id="test-table" class="table table-bordered table-responsive table-striped" style="width: 100%">
                     <tr>
                         <th>Mentor</th>
                         <th>Funder</th>

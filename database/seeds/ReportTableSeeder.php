@@ -1,6 +1,11 @@
 <?php
 
+use App\Domains\SessionReports\Models\Report;
+use App\Mentee;
+use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ReportTableSeeder extends Seeder
 {
@@ -9,29 +14,30 @@ class ReportTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        $this->addReport(12, 1, 'Meeting 1 Details', 1);
-        $this->addReport(13, 2, 'Meeting 2 Details', 2);
-        $this->addReport(14, 3, 'Meeting 3 Details', 3);
+    public function run() {
+        $todaysDate = Carbon::now()->toDateString();  
 
+        $this->addReport('mentor-1', 'mentee-1', $todaysDate);
+        $this->addReport('mentor-2', 'mentee-2', $todaysDate);
+        $this->addReport('mentor-3', 'mentee-3', $todaysDate);
+        $this->addReport('mentor-4', 'mentee-4', $todaysDate);
     }
 
-    private function addReport($mentor_id, $mentee_id, $meeting_details, $rating_id){
-        $dt = new DateTime;
+    private function addReport($mentorName, $menteeName, $meetingDate) {
+        $mentor = User::whereName($mentorName)->first();
+        $mentee = Mentee::whereFirstName(explode('-', $menteeName)[0])->whereLastName(explode('-', $menteeName)[1])->first();
 
-        DB::table('reports')->insert([
-            'mentor_id' => $mentor_id,
-            'mentee_id' => $mentee_id,
-            'session_date' => $dt->format('Y-m-d'),
-            'length_of_session' => 1,
-            'activity_type_id' => 1,
-            'location' => 'Location',
-            'safeguarding_concern' => false,
-            'emotional_state_id' => 1,
-            'meeting_details' => $meeting_details,
-            'rating_id' => $rating_id
-        ]);
+        $report = new Report();
+        $report->mentor_id = $mentor->id;
+        $report->mentee_id = $mentee->id;
+        $report->session_date = $meetingDate;
+        $report->length_of_session = 1;
+        $report->activity_type_id = 1;
+        $report->location = 'Location';
+        $report->safeguarding_concern = false;
+        $report->emotional_state_id = 1;
+        $report->meeting_details = "Meeting between ".$mentorName." and ". $menteeName;
+        $report->rating_id = 1;
+        $report->save();
     }
-
 }
