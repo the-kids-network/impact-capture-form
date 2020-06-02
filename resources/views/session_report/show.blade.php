@@ -4,11 +4,19 @@
     <div class="container session-report show">
         <div class="row">
             <div class="col-md-12">
+                <nav class="nav page-nav">
+                    <a class="nav-link" href="/report">Back to reports</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Session by {{ $report->mentor->name }} with {{ $report->mentee->name }} on {{ $report->session_date->toFormattedDateString() }}</div>
                     
                     <div class="card-body">
-                        <a href="/report">Back to reports</a><br/><br/>
+                        
                         <table class="table">
                             <tr>
                                 <th>Field</th>

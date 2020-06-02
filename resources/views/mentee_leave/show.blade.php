@@ -4,11 +4,17 @@
     <div class="container mentee-leave show">
         <div class="row">
             <div class="col-md-12">
+                <nav class="nav page-nav">
+                    <a class="nav-link" type="button" href="/calendar">Go back to calendar</a>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Mentee Leave</div>
 
                     <div class="card-body">
-                        <a type="button" href="/calendar">Go back to calendar</a>
 
                         @include('shared.errors')
 

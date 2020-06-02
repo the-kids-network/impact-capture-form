@@ -10,6 +10,13 @@
     <div class="container expense-claim show">
         <div class="row">
             <div class="col-md-12">
+                <nav class="nav page-nav">
+                    <a class="nav-link" href="/expense-claim">Back to expense claims</a>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Expense Claim by {{ $expense_claim->mentor->name }}</div>
                     <div class="card-body">

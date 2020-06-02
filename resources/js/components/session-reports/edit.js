@@ -12,10 +12,7 @@ const Component = {
     },
 
     template: `
-        <div class="session-report-editor">
-
-            <a :href="'/report/' + this.report.id">Go back to session report</a>
-            
+        <div class="session-report-editor">            
             <status-box
                 ref="status-box"
                 class="documents-status"

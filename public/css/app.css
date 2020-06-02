@@ -19016,12 +19016,20 @@ be a descendant of the grid when it is being dragged.
 .tkn-app .table {
   color: inherit;
 }
+.tkn-app .page-nav {
+  margin-bottom: 1em;
+  background-color: #f8f9fa;
+  border: 1px solid #dae0e5;
+}
 .tkn-app .card {
   overflow: hidden;
   margin-bottom: 22px;
+  border: 1px solid #dae0e5;
 }
 .tkn-app .card-header {
   font-weight: 500;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dae0e5;
 }
 .tkn-app .btn {
   text-transform: uppercase;
@@ -19122,8 +19130,8 @@ be a descendant of the grid when it is being dragged.
   box-shadow: 0 0 0 0.2rem #b7dff3;
 }
 .tkn-app .tkn-list-group .tkn-list-group-item {
-  background-color: #e3e7eb;
-  border-bottom: 1px solid #e3f2fa;
+  background-color: #e9ecef;
+  border-bottom: 1px solid #b7dff3;
 }
 .tkn-app .tkn-list-group .tkn-list-group-item > div {
   margin-top: auto;
@@ -19132,7 +19140,7 @@ be a descendant of the grid when it is being dragged.
 .navbar {
   background-color: #fff;
   margin-bottom: 2rem;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #f8f9fa;
 }
 .navbar .navbar-brand img {
   height: 40px;
@@ -19332,9 +19340,6 @@ be a descendant of the grid when it is being dragged.
 }
 .documents-upload .uploads-container .uploads.table .title input {
   width: 100%;
-}
-.documents-management .upload.link {
-  margin-bottom: 10px;
 }
 .documents-management .documents-list .popper {
   color: inherit;
