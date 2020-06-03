@@ -2,7 +2,7 @@
 {{-- Header --}}
 @slot('header')
 @component('mail::header', ['url' => config('app.url')])
-<img class="logo-img" src="https://thekidsnetwork-public.s3-eu-west-1.amazonaws.com/color-logo.png" alt="{{config('app.name')}}" width="500" height="600">
+<img class="logo-img" src="https://thekidsnetwork-public.s3-eu-west-1.amazonaws.com/color-logo.png" alt="{{config('app.name')}}" style="width: 400px; height: auto; max-width: 70vw"
 @endcomponent
 @endslot
 
