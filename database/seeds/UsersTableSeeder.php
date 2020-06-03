@@ -84,7 +84,7 @@ class UsersTableSeeder extends Seeder {
         if ( config('mail.test') == 'true' ) {
             $mailbox = config('mail.testMailbox');
             $email_parts = explode('@', $mailbox);
-            return $email_parts[0].'+'.$$name.'@'.$email_parts[1];
+            return $email_parts[0].'+'.$name.'@'.$email_parts[1];
         } else {
             return $name.'@example.com';
         }
