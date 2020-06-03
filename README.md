@@ -118,14 +118,13 @@ npm update
 ### Configure local environment configuration
 
 ```bash
-cp .env.example.mysql .env
+cp .env.local.example .env.local.test
 ```
 
 There are a few things in here that can/should be configured for local development:
 
 1. Database host and credentials
 2. AWS credentials for development AWS resources
-3. Test email sending: MAIL_TEST
 4. S3 or local filesystem: FILESYSTEM_DRIVER
 
 Speak to another dev for help getting this setup right.
@@ -135,7 +134,7 @@ Speak to another dev for help getting this setup right.
 Clear the config cache first to ensure the latest config is used to build the database:
 
 ```bash
-php artisan config:cache
+php artisan config:cache --env=local.test
 ```
 
 To run new/latest database migrations (i.e. since last one in the migrations table):
@@ -159,13 +158,13 @@ php artisan db:seed
 A handy all-in-one command to do all the above in one go:
 
 ```bash
-php artisan config:cache && php artisan migrate:refresh --seed
+php artisan migrate:refresh --seed
 ```
 
 If all else fails (e.g. some corrupt database state), then try the following which drops all tables and runs migrations from the beginning:
 
 ```bash
-php artisan config:cache && php artisan migrate:fresh --seed
+php artisan config:cache --env=local.test && php artisan migrate:fresh --seed
 ```
 
 ### Run application
@@ -174,7 +173,7 @@ php artisan config:cache && php artisan migrate:fresh --seed
 php artisan key:generate
 composer dump-autoload
 npm run dev
-php artisan config:cache
+php artisan config:cache --env=local.test
 php artisan serve
 ```
 
@@ -211,19 +210,21 @@ Install right version of chrome driver if needed. Check your version here: https
 php artisan dusk:chrome-driver <version>
 ```
 
-For debugging in the browser, disable headless in the DuskTestCase.
-
-To run the Dusk browser tests: 
+To run the Cypress browser tests: 
 
 ```
+php artisan config:cache --env=local.test
+php artisan serve
+npm run cypress-open
+```
+Then use the Cypress UI to choose files to run.
+
+To run the deprecated Dusk browser tests: 
+
+```
+php artisan config:cache --env=local.test
 php artisan serve
 php artisan dusk
-```
-
-To run a specific test:
-
-```
-php artisan dusk tests/Browser/SessionSubmissionPageTest.php 
 ```
 
 ## Debugging
