@@ -1,6 +1,5 @@
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
 import enLocale from '@fullcalendar/core/locales/en-gb';
 import buildFullCalendarEvents from './mapperToFullCalendarEvents'
 
