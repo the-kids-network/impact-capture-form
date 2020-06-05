@@ -20,7 +20,7 @@ class EmotionalStateController extends Controller {
      */
     public function index()
     {
-        return view('session_report.emotional_state.index')
+        return view('session_reports.emotional_states.index')
             ->with('emotional_states', EmotionalState::withTrashed()->get());
     }
 

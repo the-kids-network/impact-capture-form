@@ -19,11 +19,11 @@ class DocumentController extends Controller {
     }
 
     public function uploadIndex() {
-        return view('document.upload');
+        return view('documents.upload');
     }
 
     public function index() {
-        return view('document.index');
+        return view('documents.index');
     }
 
     public function getAll() {

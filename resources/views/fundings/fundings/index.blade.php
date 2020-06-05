@@ -50,7 +50,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <a href="{{ route('funding.export') }}">Download All Data as CSV</a>
+                        <a href="{{ route('fundings.export') }}">Download All Data as CSV</a>
                     </div>
                 </div>
             </div>

@@ -45,7 +45,7 @@ class ExpenseClaimController extends Controller {
 
         $expenseClaims = $query->get();
 
-        return view('expense_claim.index')->with('expense_claims', $expenseClaims);
+        return view('expense_claims.index')->with('expense_claims', $expenseClaims);
     }
 
     /**
@@ -56,7 +56,7 @@ class ExpenseClaimController extends Controller {
      */
     public function newExpenseClaim(Request $request) {
         $reports = $this->sessionReportService->getReports();
-        return view('expense_claim.new')
+        return view('expense_claims.new')
             ->with('reports', $reports)
             ->with('claims', $request->user()->expense_claims()->orderBy('created_at','desc')->get() );
     }
@@ -74,7 +74,7 @@ class ExpenseClaimController extends Controller {
         
         if (!$expense_claim) abort(401,'Unauthorized');
 
-        return view('expense_claim.show')->with('expense_claim', $expense_claim);
+        return view('expense_claims.show')->with('expense_claim', $expense_claim);
     }
 
     /**
@@ -160,7 +160,7 @@ class ExpenseClaimController extends Controller {
 
         $claims = $query->get();
 
-        return view('expense_claim.export')->with('expense_claims', $claims);
+        return view('expense_claims.export')->with('expense_claims', $claims);
     }
 
     private function saveExpense(Request $request) {

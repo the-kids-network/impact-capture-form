@@ -17,13 +17,13 @@ class FinanceController extends Controller {
         $pending_claims = ExpenseClaim::whereStatus('pending')->orderBy('created_at','desc')->get();
         $user_processed_claims = Auth::user()->processedClaims()->orderBy('created_at','desc')->get();
 
-        return view('finance.process-expense-claims')
+        return view('expense_claims.process')
             ->with('pending_claims', $pending_claims)
             ->with('processed_claims', $user_processed_claims);
     }
 
     public function exportExpenseClaims(Request $request) {
         $user_processed_claims = $request->user()->processedClaims()->orderBy('created_at','desc')->get();
-        return view('expense_claim.export')->with('expense_claims', $user_processed_claims);
+        return view('expense_claims.export')->with('expense_claims', $user_processed_claims);
     }
 }

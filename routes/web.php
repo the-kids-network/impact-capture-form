@@ -135,7 +135,7 @@ Route::get('/tag-labels/associated', '\App\Domains\Tagging\Controllers\TagLabelC
 Route::get('/tagged-items', '\App\Domains\Tagging\Controllers\TaggedItemController@getTaggedItems');
 
 // Funding
-Route::get('/fundings/export','\App\Domains\Funding\Controllers\FundingController@export')->name('funding.export');
+Route::get('/fundings/export','\App\Domains\Funding\Controllers\FundingController@export')->name('fundings.export');
 Route::post('/funders/{id}/restore','\App\Domains\Funding\Controllers\FunderController@restore');
 Route::resource('/fundings','\App\Domains\Funding\Controllers\FundingController');
 Route::resource('/funders','\App\Domains\Funding\Controllers\FunderController');

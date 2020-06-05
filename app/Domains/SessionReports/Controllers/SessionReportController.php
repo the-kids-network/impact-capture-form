@@ -45,7 +45,7 @@ class SessionReportController extends Controller {
     public function newReportForm(Request $request) {
         $reports = $this->sessionReportService->getReports();
 
-        return view('session_report.new')
+        return view('session_reports.new')
             ->with('mentees',$request->user()->mentees)
             ->with('activity_types', ActivityType::all())
             ->with('emotional_states',EmotionalState::all())
@@ -57,7 +57,7 @@ class SessionReportController extends Controller {
         $report = $this->sessionReportService->getReport($id);
         $report->mentee = $report->mentee;
         
-        return view('session_report.edit')
+        return view('session_reports.edit')
             ->with('activity_types',  ActivityType::all())
             ->with('emotional_states', EmotionalState::all())
             ->with('session_ratings', SessionRating::selectable())
@@ -72,7 +72,7 @@ class SessionReportController extends Controller {
             $reports = $this->sessionReportService->getReports();
         }
 
-        return view('session_report.index')->with('reports',  $reports);
+        return view('session_reports.index')->with('reports',  $reports);
     }
 
     public function getOne($id) {
@@ -88,7 +88,7 @@ class SessionReportController extends Controller {
         // and ideally the UI could fetch these separately via a REST call to the expenses domain
         $claims = ExpenseClaim::canSee()->whereReportId($report->id)->orderBy('created_at','desc')->get();
 
-        return view('session_report.show')
+        return view('session_reports.show')
             ->with('report', $report)
             ->with('claims', $claims);
     }
@@ -159,7 +159,7 @@ class SessionReportController extends Controller {
         // get reports
         $reports = $query->get();
 
-        return view('session_report.export')->with('reports', $reports);
+        return view('session_reports.export')->with('reports', $reports);
     }
 
     private function createPlannedSession(Request $request) {

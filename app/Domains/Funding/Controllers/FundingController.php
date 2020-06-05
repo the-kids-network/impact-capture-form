@@ -16,7 +16,7 @@ class FundingController extends Controller {
     }
 
     public function index() {
-        return view('funding.funding.index')
+        return view('fundings.fundings.index')
             ->with('funders', Funder::canSee()->get())
             ->with('mentors', User::mentor()->canSee()->get())
             ->with('fundings', 
@@ -58,7 +58,7 @@ class FundingController extends Controller {
     }
 
     public function export(Request $request){
-        return view('funding.funding.export')
+        return view('fundings.fundings.export')
                 ->with('fundings', 
                     Funding::canSee()
                         ->orderBy('user_id', 'asc')

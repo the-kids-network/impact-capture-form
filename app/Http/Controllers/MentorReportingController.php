@@ -22,14 +22,14 @@ class MentorReportingController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function generateIndexReport(Request $request) {   
-        return $this->generate($request, 'reporting.mentor.index');
+        return $this->generate($request, 'reporting.mentors.index');
     }
 
     /**
      * Export the report as CSV
      */
     public function generateExportableReport(Request $request)  {
-        return $this->generate($request, 'reporting.mentor.export');
+        return $this->generate($request, 'reporting.mentors.export');
     }
 
     public function generate(Request $request, $view_name) {   

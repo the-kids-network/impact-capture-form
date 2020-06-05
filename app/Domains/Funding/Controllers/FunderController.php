@@ -20,7 +20,7 @@ class FunderController extends Controller {
             $funders->withTrashed();
         }
 
-        return view('funding.funder.index')
+        return view('fundings.funders.index')
             ->with('funders', $funders->get());
     }
 
