@@ -20,7 +20,7 @@ class ActivityTypeController extends Controller {
      */
     public function index()
     {
-        return view('activity_type.index')->with('activity_types', ActivityType::withTrashed()->get() );
+        return view('session_report.activity_type.index')->with('activity_types', ActivityType::withTrashed()->get() );
     }
 
     /**
