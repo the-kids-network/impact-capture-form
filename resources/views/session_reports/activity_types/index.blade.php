@@ -13,12 +13,12 @@
 
                                 <div class="float-right">
                                     @if($activity_type->trashed())
-                                        <form action="{{ url('/activity-type/restore/'.$activity_type->id) }}" id="restore-{{$activity_type->id}}" method="post">
+                                        <form action="{{ url('/activity-types/'.$activity_type->id.'/restore') }}" id="restore-{{$activity_type->id}}" method="post">
                                             {{ csrf_field() }}
                                             <a href="javascript:{}" onclick="document.getElementById('restore-{{$activity_type->id}}').submit(); return false;">Restore</a>
                                         </form>
                                     @else
-                                        <form action="{{ url('/activity-type/'.$activity_type->id) }}" id="deactivate-{{$activity_type->id}}" method="post">
+                                        <form action="{{ url('/activity-types/'.$activity_type->id) }}" id="deactivate-{{$activity_type->id}}" method="post">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             {{--<input type="submit" value="Deactivate">--}}
@@ -40,7 +40,7 @@
                         <div class="card-body">
                             @include('shared.errors')
 
-                            <form class="form-horizontal" role="form" method="POST" action="/activity-type">
+                            <form class="form-horizontal" role="form" method="POST" action="/activity-types">
                             {{ csrf_field() }}
 
                                 <!-- Mentee's Name -->

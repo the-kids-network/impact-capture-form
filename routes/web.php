@@ -65,20 +65,37 @@ Route::get('/finance/process-expense-claims','FinanceController@processExpenseCl
 Route::post('/mentee/restore/{id}','MenteeController@restore');
 Route::resource('/mentee','MenteeController');
 
-// Session reports
-Route::post('/activity-type/restore/{id}','\App\Domains\SessionReports\Controllers\ActivityTypeController@restore');
-Route::post('/emotional-state/restore/{id}','\App\Domains\SessionReports\Controllers\EmotionalStateController@restore');
-Route::resource('/emotional-state','\App\Domains\SessionReports\Controllers\EmotionalStateController');
-Route::resource('/activity-type','\App\Domains\SessionReports\Controllers\ActivityTypeController');
+// Session reports - lookups
+Route::get('/activity-types/home', '\App\Domains\SessionReports\Controllers\ActivityTypeController@index');
+Route::post('/activity-types', '\App\Domains\SessionReports\Controllers\ActivityTypeController@create');
+Route::delete('/activity-types/{id}', '\App\Domains\SessionReports\Controllers\ActivityTypeController@delete');
+Route::post('/activity-types/{id}/restore/','\App\Domains\SessionReports\Controllers\ActivityTypeController@restore');
+Route::get('/activity-types','\App\Domains\SessionReports\Controllers\ActivityTypeController@get');
 
-Route::get('/report/new','\App\Domains\SessionReports\Controllers\SessionReportController@newReportForm');
-Route::get('/report/{id}/edit','\App\Domains\SessionReports\Controllers\SessionReportController@editReportForm');
-Route::get('/report/export','\App\Domains\SessionReports\Controllers\SessionReportController@export')->name('report.export');
-Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@getMany')->name('reports.get');
-Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@getOne');
-Route::post('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@create');
-Route::put('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@update');
-Route::delete('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@delete');
+Route::get('/emotional-states/home', '\App\Domains\SessionReports\Controllers\EmotionalStateController@index');
+Route::post('/emotional-states', '\App\Domains\SessionReports\Controllers\EmotionalStateController@create');
+Route::delete('/emotional-states/{id}', '\App\Domains\SessionReports\Controllers\EmotionalStateController@delete');
+Route::post('/emotional-states/{id}/restore/','\App\Domains\SessionReports\Controllers\EmotionalStateController@restore');
+Route::get('/emotional-states','\App\Domains\SessionReports\Controllers\EmotionalStateController@get');
+
+Route::get('/session-ratings','\App\Domains\SessionReports\Controllers\SessionRatingController@get');
+Route::get('/safeguarding-options','\App\Domains\SessionReports\Controllers\SafeguardingConcernController@get');
+
+// Session reports - v1
+Route::get('/report/new','\App\Domains\SessionReports\Controllers\SessionReportControllerV1@newReportForm');
+Route::get('/report/{id}/edit','\App\Domains\SessionReports\Controllers\SessionReportControllerV1@editReportForm');
+Route::get('/report/export','\App\Domains\SessionReports\Controllers\SessionReportControllerV1@export')->name('report.export');
+Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportControllerV1@get')->name('reports.get');
+Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportControllerV1@getById');
+Route::post('/report', '\App\Domains\SessionReports\Controllers\SessionReportControllerV1@create');
+Route::delete('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportControllerV1@delete');
+
+// Session reports - v2
+Route::get('/session-reports/home', '\App\Domains\SessionReports\Controllers\SessionReportControllerV2@index');
+Route::get('/session-reports', '\App\Domains\SessionReports\Controllers\SessionReportControllerV2@get');
+Route::get('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportControllerV2@getById');
+Route::put('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportControllerV2@update');
+Route::delete('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportControllerV2@delete');
 
 // Expense claims
 Route::get('/expense-claim/export','ExpenseClaimController@export')->name('expense-claim.export');
@@ -139,12 +156,3 @@ Route::get('/fundings/export','\App\Domains\Funding\Controllers\FundingControlle
 Route::post('/funders/{id}/restore','\App\Domains\Funding\Controllers\FunderController@restore');
 Route::resource('/fundings','\App\Domains\Funding\Controllers\FundingController');
 Route::resource('/funders','\App\Domains\Funding\Controllers\FunderController');
-
-// Old routes to deprecate eventually once people's symlinks are updated
-Route::redirect('/my-reports', '/report/new');
-Route::redirect('/own-reports', '/report');
-Route::redirect('/my-expense-claims', '/expense-claim/new');
-Route::redirect('/manager/expense-claim/export', '/expense-claim/export');
-Route::redirect('/manager/view-expense-claims', '/expense-claim');
-Route::redirect('/schedule', '/calendar');
-

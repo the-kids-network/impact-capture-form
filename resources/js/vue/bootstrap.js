@@ -1,8 +1,9 @@
 import Vue from 'vue';
+import Vuex from 'vuex'
+
 import LocalStorage from 'vue-ls';
 import VueSessionStorage from 'vue-sessionstorage'
 import VModal from 'vue-js-modal'
-import VueRouter from 'vue-router'
 import globalMixins from './mixin';
 
 import app from './components/app';
@@ -18,7 +19,7 @@ import register from './components/register/register';
 import calendar from './components/calendar/calendar';
 import documentUpload from './components/documents/upload';
 import documents from './components/documents/root';
-import sessionReports from './components/session-reports/search'
+import sessionReports from './components/session-reports/index'
 import sessionReportEdit from './components/session-reports/edit'
 
 /*
@@ -57,8 +58,8 @@ Vue.component('documents', documents)
 Vue.component('session-reports', sessionReports)
 Vue.component('session-report-editor', sessionReportEdit)
 
-// Vue plugins
-Vue.use(VueRouter)
+// Vue plugins#
+Vue.use(Vuex)
 
 Vue.use(LocalStorage, {
     namespace: 'tkn',

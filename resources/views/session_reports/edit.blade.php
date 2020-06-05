@@ -16,10 +16,7 @@
                 <div class="card-header">Edit Session Report: {{$report->id}}</div>
                     <div class="card-body">
                         <session-report-editor 
-                            :report="{{ json_encode($report) }}"
-                            :activity-types-lookup="{{ json_encode($activity_types) }}"
-                            :emotional-states-lookup="{{ json_encode($emotional_states) }}"
-                            :ratings-lookup="{{ json_encode($session_ratings) }}" />
+                            :session-report-id="{{ $report->id }}" />
                     </div>
                 </div>
             </div>

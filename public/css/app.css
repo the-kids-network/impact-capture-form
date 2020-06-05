@@ -19196,16 +19196,16 @@ be a descendant of the grid when it is being dragged.
 .session-report.show .modify-session-report .delete-report {
   margin-left: 10px;
 }
-.session-report.edit .session-report-editor .entry {
+.session-report-edit .entry {
   display: flex;
 }
-.session-report.edit .session-report-editor .entry .revert {
+.session-report-edit .entry .revert {
   margin-left: 10px;
 }
-.session-report.edit .session-report-editor .entry .revert span {
+.session-report-edit .entry .revert span {
   vertical-align: middle;
 }
-.session-report.edit .session-report-editor .edited {
+.session-report-edit .edited {
   background-color: #cc1867;
   color: #fff;
 }

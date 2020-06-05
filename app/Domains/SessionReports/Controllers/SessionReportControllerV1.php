@@ -18,14 +18,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Domains\SessionReports\Controllers\SessionReportValidation;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 
-class SessionReportController extends Controller {
+class SessionReportControllerV1 extends Controller {
 
-    private $sessionReportService;
-    private $plannedSessionService;
-    private $mentorLeaveService;
-    private $menteeLeaveService;
+    private SessionReportService $sessionReportService;
+    private PlannedSessionService $plannedSessionService;
+    private MentorLeaveService $mentorLeaveService;
+    private MenteeLeaveService $menteeLeaveService;
 
     public function __construct(SessionReportService $sessionReportService, 
                                 PlannedSessionService $plannedSessionService,
@@ -64,7 +63,7 @@ class SessionReportController extends Controller {
             ->with('report', $report);
     }
 
-    public function getMany(Request $request) {
+    public function get(Request $request) {
         $reports = [];
         if ($request->mentor_id) {
             $reports = $this->sessionReportService->getReportsForMentor($request->mentor_id);
@@ -74,8 +73,7 @@ class SessionReportController extends Controller {
 
         return view('session_reports.index')->with('reports',  $reports);
     }
-
-    public function getOne($id) {
+    public function getById($id) {
         $report = null;
         try {
             $report = $this->sessionReportService->getReport($id);
@@ -114,28 +112,6 @@ class SessionReportController extends Controller {
         $this->createLeave($request);
 
         return redirect('/report/'.$report->id)->with('status', 'Report Created');
-    }
-
-    // The only REST endpoint right now
-    public function update(Request $request, $id) {
-        list($validations, $messages) = SessionReportValidation::getRulesFor(['users', 'session_report']);
-        $bodyJson = $request->json()->all();
-        $validator = Validator::make($bodyJson, $validations, $messages);
-        if ($validator->fails()) {
-            return $this->handleError($validator);
-        }
-        
-        // Update the session report
-        $report = null;
-        try {
-            $report = $this->sessionReportService->updateReport($id, $request->all());
-        } catch (NotAuthorisedException $e) {
-            Log::error($e);
-            abort(401,'Unauthorized');
-        }
-
-        // return update report
-        return response()->json($report);
     }
 
     public function delete($id) {

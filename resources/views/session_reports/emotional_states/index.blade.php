@@ -13,12 +13,12 @@
 
                                 <div class="float-right">
                                     @if($emotional_state->trashed())
-                                        <form action="{{ url('/emotional-state/restore/'.$emotional_state->id) }}" id="restore-{{$emotional_state->id}}" method="post">
+                                        <form action="{{ url('/emotional-states/'.$emotional_state->id.'/restore') }}" id="restore-{{$emotional_state->id}}" method="post">
                                             {{ csrf_field() }}
                                             <a href="javascript:{}" onclick="document.getElementById('restore-{{$emotional_state->id}}').submit(); return false;">Restore</a>
                                         </form>
                                     @else
-                                        <form action="{{ url('/emotional-state/'.$emotional_state->id) }}" id="deactivate-{{$emotional_state->id}}" method="post">
+                                        <form action="{{ url('/emotional-states/'.$emotional_state->id) }}" id="deactivate-{{$emotional_state->id}}" method="post">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             {{--<input type="submit" value="Deactivate">--}}
@@ -39,7 +39,7 @@
                         <div class="card-body">
                             @include('shared.errors')
 
-                            <form class="form-horizontal" role="form" method="POST" action="/emotional-state">
+                            <form class="form-horizontal" role="form" method="POST" action="/emotional-states">
                                 {{ csrf_field() }}
                                 <!-- Emotional_state's Name -->
                                 <div class="form-group row">

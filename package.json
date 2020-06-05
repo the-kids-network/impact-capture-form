@@ -23,7 +23,6 @@
     "axios": "^0.18.1",
     "bootstrap": "^4.0",
     "bootstrap-table": "^1.16.0",
-    "dateformat": "^3.0.3",
     "filesize": "^4.2.1",
     "immutable": "^4.0.0-rc.12",
     "jquery": "^3.5",
@@ -41,8 +40,8 @@
     "vue-js-modal": "^2.0.0-rc.3",
     "vue-ls": "^3.2.1",
     "vue-popperjs": "^2.3.0",
-    "vue-router": "^3.3.2",
-    "vue-sessionstorage": "^1.0.0"
+    "vue-sessionstorage": "^1.0.0",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "cross-env": "^5.2.1",

@@ -21,6 +21,12 @@ class Mentee extends Model
         'deleted_at'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
