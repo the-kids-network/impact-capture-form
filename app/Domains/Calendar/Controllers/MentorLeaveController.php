@@ -21,7 +21,7 @@ class MentorLeaveController extends Controller {
     }
 
     public function newLeave(Request $request) {
-        return view('mentor_leave.new')
+        return view('calendar.events.mentor_leave.new')
             ->with('mentors', User::mentor()->canSee()->get());
     }
 
@@ -33,7 +33,7 @@ class MentorLeaveController extends Controller {
             abort(401, 'Unauthorized'); 
         }
 
-        return view('mentor_leave.show', compact('mentorLeave'))
+        return view('calendar.events.mentor_leave.show', compact('mentorLeave'))
             ->with('mentorLeave', $mentorLeave);
     }
 

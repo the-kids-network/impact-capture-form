@@ -145,7 +145,7 @@
                                 You can amend this later via the <a href="/calendar">Calendar</a>.
                             </div>
 
-                            @include('mentor_leave.info_message')
+                            @include('calendar.events.mentor_leave.info_message')
 
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label">Leave Type</label>

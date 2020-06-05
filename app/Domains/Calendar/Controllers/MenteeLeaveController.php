@@ -20,7 +20,7 @@ class MenteeLeaveController extends Controller {
     }
 
     public function newLeave() {
-        return view('mentee_leave.new')
+        return view('calendar.events.mentee_leave.new')
             ->with('mentees', Mentee::canSee()->get());
     }
 
@@ -32,7 +32,7 @@ class MenteeLeaveController extends Controller {
             abort(401, 'Unauthorized'); 
         }
 
-        return view('mentee_leave.show', compact('menteeLeave'))
+        return view('calendar.events.mentee_leave.show', compact('menteeLeave'))
             ->with('menteeLeave', $menteeLeave);
     }
 

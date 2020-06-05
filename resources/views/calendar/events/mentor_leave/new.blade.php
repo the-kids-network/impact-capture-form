@@ -25,7 +25,7 @@
                         <form class="form-horizontal" role="form" method="POST" action="/mentor/leave">
                             {{ csrf_field() }}
 
-                            @include('mentor_leave.info_message')
+                            @include('calendar.events.mentor_leave.info_message')
 
                             <!-- Mentor -->
                             @if(Auth::user()->isManager() || Auth::user()->isAdmin()) 

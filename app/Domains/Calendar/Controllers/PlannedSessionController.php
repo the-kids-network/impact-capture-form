@@ -26,7 +26,7 @@ class PlannedSessionController extends Controller {
     }
 
     public function newPlannedSession(Request $request) {
-        return view('planned_session.new')
+        return view('calendar.events.planned_session.new')
             ->with('mentees', Mentee::canSee()->get());
     }
 
@@ -36,7 +36,7 @@ class PlannedSessionController extends Controller {
             abort(401, 'Unauthorized'); 
         }
 
-        return view('planned_session.show', compact('plannedSession'))
+        return view('calendar.events.planned_session.show', compact('plannedSession'))
             ->with('plannedSession', $plannedSession);
     }
 
@@ -48,7 +48,7 @@ class PlannedSessionController extends Controller {
                 ->with('status', "You do not have planned session scheduled today or in the future. Create a new one instead below.");
         }
 
-        return view('planned_session.show', compact('plannedSession'))
+        return view('calendar.events.planned_session.show', compact('plannedSession'))
             ->with('plannedSession', $plannedSession);
     }
 
