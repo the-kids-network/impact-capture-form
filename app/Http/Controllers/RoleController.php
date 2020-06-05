@@ -15,23 +15,23 @@ class RoleController extends Controller {
     }
 
     public function index(){
-        return view('roles.index');
+        return view('user_management.roles.index');
     }
 
     public function mentor(){
-        return view('roles.mentor')
+        return view('user_management.roles.mentor')
             ->with('allMentors', User::mentor()->withDeactivated()->get())
             ->with('assignableMentors', User::mentor()->get())
             ->with('assignableMentees', Mentee::all());
     }
 
     public function manager(){
-        return view('roles.manager')
+        return view('user_management.roles.manager')
             ->with('users', User::all() );
     }
 
     public function admin(){
-        return view('roles.admin')
+        return view('user_management.roles.admin')
             ->with('users', User::all() );
     }
 

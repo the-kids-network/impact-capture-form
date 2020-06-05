@@ -23,7 +23,7 @@ class MenteeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('mentee.index')
+        return view('user_management.mentee.index')
             ->with('allMentees', Mentee::withTrashed()->get())
             ->with('assignableMentees', Mentee::all())
             ->with('assignableMentors', User::mentor()->get());

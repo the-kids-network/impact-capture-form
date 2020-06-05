@@ -4,7 +4,7 @@
     <div class="container mentor-management">
         <div class="row">
             <div class="col-md-12">
-                @include('roles.include.mentor_mentee_pairing_form', ['mentors' => $assignableMentors, 'mentees' => $assignableMentees])
+                @include('user_management.roles.include.mentor_mentee_pairing_form', ['mentors' => $assignableMentors, 'mentees' => $assignableMentees])
             </div>
         </div>
         <div class="row">
