@@ -6,9 +6,6 @@ import { numberOfPages, itemsForPage } from '../utils/pagination'
 const Component = {
 
     props: {
-        sessionReports: {
-            default: () => []        
-        }
     },
 
     components: {
@@ -28,7 +25,7 @@ const Component = {
                 </thead>
                 <tbody>
                     <tr 
-                        v-for="sessionReport in _itemsForCurrentPage"
+                        v-for="sessionReport in itemsForCurrentPage"
                         :id="'item-' + sessionReport.id"
                         class="item"
                         @click="sessionReportClicked(sessionReport.id)">   
@@ -67,7 +64,7 @@ const Component = {
                         </div>
                     </span> rows per page
                 </div>
-                <div class="page-selector" v-if="_pages.length > 1">
+                <div class="page-selector" v-if="pages.length > 1">
                     <ul class="pagination pages-list justify-content-end">
                         <li class="page-item" 
                             v-if="currentPage != 1" 
@@ -75,13 +72,13 @@ const Component = {
                             <a class="page-link"  href="#"> &lt; </a>
                         </li>
                         <li :class="'page-item ' + ((page === currentPage) ? 'active' : '')" 
-                            v-for="page in _pages" 
+                            v-for="page in pages" 
                             @click="currentPage = page">
                             <a class="page-link"  href="#"> {{page}} </a>
                         </li>
                         <li class="page-item" 
                             @click="currentPage++" 
-                            v-if="currentPage < _pages.length">
+                            v-if="currentPage < pages.length">
                             <a class="page-link" href="#"> &gt; </a>
                         </li>
                     </ul>
@@ -100,16 +97,24 @@ const Component = {
     },
 
     computed: {
-        _itemsForCurrentPage() {
+        sessionReports() {  
+            return this.$store.state.sessionReports.list
+        },
+        itemsForCurrentPage() {
             return itemsForPage(this.sessionReports, this.currentPage, this.currentPageSize)
-       },
-       _pages() {
+        },
+        pages() {
            const n = numberOfPages(this.sessionReports, this.currentPageSize);
            return range(1, n);
-       },
+        },
     },
 
-    watch: {},
+    watch: {
+        sessionReports: function(val) {
+            // reset current page on new results
+            this.currentPage = 1
+        }    
+    },
 
     created() {},
 
@@ -119,7 +124,8 @@ const Component = {
         formatDate: fd,
 
         sessionReportClicked(sessionReportId) {
-            this.$emit('sessionReportSelected', sessionReportId)
+            this.$store.commit('set', {path: 'sessionReports.currentlySelected', value: sessionReportId})
+            this.$emit('sessionReportSelected')
         }
     }
 };

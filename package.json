@@ -40,6 +40,7 @@
     "vue-js-modal": "^2.0.0-rc.3",
     "vue-ls": "^3.2.1",
     "vue-popperjs": "^2.3.0",
+    "vue-router": "^3.3.2",
     "vue-sessionstorage": "^1.0.0",
     "vuex": "^3.4.0"
   },

@@ -5,13 +5,6 @@ import { List } from 'immutable'
 const Component = {
 
     props: {
-        sessionReports: {
-            default: () => []        
-        },
-
-        initialSessionReportId: {
-            default: () => undefined
-        }
     },
 
     components: {
@@ -31,12 +24,12 @@ const Component = {
             <div class="controls"> 
                 <div class="row navigation">
                     <div class="col-md-6">
-                        <span :class="{'btn': true, 'btn-primary': true, 'disabled': !_previousSessionReportId}" 
+                        <span :class="{'btn': true, 'btn-primary': true, 'disabled': !previousSessionReportId}" 
                             type="button" 
-                            @click='goToSessionReport(_previousSessionReportId)'>Previous</span>
-                        <span :class="{'btn': true, 'btn-primary': true, 'disabled': !_nextSessionReportId}" 
+                            @click='goToSessionReport(previousSessionReportId)'>Previous</span>
+                        <span :class="{'btn': true, 'btn-primary': true, 'disabled': !nextSessionReportId}" 
                             type="button" 
-                            @click='goToSessionReport(_nextSessionReportId)'>Next</span>
+                            @click='goToSessionReport(nextSessionReportId)'>Next</span>
                     </div>
                     <div class="col-md-6">
                         <span :class="{'btn': true, 'btn-link': true, 'disabled': false}" 
@@ -50,11 +43,11 @@ const Component = {
             </div>
             <session-report-view
                 v-if="mode === 'view'"
-                :session-report-id=currentSessionReportId>
+                :session-report-id=activeSessionReportId>
             </session-report-view>
             <session-report-edit
                 v-if="mode === 'edit'"
-                :session-report-id=currentSessionReportId>
+                :session-report-id=activeSessionReportId>
             </session-report-edit>
         </div>
     `,
@@ -63,20 +56,29 @@ const Component = {
         return {
             // possible mode: view, edit
             mode: "view",
-            sessionReportList: List(this.sessionReports),
-            currentSessionReportId: this.initialSessionReportId
         }
     },
 
     computed: {
-        _previousSessionReportId() {
-            const key = getKeyOfItemWithId(this.sessionReportList, this.currentSessionReportId)
+        sessionReportList()  {
+            return List(this.$store.state.sessionReports.list)
+        },
+        activeSessionReportId: {
+            get () {
+                return this.$store.state.sessionReports.currentlySelected
+            },
+            set (value) {
+                this.$store.commit('set', {path: 'sessionReports.currentlySelected', value: value})
+            }
+        },
+        previousSessionReportId() {
+            const key = getKeyOfItemWithId(this.sessionReportList, this.activeSessionReportId)
             const previousKey = key - 1
             return (previousKey >= 0) ? this.sessionReportList.get(previousKey).id : null
         },
 
-        _nextSessionReportId() {
-            const key = getKeyOfItemWithId(this.sessionReportList, this.currentSessionReportId)
+        nextSessionReportId() {
+            const key = getKeyOfItemWithId(this.sessionReportList, this.activeSessionReportId)
             const nextKey = key + 1
             return (nextKey < this.sessionReportList.size) ? this.sessionReportList.get(nextKey).id : null
         }
@@ -99,7 +101,7 @@ const Component = {
         },
         
         goToSessionReport(sessionReportId) {
-            if (sessionReportId) this.currentSessionReportId = sessionReportId
+            if (sessionReportId) this.activeSessionReportId = sessionReportId
         },
 
         closeWorkflow() {

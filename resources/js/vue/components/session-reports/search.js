@@ -9,7 +9,6 @@ const Component = {
         mentors: {
             default: () => []        
         },
-        searchCriteria: null
     },
 
     mixins: [statusMixin],
@@ -48,7 +47,7 @@ const Component = {
                                 v-model="menteeId">
                                 <option value="" selected>Any</option>
                                 <option 
-                                    v-for="mentee in _selectableMentees"
+                                    v-for="mentee in selectableMentees"
                                     :value="mentee.id">
                                     {{ mentee.name }}
                                 </option>
@@ -88,19 +87,45 @@ const Component = {
     data() {
         return {
             isSearching: false,
-
-            // search criteria
-            mentorId: null,
-            menteeId: null,
-            sessionDateRangeStart: null,
-            sessionDateRangeEnd: null,
         }
     },
 
     computed: {
-        _selectableMentees() {
+        selectableMentees() {
             const mentor = List(this.mentors).find(m => m.id === this.mentorId)
             return mentor ? mentor.mentees : []
+        },
+        mentorId: {
+            get () {
+                return this.$store.state.search.mentorId
+            },
+            set (value) {
+                this.$store.commit('set', {path: 'search.mentorId', value: value})
+            }
+        },
+        menteeId: {
+            get () {
+                return this.$store.state.search.menteeId
+            },
+            set (value) {
+                this.$store.commit('set', {path: 'search.menteeId', value: value})
+            }
+        },
+        sessionDateRangeStart: {
+            get () {
+                return this.$store.state.search.sessionDateRangeStart
+            },
+            set (value) {
+                this.$store.commit('set', {path: 'search.sessionDateRangeStart', value: value})
+            }
+        },
+        sessionDateRangeEnd: {
+            get () {
+                return this.$store.state.search.sessionDateRangeEnd
+            },
+            set (value) {
+                this.$store.commit('set', {path: 'search.sessionDateRangeEnd', value: value})
+            }
         }
     },
 
@@ -112,7 +137,7 @@ const Component = {
     },
 
     created() {
-        this.doInitialSearch()
+        this.search()
     },
 
     mounted() {
@@ -133,34 +158,6 @@ const Component = {
     },
 
     methods: { 
-        publishSessionReports(sessionReports) {
-            this.$emit('results', {
-                sessionReports: sessionReports,
-                searchCriteria: {
-                    mentorId: this.mentorId,
-                    menteeId: this.menteeId,
-                    sessionDateRangeStart: this.sessionDateRangeStart,
-                    sessionDateRangeEnd: this.sessionDateRangeEnd
-                }
-            })
-        },
-
-        doInitialSearch() {
-            if (this.searchCriteria) {
-                // if criteria supplied to component, use it
-                this.mentorId =  this.searchCriteria.mentorId
-                this.menteeId = this.searchCriteria.menteeId
-                this.sessionDateRangeStart = this.searchCriteria.sessionDateRangeStart
-                this.sessionDateRangeEnd = this.searchCriteria.sessionDateRangeEnd
-            } else {
-                // otherwise default to last 1 month of data
-                this.sessionDateRangeStart = moment().subtract(1, 'months').format('DD-MM-YYYY')
-                this.sessionDateRangeEnd = moment().format('DD-MM-YYYY')
-            }
-    
-            this.search()
-        },
-
         async search() {
             this.clearErrors()
 
@@ -176,12 +173,16 @@ const Component = {
             try {
                 this.isSearching = true
                 const results = await this.getSessionReports(query)
-                this.publishSessionReports(results)
+                this.setResults(results)
             } catch (e) {
                 this.addErrors(extractErrors({e, defaultMsg: `Unknown problem searching session reports`}))
             } finally {
                 this.isSearching = false
             }
+        },
+
+        setResults(results) {
+            this.$store.commit('set', {path: 'sessionReports.list', value: results})
         },
 
         async getSessionReports(queryParameters) {

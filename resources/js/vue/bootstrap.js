@@ -1,10 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
+import VueRouter from 'vue-router'
 
 import LocalStorage from 'vue-ls';
 import VueSessionStorage from 'vue-sessionstorage'
 import VModal from 'vue-js-modal'
 import globalMixins from './mixin';
+
+import routes from './routes';
+
+import sessionReportsStore from './store/modules/session-reports'
 
 import app from './components/app';
 import statusBox from './components/status-box/root';
@@ -59,6 +64,7 @@ Vue.component('session-reports', sessionReports)
 Vue.component('session-report-editor', sessionReportEdit)
 
 // Vue plugins#
+Vue.use(VueRouter)
 Vue.use(Vuex)
 
 Vue.use(LocalStorage, {
@@ -71,8 +77,18 @@ Vue.use(VueSessionStorage)
 
 Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false } })
 
+// Router
+const router = new VueRouter({
+    routes: routes
+})
+
+// Stores
+const store = sessionReportsStore
+
 // Load Vue app
 new Vue({
+    router,
+    store,
     mixins: [app],
     components: {
     }
