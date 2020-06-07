@@ -1,9 +1,17 @@
 import Vue from 'vue';
+import Vuex from 'vuex'
+import VueRouter from 'vue-router'
+
 import LocalStorage from 'vue-ls';
 import VueSessionStorage from 'vue-sessionstorage'
 import VModal from 'vue-js-modal'
-import VueRouter from 'vue-router'
+import VueClipboard from 'vue-clipboard2'
+
 import globalMixins from './mixin';
+import routes from './routes';
+
+import globalStore from './store/modules/global'
+import sessionReportsSearchStore from './store/modules/session-report-search'
 
 import app from './components/app';
 import statusBox from './components/status-box/root';
@@ -18,7 +26,6 @@ import register from './components/register/register';
 import calendar from './components/calendar/calendar';
 import documentUpload from './components/documents/upload';
 import documents from './components/documents/root';
-import sessionReports from './components/session-reports/search'
 import sessionReportEdit from './components/session-reports/edit'
 
 /*
@@ -54,11 +61,11 @@ Vue.component('register', register)
 Vue.component('calendar', calendar)
 Vue.component('document-upload', documentUpload)
 Vue.component('documents', documents)
-Vue.component('session-reports', sessionReports)
 Vue.component('session-report-editor', sessionReportEdit)
 
-// Vue plugins
+// Vue plugins#
 Vue.use(VueRouter)
+Vue.use(Vuex)
 
 Vue.use(LocalStorage, {
     namespace: 'tkn',
@@ -70,8 +77,26 @@ Vue.use(VueSessionStorage)
 
 Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false } })
 
+Vue.use(VueClipboard)
+
+// Vuex
+const store = new Vuex.Store({
+    modules: {
+        global: globalStore,
+        sessionReportSearch: sessionReportsSearchStore
+    }
+})
+store.dispatch('getUser');
+
+// Vue Router
+const router = new VueRouter({
+    routes: routes
+})
+
 // Load Vue app
 new Vue({
+    router,
+    store,
     mixins: [app],
     components: {
     }

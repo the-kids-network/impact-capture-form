@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/user/current', 'UserApiController@current');
+
+// Session report lookups
+Route::get('/activity-types','\App\Domains\SessionReports\Controllers\ActivityTypeApiController@get');
+Route::get('/emotional-states','\App\Domains\SessionReports\Controllers\EmotionalStateApiController@get');
+Route::get('/session-ratings','\App\Domains\SessionReports\Controllers\SessionRatingApiController@get');
+Route::get('/safeguarding-options','\App\Domains\SessionReports\Controllers\SafeguardingConcernApiController@get');
+
+// Session reports - v2
+Route::get('/session-reports', '\App\Domains\SessionReports\Controllers\SessionReportApiController@get');
+Route::get('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@getById');
+Route::put('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@update');
+Route::delete('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@delete');

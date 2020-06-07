@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Configuration\Spark;
+use App\Configuration\SupportContactConfiguration;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageManager;
 
@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Spark::sendSupportEmailsTo($this->sendSupportEmailsTo);
+        SupportContactConfiguration::sendSupportEmailsTo($this->sendSupportEmailsTo);
 
     }
     /**
@@ -35,8 +35,8 @@ class AppServiceProvider extends ServiceProvider
         $this->registerServices();
     }
 
-        /**
-     * Register the Spark services.
+    /**
+     * Register the services.
      *
      * @return void
      */

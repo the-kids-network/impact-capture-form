@@ -9,7 +9,6 @@ const App = {
      * The application's data.
      */
     data: {
-        user: Spark.state.user,
         supportForm: new SparkForm({
             from: '',
             subject: '',
@@ -17,21 +16,25 @@ const App = {
         })
     },
 
+    watch : {
+        user() {
+            if (this.user) {
+                this.supportForm.from = this.user.email;
+            }
+        }
+    },
+
     /**
      * The component has been created by Vue.
      */
     created() {
-        var self = this;
+        const vm = this;
 
         Bus.$on('updateUser', function () {
-            self.getUser();
+            vm.$store.dispatch('getUser')
         });
 
         Bus.$on('showSupportForm', function () {
-            if (self.user) {
-                self.supportForm.from = self.user.email;
-            }
-
             $('#modal-support').modal('show');
 
             setTimeout(() => {
@@ -53,16 +56,6 @@ const App = {
          */
         whenReady() {
             //
-        },
-
-        /*
-         * Get the current user of the application.
-         */
-        getUser() {
-            axios.get('/user/current')
-                .then(response => {
-                    this.user = response.data;
-                });
         },
 
         /**

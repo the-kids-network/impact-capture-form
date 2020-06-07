@@ -2,27 +2,25 @@ import SparkForm from '../../forms/form'
 import http from '../../forms/http'
 
 const Component = {
-    props: ['user'],
 
-    /**
-     * The component's data.
-     */
     data() {
         return {
-            form: new SparkForm({
+            form: new SparkForm(
+                {
                     name: '',
                     email: ''
-                })
+                }
+            )
         };
     },
 
-
-    /**
-     * Bootstrap the component.
-     */
-    mounted() {
-        this.form.name = this.user.name;
-        this.form.email = this.user.email;
+    watch: {
+        user() {
+            if (this.user) {
+                this.form.name = this.user.name;
+                this.form.email = this.user.email;
+            }
+        }
     },
 
     methods: {

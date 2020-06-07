@@ -7,6 +7,7 @@ use App\Domains\SessionReports\Emails\ReportSubmittedToManager;
 use App\Domains\SessionReports\Emails\ReportSubmittedToMentor;
 use App\Domains\SessionReports\Emails\SafeguardingConcernAlert;
 use App\Domains\SessionReports\Models\Report;
+use App\Domains\SessionReports\Models\SessionSearch;
 use App\Exceptions\NotAuthorisedException;
 use App\Exceptions\NotFoundException;
 use App\Mentee;
@@ -16,6 +17,28 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class SessionReportService {
+
+    public function getReportsUsing(SessionSearch $sessionSearch) {
+        $query = Report::canSee();
+        
+        if ($sessionSearch->mentorId) {
+            $query->whereMentorId($sessionSearch->mentorId);
+        }
+
+        if ($sessionSearch->menteeId) {
+            $query->whereMenteeId($sessionSearch->menteeId);
+        }
+
+        if ($sessionSearch->sessionDateRangeStart) {
+            $query->where('session_date', '>=', Carbon::createFromFormat('d-m-Y', $sessionSearch->sessionDateRangeStart)->setTime(0,0,0));
+        }
+
+        if ($sessionSearch->sessionDateRangeEnd) {
+            $query->where('session_date', '<=', Carbon::createFromFormat('d-m-Y', $sessionSearch->sessionDateRangeEnd)->setTime(0,0,0));
+        }
+
+        return $query->orderBy('created_at','desc')->get();
+    }
 
     public function getReportsForMentor($mentorId) {
         $reports = Report::canSee()
@@ -55,7 +78,7 @@ class SessionReportService {
         $report = new Report();
         $report->mentor_id = $keyValuePairs['mentor_id'];
         $report->mentee_id = $keyValuePairs['mentee_id'];
-        $report->session_date = Carbon::createFromFormat('d-m-Y',$keyValuePairs['session_date'])->setTime(0,0,0);
+        $report->session_date = Carbon::createFromFormat('d-m-Y', $keyValuePairs['session_date'])->setTime(0,0,0);
         $report->rating_id = $keyValuePairs['rating_id'];
         $report->length_of_session = $keyValuePairs['length_of_session'];
         $report->activity_type_id = $keyValuePairs['activity_type_id'];

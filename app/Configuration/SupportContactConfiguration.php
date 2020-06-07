@@ -2,7 +2,7 @@
 
 namespace App\Configuration;
 
-trait ManagesSupportOptions
+trait SupportContactConfiguration
 {
     /**
      * The e-mail address where customer support e-mails should be sent.

@@ -1,5 +1,4 @@
 const Component = {
-    props: ['user'],
 
     data() {
         return {

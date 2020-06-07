@@ -24562,6 +24562,23 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/clipboard/dist/clipboard.min.js":
+/*!******************************************************!*\
+  !*** ./node_modules/clipboard/dist/clipboard.min.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*!
+ * clipboard.js v2.0.6
+ * https://clipboardjs.com/
+ * 
+ * Licensed MIT © Zeno Rocha
+ */
+!function(t,e){ true?module.exports=e():undefined}(this,function(){return o={},r.m=n=[function(t,e){t.exports=function(t){var e;if("SELECT"===t.nodeName)t.focus(),e=t.value;else if("INPUT"===t.nodeName||"TEXTAREA"===t.nodeName){var n=t.hasAttribute("readonly");n||t.setAttribute("readonly",""),t.select(),t.setSelectionRange(0,t.value.length),n||t.removeAttribute("readonly"),e=t.value}else{t.hasAttribute("contenteditable")&&t.focus();var o=window.getSelection(),r=document.createRange();r.selectNodeContents(t),o.removeAllRanges(),o.addRange(r),e=o.toString()}return e}},function(t,e){function n(){}n.prototype={on:function(t,e,n){var o=this.e||(this.e={});return(o[t]||(o[t]=[])).push({fn:e,ctx:n}),this},once:function(t,e,n){var o=this;function r(){o.off(t,r),e.apply(n,arguments)}return r._=e,this.on(t,r,n)},emit:function(t){for(var e=[].slice.call(arguments,1),n=((this.e||(this.e={}))[t]||[]).slice(),o=0,r=n.length;o<r;o++)n[o].fn.apply(n[o].ctx,e);return this},off:function(t,e){var n=this.e||(this.e={}),o=n[t],r=[];if(o&&e)for(var i=0,a=o.length;i<a;i++)o[i].fn!==e&&o[i].fn._!==e&&r.push(o[i]);return r.length?n[t]=r:delete n[t],this}},t.exports=n,t.exports.TinyEmitter=n},function(t,e,n){var d=n(3),h=n(4);t.exports=function(t,e,n){if(!t&&!e&&!n)throw new Error("Missing required arguments");if(!d.string(e))throw new TypeError("Second argument must be a String");if(!d.fn(n))throw new TypeError("Third argument must be a Function");if(d.node(t))return s=e,f=n,(u=t).addEventListener(s,f),{destroy:function(){u.removeEventListener(s,f)}};if(d.nodeList(t))return a=t,c=e,l=n,Array.prototype.forEach.call(a,function(t){t.addEventListener(c,l)}),{destroy:function(){Array.prototype.forEach.call(a,function(t){t.removeEventListener(c,l)})}};if(d.string(t))return o=t,r=e,i=n,h(document.body,o,r,i);throw new TypeError("First argument must be a String, HTMLElement, HTMLCollection, or NodeList");var o,r,i,a,c,l,u,s,f}},function(t,n){n.node=function(t){return void 0!==t&&t instanceof HTMLElement&&1===t.nodeType},n.nodeList=function(t){var e=Object.prototype.toString.call(t);return void 0!==t&&("[object NodeList]"===e||"[object HTMLCollection]"===e)&&"length"in t&&(0===t.length||n.node(t[0]))},n.string=function(t){return"string"==typeof t||t instanceof String},n.fn=function(t){return"[object Function]"===Object.prototype.toString.call(t)}},function(t,e,n){var a=n(5);function i(t,e,n,o,r){var i=function(e,n,t,o){return function(t){t.delegateTarget=a(t.target,n),t.delegateTarget&&o.call(e,t)}}.apply(this,arguments);return t.addEventListener(n,i,r),{destroy:function(){t.removeEventListener(n,i,r)}}}t.exports=function(t,e,n,o,r){return"function"==typeof t.addEventListener?i.apply(null,arguments):"function"==typeof n?i.bind(null,document).apply(null,arguments):("string"==typeof t&&(t=document.querySelectorAll(t)),Array.prototype.map.call(t,function(t){return i(t,e,n,o,r)}))}},function(t,e){if("undefined"!=typeof Element&&!Element.prototype.matches){var n=Element.prototype;n.matches=n.matchesSelector||n.mozMatchesSelector||n.msMatchesSelector||n.oMatchesSelector||n.webkitMatchesSelector}t.exports=function(t,e){for(;t&&9!==t.nodeType;){if("function"==typeof t.matches&&t.matches(e))return t;t=t.parentNode}}},function(t,e,n){"use strict";n.r(e);var o=n(0),r=n.n(o),i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t};function a(t,e){for(var n=0;n<e.length;n++){var o=e[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}function c(t){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,c),this.resolveOptions(t),this.initSelection()}var l=(function(t,e,n){return e&&a(t.prototype,e),n&&a(t,n),t}(c,[{key:"resolveOptions",value:function(t){var e=0<arguments.length&&void 0!==t?t:{};this.action=e.action,this.container=e.container,this.emitter=e.emitter,this.target=e.target,this.text=e.text,this.trigger=e.trigger,this.selectedText=""}},{key:"initSelection",value:function(){this.text?this.selectFake():this.target&&this.selectTarget()}},{key:"selectFake",value:function(){var t=this,e="rtl"==document.documentElement.getAttribute("dir");this.removeFake(),this.fakeHandlerCallback=function(){return t.removeFake()},this.fakeHandler=this.container.addEventListener("click",this.fakeHandlerCallback)||!0,this.fakeElem=document.createElement("textarea"),this.fakeElem.style.fontSize="12pt",this.fakeElem.style.border="0",this.fakeElem.style.padding="0",this.fakeElem.style.margin="0",this.fakeElem.style.position="absolute",this.fakeElem.style[e?"right":"left"]="-9999px";var n=window.pageYOffset||document.documentElement.scrollTop;this.fakeElem.style.top=n+"px",this.fakeElem.setAttribute("readonly",""),this.fakeElem.value=this.text,this.container.appendChild(this.fakeElem),this.selectedText=r()(this.fakeElem),this.copyText()}},{key:"removeFake",value:function(){this.fakeHandler&&(this.container.removeEventListener("click",this.fakeHandlerCallback),this.fakeHandler=null,this.fakeHandlerCallback=null),this.fakeElem&&(this.container.removeChild(this.fakeElem),this.fakeElem=null)}},{key:"selectTarget",value:function(){this.selectedText=r()(this.target),this.copyText()}},{key:"copyText",value:function(){var e=void 0;try{e=document.execCommand(this.action)}catch(t){e=!1}this.handleResult(e)}},{key:"handleResult",value:function(t){this.emitter.emit(t?"success":"error",{action:this.action,text:this.selectedText,trigger:this.trigger,clearSelection:this.clearSelection.bind(this)})}},{key:"clearSelection",value:function(){this.trigger&&this.trigger.focus(),document.activeElement.blur(),window.getSelection().removeAllRanges()}},{key:"destroy",value:function(){this.removeFake()}},{key:"action",set:function(t){var e=0<arguments.length&&void 0!==t?t:"copy";if(this._action=e,"copy"!==this._action&&"cut"!==this._action)throw new Error('Invalid "action" value, use either "copy" or "cut"')},get:function(){return this._action}},{key:"target",set:function(t){if(void 0!==t){if(!t||"object"!==(void 0===t?"undefined":i(t))||1!==t.nodeType)throw new Error('Invalid "target" value, use a valid Element');if("copy"===this.action&&t.hasAttribute("disabled"))throw new Error('Invalid "target" attribute. Please use "readonly" instead of "disabled" attribute');if("cut"===this.action&&(t.hasAttribute("readonly")||t.hasAttribute("disabled")))throw new Error('Invalid "target" attribute. You can\'t cut text from elements with "readonly" or "disabled" attributes');this._target=t}},get:function(){return this._target}}]),c),u=n(1),s=n.n(u),f=n(2),d=n.n(f),h="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},p=function(t,e,n){return e&&y(t.prototype,e),n&&y(t,n),t};function y(t,e){for(var n=0;n<e.length;n++){var o=e[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}var m=(function(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}(v,s.a),p(v,[{key:"resolveOptions",value:function(t){var e=0<arguments.length&&void 0!==t?t:{};this.action="function"==typeof e.action?e.action:this.defaultAction,this.target="function"==typeof e.target?e.target:this.defaultTarget,this.text="function"==typeof e.text?e.text:this.defaultText,this.container="object"===h(e.container)?e.container:document.body}},{key:"listenClick",value:function(t){var e=this;this.listener=d()(t,"click",function(t){return e.onClick(t)})}},{key:"onClick",value:function(t){var e=t.delegateTarget||t.currentTarget;this.clipboardAction&&(this.clipboardAction=null),this.clipboardAction=new l({action:this.action(e),target:this.target(e),text:this.text(e),container:this.container,trigger:e,emitter:this})}},{key:"defaultAction",value:function(t){return b("action",t)}},{key:"defaultTarget",value:function(t){var e=b("target",t);if(e)return document.querySelector(e)}},{key:"defaultText",value:function(t){return b("text",t)}},{key:"destroy",value:function(){this.listener.destroy(),this.clipboardAction&&(this.clipboardAction.destroy(),this.clipboardAction=null)}}],[{key:"isSupported",value:function(t){var e=0<arguments.length&&void 0!==t?t:["copy","cut"],n="string"==typeof e?[e]:e,o=!!document.queryCommandSupported;return n.forEach(function(t){o=o&&!!document.queryCommandSupported(t)}),o}}]),v);function v(t,e){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,v);var n=function(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}(this,(v.__proto__||Object.getPrototypeOf(v)).call(this));return n.resolveOptions(e),n.listenClick(t),n}function b(t,e){var n="data-clipboard-"+t;if(e.hasAttribute(n))return e.getAttribute(n)}e.default=m}],r.c=o,r.d=function(t,e,n){r.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:n})},r.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(r.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)r.d(n,o,function(t){return e[t]}.bind(null,o));return n},r.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return r.d(e,"a",e),e},r.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},r.p="",r(r.s=6).default;function r(t){if(o[t])return o[t].exports;var e=o[t]={i:t,l:!1,exports:{}};return n[t].call(e.exports,e,e.exports,r),e.l=!0,e.exports}var n,o});
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-popperjs/dist/vue-popper.css":
 /*!***************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-popperjs/dist/vue-popper.css ***!
@@ -24664,243 +24681,6 @@ function toComment(sourceMap) {
 
 	return '/*# ' + data + ' */';
 }
-
-
-/***/ }),
-
-/***/ "./node_modules/dateformat/lib/dateformat.js":
-/*!***************************************************!*\
-  !*** ./node_modules/dateformat/lib/dateformat.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_RESULT__;/*
- * Date Format 1.2.3
- * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
- * MIT license
- *
- * Includes enhancements by Scott Trenda <scott.trenda.net>
- * and Kris Kowal <cixar.com/~kris.kowal/>
- *
- * Accepts a date, a mask, or a date and a mask.
- * Returns a formatted version of the given date.
- * The date defaults to the current date/time.
- * The mask defaults to dateFormat.masks.default.
- */
-
-(function(global) {
-  'use strict';
-
-  var dateFormat = (function() {
-      var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|"[^"]*"|'[^']*'/g;
-      var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
-      var timezoneClip = /[^-+\dA-Z]/g;
-  
-      // Regexes and supporting functions are cached through closure
-      return function (date, mask, utc, gmt) {
-  
-        // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
-        if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
-          mask = date;
-          date = undefined;
-        }
-  
-        date = date || new Date;
-  
-        if(!(date instanceof Date)) {
-          date = new Date(date);
-        }
-  
-        if (isNaN(date)) {
-          throw TypeError('Invalid date');
-        }
-  
-        mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
-  
-        // Allow setting the utc/gmt argument via the mask
-        var maskSlice = mask.slice(0, 4);
-        if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
-          mask = mask.slice(4);
-          utc = true;
-          if (maskSlice === 'GMT:') {
-            gmt = true;
-          }
-        }
-  
-        var _ = utc ? 'getUTC' : 'get';
-        var d = date[_ + 'Date']();
-        var D = date[_ + 'Day']();
-        var m = date[_ + 'Month']();
-        var y = date[_ + 'FullYear']();
-        var H = date[_ + 'Hours']();
-        var M = date[_ + 'Minutes']();
-        var s = date[_ + 'Seconds']();
-        var L = date[_ + 'Milliseconds']();
-        var o = utc ? 0 : date.getTimezoneOffset();
-        var W = getWeek(date);
-        var N = getDayOfWeek(date);
-        var flags = {
-          d:    d,
-          dd:   pad(d),
-          ddd:  dateFormat.i18n.dayNames[D],
-          dddd: dateFormat.i18n.dayNames[D + 7],
-          m:    m + 1,
-          mm:   pad(m + 1),
-          mmm:  dateFormat.i18n.monthNames[m],
-          mmmm: dateFormat.i18n.monthNames[m + 12],
-          yy:   String(y).slice(2),
-          yyyy: y,
-          h:    H % 12 || 12,
-          hh:   pad(H % 12 || 12),
-          H:    H,
-          HH:   pad(H),
-          M:    M,
-          MM:   pad(M),
-          s:    s,
-          ss:   pad(s),
-          l:    pad(L, 3),
-          L:    pad(Math.round(L / 10)),
-          t:    H < 12 ? dateFormat.i18n.timeNames[0] : dateFormat.i18n.timeNames[1],
-          tt:   H < 12 ? dateFormat.i18n.timeNames[2] : dateFormat.i18n.timeNames[3],
-          T:    H < 12 ? dateFormat.i18n.timeNames[4] : dateFormat.i18n.timeNames[5],
-          TT:   H < 12 ? dateFormat.i18n.timeNames[6] : dateFormat.i18n.timeNames[7],
-          Z:    gmt ? 'GMT' : utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
-          o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-          S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10],
-          W:    W,
-          N:    N
-        };
-  
-        return mask.replace(token, function (match) {
-          if (match in flags) {
-            return flags[match];
-          }
-          return match.slice(1, match.length - 1);
-        });
-      };
-    })();
-
-  dateFormat.masks = {
-    'default':               'ddd mmm dd yyyy HH:MM:ss',
-    'shortDate':             'm/d/yy',
-    'mediumDate':            'mmm d, yyyy',
-    'longDate':              'mmmm d, yyyy',
-    'fullDate':              'dddd, mmmm d, yyyy',
-    'shortTime':             'h:MM TT',
-    'mediumTime':            'h:MM:ss TT',
-    'longTime':              'h:MM:ss TT Z',
-    'isoDate':               'yyyy-mm-dd',
-    'isoTime':               'HH:MM:ss',
-    'isoDateTime':           'yyyy-mm-dd\'T\'HH:MM:sso',
-    'isoUtcDateTime':        'UTC:yyyy-mm-dd\'T\'HH:MM:ss\'Z\'',
-    'expiresHeaderFormat':   'ddd, dd mmm yyyy HH:MM:ss Z'
-  };
-
-  // Internationalization strings
-  dateFormat.i18n = {
-    dayNames: [
-      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-    ],
-    monthNames: [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-    ],
-    timeNames: [
-      'a', 'p', 'am', 'pm', 'A', 'P', 'AM', 'PM'
-    ]
-  };
-
-function pad(val, len) {
-  val = String(val);
-  len = len || 2;
-  while (val.length < len) {
-    val = '0' + val;
-  }
-  return val;
-}
-
-/**
- * Get the ISO 8601 week number
- * Based on comments from
- * http://techblog.procurios.nl/k/n618/news/view/33796/14863/Calculate-ISO-8601-week-and-year-in-javascript.html
- *
- * @param  {Object} `date`
- * @return {Number}
- */
-function getWeek(date) {
-  // Remove time components of date
-  var targetThursday = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-  // Change date to Thursday same week
-  targetThursday.setDate(targetThursday.getDate() - ((targetThursday.getDay() + 6) % 7) + 3);
-
-  // Take January 4th as it is always in week 1 (see ISO 8601)
-  var firstThursday = new Date(targetThursday.getFullYear(), 0, 4);
-
-  // Change date to Thursday same week
-  firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3);
-
-  // Check if daylight-saving-time-switch occurred and correct for it
-  var ds = targetThursday.getTimezoneOffset() - firstThursday.getTimezoneOffset();
-  targetThursday.setHours(targetThursday.getHours() - ds);
-
-  // Number of weeks between target Thursday and first Thursday
-  var weekDiff = (targetThursday - firstThursday) / (86400000*7);
-  return 1 + Math.floor(weekDiff);
-}
-
-/**
- * Get ISO-8601 numeric representation of the day of the week
- * 1 (for Monday) through 7 (for Sunday)
- * 
- * @param  {Object} `date`
- * @return {Number}
- */
-function getDayOfWeek(date) {
-  var dow = date.getDay();
-  if(dow === 0) {
-    dow = 7;
-  }
-  return dow;
-}
-
-/**
- * kind-of shortcut
- * @param  {*} val
- * @return {String}
- */
-function kindOf(val) {
-  if (val === null) {
-    return 'null';
-  }
-
-  if (val === undefined) {
-    return 'undefined';
-  }
-
-  if (typeof val !== 'object') {
-    return typeof val;
-  }
-
-  if (Array.isArray(val)) {
-    return 'array';
-  }
-
-  return {}.toString.call(val)
-    .slice(8, -1).toLowerCase();
-};
-
-
-
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
-      return dateFormat;
-    }).call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else {}
-})(this);
 
 
 /***/ }),
@@ -101718,6 +101498,100 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
+/***/ "./node_modules/vue-clipboard2/vue-clipboard.js":
+/*!******************************************************!*\
+  !*** ./node_modules/vue-clipboard2/vue-clipboard.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Clipboard = __webpack_require__(/*! clipboard/dist/clipboard.min.js */ "./node_modules/clipboard/dist/clipboard.min.js") // FIXME: workaround for browserify
+
+var VueClipboardConfig = {
+  autoSetContainer: false,
+  appendToBody: true // This fixes IE, see #50
+}
+
+var VueClipboard = {
+  install: function (Vue) {
+    Vue.prototype.$clipboardConfig = VueClipboardConfig
+    Vue.prototype.$copyText = function (text, container) {
+      return new Promise(function (resolve, reject) {
+        var fakeElement = document.createElement('button')
+        var clipboard = new Clipboard(fakeElement, {
+          text: function () { return text },
+          action: function () { return 'copy' },
+          container: typeof container === 'object' ? container : document.body
+        })
+        clipboard.on('success', function (e) {
+          clipboard.destroy()
+          resolve(e)
+        })
+        clipboard.on('error', function (e) {
+          clipboard.destroy()
+          reject(e)
+        })
+        if (VueClipboardConfig.appendToBody) document.body.appendChild(fakeElement)
+        fakeElement.click()
+        if (VueClipboardConfig.appendToBody) document.body.removeChild(fakeElement)
+      })
+    }
+
+    Vue.directive('clipboard', {
+      bind: function (el, binding, vnode) {
+        if (binding.arg === 'success') {
+          el._vClipboard_success = binding.value
+        } else if (binding.arg === 'error') {
+          el._vClipboard_error = binding.value
+        } else {
+          var clipboard = new Clipboard(el, {
+            text: function () { return binding.value },
+            action: function () { return binding.arg === 'cut' ? 'cut' : 'copy' },
+            container: VueClipboardConfig.autoSetContainer ? el : undefined
+          })
+          clipboard.on('success', function (e) {
+            var callback = el._vClipboard_success
+            callback && callback(e)
+          })
+          clipboard.on('error', function (e) {
+            var callback = el._vClipboard_error
+            callback && callback(e)
+          })
+          el._vClipboard = clipboard
+        }
+      },
+      update: function (el, binding) {
+        if (binding.arg === 'success') {
+          el._vClipboard_success = binding.value
+        } else if (binding.arg === 'error') {
+          el._vClipboard_error = binding.value
+        } else {
+          el._vClipboard.text = function () { return binding.value }
+          el._vClipboard.action = function () { return binding.arg === 'cut' ? 'cut' : 'copy' }
+        }
+      },
+      unbind: function (el, binding) {
+        if (binding.arg === 'success') {
+          delete el._vClipboard_success
+        } else if (binding.arg === 'error') {
+          delete el._vClipboard_error
+        } else {
+          el._vClipboard.destroy()
+          delete el._vClipboard
+        }
+      }
+    })
+  },
+  config: VueClipboardConfig
+}
+
+if (true) {
+  module.exports = VueClipboard
+} else {}
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-js-modal/dist/index.js":
 /*!*************************************************!*\
   !*** ./node_modules/vue-js-modal/dist/index.js ***!
@@ -117254,6 +117128,1119 @@ if (inBrowser && window.Vue) {
 
 /***/ }),
 
+/***/ "./node_modules/vuex/dist/vuex.esm.js":
+/*!********************************************!*\
+  !*** ./node_modules/vuex/dist/vuex.esm.js ***!
+  \********************************************/
+/*! exports provided: default, Store, createNamespacedHelpers, install, mapActions, mapGetters, mapMutations, mapState */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
+/*!
+ * vuex v3.4.0
+ * (c) 2020 Evan You
+ * @license MIT
+ */
+function applyMixin (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+}
+
+var target = typeof window !== 'undefined'
+  ? window
+  : typeof global !== 'undefined'
+    ? global
+    : {};
+var devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  }, { prepend: true });
+
+  store.subscribeAction(function (action, state) {
+    devtoolHook.emit('vuex:action', action, state);
+  }, { prepend: true });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+function partial (fn, arg) {
+  return function () {
+    return fn(arg)
+  }
+}
+
+// Base data struct for store's module, package with some attribute and method
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  // Store some children item
+  this._children = Object.create(null);
+  // Store the origin module object which passed by programmer
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+
+  // Store the origin module's state
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors = { namespaced: { configurable: true } };
+
+prototypeAccessors.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.hasChild = function hasChild (key) {
+  return key in this._children
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if ((true)) {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+ModuleCollection.prototype.isRegistered = function isRegistered (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+
+  return parent.hasChild(key)
+};
+
+function update (path, targetModule, newModule) {
+  if ((true)) {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if ((true)) {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if ((true)) {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+  this._makeLocalGettersCache = Object.create(null);
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  var state = this._modules.root.state;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  var useDevtools = options.devtools !== undefined ? options.devtools : Vue.config.devtools;
+  if (useDevtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors$1 = { state: { configurable: true } };
+
+prototypeAccessors$1.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors$1.state.set = function (v) {
+  if ((true)) {
+    assert(false, "use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if ((true)) {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+
+  this._subscribers
+    .slice() // shallow copy to prevent iterator invalidation if subscriber synchronously calls unsubscribe
+    .forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+    ( true) &&
+    options && options.silent
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if ((true)) {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+
+  try {
+    this._actionSubscribers
+      .slice() // shallow copy to prevent iterator invalidation if subscriber synchronously calls unsubscribe
+      .filter(function (sub) { return sub.before; })
+      .forEach(function (sub) { return sub.before(action, this$1.state); });
+  } catch (e) {
+    if ((true)) {
+      console.warn("[vuex] error in before action subscribers: ");
+      console.error(e);
+    }
+  }
+
+  var result = entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload);
+
+  return new Promise(function (resolve, reject) {
+    result.then(function (res) {
+      try {
+        this$1._actionSubscribers
+          .filter(function (sub) { return sub.after; })
+          .forEach(function (sub) { return sub.after(action, this$1.state); });
+      } catch (e) {
+        if ((true)) {
+          console.warn("[vuex] error in after action subscribers: ");
+          console.error(e);
+        }
+      }
+      resolve(res);
+    }, function (error) {
+      try {
+        this$1._actionSubscribers
+          .filter(function (sub) { return sub.error; })
+          .forEach(function (sub) { return sub.error(action, this$1.state, error); });
+      } catch (e) {
+        if ((true)) {
+          console.warn("[vuex] error in error action subscribers: ");
+          console.error(e);
+        }
+      }
+      reject(error);
+    });
+  })
+};
+
+Store.prototype.subscribe = function subscribe (fn, options) {
+  return genericSubscribe(fn, this._subscribers, options)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn, options) {
+  var subs = typeof fn === 'function' ? { before: fn } : fn;
+  return genericSubscribe(subs, this._actionSubscribers, options)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if ((true)) {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if ((true)) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if ((true)) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hasModule = function hasModule (path) {
+  if (typeof path === 'string') { path = [path]; }
+
+  if ((true)) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  return this._modules.isRegistered(path)
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors$1 );
+
+function genericSubscribe (fn, subs, options) {
+  if (subs.indexOf(fn) < 0) {
+    options && options.prepend
+      ? subs.unshift(fn)
+      : subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  // reset local getters cache
+  store._makeLocalGettersCache = Object.create(null);
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    // direct inline function use will lead to closure preserving oldVm.
+    // using partial to return function with only arguments preserved in closure environment.
+    computed[key] = partial(fn, store);
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    if (store._modulesNamespaceMap[namespace] && ("development" !== 'production')) {
+      console.error(("[vuex] duplicate namespace " + namespace + " for the namespaced module " + (path.join('/'))));
+    }
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      if ((true)) {
+        if (moduleName in parentState) {
+          console.warn(
+            ("[vuex] state field \"" + moduleName + "\" was overridden by a module with the same name at \"" + (path.join('.')) + "\"")
+          );
+        }
+      }
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (( true) && !store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (( true) && !store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  if (!store._makeLocalGettersCache[namespace]) {
+    var gettersProxy = {};
+    var splitPos = namespace.length;
+    Object.keys(store.getters).forEach(function (type) {
+      // skip if the target getter is not match this namespace
+      if (type.slice(0, splitPos) !== namespace) { return }
+
+      // extract local getter type
+      var localType = type.slice(splitPos);
+
+      // Add a port to the getters proxy.
+      // Define as getter property because
+      // we do not want to evaluate the getters in this time.
+      Object.defineProperty(gettersProxy, localType, {
+        get: function () { return store.getters[type]; },
+        enumerable: true
+      });
+    });
+    store._makeLocalGettersCache[namespace] = gettersProxy;
+  }
+
+  return store._makeLocalGettersCache[namespace]
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if ((true)) {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if ((true)) {
+      assert(store._committing, "do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.reduce(function (state, key) { return state[key]; }, state)
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if ((true)) {
+    assert(typeof type === 'string', ("expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if ((true)) {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+/**
+ * Reduce the code which written in Vue.js for getting the state.
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} states # Object's item can be a function which accept state and getters for param, you can do something for state and getters in it.
+ * @param {Object}
+ */
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  if (( true) && !isValidMap(states)) {
+    console.error('[vuex] mapState: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for committing the mutation
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} mutations # Object's item can be a function which accept `commit` function as the first param, it can accept anthor params. You can commit mutation and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  if (( true) && !isValidMap(mutations)) {
+    console.error('[vuex] mapMutations: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // Get the commit method from store
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for getting the getters
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} getters
+ * @return {Object}
+ */
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  if (( true) && !isValidMap(getters)) {
+    console.error('[vuex] mapGetters: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    // The namespace has been mutated by normalizeNamespace
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if (( true) && !(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for dispatch the action
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} actions # Object's item can be a function which accept `dispatch` function as the first param, it can accept anthor params. You can dispatch action and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  if (( true) && !isValidMap(actions)) {
+    console.error('[vuex] mapActions: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // get dispatch function from store
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Rebinding namespace param for mapXXX function in special scoped, and return them by simple object
+ * @param {String} namespace
+ * @return {Object}
+ */
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+/**
+ * Normalize the map
+ * normalizeMap([1, 2, 3]) => [ { key: 1, val: 1 }, { key: 2, val: 2 }, { key: 3, val: 3 } ]
+ * normalizeMap({a: 1, b: 2, c: 3}) => [ { key: 'a', val: 1 }, { key: 'b', val: 2 }, { key: 'c', val: 3 } ]
+ * @param {Array|Object} map
+ * @return {Object}
+ */
+function normalizeMap (map) {
+  if (!isValidMap(map)) {
+    return []
+  }
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+/**
+ * Validate whether given map is valid or not
+ * @param {*} map
+ * @return {Boolean}
+ */
+function isValidMap (map) {
+  return Array.isArray(map) || isObject(map)
+}
+
+/**
+ * Return a function expect two param contains namespace and map. it will normalize the namespace and then the param's function will handle the new namespace and the map.
+ * @param {Function} fn
+ * @return {Function}
+ */
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+/**
+ * Search a special module from store by namespace. if module not exist, print error message.
+ * @param {Object} store
+ * @param {String} helper
+ * @param {String} namespace
+ * @return {Object}
+ */
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if (( true) && !module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index = {
+  Store: Store,
+  install: install,
+  version: '3.4.0',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -117380,17 +118367,6 @@ window.Swal = __webpack_require__(/*! sweetalert2/dist/sweetalert2 */ "./node_mo
 if ($('#app').length > 0) {
   __webpack_require__(/*! ./vue/bootstrap */ "./resources/js/vue/bootstrap.js");
 }
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
-
-window.axios.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': Spark.csrfToken
-};
 
 /***/ }),
 
@@ -117405,29 +118381,38 @@ window.axios.defaults.headers.common = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_ls__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-ls */ "./node_modules/vue-ls/dist/vue-ls.js");
-/* harmony import */ var vue_ls__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_ls__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_sessionstorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-sessionstorage */ "./node_modules/vue-sessionstorage/dist/vue-sessionstorage.min.js");
-/* harmony import */ var vue_sessionstorage__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_sessionstorage__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _mixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./mixin */ "./resources/js/vue/mixin.js");
-/* harmony import */ var _components_app__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/app */ "./resources/js/vue/components/app.js");
-/* harmony import */ var _components_status_box_root__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/status-box/root */ "./resources/js/vue/components/status-box/root.js");
-/* harmony import */ var _components_layout_navbar_navbar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/layout/navbar/navbar */ "./resources/js/vue/components/layout/navbar/navbar.js");
-/* harmony import */ var _components_settings_settings__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/settings/settings */ "./resources/js/vue/components/settings/settings.js");
-/* harmony import */ var _components_settings_profile__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components//settings/profile */ "./resources/js/vue/components/settings/profile.js");
-/* harmony import */ var _components_settings_profile_update_contact_information__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/settings/profile/update-contact-information */ "./resources/js/vue/components/settings/profile/update-contact-information.js");
-/* harmony import */ var _components_settings_profile_update_profile_photo__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/settings/profile/update-profile-photo */ "./resources/js/vue/components/settings/profile/update-profile-photo.js");
-/* harmony import */ var _components_settings_security__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/settings/security */ "./resources/js/vue/components/settings/security.js");
-/* harmony import */ var _components_settings_security_update_password__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/settings/security/update-password */ "./resources/js/vue/components/settings/security/update-password.js");
-/* harmony import */ var _components_register_register__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/register/register */ "./resources/js/vue/components/register/register.js");
-/* harmony import */ var _components_calendar_calendar__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/calendar/calendar */ "./resources/js/vue/components/calendar/calendar.js");
-/* harmony import */ var _components_documents_upload__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/documents/upload */ "./resources/js/vue/components/documents/upload.js");
-/* harmony import */ var _components_documents_root__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/documents/root */ "./resources/js/vue/components/documents/root.js");
-/* harmony import */ var _components_session_reports_search__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/session-reports/search */ "./resources/js/vue/components/session-reports/search.js");
-/* harmony import */ var _components_session_reports_edit__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/session-reports/edit */ "./resources/js/vue/components/session-reports/edit.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_ls__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-ls */ "./node_modules/vue-ls/dist/vue-ls.js");
+/* harmony import */ var vue_ls__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_ls__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vue_sessionstorage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-sessionstorage */ "./node_modules/vue-sessionstorage/dist/vue-sessionstorage.min.js");
+/* harmony import */ var vue_sessionstorage__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_sessionstorage__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vue_clipboard2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-clipboard2 */ "./node_modules/vue-clipboard2/vue-clipboard.js");
+/* harmony import */ var vue_clipboard2__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_clipboard2__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _mixin__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./mixin */ "./resources/js/vue/mixin.js");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./routes */ "./resources/js/vue/routes.js");
+/* harmony import */ var _store_modules_global__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./store/modules/global */ "./resources/js/vue/store/modules/global.js");
+/* harmony import */ var _store_modules_session_report_search__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./store/modules/session-report-search */ "./resources/js/vue/store/modules/session-report-search.js");
+/* harmony import */ var _components_app__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/app */ "./resources/js/vue/components/app.js");
+/* harmony import */ var _components_status_box_root__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/status-box/root */ "./resources/js/vue/components/status-box/root.js");
+/* harmony import */ var _components_layout_navbar_navbar__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/layout/navbar/navbar */ "./resources/js/vue/components/layout/navbar/navbar.js");
+/* harmony import */ var _components_settings_settings__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/settings/settings */ "./resources/js/vue/components/settings/settings.js");
+/* harmony import */ var _components_settings_profile__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components//settings/profile */ "./resources/js/vue/components/settings/profile.js");
+/* harmony import */ var _components_settings_profile_update_contact_information__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/settings/profile/update-contact-information */ "./resources/js/vue/components/settings/profile/update-contact-information.js");
+/* harmony import */ var _components_settings_profile_update_profile_photo__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/settings/profile/update-profile-photo */ "./resources/js/vue/components/settings/profile/update-profile-photo.js");
+/* harmony import */ var _components_settings_security__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/settings/security */ "./resources/js/vue/components/settings/security.js");
+/* harmony import */ var _components_settings_security_update_password__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/settings/security/update-password */ "./resources/js/vue/components/settings/security/update-password.js");
+/* harmony import */ var _components_register_register__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/register/register */ "./resources/js/vue/components/register/register.js");
+/* harmony import */ var _components_calendar_calendar__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/calendar/calendar */ "./resources/js/vue/components/calendar/calendar.js");
+/* harmony import */ var _components_documents_upload__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/documents/upload */ "./resources/js/vue/components/documents/upload.js");
+/* harmony import */ var _components_documents_root__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/documents/root */ "./resources/js/vue/components/documents/root.js");
+/* harmony import */ var _components_session_reports_edit__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/session-reports/edit */ "./resources/js/vue/components/session-reports/edit.js");
+
+
+
+
 
 
 
@@ -117462,7 +118447,7 @@ if (window.Vue === undefined) {
  */
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.mixin(_mixin__WEBPACK_IMPORTED_MODULE_5__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.mixin(_mixin__WEBPACK_IMPORTED_MODULE_7__["default"]);
 /**
  * Define the Vue filters.
  */
@@ -117473,37 +118458,52 @@ __webpack_require__(/*! ./filters */ "./resources/js/vue/filters.js");
  */
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('status-box', _components_status_box_root__WEBPACK_IMPORTED_MODULE_7__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('nav-bar', _components_layout_navbar_navbar__WEBPACK_IMPORTED_MODULE_8__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('settings', _components_settings_settings__WEBPACK_IMPORTED_MODULE_9__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('profile', _components_settings_profile__WEBPACK_IMPORTED_MODULE_10__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('update-contact-information', _components_settings_profile_update_contact_information__WEBPACK_IMPORTED_MODULE_11__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('update-profile-photo', _components_settings_profile_update_profile_photo__WEBPACK_IMPORTED_MODULE_12__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('security', _components_settings_security__WEBPACK_IMPORTED_MODULE_13__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('update-password', _components_settings_security_update_password__WEBPACK_IMPORTED_MODULE_14__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('register', _components_register_register__WEBPACK_IMPORTED_MODULE_15__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('calendar', _components_calendar_calendar__WEBPACK_IMPORTED_MODULE_16__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('document-upload', _components_documents_upload__WEBPACK_IMPORTED_MODULE_17__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('documents', _components_documents_root__WEBPACK_IMPORTED_MODULE_18__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('session-reports', _components_session_reports_search__WEBPACK_IMPORTED_MODULE_19__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('session-report-editor', _components_session_reports_edit__WEBPACK_IMPORTED_MODULE_20__["default"]); // Vue plugins
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('status-box', _components_status_box_root__WEBPACK_IMPORTED_MODULE_12__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('nav-bar', _components_layout_navbar_navbar__WEBPACK_IMPORTED_MODULE_13__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('settings', _components_settings_settings__WEBPACK_IMPORTED_MODULE_14__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('profile', _components_settings_profile__WEBPACK_IMPORTED_MODULE_15__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('update-contact-information', _components_settings_profile_update_contact_information__WEBPACK_IMPORTED_MODULE_16__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('update-profile-photo', _components_settings_profile_update_profile_photo__WEBPACK_IMPORTED_MODULE_17__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('security', _components_settings_security__WEBPACK_IMPORTED_MODULE_18__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('update-password', _components_settings_security_update_password__WEBPACK_IMPORTED_MODULE_19__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('register', _components_register_register__WEBPACK_IMPORTED_MODULE_20__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('calendar', _components_calendar_calendar__WEBPACK_IMPORTED_MODULE_21__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('document-upload', _components_documents_upload__WEBPACK_IMPORTED_MODULE_22__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('documents', _components_documents_root__WEBPACK_IMPORTED_MODULE_23__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('session-report-editor', _components_session_reports_edit__WEBPACK_IMPORTED_MODULE_24__["default"]); // Vue plugins#
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_4__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_ls__WEBPACK_IMPORTED_MODULE_1___default.a, {
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_ls__WEBPACK_IMPORTED_MODULE_3___default.a, {
   namespace: 'tkn',
   name: 'ls',
   storage: 'local'
 });
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_sessionstorage__WEBPACK_IMPORTED_MODULE_2___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_3___default.a, {
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_sessionstorage__WEBPACK_IMPORTED_MODULE_4___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_5___default.a, {
   dynamic: true,
   dynamicDefaults: {
     clickToClose: false
   }
+});
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_clipboard2__WEBPACK_IMPORTED_MODULE_6___default.a); // Vuex
+
+var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  modules: {
+    global: _store_modules_global__WEBPACK_IMPORTED_MODULE_9__["default"],
+    sessionReportSearch: _store_modules_session_report_search__WEBPACK_IMPORTED_MODULE_10__["default"]
+  }
+});
+store.dispatch('getUser'); // Vue Router
+
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
+  routes: _routes__WEBPACK_IMPORTED_MODULE_8__["default"]
 }); // Load Vue app
 
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  mixins: [_components_app__WEBPACK_IMPORTED_MODULE_6__["default"]],
+  router: router,
+  store: store,
+  mixins: [_components_app__WEBPACK_IMPORTED_MODULE_11__["default"]],
   components: {}
 });
 
@@ -117532,27 +118532,29 @@ var App = {
    * The application's data.
    */
   data: {
-    user: Spark.state.user,
     supportForm: new _forms_form__WEBPACK_IMPORTED_MODULE_0__["default"]({
       from: '',
       subject: '',
       message: ''
     })
   },
+  watch: {
+    user: function user() {
+      if (this.user) {
+        this.supportForm.from = this.user.email;
+      }
+    }
+  },
 
   /**
    * The component has been created by Vue.
    */
   created: function created() {
-    var self = this;
+    var vm = this;
     Bus.$on('updateUser', function () {
-      self.getUser();
+      vm.$store.dispatch('getUser');
     });
     Bus.$on('showSupportForm', function () {
-      if (self.user) {
-        self.supportForm.from = self.user.email;
-      }
-
       $('#modal-support').modal('show');
       setTimeout(function () {
         $('#support-subject').focus();
@@ -117573,30 +118575,19 @@ var App = {
     whenReady: function whenReady() {//
     },
 
-    /*
-     * Get the current user of the application.
-     */
-    getUser: function getUser() {
-      var _this = this;
-
-      axios.get('/user/current').then(function (response) {
-        _this.user = response.data;
-      });
-    },
-
     /**
      * Send a customer support request.
      */
     sendSupportRequest: function sendSupportRequest() {
-      var _this2 = this;
+      var _this = this;
 
       _forms_http__WEBPACK_IMPORTED_MODULE_1__["default"].post('/support/email', this.supportForm).then(function () {
         $('#modal-support').modal('hide');
 
-        _this2.showSupportRequestSuccessMessage();
+        _this.showSupportRequestSuccessMessage();
 
-        _this2.supportForm.subject = '';
-        _this2.supportForm.message = '';
+        _this.supportForm.subject = '';
+        _this.supportForm.message = '';
       });
     },
 
@@ -119596,8 +120587,6 @@ var Http = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var Component = {
-  props: ['user'],
-
   /**
    * The component's data.
    */
@@ -119698,12 +120687,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_popperjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-popperjs */ "./node_modules/vue-popperjs/dist/vue-popper.min.js");
-/* harmony import */ var vue_popperjs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_popperjs__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var vue_popperjs_dist_vue_popper_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-popperjs/dist/vue-popper.css */ "./node_modules/vue-popperjs/dist/vue-popper.css");
-/* harmony import */ var vue_popperjs_dist_vue_popper_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_popperjs_dist_vue_popper_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var dateformat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! dateformat */ "./node_modules/dateformat/lib/dateformat.js");
-/* harmony import */ var dateformat__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(dateformat__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/api */ "./resources/js/vue/components/utils/api.js");
+/* harmony import */ var _utils_date__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/date */ "./resources/js/vue/components/utils/date.js");
+/* harmony import */ var _status_box_mixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../status-box/mixin */ "./resources/js/vue/components/status-box/mixin.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -119715,47 +120701,65 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 var Component = {
-  props: ['report', 'activityTypesLookup', 'emotionalStatesLookup', 'ratingsLookup'],
-  components: {
-    'popper': vue_popperjs__WEBPACK_IMPORTED_MODULE_2___default.a
-  },
-  template: "\n        <div class=\"session-report-editor\">            \n            <status-box\n                ref=\"status-box\"\n                class=\"documents-status\"\n                :successes=\"successes\"\n                :errors=\"errors\">\n            </status-box>   \n\n            <form class=\"form-horizontal\" role=\"form\" method=\"POST\" :action=\"'/report/' + report.id\">\n                <input type=\"hidden\" name=\"_method\" value=\"PUT\"/>\n\n                <!-- Mentee's Name -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"menteeInput\">Mentee</label>\n                    <div class=\"col-md-6\">\n                        <select id=\"menteeInput\" class=\"form-control\" name=\"mentee_id\" disabled>\n                            <option\n                                :value=\"report.mentee.id\" selected>\n                                {{ report.mentee.first_name }} {{ report.mentee.last_name }}\n                            </option>\n                        </select>\n                    </div>\n                </div>\n\n                <!-- Date of Session -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"sessionDateInput\">Session Date</label>\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"sessionDateInput\"\n                               type=\"text\" \n                               :class=\"'form-control datepicker sessiondate ' + dirtyClass('sessionDate')\"\n                               v-model=\"sessionDate\"\n                               autocomplete=\"off\">\n                        <div v-if=\"isDirty('sessionDate')\"\n                               class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('sessionDate')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Session Rating -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"ratingInput\">Session Rating</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"ratingInput\" \n                                :class=\"'form-control ' + dirtyClass('ratingId')\"\n                                v-model=\"ratingId\">\n                            <option v-for=\"rating in ratingsLookup\"\n                                :value=\"rating.id\">\n                                {{ rating.value }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('ratingId')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('ratingId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Length of Session -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"lengthInput\">Length of Session (hours)</label>\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"lengthInput\"\n                               type=\"text\" \n                               :class=\"'form-control ' + dirtyClass('lengthOfSession')\"\n                               v-model=\"lengthOfSession\">\n                        <div v-if=\"isDirty('lengthOfSession')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('lengthOfSession')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Type of Activity -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"activityTypeInput\">Activity Type</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"activityTypeInput\"\n                                :class=\"'form-control ' + dirtyClass('activityTypeId')\"\n                                v-model=\"activityTypeId\">\n                            <option v-for=\"activityType in activityTypesLookup\"\n                                :value=\"activityType.id\">\n                                {{ activityType.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('activityTypeId')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('activityTypeId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Location -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"locationInput\">Location</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"locationInput\"\n                               type=\"text\" \n                               :class=\"'form-control ' + dirtyClass('location')\" \n                               v-model=\"location\">\n                        <div v-if=\"isDirty('location')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('location')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Safeguarding Concern -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"safeguardingInput\">Safeguarding Concern</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"safeguardingInput\"\n                                :class=\"'form-control ' + dirtyClass('safeguardingConcern')\"\n                                v-model=\"safeguardingConcern\">\n                            <option v-for=\"item in safeguardingLookup\"\n                                    :value=\"item.id\">\n                                    {{ item.value }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('safeguardingConcern')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('safeguardingConcern')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Emotional State -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"emotionalStateInput\">Mentee's Emotional State</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"emotionalStateInput\"\n                                :class=\"'form-control ' + dirtyClass('emotionalStateId')\"\n                                v-model=\"emotionalStateId\">\n                            <option v-for=\"emotionalState in emotionalStatesLookup\"\n                                :value=\"emotionalState.id\">\n                                {{ emotionalState.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('emotionalStateId')\"\n                            class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('emotionalStateId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Meeting Details -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"meetingDetailsInput\">Meeting Details</label>\n                    <div class=\"col-md-6 entry\">\n                        <textarea id=\"meetingDetailsInput\"\n                                  :class=\"'form-control ' + dirtyClass('meetingDetails')\" rows=\"10\"\n                                  v-model=\"meetingDetails\"/>\n                        <div v-if=\"isDirty('meetingDetails')\"\n                            class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('meetingDetails')\"/></div>\n                    </div>\n                </div>\n\n                <div class=\"form-group row\">\n                    <div class=\"col-md-4\">\n                        <span v-on:click=\"save()\" class=\"save btn btn-success \" :disabled=\"isSaving\">\n                        <span class=\"fas fa-save\" /> Save</span>\n                    </div>\n                </div>\n            </form>\n        </div>\n    ",
+  props: ['sessionReportId'],
+  mixins: [_status_box_mixin__WEBPACK_IMPORTED_MODULE_4__["default"]],
+  components: {},
+  template: "\n        <div class=\"session-report-edit\">            \n            <status-box\n                ref=\"status-box\"\n                class=\"status\"\n                :successes=\"successes\"\n                :errors=\"errors\">\n            </status-box>   \n\n            <div class=\"container\">\n            <form v-if=\"sessionReport\" class=\"form-horizontal\" role=\"form\">\n                <!-- Mentee's Name -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"menteeInput\">Mentee</label>\n                    <div class=\"col-md-6\">\n                        <select id=\"menteeInput\" class=\"form-control\" name=\"mentee_id\" disabled>\n                            <option\n                                :value=\"sessionReport.mentee.id\" selected>\n                                {{ sessionReport.mentee.name }}\n                            </option>\n                        </select>\n                    </div>\n                </div>\n\n                <!-- Date of Session -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"sessionDateInput\">Session Date</label>\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"sessionDateInput\"\n                               type=\"text\" \n                               :class=\"{ 'form-control': true, 'datepicker': true, 'sessiondate' : true, 'edited': isDirty('sessionDate') }\"\n                               v-model=\"sessionDate\"\n                               autocomplete=\"off\">\n                        <div v-if=\"isDirty('sessionDate')\"\n                               class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('sessionDate')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Session Rating -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"ratingInput\">Session Rating</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"ratingInput\" \n                                :class=\"{ 'form-control': true, 'edited': isDirty('ratingId') }\"\n                                v-model=\"ratingId\">\n                            <option v-for=\"rating in sessionRatingsLookup\"\n                                :value=\"rating.id\">\n                                {{ rating.value }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('ratingId')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('ratingId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Length of Session -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"lengthInput\">Length of Session (hours)</label>\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"lengthInput\"\n                               type=\"text\" \n                               :class=\"{ 'form-control': true, 'edited': isDirty('lengthOfSession') }\"\n                               v-model=\"lengthOfSession\">\n                        <div v-if=\"isDirty('lengthOfSession')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('lengthOfSession')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Type of Activity -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"activityTypeInput\">Activity Type</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"activityTypeInput\"\n                                :class=\"{ 'form-control': true, 'edited': isDirty('activityTypeId') }\"\n                                v-model=\"activityTypeId\">\n                            <option v-for=\"activityType in activityTypesLookup\"\n                                :value=\"activityType.id\">\n                                {{ activityType.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('activityTypeId')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('activityTypeId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Location -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"locationInput\">Location</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"locationInput\"\n                               type=\"text\" \n                               :class=\"{ 'form-control': true, 'edited': isDirty('location') }\"\n                               v-model=\"location\">\n                        <div v-if=\"isDirty('location')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('location')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Safeguarding Concern -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"safeguardingInput\">Safeguarding Concern</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"safeguardingInput\"\n                                :class=\"{ 'form-control': true, 'edited': isDirty('safeguardingConcern') }\"\n                                v-model=\"safeguardingConcern\">\n                            <option v-for=\"item in safeguardingLookup\"\n                                    :value=\"item.id\">\n                                    {{ item.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('safeguardingConcern')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('safeguardingConcern')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Emotional State -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"emotionalStateInput\">Mentee's Emotional State</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"emotionalStateInput\"\n                                :class=\"{ 'form-control': true, 'edited': isDirty('emotionalStateId') }\"\n                                v-model=\"emotionalStateId\">\n                            <option v-for=\"emotionalState in emotionalStatesLookup\"\n                                :value=\"emotionalState.id\">\n                                {{ emotionalState.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('emotionalStateId')\"\n                            class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('emotionalStateId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Meeting Details -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"meetingDetailsInput\">Meeting Details</label>\n                    <div class=\"col-md-6 entry\">\n                        <textarea id=\"meetingDetailsInput\"\n                                  :class=\"{ 'form-control': true, 'edited': isDirty('meetingDetails') }\"\n                                  rows=\"10\"\n                                  v-model=\"meetingDetails\"/>\n                        <div v-if=\"isDirty('meetingDetails')\"\n                            class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('meetingDetails')\"/></div>\n                    </div>\n                </div>\n\n                <div class=\"form-group row\">\n                    <div class=\"col-md offset-md-4\">\n                        <span @click=\"handleSaveSessionReport\" class=\"save btn btn-success \" :disabled=\"isBusy\">\n                        <span class=\"fas fa-save\" /> Save</span>\n                        <span class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#delete-confirmation\" :disabled=\"isBusy\">\n                        <span class=\"fas fa-times\" /> Delete</span>\n                    </div>\n                </div>\n\n                <div class=\"modal fade\" id=\"delete-confirmation\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"delete report\" aria-hidden=\"true\">\n                    <div class=\"modal-dialog\" role=\"document\">\n                        <div class=\"modal-content\">\n                            <div class=\"modal-header\">\n                                <h3 class=\"modal-title\" id=\"exampleModalLabel\">Confirm deletion of report</h3>\n                            </div>\n                            <div class=\"modal-body\">\n                                <p>Are you sure you want to delete the session report?</p>\n\n                                <p>This will <b>delete all associated expense claims</b>, so make sure they have not been processed / paid already.</p>\n                            </div>\n                            <div class=\"modal-footer\">\n                                <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Cancel</button>\n                                <button @click=\"handleDeleteSessionReport\" data-dismiss=\"modal\" class=\"btn btn-danger\">\n                                    <span class=\"fas fa-times\"></span>\n                                    <span>Delete</span>\n                                </button>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </form>\n            </div>\n        </div>\n    ",
   data: function data() {
     return {
-      successes: [],
-      errors: [],
-      safeguardingLookup: [{
-        id: 0,
-        value: "No"
-      }, {
-        id: 1,
-        value: "Yes - Serious concern (please complete safeguarding cause for concern form)"
-      }, {
-        id: 2,
-        value: "Yes - Mild concern (please outline in report)"
-      }],
-      originalState: this.buildOriginalState(this.report),
-      // editable (current) state
-      sessionDate: this.formatDate(this.report.session_date),
-      ratingId: this.report.rating_id,
-      lengthOfSession: this.report.length_of_session.toString(),
-      activityTypeId: this.report.activity_type_id,
-      location: this.report.location,
-      safeguardingConcern: this.report.safeguarding_concern,
-      emotionalStateId: this.report.emotional_state_id,
-      meetingDetails: this.report.meeting_details,
-      // saving
-      isSaving: false
+      // lookups
+      activityTypesLookup: [],
+      emotionalStatesLookup: [],
+      sessionRatingsLookup: [],
+      safeguardingLookup: [],
+      // original session report
+      sessionReport: null,
+      // editable (current unsaved) state
+      sessionDate: null,
+      ratingId: null,
+      lengthOfSession: null,
+      activityTypeId: null,
+      location: null,
+      safeguardingConcern: null,
+      emotionalStateId: null,
+      meetingDetails: null,
+      // disabled elements
+      isBusy: false
     };
   },
-  computed: {},
-  watch: {},
+  computed: {
+    _originalState: function _originalState() {
+      return this.buildState(this.sessionReport);
+    }
+  },
+  watch: {
+    sessionReportId: function sessionReportId() {
+      this.clearStatus();
+      this.setSessionReport();
+    },
+    sessionReport: function sessionReport() {
+      Object.assign(this.$data, this.buildState(this.sessionReport));
+    }
+  },
   created: function created() {
+    var _this = this;
+
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              _this.setSessionReport();
+
+              _this.setActivityTypesLookup();
+
+              _this.setEmotionalStatesLookup();
+
+              _this.setSessionRatingsLookup();
+
+              _this.setSafeguardingConcernLookup();
+
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -119763,142 +120767,586 @@ var Component = {
       }, _callee);
     }))();
   },
-  mounted: function mounted() {
+  mounted: function mounted() {},
+  updated: function updated() {
     var vm = this;
-    $(document).ready(function () {
-      $(function () {
-        $(".datepicker.sessiondate").datepicker({
-          dateFormat: 'dd-mm-yy',
-          onSelect: function onSelect(dateText) {
-            vm.sessionDate = dateText;
-          }
-        });
-      });
+    $(".datepicker.sessiondate").datepicker({
+      dateFormat: 'dd-mm-yy',
+      onSelect: function onSelect(dateText) {
+        vm.sessionDate = dateText;
+      }
     });
   },
   methods: {
-    scrollTo: function scrollTo(refName) {
-      var element = this.$refs[refName];
-      var top = element.offsetTop;
-      window.scrollTo(0, top);
-    },
-    clearStatus: function clearStatus() {
-      this.errors = [];
-      this.successes = [];
-    },
-    formatDate: function formatDate(dateString) {
-      var date = new Date(dateString);
-      return dateformat__WEBPACK_IMPORTED_MODULE_4___default()(date, "dd-mm-yyyy");
-    },
     isDirty: function isDirty(editableFieldName) {
-      return this.originalState[editableFieldName] !== this[editableFieldName];
-    },
-    dirtyClass: function dirtyClass(editableFieldName) {
-      return this.isDirty(editableFieldName) ? 'edited' : '';
+      return this._originalState[editableFieldName] !== this[editableFieldName];
     },
     revert: function revert(editableFieldName) {
       if (this.hasOwnProperty(editableFieldName)) {
-        this[editableFieldName] = this.originalState[editableFieldName];
+        this[editableFieldName] = this._originalState[editableFieldName];
       }
     },
-    buildOriginalState: function buildOriginalState(report) {
-      return {
-        reportId: report.id,
-        mentorId: report.mentor_id,
-        menteeId: report.mentee_id,
-        sessionDate: this.formatDate(report.session_date),
-        ratingId: report.rating_id,
-        lengthOfSession: report.length_of_session.toString(),
-        activityTypeId: report.activity_type_id,
-        location: report.location,
-        safeguardingConcern: report.safeguarding_concern,
-        emotionalStateId: report.emotional_state_id,
-        meetingDetails: report.meeting_details
-      };
-    },
-    save: function save() {
-      var _this = this;
+    setActivityTypesLookup: function setActivityTypesLookup() {
+      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var reportBody, updatedReport, errors;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _this.clearStatus();
+                _context2.prev = 0;
+                _context2.next = 3;
+                return _this2.getActivityTypes();
 
-                reportBody = {
-                  mentor_id: _this.originalState.mentorId,
-                  mentee_id: _this.originalState.menteeId,
-                  session_date: _this.sessionDate,
-                  rating_id: _this.ratingId,
-                  length_of_session: _this.lengthOfSession,
-                  activity_type_id: _this.activityTypeId,
-                  location: _this.location,
-                  safeguarding_concern: _this.safeguardingConcern,
-                  emotional_state_id: _this.emotionalStateId,
-                  meeting_details: _this.meetingDetails
-                };
-                _context2.prev = 2;
-                _this.isSaving = true;
-                _context2.next = 6;
-                return _this.updateSessionReport(_this.originalState.reportId, reportBody);
-
-              case 6:
-                updatedReport = _context2.sent;
-                _this.originalState = _this.buildOriginalState(updatedReport);
-                _this.successes = ['Report was saved successfully'];
-                _context2.next = 14;
+              case 3:
+                _this2.activityTypesLookup = _context2.sent;
+                _context2.next = 9;
                 break;
 
-              case 11:
-                _context2.prev = 11;
-                _context2.t0 = _context2["catch"](2);
+              case 6:
+                _context2.prev = 6;
+                _context2.t0 = _context2["catch"](0);
 
-                if (lodash__WEBPACK_IMPORTED_MODULE_1___default.a.has(_context2.t0, 'response.data.errors')) {
-                  errors = _context2.t0.response.data.errors;
-                  _this.errors = Object.values(errors).reduce(function (a, b) {
-                    return a.concat(b);
-                  }, []);
-                } else {
-                  _this.errors = ['Unknown problem saving the session report'];
-                }
+                _this2.addErrors(Object(_utils_api__WEBPACK_IMPORTED_MODULE_2__["extractErrors"])({
+                  e: _context2.t0,
+                  defaultMsg: "Problem loading activity types lookup"
+                }));
 
-              case 14:
-                _context2.prev = 14;
-                _this.isSaving = false;
-
-                _this.scrollTo('status-box');
-
-                return _context2.finish(14);
-
-              case 18:
+              case 9:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[2, 11, 14, 18]]);
+        }, _callee2, null, [[0, 6]]);
       }))();
     },
-    updateSessionReport: function updateSessionReport(id, sessionReport) {
+    setEmotionalStatesLookup: function setEmotionalStatesLookup() {
+      var _this3 = this;
+
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.next = 2;
-                return axios.put("/report/".concat(id), sessionReport);
-
-              case 2:
-                return _context3.abrupt("return", _context3.sent.data);
+                _context3.prev = 0;
+                _context3.next = 3;
+                return _this3.getEmotionalStates();
 
               case 3:
+                _this3.emotionalStatesLookup = _context3.sent;
+                _context3.next = 9;
+                break;
+
+              case 6:
+                _context3.prev = 6;
+                _context3.t0 = _context3["catch"](0);
+
+                _this3.addErrors(Object(_utils_api__WEBPACK_IMPORTED_MODULE_2__["extractErrors"])({
+                  e: _context3.t0,
+                  defaultMsg: "Problem loading emotional states lookup"
+                }));
+
+              case 9:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3);
+        }, _callee3, null, [[0, 6]]);
       }))();
+    },
+    setSessionRatingsLookup: function setSessionRatingsLookup() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.prev = 0;
+                _context4.next = 3;
+                return _this4.getSessionRatings();
+
+              case 3:
+                _this4.sessionRatingsLookup = _context4.sent;
+                _context4.next = 9;
+                break;
+
+              case 6:
+                _context4.prev = 6;
+                _context4.t0 = _context4["catch"](0);
+
+                _this4.addErrors(Object(_utils_api__WEBPACK_IMPORTED_MODULE_2__["extractErrors"])({
+                  e: _context4.t0,
+                  defaultMsg: "Problem loading session ratings lookup"
+                }));
+
+              case 9:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[0, 6]]);
+      }))();
+    },
+    setSafeguardingConcernLookup: function setSafeguardingConcernLookup() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.prev = 0;
+                _context5.next = 3;
+                return _this5.getSafeguardingOptions();
+
+              case 3:
+                _this5.safeguardingLookup = _context5.sent;
+                _context5.next = 9;
+                break;
+
+              case 6:
+                _context5.prev = 6;
+                _context5.t0 = _context5["catch"](0);
+
+                _this5.addErrors(Object(_utils_api__WEBPACK_IMPORTED_MODULE_2__["extractErrors"])({
+                  e: _context5.t0,
+                  defaultMsg: "Problem loading safeguarding lookup"
+                }));
+
+              case 9:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, null, [[0, 6]]);
+      }))();
+    },
+    setSessionReport: function setSessionReport() {
+      var _this6 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                if (_this6.sessionReportId) {
+                  _context6.next = 2;
+                  break;
+                }
+
+                return _context6.abrupt("return");
+
+              case 2:
+                _this6.sessionReport = null;
+                _context6.prev = 3;
+                _context6.next = 6;
+                return _this6.getSessionReport(_this6.sessionReportId);
+
+              case 6:
+                _this6.sessionReport = _context6.sent;
+                _context6.next = 12;
+                break;
+
+              case 9:
+                _context6.prev = 9;
+                _context6.t0 = _context6["catch"](3);
+
+                _this6.addErrors(Object(_utils_api__WEBPACK_IMPORTED_MODULE_2__["extractErrors"])({
+                  e: _context6.t0,
+                  defaultMsg: "Problem loading session report (".concat(_this6.sessionReportId, ")")
+                }));
+
+              case 12:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, null, [[3, 9]]);
+      }))();
+    },
+    handleSaveSessionReport: function handleSaveSessionReport() {
+      var _this7 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
+        var reportBody;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _this7.clearStatus();
+
+                reportBody = {
+                  mentor_id: _this7.sessionReport.mentor.id,
+                  mentee_id: _this7.sessionReport.mentee.id,
+                  // editable properties
+                  session_date: _this7.sessionDate,
+                  rating_id: _this7.ratingId,
+                  length_of_session: _this7.lengthOfSession,
+                  activity_type_id: _this7.activityTypeId,
+                  location: _this7.location,
+                  safeguarding_concern: _this7.safeguardingConcern,
+                  emotional_state_id: _this7.emotionalStateId,
+                  meeting_details: _this7.meetingDetails
+                };
+                _context7.prev = 2;
+                _this7.isBusy = true;
+                _context7.next = 6;
+                return _this7.updateSessionReport(_this7.sessionReport.id, reportBody);
+
+              case 6:
+                _this7.sessionReport = _context7.sent;
+
+                _this7.addSuccesses(['Report was saved successfully']);
+
+                _context7.next = 13;
+                break;
+
+              case 10:
+                _context7.prev = 10;
+                _context7.t0 = _context7["catch"](2);
+
+                _this7.addErrors(Object(_utils_api__WEBPACK_IMPORTED_MODULE_2__["extractErrors"])({
+                  e: _context7.t0,
+                  defaultMsg: 'Problem saving the session report'
+                }));
+
+              case 13:
+                _context7.prev = 13;
+                _this7.isBusy = false;
+                return _context7.finish(13);
+
+              case 16:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, null, [[2, 10, 13, 16]]);
+      }))();
+    },
+    handleDeleteSessionReport: function handleDeleteSessionReport() {
+      var _this8 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                _this8.clearStatus();
+
+                _context8.prev = 1;
+                _this8.isBusy = true;
+                _context8.next = 5;
+                return _this8.deleteSessionReport(_this8.sessionReport.id);
+
+              case 5:
+                _this8.sessionReport = null;
+
+                _this8.addSuccesses(['Report was deleted successfully']);
+
+                _context8.next = 12;
+                break;
+
+              case 9:
+                _context8.prev = 9;
+                _context8.t0 = _context8["catch"](1);
+
+                _this8.addErrors(Object(_utils_api__WEBPACK_IMPORTED_MODULE_2__["extractErrors"])({
+                  e: _context8.t0,
+                  defaultMsg: 'Problem deleting the session report'
+                }));
+
+              case 12:
+                _context8.prev = 12;
+                _this8.isBusy = false;
+                return _context8.finish(12);
+
+              case 15:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8, null, [[1, 9, 12, 15]]);
+      }))();
+    },
+
+    /**
+     * Functions that do not interact with Vue state
+     */
+    deleteSessionReport: function deleteSessionReport(id) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                _context9.next = 2;
+                return axios["delete"]("/api/session-reports/".concat(id));
+
+              case 2:
+                return _context9.abrupt("return", _context9.sent.data);
+
+              case 3:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9);
+      }))();
+    },
+    updateSessionReport: function updateSessionReport(id, reportData) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
+          while (1) {
+            switch (_context10.prev = _context10.next) {
+              case 0:
+                _context10.next = 2;
+                return axios.put("/api/session-reports/".concat(id), reportData);
+
+              case 2:
+                return _context10.abrupt("return", _context10.sent.data);
+
+              case 3:
+              case "end":
+                return _context10.stop();
+            }
+          }
+        }, _callee10);
+      }))();
+    },
+    getSessionReport: function getSessionReport(id) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee11() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee11$(_context11) {
+          while (1) {
+            switch (_context11.prev = _context11.next) {
+              case 0:
+                _context11.next = 2;
+                return axios.get("/api/session-reports/".concat(id));
+
+              case 2:
+                return _context11.abrupt("return", _context11.sent.data);
+
+              case 3:
+              case "end":
+                return _context11.stop();
+            }
+          }
+        }, _callee11);
+      }))();
+    },
+    getActivityTypes: function getActivityTypes() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee12() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee12$(_context12) {
+          while (1) {
+            switch (_context12.prev = _context12.next) {
+              case 0:
+                _context12.next = 2;
+                return axios.get('/api/activity-types', {
+                  params: {
+                    trashed: true
+                  }
+                });
+
+              case 2:
+                return _context12.abrupt("return", _context12.sent.data);
+
+              case 3:
+              case "end":
+                return _context12.stop();
+            }
+          }
+        }, _callee12);
+      }))();
+    },
+    getEmotionalStates: function getEmotionalStates() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee13() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee13$(_context13) {
+          while (1) {
+            switch (_context13.prev = _context13.next) {
+              case 0:
+                _context13.next = 2;
+                return axios.get('/api/emotional-states', {
+                  params: {
+                    trashed: true
+                  }
+                });
+
+              case 2:
+                return _context13.abrupt("return", _context13.sent.data);
+
+              case 3:
+              case "end":
+                return _context13.stop();
+            }
+          }
+        }, _callee13);
+      }))();
+    },
+    getSessionRatings: function getSessionRatings() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee14() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee14$(_context14) {
+          while (1) {
+            switch (_context14.prev = _context14.next) {
+              case 0:
+                _context14.next = 2;
+                return axios.get('/api/session-ratings');
+
+              case 2:
+                return _context14.abrupt("return", _context14.sent.data);
+
+              case 3:
+              case "end":
+                return _context14.stop();
+            }
+          }
+        }, _callee14);
+      }))();
+    },
+    getSafeguardingOptions: function getSafeguardingOptions() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee15() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee15$(_context15) {
+          while (1) {
+            switch (_context15.prev = _context15.next) {
+              case 0:
+                _context15.next = 2;
+                return axios.get('/api/safeguarding-options');
+
+              case 2:
+                return _context15.abrupt("return", _context15.sent.data);
+
+              case 3:
+              case "end":
+                return _context15.stop();
+            }
+          }
+        }, _callee15);
+      }))();
+    },
+    buildState: function buildState(sessionReport) {
+      return sessionReport ? {
+        sessionDate: Object(_utils_date__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(sessionReport.session_date, 'DD-MM-YYYY'),
+        ratingId: sessionReport.rating.id,
+        lengthOfSession: sessionReport.length_of_session.toString(),
+        activityTypeId: sessionReport.activity_type.id,
+        location: sessionReport.location,
+        safeguardingConcern: sessionReport.safeguarding_concern.id,
+        emotionalStateId: sessionReport.emotional_state.id,
+        meetingDetails: sessionReport.meeting_details
+      } : {
+        sessionDate: null,
+        ratingId: null,
+        lengthOfSession: null,
+        activityTypeId: null,
+        location: null,
+        safeguardingConcern: null,
+        emotionalStateId: null,
+        meetingDetails: null
+      };
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/vue/components/session-reports/list.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/vue/components/session-reports/list.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_date__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/date */ "./resources/js/vue/components/utils/date.js");
+/* harmony import */ var _utils_number__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/number */ "./resources/js/vue/components/utils/number.js");
+/* harmony import */ var _utils_pagination__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/pagination */ "./resources/js/vue/components/utils/pagination.js");
+
+
+
+
+var Component = {
+  props: {
+    sessionReports: {
+      "default": function _default() {
+        return [];
+      }
+    }
+  },
+  components: {},
+  template: "\n        <div class=\"session-report-list\">         \n            <div class=\"table-responsive\">   \n                <table class=\"items table table-hover\">\n                    <thead>\n                        <tr>\n                            <th>Session ID</th>\n                            <th>Mentor Name</th>\n                            <th>Mentee Name</th>\n                            <th>Session Length</th>\n                            <th>Session Date</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr \n                            v-for=\"sessionReport in itemsForCurrentPage\"\n                            :id=\"'item-' + sessionReport.id\"\n                            class=\"item\"\n                            @click=\"sessionReportClicked(sessionReport.id)\">   \n\n                            <td class=\"session-id\">\n                                {{sessionReport.id}}\n                            </td>\n                            <td class=\"mentor-name\">\n                                {{sessionReport.mentor.name}}\n                            </td>\n                            <td class=\"mentee-name\">\n                                {{sessionReport.mentee.name}}\n                            </td>\n                            <td class=\"session-length\">\n                                {{sessionReport.length_of_session}}\n                            </td>\n                            <td class=\"session-date\">\n                                {{formatDate(sessionReport.session_date)}}\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <div class=\"pagination-bar\">\n                <div class=\"page-size-list\">\n                    <span class=\"btn-group dropdown dropup\">\n                        <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">\n                            <span class=\"page-size\">{{currentPageSize}}</span>\n                        </button>\n                        <div class=\"dropdown-menu\" role=\"menu\">\n                            <a  v-for=\"size in pageSizes\"\n                                :class=\"'dropdown-item page-size ' + ((size === currentPageSize) ? 'active' : '')\" \n                                @click=\"currentPageSize = size\"\n                                role=\"menuitem\"\n                                href=\"#\">{{size}}</a>\n                        </div>\n                    </span> rows per page\n                </div>\n                <div class=\"page-selector\" v-if=\"pages.length > 1\">\n                    <ul class=\"pagination pages-list justify-content-end\">\n                        <li class=\"page-item\" \n                            v-if=\"currentPage != 1\" \n                            @click=\"currentPage--\">\n                            <a class=\"page-link\"  href=\"#\"> &lt; </a>\n                        </li>\n                        <li :class=\"'page-item ' + ((page === currentPage) ? 'active' : '')\" \n                            v-for=\"page in pages\" \n                            @click=\"currentPage = page\">\n                            <a class=\"page-link\"  href=\"#\"> {{page}} </a>\n                        </li>\n                        <li class=\"page-item\" \n                            @click=\"currentPage++\" \n                            v-if=\"currentPage < pages.length\">\n                            <a class=\"page-link\" href=\"#\"> &gt; </a>\n                        </li>\n                    </ul>\n                </div>\t\n            </div>\n        </div>\n    ",
+  data: function data() {
+    return {
+      // pagination state
+      currentPage: 1,
+      pageSizes: [10, 25, 50, 100],
+      currentPageSize: 2
+    };
+  },
+  computed: {
+    itemsForCurrentPage: function itemsForCurrentPage() {
+      return Object(_utils_pagination__WEBPACK_IMPORTED_MODULE_3__["itemsForPage"])(this.sessionReports, this.currentPage, this.currentPageSize);
+    },
+    pages: function pages() {
+      var n = Object(_utils_pagination__WEBPACK_IMPORTED_MODULE_3__["numberOfPages"])(this.sessionReports.size, this.currentPageSize);
+      return Object(_utils_number__WEBPACK_IMPORTED_MODULE_2__["range"])(1, n);
+    }
+  },
+  watch: {
+    sessionReports: function sessionReports(val) {
+      // reset current page on new results
+      this.currentPage = 1;
+    }
+  },
+  created: function created() {},
+  mounted: function mounted() {},
+  methods: {
+    formatDate: _utils_date__WEBPACK_IMPORTED_MODULE_1__["formatDate"],
+    sessionReportClicked: function sessionReportClicked(sessionReportId) {
+      this.$emit('sessionReportSelected', sessionReportId);
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/vue/components/session-reports/manage.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/vue/components/session-reports/manage.js ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view */ "./resources/js/vue/components/session-reports/view.js");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit */ "./resources/js/vue/components/session-reports/edit.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+var Component = {
+  props: ['sessionReportId'],
+  components: {
+    'session-report-view': _view__WEBPACK_IMPORTED_MODULE_0__["default"],
+    'session-report-edit': _edit__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  template: "\n        <div class=\"session-report-manage\">  \n            <div class=\"row edit-view-toggle\">\n                <div class=\"col-md mt-auto mb-auto text-left mode-selector\">\n                    <span :class=\"{'btn btn-primary btn-sm': true, 'disabled': false}\" \n                            type=\"button\" \n                            @click=\"switchMode('edit')\">Edit</span>\n                    <span :class=\"{'btn btn-primary btn-sm': true, 'disabled': false}\" \n                            type=\"button\" \n                            @click=\"switchMode('view')\">View</span>\n                </div>\n            </div>\n\n            <session-report-view\n                v-if=\"mode === 'view'\"\n                :session-report-id=sessionReportId>\n            </session-report-view>\n            <session-report-edit\n                v-if=\"mode === 'edit'\"\n                :session-report-id=sessionReportId>\n            </session-report-edit>\n        </div>\n    ",
+  data: function data() {
+    return {
+      mode: "view"
+    };
+  },
+  computed: {},
+  watch: {},
+  created: function created() {},
+  mounted: function mounted() {},
+  methods: {
+    switchMode: function switchMode(mode) {
+      this.mode = mode;
     }
   }
 };
@@ -119919,10 +121367,219 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! immutable */ "./node_modules/immutable/dist/immutable.es.js");
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/api */ "./resources/js/vue/components/utils/api.js");
+/* harmony import */ var _status_box_mixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../status-box/mixin */ "./resources/js/vue/components/status-box/mixin.js");
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+var Component = {
+  props: {
+    mentors: {
+      "default": function _default() {
+        return [];
+      }
+    },
+    searchCriteria: {
+      "default": function _default() {}
+    }
+  },
+  mixins: [_status_box_mixin__WEBPACK_IMPORTED_MODULE_4__["default"]],
+  components: {},
+  template: "\n        <div class=\"session-report-search\">      \n            <status-box\n                ref=\"status-box\"\n                class=\"status\"\n                :errors=\"errors\">\n            </status-box>   \n\n            <form>\n                <div class=\"form-row\">\n                    <div class=\"form-group col-md-6\">\n                        <label class=\"col-form-label\" for=\"mentorSelect\">Mentor</label>\n                        <select id=\"mentorSelect\" \n                                class=\"form-control form-control-sm\" \n                                v-model=\"mentorId\"\n                                @change=\"menteeId = null\">\n                                <option value=\"\" selected>Any</option>\n                                <option \n                                    v-for=\"mentor in mentors\"\n                                    :value=\"mentor.id\">\n                                    {{ mentor.name }}\n                                </option>\n                            @endforeach\n                        </select>\n                    </div>\n                    <div class=\"form-group col-md-6\">\n                        <label class=\"col-form-label\" for=\"menteeSelect\">Mentee</label>\n                        <select id=\"menteeSelect\" \n                                class=\"form-control form-control-sm\" \n                                v-model=\"menteeId\">\n                                <option value=\"\" selected>Any</option>\n                                <option \n                                    v-for=\"mentee in selectableMentees\"\n                                    :value=\"mentee.id\">\n                                    {{ mentee.name }}\n                                </option>\n                            @endforeach\n                        </select>\n                    </div>\n                </div> \n                <div class=\"form-row\">\n                    <span class=\"col-md-12\">Session date range (dates inclusive)</span>\n                    <div class=\"form-group col-md-6\">\n                        <label class=\"col-form-label\" for=\"sessionDateRangeStartInput\">Start</label>\n                        <input id=\"sessionDateRangeStartInput\"\n                            type=\"text\" \n                            class=\"form-control form-control-sm datepicker session-date-range-start\"\n                            v-model=\"sessionDateRangeStart\"\n                            autocomplete=\"off\">\n                    </div>\n                    <div class=\"form-group col-md-6\">\n                        <label class=\"col-form-label\" for=\"sessionDateRangeEndInput\">End</label>\n                        <input id=\"sessionDateRangeEndInput\"\n                            type=\"text\" \n                            class=\"form-control form-control-sm datepicker session-date-range-end\"\n                            v-model=\"sessionDateRangeEnd\"\n                            autocomplete=\"off\">\n                    </div>\n                </div> \n                <div class=\"form-group row\">\n                    <div class=\"col-md-4\">\n                        <span v-on:click=\"publishSearchCriteria()\" class=\"search btn btn-primary \" :disabled=\"isSearching\">\n                        <span class=\"fas fa-search\" /> Search</span>\n                    </div>\n                </div>\n            </form>\n        </div>\n    ",
+  data: function data() {
+    return {
+      isSearching: false,
+      // default search state
+      mentorId: null,
+      menteeId: null,
+      sessionDateRangeStart: null,
+      sessionDateRangeEnd: null
+    };
+  },
+  computed: {
+    selectableMentees: function selectableMentees() {
+      var _this = this;
+
+      var mentor = Object(immutable__WEBPACK_IMPORTED_MODULE_2__["List"])(this.mentors).find(function (m) {
+        return m.id === _this.mentorId;
+      });
+      return mentor ? mentor.mentees : [];
+    }
+  },
+  watch: {
+    searchCriteria: function searchCriteria() {
+      this.applySearchCriteria();
+      this.search();
+    }
+  },
+  created: function created() {
+    this.applySearchCriteria();
+    this.search();
+  },
+  mounted: function mounted() {
+    var vm = this;
+    $(document).ready(function () {
+      $(function () {
+        // replace with a decent vuejs component
+        $(".datepicker.session-date-range-start").datepicker({
+          dateFormat: 'dd-mm-yy',
+          onSelect: function onSelect(dateText) {
+            return vm.sessionDateRangeStart = dateText;
+          }
+        });
+        $(".datepicker.session-date-range-end").datepicker({
+          dateFormat: 'dd-mm-yy',
+          onSelect: function onSelect(dateText) {
+            return vm.sessionDateRangeEnd = dateText;
+          }
+        });
+      });
+    });
+  },
+  methods: {
+    search: function search() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var query, results;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this2.clearErrors();
+
+                query = _objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread({}, _this2.mentorId ? {
+                  'mentor_id': _this2.mentorId
+                } : {}), _this2.menteeId ? {
+                  'mentee_id': _this2.menteeId
+                } : {}), _this2.sessionDateRangeStart ? {
+                  'session_date_range_start': _this2.sessionDateRangeStart
+                } : {}), _this2.sessionDateRangeEnd ? {
+                  'session_date_range_end': _this2.sessionDateRangeEnd
+                } : {}), {}, {
+                  // large field that doesnt need to be returned at this point
+                  'exclude_fields': ['meeting_details']
+                });
+                _context.prev = 2;
+                _this2.isSearching = true;
+                _context.next = 6;
+                return _this2.getSessionReports(query);
+
+              case 6:
+                results = _context.sent;
+
+                _this2.publishSearchResults(results);
+
+                _context.next = 13;
+                break;
+
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](2);
+
+                _this2.addErrors(Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["extractErrors"])({
+                  e: _context.t0,
+                  defaultMsg: "Problem searching session reports"
+                }));
+
+              case 13:
+                _context.prev = 13;
+                _this2.isSearching = false;
+                return _context.finish(13);
+
+              case 16:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[2, 10, 13, 16]]);
+      }))();
+    },
+    applySearchCriteria: function applySearchCriteria() {
+      this.mentorId = this.searchCriteria.mentorId ? this.searchCriteria.mentorId : null;
+      this.menteeId = this.searchCriteria.menteeId ? this.searchCriteria.menteeId : null;
+      this.sessionDateRangeStart = this.searchCriteria.sessionDateRangeStart ? this.searchCriteria.sessionDateRangeStart : null;
+      this.sessionDateRangeEnd = this.searchCriteria.sessionDateRangeEnd ? this.searchCriteria.sessionDateRangeEnd : null;
+    },
+    publishSearchCriteria: function publishSearchCriteria() {
+      var criteria = _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, this.mentorId ? {
+        mentorId: this.mentorId
+      } : {}), this.menteeId ? {
+        menteeId: this.menteeId
+      } : {}), this.sessionDateRangeStart ? {
+        sessionDateRangeStart: this.sessionDateRangeStart
+      } : {}), this.sessionDateRangeEnd ? {
+        sessionDateRangeEnd: this.sessionDateRangeEnd
+      } : {});
+
+      this.$emit('searchCriteria', criteria);
+    },
+    publishSearchResults: function publishSearchResults(results) {
+      this.$emit('searchResults', results);
+    },
+    clearSearchResults: function clearSearchResults() {
+      this.$emit('searchResults', []);
+    },
+    getSessionReports: function getSessionReports(queryParameters) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.get("/api/session-reports", {
+                  params: queryParameters
+                });
+
+              case 2:
+                return _context2.abrupt("return", _context2.sent.data);
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/vue/components/session-reports/view.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/vue/components/session-reports/view.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue_popperjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-popperjs */ "./node_modules/vue-popperjs/dist/vue-popper.min.js");
 /* harmony import */ var vue_popperjs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_popperjs__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var vue_popperjs_dist_vue_popper_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-popperjs/dist/vue-popper.css */ "./node_modules/vue-popperjs/dist/vue-popper.css");
-/* harmony import */ var vue_popperjs_dist_vue_popper_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_popperjs_dist_vue_popper_css__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utils_date__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/date */ "./resources/js/vue/components/utils/date.js");
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/api */ "./resources/js/vue/components/utils/api.js");
+/* harmony import */ var _status_box_mixin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../status-box/mixin */ "./resources/js/vue/components/status-box/mixin.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -119931,58 +121588,114 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
- // search - auto hiding div
-// mentors, mentees, dates, rating, safeguarding concern
-// url based search / saveable search
-// cache results
-// display results
-// export to csv
-// display workflow
-// display workflow item
-// rest services
-// get ratings
-// get safeguarding
-// search session reports
-// get one session report
+
+
 
 var Component = {
-  props: ['ratingsLookup'],
+  props: ['sessionReportId'],
+  mixins: [_status_box_mixin__WEBPACK_IMPORTED_MODULE_5__["default"]],
   components: {
     'popper': vue_popperjs__WEBPACK_IMPORTED_MODULE_2___default.a
   },
-  template: "\n        <div class=\"session-report-search\">            \n            <status-box\n                ref=\"status-box\"\n                class=\"documents-status\"\n                :successes=\"successes\"\n                :errors=\"errors\">\n            </status-box>   \n\n            <h1>HELLO WORLD!!</h1>\n\n        </div>\n    ",
+  template: "\n        <div class=\"session-report-view\">     \n            <status-box\n                ref=\"status-box\"\n                class=\"status\"\n                :errors=\"errors\">\n            </status-box>  \n\n            <div class=\"table-responsive\" v-if=\"sessionReport\">\n                <table class=\"table\">\n                    <tr>\n                        <th>Field</th>\n                        <th>Value</th>\n                    </tr>\n                    <tr class=\"session-id\">\n                        <td class=\"label\">Session ID</td>\n                        <td class=\"value\">\n                            {{ sessionReport.id }}\n                        </td>\n                    </tr>\n                    <tr class=\"session-link\">\n                        <td class=\"label\">Direct Link</td>\n                        <td class=\"value\">\n                            <span>\n                                <a :href=\"getSessionReportHref(sessionReport)\">Open</a> \n                                <popper\n                                    :trigger=\"popover.trigger\"\n                                    :options=\"popover.options\"\n                                    :delay-on-mouse-over=\"popover.delayOnMouseOver\">\n                                    <div class=\"popper\">You can open link in a new tab</div>\n                                    <span slot=\"reference\">\n                                        <i class=\"fas fa-info-circle\"></i>\n                                    </span>\n                                </popper>\n                            </span>\n                        </td>\n                    </tr>\n                    <tr class=\"mentor-name\">\n                        <td class=\"label\">Mentor Name</td>\n                        <td class=\"value\">{{ sessionReport.mentor.name }}</td>\n                    </tr>\n                    <tr class=\"mentee-name\">\n                        <td class=\"label\">Mentee Name</td>\n                        <td class=\"value\">{{ sessionReport.mentee.name }}</td>\n                    </tr>\n                    <tr class=\"session-date\">\n                        <td class=\"label\">Session Date</td>\n                        <td class=\"value\">{{ formatDate(sessionReport.session_date) }}</td>\n                    </tr>\n                    <tr class=\"session-rating\">\n                        <td class=\"label\">Session Rating</td>\n                        <td class=\"value\">{{ sessionReport.rating.value }}</td>\n                    </tr>\n                    <tr class=\"session-length\">\n                        <td class=\"label\">Session Length (Hours)</td>\n                        <td class=\"value\">{{ sessionReport.length_of_session }}</td>\n                    </tr>\n                    <tr class=\"activity-type\">\n                        <td class=\"label\">Activity Type</td>\n                        <td class=\"value\">{{ sessionReport.activity_type.name }}</td>\n                    </tr>\n                    <tr class=\"session-location\">\n                        <td class=\"label\">Location</td>\n                        <td class=\"value\">{{ sessionReport.location }}</td>\n                    </tr>\n                    <tr class=\"safeguarding-concern\">\n                        <td class=\"label\">Safeguarding Concern</td>\n                        <td class=\"value\" v-if=\"sessionReport.safeguarding_concern.id > 0\">\n                            Yes - {{sessionReport.safeguarding_concern.type}}\n                        </td>\n                        <td v-else>\n                            No\n                        </td>\n                    </tr>\n                    <tr class=\"mentee-emotional-state\">\n                        <td class=\"label\">Mentee's Emotional State</td>\n                        <td class=\"value\">{{ sessionReport.emotional_state.name }}</td>\n                    </tr>\n                    <tr class=\"meeting-details\">\n                        <td class=\"label\">Meeting Details</td>\n                        <td class=\"value\">{{ sessionReport.meeting_details }}</td>\n                    </tr>\n                </table> \n            </div>\n        </div>\n    ",
   data: function data() {
-    return {};
+    return {
+      popover: {
+        trigger: 'hover',
+        delayOnMouseOver: 0,
+        options: {
+          placement: 'top'
+        }
+      },
+      sessionReport: null
+    };
   },
   computed: {},
-  watch: {},
+  watch: {
+    sessionReportId: function sessionReportId() {
+      this.clearStatus();
+      this.setSessionReport();
+    }
+  },
   created: function created() {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-            case "end":
-              return _context.stop();
+    this.setSessionReport();
+  },
+  mounted: function mounted() {},
+  methods: {
+    formatDate: _utils_date__WEBPACK_IMPORTED_MODULE_3__["formatDate"],
+    setSessionReport: function setSessionReport() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (_this.sessionReportId) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
+                _this.sessionReport = null;
+                _context.prev = 3;
+                _context.next = 6;
+                return _this.getSessionReport(_this.sessionReportId);
+
+              case 6:
+                _this.sessionReport = _context.sent;
+                _context.next = 12;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](3);
+
+                _this.addErrors(Object(_utils_api__WEBPACK_IMPORTED_MODULE_4__["extractErrors"])({
+                  e: _context.t0,
+                  defaultMsg: "Problem loading session report (".concat(_this.sessionReportId, ")")
+                }));
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
           }
+        }, _callee, null, [[3, 9]]);
+      }))();
+    },
+    getSessionReportHref: function getSessionReportHref(sessionReport) {
+      var props = this.$router.resolve({
+        name: 'session-reports-view-one',
+        params: {
+          sessionReportId: sessionReport.id
         }
-      }, _callee);
-    }))();
-  },
-  mounted: function mounted() {
-    var vm = this;
-    $(document).ready(function () {
-      $(function () {
-        $(".datepicker.sessiondate").datepicker({
-          dateFormat: 'dd-mm-yy',
-          onSelect: function onSelect(dateText) {
-            vm.sessionDate = dateText;
-          }
-        });
       });
-    });
-  },
-  methods: {}
+      return props.href;
+    },
+    getSessionReport: function getSessionReport(id) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.get("/api/session-reports/".concat(id));
+
+              case 2:
+                return _context2.abrupt("return", _context2.sent.data);
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    }
+  }
 };
 /* harmony default export */ __webpack_exports__["default"] = (Component);
 
@@ -119997,9 +121710,7 @@ var Component = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var Component = {
-  props: ['user']
-};
+var Component = {};
 /* harmony default export */ __webpack_exports__["default"] = (Component);
 
 /***/ }),
@@ -120018,11 +121729,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Component = {
-  props: ['user'],
-
-  /**
-   * The component's data.
-   */
   data: function data() {
     return {
       form: new _forms_form__WEBPACK_IMPORTED_MODULE_0__["default"]({
@@ -120031,13 +121737,13 @@ var Component = {
       })
     };
   },
-
-  /**
-   * Bootstrap the component.
-   */
-  mounted: function mounted() {
-    this.form.name = this.user.name;
-    this.form.email = this.user.email;
+  watch: {
+    user: function user() {
+      if (this.user) {
+        this.form.name = this.user.name;
+        this.form.email = this.user.email;
+      }
+    }
   },
   methods: {
     /**
@@ -120066,8 +121772,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _forms_form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../forms/form */ "./resources/js/vue/components/forms/form.js");
 
 var Component = {
-  props: ['user'],
-
   /**
    * The component's data.
    */
@@ -120135,9 +121839,7 @@ var Component = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var Component = {
-  props: ['user']
-};
+var Component = {};
 /* harmony default export */ __webpack_exports__["default"] = (Component);
 
 /***/ }),
@@ -120191,7 +121893,6 @@ var Component = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var Component = {
-  props: ['user'],
   data: function data() {
     return {};
   },
@@ -120226,6 +121927,74 @@ var Component = {
   methods: {}
 };
 /* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/vue/components/status-box/mixin.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/vue/components/status-box/mixin.js ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      errors: [],
+      successes: []
+    };
+  },
+  computed: {},
+  methods: {
+    scrollTo: function scrollTo(refName) {
+      var element = this.$refs[refName];
+      var top = element.offsetTop;
+      window.scrollTo(0, top);
+    },
+    clearStatus: function clearStatus() {
+      this.clearSuccesses();
+      this.clearErrors();
+    },
+    clearErrors: function clearErrors() {
+      this.errors = [];
+    },
+    clearSuccesses: function clearSuccesses() {
+      this.successes = [];
+    },
+    addErrors: function addErrors() {
+      var _this$errors;
+
+      var errors = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+      (_this$errors = this.errors).push.apply(_this$errors, _toConsumableArray(errors));
+
+      this.scrollTo('status-box');
+    },
+    addSuccesses: function addSuccesses() {
+      var _this$successes;
+
+      var successes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+      (_this$successes = this.successes).push.apply(_this$successes, _toConsumableArray(successes));
+
+      this.scrollTo('status-box');
+    }
+  }
+});
 
 /***/ }),
 
@@ -120303,6 +122072,106 @@ var Component = {
 
 /***/ }),
 
+/***/ "./resources/js/vue/components/utils/api.js":
+/*!**************************************************!*\
+  !*** ./resources/js/vue/components/utils/api.js ***!
+  \**************************************************/
+/*! exports provided: extractErrors */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "extractErrors", function() { return extractErrors; });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+
+var extractErrors = function extractErrors(_ref) {
+  var e = _ref.e,
+      defaultMsg = _ref.defaultMsg;
+
+  if (401 === e.response.status) {
+    return ["".concat(defaultMsg, " : could not authorise the action")];
+  } else if (lodash__WEBPACK_IMPORTED_MODULE_0___default.a.has(e, 'response.data.errors')) {
+    var errors = e.response.data.errors;
+    return Object.values(errors).reduce(function (a, b) {
+      return a.concat(b);
+    }, []);
+  } else {
+    return ["".concat(defaultMsg, " : unknown - contact support")];
+  }
+};
+
+/***/ }),
+
+/***/ "./resources/js/vue/components/utils/date.js":
+/*!***************************************************!*\
+  !*** ./resources/js/vue/components/utils/date.js ***!
+  \***************************************************/
+/*! exports provided: formatDate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formatDate", function() { return formatDate; });
+var formatDate = function formatDate(dateString) {
+  var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "MMM D, YYYY";
+  return moment(dateString).format(format);
+};
+
+/***/ }),
+
+/***/ "./resources/js/vue/components/utils/number.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/vue/components/utils/number.js ***!
+  \*****************************************************/
+/*! exports provided: range */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "range", function() { return range; });
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var range = function range(start, end) {
+  return _toConsumableArray(Array(end - start + 1)).map(function (_, i) {
+    return start + i;
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/vue/components/utils/pagination.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/vue/components/utils/pagination.js ***!
+  \*********************************************************/
+/*! exports provided: numberOfPages, itemsForPage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numberOfPages", function() { return numberOfPages; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "itemsForPage", function() { return itemsForPage; });
+var numberOfPages = function numberOfPages(totalItems, itemsPerPage) {
+  return Math.ceil(totalItems / itemsPerPage);
+};
+var itemsForPage = function itemsForPage(items, pageNumber, itemsPerPage) {
+  var from = pageNumber * itemsPerPage - itemsPerPage;
+  var to = pageNumber * itemsPerPage;
+  return items.slice(from, to);
+};
+
+/***/ }),
+
 /***/ "./resources/js/vue/filters.js":
 /*!*************************************!*\
   !*** ./resources/js/vue/filters.js ***!
@@ -120355,9 +122224,555 @@ Vue.filter('capitalize', function (value) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+// Global mixin applied to all loaded vue components
 /* harmony default export */ __webpack_exports__["default"] = ({
-  computed: {}
+  data: function data() {
+    return {};
+  },
+  computed: {
+    user: {
+      get: function get() {
+        return this.$store.state.global.user;
+      },
+      set: function set(user) {
+        this.$store.global.commit('setUser', user);
+      }
+    }
+  },
+  created: function created() {},
+  methods: {}
 });
+
+/***/ }),
+
+/***/ "./resources/js/vue/pages/not-found.js":
+/*!*********************************************!*\
+  !*** ./resources/js/vue/pages/not-found.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var Component = {
+  props: {
+    mentors: {
+      "default": function _default() {
+        return [];
+      }
+    }
+  },
+  components: {},
+  template: "\n        <div>\n            <div class=\"card\">\n                <div class=\"card-header\">\n                    <span>404 - that page does not exist</span>\n                </div>\n                <div class=\"card-body\">\n                    <a href=\"/home\" class=\"btn btn-primary\">Back to Home</a>\n                </div>\n            </div>\n        </div>\n    ",
+  data: function data() {
+    return {};
+  },
+  computed: {},
+  watch: {},
+  created: function created() {},
+  mounted: function mounted() {},
+  methods: {}
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/vue/pages/session-reports/index.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/vue/pages/session-reports/index.js ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+var Component = {
+  props: [],
+  components: {},
+  template: "\n        <div>\n            <router-view></router-view>\n        </div>\n    ",
+  data: function data() {
+    return {};
+  },
+  computed: {},
+  watch: {},
+  created: function created() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  mounted: function mounted() {},
+  methods: {}
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/vue/pages/session-reports/manage.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/vue/pages/session-reports/manage.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_session_reports_manage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/session-reports/manage */ "./resources/js/vue/components/session-reports/manage.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+
+
+var Component = {
+  props: ['sessionReportId'],
+  components: {
+    'session-report-manage': _components_session_reports_manage__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  template: "\n        <div>\n            <div class=\"row\">\n                <div class=\"col-md-12\">\n                    <nav class=\"nav page-nav\">\n                        <a class=\"nav-link\" type=\"button\" @click=\"goBack\">Go back</a>\n                    </nav>\n                </div>\n            </div>\n            <div class=\"card\">\n                <div class=\"card-header\">\n                    Session Report: {{ sessionReportId }}\n                </div>\n                <div class=\"card-body\">\n                    <session-report-manage\n                        :session-report-id=sessionReportId>\n                    </session-report-manage>\n                </div>\n            </div>\n        </div>\n    ",
+  data: function data() {
+    return {};
+  },
+  computed: {},
+  watch: {},
+  created: function created() {},
+  mounted: function mounted() {},
+  methods: {
+    goBack: function goBack() {
+      this.$router.go(-1);
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/vue/pages/session-reports/search.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/vue/pages/session-reports/search.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_session_reports_search__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/session-reports/search */ "./resources/js/vue/components/session-reports/search.js");
+/* harmony import */ var _components_session_reports_list__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/session-reports/list */ "./resources/js/vue/components/session-reports/list.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var Component = {
+  props: {},
+  components: {
+    'session-report-search': _components_session_reports_search__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'session-report-list': _components_session_reports_list__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  template: "\n        <div>\n            <div class=\"card\">\n                <div class=\"card-header\" data-toggle=\"collapse\" href=\"#collapsed-find-by-id\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapsed-find-by-id\">\n                    Find By ID\n                    <span class=\"float-right\"><a>Toggle Find By ID</a></span>\n                </div>\n                <div id=\"collapsed-find-by-id\" class=\"card-body collapse\">\n                    <form>\n                        <div class=\"form-row\">\n                            <div class=\"form-group col-md-3\">\n                                <input id=\"idInput\" type=\"text\" \n                                        :class=\"{'form-control form-control-sm': true, 'is-invalid' : !isValidId(sessionReportId)}\" \n                                        v-model=\"sessionReportId\" \n                                        v-on:keyup.enter=\"openSessionReport(sessionReportId)\">\n                                <div class=\"invalid-feedback invalid-id\">Type a valid numerical ID</div>\n                            </div>\n                            <div class=\"form-group col-md-3\">\n                                <span v-on:click=\"openSessionReport(sessionReportId)\" class=\"search btn btn-primary btn-sm\">\n                                <span class=\"fas fa-chevron-circle-right\" /> Go</span>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n            </div>\n            <div class=\"card\">\n                <div class=\"card-header\" data-toggle=\"collapse\" href=\"#collapsed-search\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapsed-search\">\n                    Session Search\n                    <span class=\"float-right\"><a>Toggle Search</a></span>\n                </div>\n                <div id=\"collapsed-search\" class=\"card-body collapse\">\n                    <session-report-search \n                        :searchCriteria=\"searchParams\"\n                        @searchCriteria=\"searchParams = $event\"\n                        @searchResults=\"searchResults = $event\">\n                    </session-report-search>\n                </div>\n            </div>\n            <div class=\"card\">\n                <div class=\"card-header\">\n                    Session Reports\n                </div>\n                <div class=\"card-body\">\n                    <session-report-list\n                        :sessionReports=\"searchResults\"\n                        @sessionReportSelected=\"sessionReportSelected($event)\">\n                    </session-report-list>\n                </div>\n            </div>\n        </div>\n    ",
+  data: function data() {
+    return {
+      sessionReportId: null
+    };
+  },
+  computed: {
+    searchParams: {
+      get: function get() {
+        return this.getSearchParameters();
+      },
+      set: function set(params) {
+        this.setSearchParameters(params);
+      }
+    },
+    searchResults: {
+      get: function get() {
+        return this.$store.state.sessionReportSearch.list;
+      },
+      set: function set(sessionReports) {
+        this.$store.commit('setSessionReports', sessionReports);
+      }
+    }
+  },
+  watch: {},
+  created: function created() {
+    if (!this.hasSearchParameters()) {
+      // replace route rather than push a new route to history
+      this.setSearchParameters(this.buildDefaultSearchParameters(), "replace");
+    }
+  },
+  mounted: function mounted() {},
+  methods: {
+    isValidId: function isValidId(sessionReportId) {
+      return /^\d+$/.test(sessionReportId);
+    },
+    openSessionReport: function openSessionReport(sessionReportId) {
+      if (this.isValidId(sessionReportId)) {
+        this.$router.push({
+          name: 'session-reports-view-one',
+          params: {
+            'sessionReportId': sessionReportId
+          }
+        });
+      }
+    },
+    sessionReportSelected: function sessionReportSelected(sessionReportId) {
+      this.$store.commit('setCurrentSessionReport', sessionReportId);
+      this.$router.push({
+        name: 'session-reports-workflow'
+      });
+    },
+    // Search parameter functions
+    hasSearchParameters: function hasSearchParameters() {
+      return !lodash__WEBPACK_IMPORTED_MODULE_0___default.a.isEmpty(this.$route.query);
+    },
+    setSearchParameters: function setSearchParameters(params) {
+      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "push";
+      var mentorId = params.mentorId,
+          menteeId = params.menteeId,
+          sessionDateRangeStart = params.sessionDateRangeStart,
+          sessionDateRangeEnd = params.sessionDateRangeEnd;
+
+      var queryParamsToAdd = _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, mentorId ? {
+        'mentor_id': mentorId
+      } : {}), menteeId ? {
+        'mentee_id': menteeId
+      } : {}), sessionDateRangeStart ? {
+        'session_date_range_start': sessionDateRangeStart
+      } : {}), sessionDateRangeEnd ? {
+        'session_date_range_end': sessionDateRangeEnd
+      } : {}); // save as url query parameters
+
+
+      var routeProps = {
+        path: this.$route.path,
+        query: queryParamsToAdd
+      };
+
+      if ("replace" === type) {
+        this.$router.replace(routeProps);
+      } else {
+        this.$router.push(routeProps);
+      }
+    },
+    getSearchParameters: function getSearchParameters() {
+      var _this$$route$query = this.$route.query,
+          mentor_id = _this$$route$query.mentor_id,
+          mentee_id = _this$$route$query.mentee_id,
+          session_date_range_start = _this$$route$query.session_date_range_start,
+          session_date_range_end = _this$$route$query.session_date_range_end;
+      return _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, mentor_id ? {
+        mentorId: parseInt(mentor_id)
+      } : {}), mentee_id ? {
+        menteeId: parseInt(mentee_id)
+      } : {}), session_date_range_start ? {
+        sessionDateRangeStart: session_date_range_start
+      } : {}), session_date_range_end ? {
+        sessionDateRangeEnd: session_date_range_end
+      } : {});
+    },
+    buildDefaultSearchParameters: function buildDefaultSearchParameters() {
+      return {
+        // last one month
+        sessionDateRangeStart: moment().subtract(1, 'months').format('DD-MM-YYYY'),
+        sessionDateRangeEnd: moment().format('DD-MM-YYYY')
+      };
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/vue/pages/session-reports/workflow.js":
+/*!************************************************************!*\
+  !*** ./resources/js/vue/pages/session-reports/workflow.js ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_session_reports_manage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/session-reports/manage */ "./resources/js/vue/components/session-reports/manage.js");
+
+
+var Component = {
+  props: {},
+  components: {
+    'session-manage': _components_session_reports_manage__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  template: "\n        <div>\n            <div class=\"container\">\n                <div class=\"row page-nav\">\n                    <div class=\"col-4 mt-auto mb-auto text-left back-forward\">\n                        <span :class=\"{'btn btn-primary btn-sm': true, 'disabled': !previousSessionReport}\" \n                                type=\"button\" \n                                aria-label=\"Previous\"\n                                @click='goToSessionReport(previousSessionReport)'><span class=\"fas fa-backward\" /></span>\n                        <span :class=\"{'btn btn-primary btn-sm': true, 'disabled': !nextSessionReport}\" \n                                type=\"button\" \n                                aria-label=\"Next\"\n                                @click='goToSessionReport(nextSessionReport)'><span class=\"fas fa-forward\" /></span>\n                    </div>\n                    <div class=\"col mt-auto mb-auto text-right close-workflow\">\n                        <a type=\"button\" @click=\"closeWorkflow\">Close workflow</a>\n                    </div>\n                </div>\n            </div>\n            \n            <div class=\"card\">\n                <div class=\"card-header\">\n                    Session Report: {{ currentSessionReport }}\n                </div>\n                <div class=\"card-body\">\n                    <session-manage v-if=\"currentSessionReport\" :session-report-id=\"currentSessionReport\" />\n                    <span v-else>No session reports selected for workflow. <a type=\"button\" @click=\"goToSearch\">Try searching again</a>.</span>\n                </div>\n            </div>\n        </div>\n    ",
+  data: function data() {
+    return {};
+  },
+  computed: {
+    currentSessionReport: {
+      get: function get() {
+        return this.$store.getters.currentSessionReport;
+      },
+      set: function set(value) {
+        this.$store.commit('setCurrentSessionReport', value);
+      }
+    },
+    previousSessionReport: {
+      get: function get() {
+        return this.$store.getters.previousSessionReport;
+      }
+    },
+    nextSessionReport: {
+      get: function get() {
+        return this.$store.getters.nextSessionReport;
+      }
+    }
+  },
+  watch: {},
+  created: function created() {},
+  mounted: function mounted() {},
+  methods: {
+    goToSessionReport: function goToSessionReport(sessionReportId) {
+      if (sessionReportId) this.currentSessionReport = sessionReportId;
+    },
+    closeWorkflow: function closeWorkflow() {
+      this.$router.go(-1);
+    },
+    goToSearch: function goToSearch() {
+      this.$router.push({
+        name: 'session-reports-search'
+      });
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (Component);
+
+/***/ }),
+
+/***/ "./resources/js/vue/routes.js":
+/*!************************************!*\
+  !*** ./resources/js/vue/routes.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _pages_not_found__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/not-found */ "./resources/js/vue/pages/not-found.js");
+/* harmony import */ var _pages_session_reports_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pages/session-reports/index */ "./resources/js/vue/pages/session-reports/index.js");
+/* harmony import */ var _pages_session_reports_search__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/session-reports/search */ "./resources/js/vue/pages/session-reports/search.js");
+/* harmony import */ var _pages_session_reports_workflow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/session-reports/workflow */ "./resources/js/vue/pages/session-reports/workflow.js");
+/* harmony import */ var _pages_session_reports_manage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/session-reports/manage */ "./resources/js/vue/pages/session-reports/manage.js");
+
+
+
+
+
+var routes = [{
+  path: '/session-reports',
+  component: _pages_session_reports_index__WEBPACK_IMPORTED_MODULE_1__["default"],
+  props: true,
+  children: [{
+    path: '',
+    redirect: {
+      name: 'session-reports-search'
+    },
+    props: true
+  }, {
+    path: 'search',
+    name: 'session-reports-search',
+    component: _pages_session_reports_search__WEBPACK_IMPORTED_MODULE_2__["default"],
+    props: true
+  }, {
+    path: 'workflow',
+    name: 'session-reports-workflow',
+    component: _pages_session_reports_workflow__WEBPACK_IMPORTED_MODULE_3__["default"],
+    props: true
+  }, {
+    path: ':sessionReportId(\\d+)',
+    name: 'session-reports-view-one',
+    component: _pages_session_reports_manage__WEBPACK_IMPORTED_MODULE_4__["default"],
+    props: true
+  }, {
+    path: '*',
+    redirect: {
+      name: 'session-reports-search'
+    }
+  }]
+}, {
+  path: '*',
+  component: _pages_not_found__WEBPACK_IMPORTED_MODULE_0__["default"]
+}];
+/* harmony default export */ __webpack_exports__["default"] = (routes);
+
+/***/ }),
+
+/***/ "./resources/js/vue/store/modules/global.js":
+/*!**************************************************!*\
+  !*** ./resources/js/vue/store/modules/global.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var module = {
+  state: {
+    user: null
+  },
+  mutations: {
+    setUser: function setUser(state, user) {
+      state.user = user;
+    }
+  },
+  getters: {},
+  actions: {
+    getUser: function getUser(context) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var user;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return axios.get('/api/user/current');
+
+              case 2:
+                user = _context.sent.data;
+                context.commit('setUser', user);
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (module);
+
+/***/ }),
+
+/***/ "./resources/js/vue/store/modules/session-report-search.js":
+/*!*****************************************************************!*\
+  !*** ./resources/js/vue/store/modules/session-report-search.js ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! immutable */ "./node_modules/immutable/dist/immutable.es.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+var module = {
+  state: {
+    list: Object(immutable__WEBPACK_IMPORTED_MODULE_1__["List"])(),
+    current: null
+  },
+  mutations: {
+    setSessionReports: function setSessionReports(state, reportsList) {
+      state.list = Object(immutable__WEBPACK_IMPORTED_MODULE_1__["List"])(reportsList);
+      state.current = null;
+    },
+    setCurrentSessionReport: function setCurrentSessionReport(state, currentSessionReportId) {
+      state.current = currentSessionReportId;
+    }
+  },
+  getters: {
+    currentSessionReport: function currentSessionReport(state) {
+      var sessionReports = state.list;
+      var currentSessionReport = state.current;
+      if (!sessionReports || !sessionReports.size || !currentSessionReport) return null; // confirms id in session list
+
+      var _getEntryWithId = getEntryWithId(sessionReports, currentSessionReport),
+          _getEntryWithId2 = _slicedToArray(_getEntryWithId, 2),
+          _ = _getEntryWithId2[0],
+          current = _getEntryWithId2[1];
+
+      var first = sessionReports.first();
+      return current ? current.id : first.id;
+    },
+    previousSessionReport: function previousSessionReport(state, getters) {
+      var sessionReports = state.list;
+      var currentSessionReport = getters.currentSessionReport;
+      if (!sessionReports || !sessionReports.size || !currentSessionReport) return null;
+
+      var _getEntryWithId3 = getEntryWithId(sessionReports, currentSessionReport),
+          _getEntryWithId4 = _slicedToArray(_getEntryWithId3, 2),
+          key = _getEntryWithId4[0],
+          _ = _getEntryWithId4[1];
+
+      var previousKey = key - 1;
+      return previousKey >= 0 ? sessionReports.get(previousKey).id : null;
+    },
+    nextSessionReport: function nextSessionReport(state, getters) {
+      var sessionReports = state.list;
+      var currentSessionReport = getters.currentSessionReport;
+      if (!sessionReports || !sessionReports.size || !currentSessionReport) return null;
+
+      var _getEntryWithId5 = getEntryWithId(sessionReports, currentSessionReport),
+          _getEntryWithId6 = _slicedToArray(_getEntryWithId5, 2),
+          key = _getEntryWithId6[0],
+          _ = _getEntryWithId6[1];
+
+      var nextKey = key + 1;
+      return nextKey < sessionReports.size ? sessionReports.get(nextKey).id : null;
+    }
+  }
+};
+
+var getEntryWithId = function getEntryWithId(list, id) {
+  return list.findEntry(function (item) {
+    return item.id === id;
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (module);
 
 /***/ }),
 

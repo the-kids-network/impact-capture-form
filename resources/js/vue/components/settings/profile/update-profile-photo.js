@@ -1,7 +1,6 @@
 import SparkForm from '../../forms/form'
 
 const Component = {
-    props: ['user'],
 
     /**
      * The component's data.

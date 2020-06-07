@@ -35,7 +35,7 @@ Cypress.Commands.add('login', (user) => {
 
     cy.window()
       .then(window => {
-        const csrf = window.Spark.csrfToken
+        const csrf = window.csrfToken
 
         cy.request(
             {

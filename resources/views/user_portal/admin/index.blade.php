@@ -18,6 +18,14 @@
                 <div class="card link-panel">
                     <div class="card-body text-center">
                         <i class="fa fa-download text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/session-reports') }}">Session Reports (New!)</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card link-panel">
+                    <div class="card-body text-center">
+                        <i class="fa fa-download text-feature"></i>
                         <a class="btn btn-primary btn-block btn-lg" href="{{ url('/expense-claim') }}">Expense Claims</a>
                     </div>
                 </div>
@@ -166,7 +174,7 @@
                 <div class="card link-panel">
                     <div class="card-body text-center">
                         <i class="fa fa-bicycle text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/activity-type') }}">Activity Types</a>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/activity-types') }}">Activity Types</a>
                     </div>
                 </div>
             </div>
@@ -174,7 +182,7 @@
                 <div class="card link-panel">
                     <div class="card-body text-center">
                         <i class="fa fa-smile text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/emotional-state') }}">Emotional State</a>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/emotional-states') }}">Emotional State</a>
                     </div>
                 </div>
             </div>

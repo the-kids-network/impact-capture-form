@@ -20,6 +20,12 @@ class Report extends Model
         'session_date'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function mentee(){
         return $this->belongsTo('App\Mentee')->withTrashed();
     }

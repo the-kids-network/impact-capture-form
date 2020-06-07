@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::middleware('auth')->get('/app/{vue_capture?}', function () {
+    return view('vue.index');
+})->where('vue_capture', '.*');
+
 // Home Page
 Route::get('/', 'WelcomeController@show');
 
@@ -9,7 +13,6 @@ Route::get('/', 'WelcomeController@show');
 Route::post('/support/email', 'SupportController@sendEmail');
 
 // Users...
-Route::get('/user/current', 'UserController@current');
 Route::delete('/user/{user_id}','UserController@delete');
 Route::post('/user/{user_id}/restore','UserController@restore');
 
@@ -65,20 +68,29 @@ Route::get('/finance/process-expense-claims','FinanceController@processExpenseCl
 Route::post('/mentee/restore/{id}','MenteeController@restore');
 Route::resource('/mentee','MenteeController');
 
-// Session reports
-Route::post('/activity-type/restore/{id}','\App\Domains\SessionReports\Controllers\ActivityTypeController@restore');
-Route::post('/emotional-state/restore/{id}','\App\Domains\SessionReports\Controllers\EmotionalStateController@restore');
-Route::resource('/emotional-state','\App\Domains\SessionReports\Controllers\EmotionalStateController');
-Route::resource('/activity-type','\App\Domains\SessionReports\Controllers\ActivityTypeController');
+// Session reports - lookups
+Route::get('/activity-types', '\App\Domains\SessionReports\Controllers\ActivityTypeController@index');
+Route::post('/activity-types', '\App\Domains\SessionReports\Controllers\ActivityTypeController@create');
+Route::delete('/activity-types/{id}', '\App\Domains\SessionReports\Controllers\ActivityTypeController@delete');
+Route::post('/activity-types/{id}/restore/','\App\Domains\SessionReports\Controllers\ActivityTypeController@restore');
 
+Route::get('/emotional-states', '\App\Domains\SessionReports\Controllers\EmotionalStateController@index');
+Route::post('/emotional-states', '\App\Domains\SessionReports\Controllers\EmotionalStateController@create');
+Route::delete('/emotional-states/{id}', '\App\Domains\SessionReports\Controllers\EmotionalStateController@delete');
+Route::post('/emotional-states/{id}/restore/','\App\Domains\SessionReports\Controllers\EmotionalStateController@restore');
+
+// Session reports - v1
 Route::get('/report/new','\App\Domains\SessionReports\Controllers\SessionReportController@newReportForm');
 Route::get('/report/{id}/edit','\App\Domains\SessionReports\Controllers\SessionReportController@editReportForm');
 Route::get('/report/export','\App\Domains\SessionReports\Controllers\SessionReportController@export')->name('report.export');
-Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@getMany')->name('reports.get');
-Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@getOne');
+Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@get')->name('reports.get');
+Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@getById');
 Route::post('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@create');
-Route::put('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@update');
 Route::delete('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@delete');
+
+// session reports v2
+// redirect to vue routed app
+Route::redirect('/session-reports', '/app#/session-reports');
 
 // Expense claims
 Route::get('/expense-claim/export','ExpenseClaimController@export')->name('expense-claim.export');
@@ -139,12 +151,3 @@ Route::get('/fundings/export','\App\Domains\Funding\Controllers\FundingControlle
 Route::post('/funders/{id}/restore','\App\Domains\Funding\Controllers\FunderController@restore');
 Route::resource('/fundings','\App\Domains\Funding\Controllers\FundingController');
 Route::resource('/funders','\App\Domains\Funding\Controllers\FunderController');
-
-// Old routes to deprecate eventually once people's symlinks are updated
-Route::redirect('/my-reports', '/report/new');
-Route::redirect('/own-reports', '/report');
-Route::redirect('/my-expense-claims', '/expense-claim/new');
-Route::redirect('/manager/expense-claim/export', '/expense-claim/export');
-Route::redirect('/manager/view-expense-claims', '/expense-claim');
-Route::redirect('/schedule', '/calendar');
-

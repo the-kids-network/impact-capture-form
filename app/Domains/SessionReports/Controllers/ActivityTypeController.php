@@ -29,7 +29,7 @@ class ActivityTypeController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'name' => 'required|string'
@@ -39,7 +39,7 @@ class ActivityTypeController extends Controller {
         $activity_type->name = $request->name;
         $activity_type->save();
 
-        return redirect('activity-type')->with('status','Activity Type Added');
+        return redirect('activity-types')->with('status','Activity Type Added');
     }
 
     /**
@@ -48,11 +48,11 @@ class ActivityTypeController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
         $activity_type = ActivityType::find($id);
         $activity_type->delete();
-        return redirect('/activity-type')->with('status','Activity Type Deactivated');
+        return redirect('/activity-types')->with('status','Activity Type Deactivated');
     }
 
     public function restore($id){
@@ -60,6 +60,7 @@ class ActivityTypeController extends Controller {
             ->where('id', $id)
             ->restore();
 
-        return redirect('/activity-type')->with('status','Activity Type Restored');
+        return redirect('/activity-types')->with('status','Activity Type Restored');
     }
+
 }

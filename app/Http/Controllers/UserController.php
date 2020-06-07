@@ -13,20 +13,15 @@ class UserController extends Controller
         $this->middleware('hasAnyOfRoles:admin')->only('delete', 'restore');
     }
 
-    public function current() {
-        $repo = new UserRepository();
-        return $repo->current();
-    }
-
     public function delete(Request $request) {
         if ($request->really_delete) {
             $user = User::withTrashed()->find($request->user_id);
             $user->forceDelete();
-            return redirect()->intended('/roles/mentor')->with('status', 'Deleted user');
+            return redirect('/roles/mentor')->with('status', 'Deleted user');
         } else {
             $user = User::find($request->user_id);
             $user->delete();
-            return redirect()->intended('/roles/mentor')->with('status', 'Deactivated user');
+            return redirect('/roles/mentor')->with('status', 'Deactivated user');
         }
     }
 
@@ -35,7 +30,7 @@ class UserController extends Controller
             ->where('id', $request->user_id)
             ->restore();
 
-        return redirect()->intended('/roles/mentor')->with('status', 'Restored user');
+        return redirect('/roles/mentor')->with('status', 'Restored user');
     }
 
 }
