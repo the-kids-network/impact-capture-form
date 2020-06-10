@@ -22,7 +22,7 @@ class ExpenseClaim extends Model {
      * @return mixed
      */
     public function mentor() {
-        return $this->belongsTo('App\User')->withTrashed();
+        return $this->belongsTo('App\Domains\UserManagement\Models\User')->withTrashed();
     }
 
     /**
@@ -46,7 +46,7 @@ class ExpenseClaim extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function processedBy() {
-        return $this->belongsTo('App\User','processed_by_id');
+        return $this->belongsTo('App\Domains\UserManagement\Models\User','processed_by_id');
     }
 
     public function scopeCanSee($query) {

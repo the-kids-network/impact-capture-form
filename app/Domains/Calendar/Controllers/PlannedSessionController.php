@@ -7,7 +7,7 @@ use App\Domains\Calendar\Services\PlannedSessionService;
 use App\Exceptions\DuplicateException;
 use App\Exceptions\NotAuthorisedException;
 use App\Exceptions\NotFoundException;
-use App\Mentee;
+use App\Domains\UserManagement\Models\Mentee;
 use Illuminate\Http\Request;
 
 class PlannedSessionController extends Controller {

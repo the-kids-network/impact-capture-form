@@ -9,7 +9,7 @@
                 <div class="card-header">Reset Password</div>
 
                 <div class="card-body ">
-                    <form class="form-horizontal" novalidate="true" role="form" method="POST" action="{{ url('/password/email') }}">
+                    <form class="form-horizontal" novalidate="true" role="form" method="POST" action="{{ url('/password/reset/email') }}">
                         {!! csrf_field() !!}
 
                         <!-- E-Mail Address -->

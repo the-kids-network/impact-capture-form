@@ -3,8 +3,8 @@
 use App\Domains\SessionReports\Models\Report;
 use App\Expense;
 use App\ExpenseClaim;
-use App\Mentee;
-use App\User;
+use App\Domains\UserManagement\Models\Mentee;
+use App\Domains\UserManagement\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;

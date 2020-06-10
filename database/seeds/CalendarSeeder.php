@@ -3,8 +3,8 @@
 use App\Domains\Calendar\Models\MenteeLeave;
 use App\Domains\Calendar\Models\MentorLeave;
 use App\Domains\Calendar\Models\PlannedSession;
-use App\Mentee;
-use App\User;
+use App\Domains\UserManagement\Models\Mentee;
+use App\Domains\UserManagement\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 

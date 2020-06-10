@@ -32,7 +32,7 @@ class Document extends Model {
     }
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Domains\UserManagement\Models\User');
     }
 
     public function scopeModifiable($query) {

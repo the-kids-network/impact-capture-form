@@ -4,7 +4,7 @@ namespace App\Domains\Funding\Controllers;
 
 use App\Domains\Funding\Models\Funder;
 use App\Domains\Funding\Models\Funding;
-use App\User;
+use App\Domains\UserManagement\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

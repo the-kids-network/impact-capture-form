@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Domains\Calendar\Services\MentorLeaveService;
 use App\Exceptions\NotAuthorisedException;
 use App\Exceptions\NotFoundException;
-use App\User;
+use App\Domains\UserManagement\Models\User;
 use Illuminate\Http\Request;
 
 class MentorLeaveController extends Controller {

@@ -27,11 +27,11 @@ class Report extends Model
     ];
 
     public function mentee(){
-        return $this->belongsTo('App\Mentee')->withTrashed();
+        return $this->belongsTo('App\Domains\UserManagement\Models\Mentee')->withTrashed();
     }
 
     public function mentor(){
-        return $this->belongsTo('App\User')->withTrashed();
+        return $this->belongsTo('App\Domains\UserManagement\Models\User')->withTrashed();
     }
 
     public function activity_type(){

@@ -9,7 +9,7 @@ use App\Exceptions\NotFoundException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Domains\SessionReports\Models\SessionSearch;
-use App\User;
+use App\Domains\UserManagement\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 

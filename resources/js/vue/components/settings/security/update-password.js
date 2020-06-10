@@ -20,7 +20,7 @@ const Component = {
          * Update the user's password.
          */
         update() {
-            http.put('/settings/password', this.form);
+            http.put(`/users/${this.user.id}/password`, this.form);
         }
     }
 };

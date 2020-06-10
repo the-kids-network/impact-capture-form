@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Domains\Calendar\Services\MenteeLeaveService;
 use App\Exceptions\NotAuthorisedException;
 use App\Exceptions\NotFoundException;
-use App\Mentee;
+use App\Domains\UserManagement\Models\Mentee;
 use Illuminate\Http\Request;
 
 class MenteeLeaveController extends Controller {

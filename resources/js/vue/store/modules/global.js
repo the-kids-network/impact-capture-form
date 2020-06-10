@@ -12,7 +12,7 @@ const module = {
     },
     actions: {
         async getUser(context) {
-            const user = (await axios.get('/api/user/current')).data
+            const user = (await axios.get('/api/users/current')).data
             context.commit('setUser', user)
         }
     }

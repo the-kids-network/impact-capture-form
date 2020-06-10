@@ -6,69 +6,71 @@ Route::middleware('auth')->get('/app/{vue_capture?}', function () {
     return view('vue.index');
 })->where('vue_capture', '.*');
 
-// Home Page
+// Welcome
 Route::get('/', 'WelcomeController@show');
-
-// Customer Support...
-Route::post('/support/email', 'SupportController@sendEmail');
-
-// Users...
-Route::delete('/user/{user_id}','UserController@delete');
-Route::post('/user/{user_id}/restore','UserController@restore');
-
-// Settings Dashboard...
-Route::get('/settings', 'Settings\DashboardController@show')->name('settings');
-
-// Profile Contact Information...
-Route::put('/settings/contact', 'Settings\Profile\ContactInformationController@update');
-
-// Profile Photo...
-Route::post('/settings/photo', 'Settings\Profile\PhotoController@store');
-Route::delete('/settings/photo', 'Settings\Profile\PhotoController@remove');
-
-// Security Settings...
-Route::put('/settings/password', 'Settings\Security\PasswordController@update');
-
-// Authentication...
-Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('/login', 'Auth\LoginController@login');
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
-
-// Password Reset...
-Route::get('/password/reset/{token?}', 'Auth\PasswordController@showResetForm')->name('password.reset');
-Route::post('/password/email', 'Auth\PasswordController@sendResetLinkEmail');
-Route::post('/password/reset', 'Auth\PasswordController@reset');
-
-// Registration Route
-Route::get('/register','Auth\RegisterController@showRegistrationForm');
-Route::post('/register','Auth\RegisterController@register');
-
-/*
- * Role Management Routes
- */
-Route::get('/roles/mentor','RoleController@mentor');
-Route::get('/roles/manager','RoleController@manager');
-Route::get('/roles/admin','RoleController@admin');
-Route::post('/roles/manager','RoleController@store_manager_role');
-Route::post('/roles/admin','RoleController@store_admin_role');
-Route::post('/roles/assign-mentor','RoleController@assignMentor');
-Route::post('/roles/assign-manager','RoleController@assignManager');
-Route::delete('/roles/mentor/{mentor_id}/mentee/{mentee_id}','RoleController@disassociate_mentee');
-Route::delete('/roles/manager','RoleController@delete_manager_role');
-Route::delete('/roles/admin','RoleController@delete_admin_role');
 
 // Home
 Route::get('/home', 'HomeController@show');
 
-// Finance
+// Customer Support...
+Route::post('/support/email', 'SupportController@sendEmail');
+
+/**
+ * User management
+ */
+// Registration 
+Route::get('/register','\App\Domains\UserManagement\Controllers\RegisterController@showRegistrationForm');
+Route::post('/register','\App\Domains\UserManagement\Controllers\RegisterController@register');
+// Authentication
+Route::get('/login', '\App\Domains\UserManagement\Controllers\LoginController@showLoginForm')->name('login');
+Route::post('/login', '\App\Domains\UserManagement\Controllers\LoginController@login');
+Route::get('/logout', '\App\Domains\UserManagement\Controllers\LoginController@logout')->name('logout');
+// Password reset flow
+Route::get('/password/reset/{token?}', '\App\Domains\UserManagement\Controllers\PasswordResetController@showResetForm')->name('password.reset');
+Route::post('/password/reset/email', '\App\Domains\UserManagement\Controllers\PasswordResetController@sendResetLinkEmail');
+Route::post('/password/reset', '\App\Domains\UserManagement\Controllers\PasswordResetController@reset');
+
+// User profile
+Route::put('/users/{user_id}/password', '\App\Domains\UserManagement\Controllers\UserPasswordController@update');
+Route::put('/users/{user_id}/contact', '\App\Domains\UserManagement\Controllers\UserContactInformationController@update');
+Route::post('/users/{user_id}/photo', '\App\Domains\UserManagement\Controllers\UserPhotoController@store');
+Route::delete('/users/{user_id}/photo', '\App\Domains\UserManagement\Controllers\UserPhotoController@remove');
+Route::delete('/users/{user_id}','\App\Domains\UserManagement\Controllers\UserController@delete');
+Route::post('/users/{user_id}/restore','\App\Domains\UserManagement\Controllers\UserController@restore');
+
+// User roles
+Route::put('/users/{id}/roles/{role}','\App\Domains\UserManagement\Controllers\UserRoleController@setRole');
+Route::delete('/users/{id}/roles/{role}','\App\Domains\UserManagement\Controllers\UserRoleController@removeRole');
+
+// User relationships
+Route::put('/users/{manager_id}/mentors/{mentor_id}','\App\Domains\UserManagement\Controllers\UserRelationshipController@assignMentorToManager');
+Route::put('/users/{mentor_id}/mentees/{mentee_id}','\App\Domains\UserManagement\Controllers\UserRelationshipController@assignMenteeToMentor');
+Route::delete('/users/{mentor_id}/mentees/{mentee_id}','\App\Domains\UserManagement\Controllers\UserRelationshipController@unassignMenteeFromMentor');
+
+// Mentee
+Route::post('/mentees/{id}/restore','\App\Domains\UserManagement\Controllers\MenteeController@restore');
+Route::resource('/mentees','\App\Domains\UserManagement\Controllers\MenteeController');
+
+// User management landing pages
+Route::get('/user-management/mentors','\App\Domains\UserManagement\Controllers\UserManagementPageController@mentor');
+Route::get('/user-management/managers','\App\Domains\UserManagement\Controllers\UserManagementPageController@manager');
+Route::get('/user-management/admins','\App\Domains\UserManagement\Controllers\UserManagementPageController@admin');
+
+/**
+ * Settings dashboard
+ */
+Route::get('/settings', 'Settings\DashboardController@show')->name('settings');
+
+/**
+ * Finance
+ */
 Route::get('/finance/expense-claim/export','FinanceController@exportExpenseClaims');
 Route::get('/finance/process-expense-claims','FinanceController@processExpenseClaims');
 
-// Mentee
-Route::post('/mentee/restore/{id}','MenteeController@restore');
-Route::resource('/mentee','MenteeController');
-
-// Session reports - lookups
+/**
+ * Session reports
+ */
+// Lookups
 Route::get('/activity-types', '\App\Domains\SessionReports\Controllers\ActivityTypeController@index');
 Route::post('/activity-types', '\App\Domains\SessionReports\Controllers\ActivityTypeController@create');
 Route::delete('/activity-types/{id}', '\App\Domains\SessionReports\Controllers\ActivityTypeController@delete');
@@ -78,7 +80,6 @@ Route::get('/emotional-states', '\App\Domains\SessionReports\Controllers\Emotion
 Route::post('/emotional-states', '\App\Domains\SessionReports\Controllers\EmotionalStateController@create');
 Route::delete('/emotional-states/{id}', '\App\Domains\SessionReports\Controllers\EmotionalStateController@delete');
 Route::post('/emotional-states/{id}/restore/','\App\Domains\SessionReports\Controllers\EmotionalStateController@restore');
-
 // Session reports - v1
 Route::get('/report/new','\App\Domains\SessionReports\Controllers\SessionReportController@newReportForm');
 Route::get('/report/{id}/edit','\App\Domains\SessionReports\Controllers\SessionReportController@editReportForm');
@@ -87,23 +88,28 @@ Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportCont
 Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@getById');
 Route::post('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@create');
 Route::delete('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@delete');
-
 // session reports v2
 // redirect to vue routed app
 Route::redirect('/session-reports', '/app#/session-reports');
 
-// Expense claims
+/**
+ * Expense Claims
+ */
 Route::get('/expense-claim/export','ExpenseClaimController@export')->name('expense-claim.export');
 Route::get('/receipt/download-all','ReceiptController@downloadAll')->name('receipt.download-all');
 Route::get('/expense-claim/new','ExpenseClaimController@newExpenseClaim');
 Route::resource('/expense-claim','ExpenseClaimController');
 Route::resource('/receipt','ReceiptController');
 
-// BI Reporting Routes
+/**
+ * BI Reporting Routes
+ */
 Route::get('/reporting/mentor','MentorReportingController@generateIndexReport')->name('mentor-reporting-index');
 Route::get('/reporting/mentor/export','MentorReportingController@generateExportableReport')->name('mentor-reporting-export');
 
-// Calendar and events
+/**
+ * Calendar and events  
+ */ 
 Route::get('/mentee/leave/new','\App\Domains\Calendar\Controllers\MenteeLeaveController@newLeave');
 Route::get('/mentee/leave/{id}','\App\Domains\Calendar\Controllers\MenteeLeaveController@getOne');
 Route::post('/mentee/leave','\App\Domains\Calendar\Controllers\MenteeLeaveController@create');
@@ -125,7 +131,9 @@ Route::delete('/planned-session/{id}','\App\Domains\Calendar\Controllers\Planned
 
 Route::resource('/calendar','\App\Domains\Calendar\Controllers\CalendarController');
 
-// Documents
+/**
+ * Documents 
+ */
 Route::get('/documents/upload/index','\App\Domains\Documents\Controllers\DocumentController@uploadIndex');
 Route::get('/documents/index','\App\Domains\Documents\Controllers\DocumentController@index');
 
@@ -137,7 +145,9 @@ Route::get('/documents/{id}/download','\App\Domains\Documents\Controllers\Docume
 Route::get('/documents/{id}','\App\Domains\Documents\Controllers\DocumentController@getOne');
 Route::get('/documents','\App\Domains\Documents\Controllers\DocumentController@getAll');
 
-// Resource Tagging
+/**
+ * Resource Tagging
+ */
 Route::get('/tags','\App\Domains\Tagging\Controllers\TagController@getTags');
 Route::post('/tags','\App\Domains\Tagging\Controllers\TagController@createTags');
 Route::delete('/tags/{id}','\App\Domains\Tagging\Controllers\TagController@deleteTag');
@@ -146,7 +156,9 @@ Route::get('/tag-labels/associated', '\App\Domains\Tagging\Controllers\TagLabelC
 
 Route::get('/tagged-items', '\App\Domains\Tagging\Controllers\TaggedItemController@getTaggedItems');
 
-// Funding
+/**
+ * Funding
+ */ 
 Route::get('/fundings/export','\App\Domains\Funding\Controllers\FundingController@export')->name('fundings.export');
 Route::post('/funders/{id}/restore','\App\Domains\Funding\Controllers\FunderController@restore');
 Route::resource('/fundings','\App\Domains\Funding\Controllers\FundingController');

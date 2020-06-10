@@ -120,7 +120,7 @@ describe('Admin portal index', () => {
     })
 
     it('Has correct number of links', () => {
-        cy.get('.link-panel').should('have.length', 17)
+        cy.get('.link-panel').should('have.length', 18)
     })
 
     it('Can navigate to view session reports', () => {

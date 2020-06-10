@@ -5,7 +5,7 @@ namespace App\Domains\Calendar\Services;
 use App\Domains\Calendar\Models\MentorLeave;
 use App\Exceptions\NotAuthorisedException;
 use App\Exceptions\NotFoundException;
-use App\User;
+use App\Domains\UserManagement\Models\User;
 use Carbon\Carbon;
 
 class MentorLeaveService {

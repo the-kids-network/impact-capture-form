@@ -122,13 +122,13 @@
 
         <div class="row user-management">
             <div class="col-md-12">
-                <h3>Manage Roles</h3>
+                <h3>Manage Users</h3>
             </div>
             <div class="col-md-4">
                 <div class="card link-panel">
                     <div class="card-body text-center">
                         <i class="fa fa-child text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/mentee') }}">Mentee</a>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/mentees') }}">Mentee</a>
                     </div>
                 </div>
             </div>
@@ -136,7 +136,7 @@
                 <div class="card link-panel">
                     <div class="card-body text-center">
                         <i class="fa fa-user text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/roles/mentor') }}">Mentor</a>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/user-management/mentors') }}">Mentor</a>
                     </div>
                 </div>
             </div>
@@ -144,7 +144,7 @@
                 <div class="card link-panel">
                     <div class="card-body text-center">
                         <i class="fa fa-male text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/roles/manager') }}">Manager</a>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/user-management/managers') }}">Manager</a>
                     </div>
                 </div>
             </div>
@@ -152,7 +152,7 @@
                 <div class="card link-panel">
                     <div class="card-body text-center">
                         <i class="fa fa-lock text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/roles/admin') }}">Admin</a>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/user-management/admins') }}">Admin</a>
                     </div>
                 </div>
             </div>

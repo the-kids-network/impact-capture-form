@@ -30,7 +30,7 @@ const Component = {
             // We need to gather a fresh FormData instance with the profile photo appended to
             // the data so we can POST it up to the server. This will allow us to do async
             // uploads of the profile photos. We will update the user after this action.
-            axios.post('/settings/photo', this.gatherFormData())
+            axios.post(`/users/${this.user.id}/photo`, this.gatherFormData())
                 .then(
                     () => {
                         Bus.$emit('updateUser');
@@ -47,7 +47,7 @@ const Component = {
             var self = this;
             this.form.startProcessing();
 
-            axios.delete('/settings/photo', this.gatherFormData())
+            axios.delete(`/users/${this.user.id}/photo`, this.gatherFormData())
                 .then(
                     () => {
                         Bus.$emit('updateUser');

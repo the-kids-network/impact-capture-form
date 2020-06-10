@@ -28,7 +28,7 @@ const Component = {
          * Update the user's contact information.
          */
         update() {
-            http.put('/settings/contact', this.form)
+            http.put(`/users/${this.user.id}/contact`, this.form)
                 .then(() => {
                     Bus.$emit('updateUser');
                 });
