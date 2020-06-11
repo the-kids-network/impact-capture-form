@@ -6,9 +6,6 @@ import statusMixin from '../status-box/mixin'
 const Component = {
 
     props: {
-        mentors: {
-            default: () => []        
-        },
         searchCriteria: {
             default: () => {}
         }
@@ -80,7 +77,7 @@ const Component = {
                 </div> 
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <span v-on:click="publishSearchCriteria()" class="search btn btn-primary " :disabled="isSearching">
+                        <span v-on:click="handleClickSearch" class="search btn btn-primary " :disabled="isSearching">
                         <span class="fas fa-search" /> Search</span>
                     </div>
                 </div>
@@ -91,6 +88,9 @@ const Component = {
     data() {
         return {
             isSearching: false,
+
+            // lookups
+            mentors:[],
 
             // default search state
             mentorId: null,
@@ -114,7 +114,8 @@ const Component = {
         }
     },
 
-    created() {
+    async created() {
+        await this.setMentors()
         this.applySearchCriteria()
         this.search()
     },
@@ -137,27 +138,9 @@ const Component = {
     },
 
     methods: { 
-        async search() {
+        handleClickSearch() {
             this.clearErrors()
-           
-            const query = {
-                ...(this.mentorId ? {'mentor_id': this.mentorId}: {}),
-                ...(this.menteeId ? {'mentee_id': this.menteeId}: {}),
-                ...(this.sessionDateRangeStart ? {'session_date_range_start': this.sessionDateRangeStart}: {} ),
-                ...(this.sessionDateRangeEnd ? {'session_date_range_end': this.sessionDateRangeEnd}: {} ),
-                // large field that doesnt need to be returned at this point
-                'exclude_fields': ['meeting_details']
-            }
-
-            try {
-                this.isSearching = true
-                const results = await this.getSessionReports(query)
-                this.publishSearchResults(results)
-            } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: `Problem searching session reports`}))
-            } finally {
-                this.isSearching = false
-            }
+            this.publishSearchCriteria()
         },
 
         applySearchCriteria() {
@@ -186,8 +169,41 @@ const Component = {
             this.$emit('searchResults', [])
         },
 
+        async search() {
+            const query = {
+                ...(this.mentorId ? {'mentor_id': this.mentorId}: {}),
+                ...(this.menteeId ? {'mentee_id': this.menteeId}: {}),
+                ...(this.sessionDateRangeStart ? {'session_date_range_start': this.sessionDateRangeStart}: {} ),
+                ...(this.sessionDateRangeEnd ? {'session_date_range_end': this.sessionDateRangeEnd}: {} ),
+                // large field that doesnt need to be returned at this point
+                'exclude_fields': ['meeting_details']
+            }
+
+            try {
+                this.isSearching = true
+                const results = await this.getSessionReports(query)
+                this.publishSearchResults(results)
+            } catch (e) {
+                this.addErrors(extractErrors({e, defaultMsg: `Problem searching session reports`}))
+            } finally {
+                this.isSearching = false
+            }
+        },
+
+        async setMentors() {
+            try {
+                this.mentors = await this.getMentors()
+            } catch (e) {
+                this.addErrors(extractErrors({e, defaultMsg: `Problem getting mentors lookup`}))
+            }
+        },
+
         async getSessionReports(queryParameters) {
             return (await axios.get(`/api/session-reports`, { params: queryParameters })).data
+        },
+
+        async getMentors() {
+            return (await axios.get(`/api/users`, { params: {role: 'mentor'} })).data
         }
     }
 };

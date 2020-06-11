@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/users/current', '\App\Domains\UserManagement\Controllers\UserApiController@current');
+Route::get('/users', '\App\Domains\UserManagement\Controllers\UserApiController@get');
+
 
 // Session report lookups
 Route::get('/activity-types','\App\Domains\SessionReports\Controllers\ActivityTypeApiController@get');
