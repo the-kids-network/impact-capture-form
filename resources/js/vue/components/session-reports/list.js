@@ -32,7 +32,7 @@ const Component = {
                             v-for="sessionReport in itemsForCurrentPage"
                             :id="'item-' + sessionReport.id"
                             class="item"
-                            @click="sessionReportClicked(sessionReport.id)">   
+                            @click="handleClickSessionReport(sessionReport.id)">   
 
                             <td class="session-id">
                                 {{sessionReport.id}}
@@ -47,7 +47,7 @@ const Component = {
                                 {{sessionReport.length_of_session}}
                             </td>
                             <td class="session-date">
-                                {{handleDate(sessionReport.session_date)}}
+                                {{displayableDate(sessionReport.session_date)}}
                             </td>
                         </tr>
                     </tbody>
@@ -124,9 +124,9 @@ const Component = {
     },
 
     methods: { 
-        handleDate: dateString => formatDate(parseDate(dateString)),
+        displayableDate: dateString => formatDate(parseDate(dateString)),
 
-        sessionReportClicked(sessionReportId) {
+        handleClickSessionReport(sessionReportId) {
             this.$emit('sessionReportSelected', sessionReportId)
         }
     }

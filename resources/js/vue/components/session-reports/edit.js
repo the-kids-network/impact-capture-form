@@ -43,11 +43,11 @@ const Component = {
                     <div class="col-md-6 entry">
                         <input id="sessionDateInput"
                                type="text" 
-                               :class="{ 'form-control': true, 'datepicker': true, 'sessiondate' : true, 'edited': isDirty('sessionDate') }"
+                               :class="{ 'form-control': true, 'datepicker': true, 'sessiondate' : true, 'edited': isFieldDirty('sessionDate') }"
                                v-model="sessionDate"
                                autocomplete="off">
-                        <div v-if="isDirty('sessionDate')"
-                               class="revert"><span class="fas fa-history" @click="revert('sessionDate')"/></div>
+                        <div v-if="isFieldDirty('sessionDate')"
+                               class="revertField"><span class="fas fa-history" @click="revertField('sessionDate')"/></div>
                     </div>
                 </div>
 
@@ -56,15 +56,15 @@ const Component = {
                     <label class="col-md-4 col-form-label" for="ratingInput">Session Rating</label>
                     <div class="col-md-6 entry">
                         <select id="ratingInput" 
-                                :class="{ 'form-control': true, 'edited': isDirty('ratingId') }"
+                                :class="{ 'form-control': true, 'edited': isFieldDirty('ratingId') }"
                                 v-model="ratingId">
                             <option v-for="rating in sessionRatingsLookup"
                                 :value="rating.id">
                                 {{ rating.value }}
                             </option>
                         </select>
-                        <div v-if="isDirty('ratingId')"
-                             class="revert"><span class="fas fa-history" @click="revert('ratingId')"/></div>
+                        <div v-if="isFieldDirty('ratingId')"
+                             class="revertField"><span class="fas fa-history" @click="revertField('ratingId')"/></div>
                     </div>
                 </div>
 
@@ -74,10 +74,10 @@ const Component = {
                     <div class="col-md-6 entry">
                         <input id="lengthInput"
                                type="text" 
-                               :class="{ 'form-control': true, 'edited': isDirty('lengthOfSession') }"
+                               :class="{ 'form-control': true, 'edited': isFieldDirty('lengthOfSession') }"
                                v-model="lengthOfSession">
-                        <div v-if="isDirty('lengthOfSession')"
-                             class="revert"><span class="fas fa-history" @click="revert('lengthOfSession')"/></div>
+                        <div v-if="isFieldDirty('lengthOfSession')"
+                             class="revertField"><span class="fas fa-history" @click="revertField('lengthOfSession')"/></div>
                     </div>
                 </div>
 
@@ -86,15 +86,15 @@ const Component = {
                     <label class="col-md-4 col-form-label" for="activityTypeInput">Activity Type</label>
                     <div class="col-md-6 entry">
                         <select id="activityTypeInput"
-                                :class="{ 'form-control': true, 'edited': isDirty('activityTypeId') }"
+                                :class="{ 'form-control': true, 'edited': isFieldDirty('activityTypeId') }"
                                 v-model="activityTypeId">
                             <option v-for="activityType in activityTypesLookup"
                                 :value="activityType.id">
                                 {{ activityType.name }}
                             </option>
                         </select>
-                        <div v-if="isDirty('activityTypeId')"
-                             class="revert"><span class="fas fa-history" @click="revert('activityTypeId')"/></div>
+                        <div v-if="isFieldDirty('activityTypeId')"
+                             class="revertField"><span class="fas fa-history" @click="revertField('activityTypeId')"/></div>
                     </div>
                 </div>
 
@@ -105,10 +105,10 @@ const Component = {
                     <div class="col-md-6 entry">
                         <input id="locationInput"
                                type="text" 
-                               :class="{ 'form-control': true, 'edited': isDirty('location') }"
+                               :class="{ 'form-control': true, 'edited': isFieldDirty('location') }"
                                v-model="location">
-                        <div v-if="isDirty('location')"
-                             class="revert"><span class="fas fa-history" @click="revert('location')"/></div>
+                        <div v-if="isFieldDirty('location')"
+                             class="revertField"><span class="fas fa-history" @click="revertField('location')"/></div>
                     </div>
                 </div>
 
@@ -118,15 +118,15 @@ const Component = {
 
                     <div class="col-md-6 entry">
                         <select id="safeguardingInput"
-                                :class="{ 'form-control': true, 'edited': isDirty('safeguardingConcern') }"
+                                :class="{ 'form-control': true, 'edited': isFieldDirty('safeguardingConcern') }"
                                 v-model="safeguardingConcern">
                             <option v-for="item in safeguardingLookup"
                                     :value="item.id">
                                     {{ item.name }}
                             </option>
                         </select>
-                        <div v-if="isDirty('safeguardingConcern')"
-                             class="revert"><span class="fas fa-history" @click="revert('safeguardingConcern')"/></div>
+                        <div v-if="isFieldDirty('safeguardingConcern')"
+                             class="revertField"><span class="fas fa-history" @click="revertField('safeguardingConcern')"/></div>
                     </div>
                 </div>
 
@@ -135,15 +135,15 @@ const Component = {
                     <label class="col-md-4 col-form-label" for="emotionalStateInput">Mentee's Emotional State</label>
                     <div class="col-md-6 entry">
                         <select id="emotionalStateInput"
-                                :class="{ 'form-control': true, 'edited': isDirty('emotionalStateId') }"
+                                :class="{ 'form-control': true, 'edited': isFieldDirty('emotionalStateId') }"
                                 v-model="emotionalStateId">
                             <option v-for="emotionalState in emotionalStatesLookup"
                                 :value="emotionalState.id">
                                 {{ emotionalState.name }}
                             </option>
                         </select>
-                        <div v-if="isDirty('emotionalStateId')"
-                            class="revert"><span class="fas fa-history" @click="revert('emotionalStateId')"/></div>
+                        <div v-if="isFieldDirty('emotionalStateId')"
+                            class="revertField"><span class="fas fa-history" @click="revertField('emotionalStateId')"/></div>
                     </div>
                 </div>
 
@@ -152,11 +152,11 @@ const Component = {
                     <label class="col-md-4 col-form-label" for="meetingDetailsInput">Meeting Details</label>
                     <div class="col-md-6 entry">
                         <textarea id="meetingDetailsInput"
-                                  :class="{ 'form-control': true, 'edited': isDirty('meetingDetails') }"
+                                  :class="{ 'form-control': true, 'edited': isFieldDirty('meetingDetails') }"
                                   rows="10"
                                   v-model="meetingDetails"/>
-                        <div v-if="isDirty('meetingDetails')"
-                            class="revert"><span class="fas fa-history" @click="revert('meetingDetails')"/></div>
+                        <div v-if="isFieldDirty('meetingDetails')"
+                            class="revertField"><span class="fas fa-history" @click="revertField('meetingDetails')"/></div>
                     </div>
                 </div>
 
@@ -230,7 +230,7 @@ const Component = {
     watch: {
         sessionReportId: function() {
             this.clearStatus()
-            this.setSessionReport()
+            this.intialiseSessionReport()
         },
         sessionReport: function() {
             Object.assign(this.$data, this.buildState(this.sessionReport));          
@@ -238,11 +238,11 @@ const Component = {
     },
 
     async created() {
-        this.setSessionReport()
-        this.setActivityTypesLookup()
-        this.setEmotionalStatesLookup()
-        this.setSessionRatingsLookup()
-        this.setSafeguardingConcernLookup()
+        this.intialiseSessionReport()
+        this.initialiseActivityTypesLookup()
+        this.initialiseEmotionalStatesLookup()
+        this.initialiseSessionRatingsLookup()
+        this.initialiseSafeguardingConcernLookup()
     },
 
     mounted() {
@@ -259,54 +259,54 @@ const Component = {
     },
 
     methods: { 
-        isDirty(editableFieldName) {
+        isFieldDirty(editableFieldName) {
             return this._originalState[editableFieldName] !== this[editableFieldName]
         },
 
-        revert(editableFieldName) {
+        revertField(editableFieldName) {
             if (this.hasOwnProperty(editableFieldName)) {
                 this[editableFieldName] = this._originalState[editableFieldName]
             }
         },
 
-        async setActivityTypesLookup() {
+        async initialiseActivityTypesLookup() {
             try {
-                this.activityTypesLookup = await this.getActivityTypes()
+                this.activityTypesLookup = await this.fetchActivityTypes()
             } catch (e) {
                 this.addErrors(extractErrors({e, defaultMsg: `Problem loading activity types lookup`}))
             }
         },
 
-        async setEmotionalStatesLookup() {
+        async initialiseEmotionalStatesLookup() {
             try {
-                this.emotionalStatesLookup = await this.getEmotionalStates()
+                this.emotionalStatesLookup = await this.fetchEmotionalStates()
             } catch (e) {
                 this.addErrors(extractErrors({e, defaultMsg: `Problem loading emotional states lookup`}))
             }
         },
 
-        async setSessionRatingsLookup() {
+        async initialiseSessionRatingsLookup() {
             try {
-                this.sessionRatingsLookup = await this.getSessionRatings()
+                this.sessionRatingsLookup = await this.fetchSessionRatings()
             } catch (e) {
                 this.addErrors(extractErrors({e, defaultMsg: `Problem loading session ratings lookup`}))
             }
         },
 
-        async setSafeguardingConcernLookup() {
+        async initialiseSafeguardingConcernLookup() {
             try {
-                this.safeguardingLookup = await this.getSafeguardingOptions()
+                this.safeguardingLookup = await this.fetchSafeguardingOptions()
             } catch (e) {
                 this.addErrors(extractErrors({e, defaultMsg: `Problem loading safeguarding lookup`}))
             }
         },
 
-        async setSessionReport() {
+        async intialiseSessionReport() {
             if (!this.sessionReportId) return
 
             this.sessionReport = null
             try {
-                this.sessionReport = await this.getSessionReport(this.sessionReportId)
+                this.sessionReport = await this.fetchSessionReport(this.sessionReportId)
             } catch (e) {
                 this.addErrors(extractErrors({e, defaultMsg: `Problem loading session report (${this.sessionReportId})`}))
             }
@@ -365,23 +365,23 @@ const Component = {
             return (await axios.put(`/api/session-reports/${id}`, reportData)).data
         },
 
-        async getSessionReport(id) {
+        async fetchSessionReport(id) {
             return (await axios.get(`/api/session-reports/${id}`)).data
         },
 
-        async getActivityTypes() {
+        async fetchActivityTypes() {
             return (await axios.get('/api/activity-types', { params: {trashed: true} })).data
         },
 
-        async getEmotionalStates() {
+        async fetchEmotionalStates() {
             return (await axios.get('/api/emotional-states', { params: {trashed: true} })).data
         },
 
-        async getSessionRatings() {
+        async fetchSessionRatings() {
             return (await axios.get('/api/session-ratings')).data
         },
 
-        async getSafeguardingOptions() {
+        async fetchSafeguardingOptions() {
             return (await axios.get('/api/safeguarding-options')).data
         },
 

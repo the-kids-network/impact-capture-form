@@ -134,7 +134,7 @@ const Component = {
     },
 
     async created() {
-        await this.setMentors()
+        await this.initialiseMentors()
         this.applySearchCriteria()
         this.search()
     },
@@ -163,10 +163,12 @@ const Component = {
             this.sessionDateRangeStart = startDate.format(dateFormat)
             this.sessionDateRangeEnd = endDate.format(dateFormat)
         },
+
         handleClickSearch() {
             this.clearErrors()
-            this.publishSearchCriteria()
+            this.publishSearchCriteria(this.buildSearchCriteria())
         },
+
         applySearchCriteria() {
             this.mentorId = this.searchCriteria.mentorId ? this.searchCriteria.mentorId : null
             this.menteeId = this.searchCriteria.menteeId ? this.searchCriteria.menteeId : null
@@ -174,15 +176,17 @@ const Component = {
             this.sessionDateRangeEnd = this.searchCriteria.sessionDateRangeEnd ? this.searchCriteria.sessionDateRangeEnd : null
         },
 
-        publishSearchCriteria() {
-            const criteria = { 
+        buildSearchCriteria() {
+            return { 
                 ...(this.mentorId ? {mentorId: this.mentorId}: {}),
                 ...(this.menteeId ? {menteeId: this.menteeId}: {}),
                 ...(this.sessionDateRangeStart ? {sessionDateRangeStart: this.sessionDateRangeStart}: {}),
                 ...(this.sessionDateRangeEnd ? {sessionDateRangeEnd: this.sessionDateRangeEnd}: {}),
             }
+        },
 
-            this.$emit('searchCriteria', criteria)
+        publishSearchCriteria(searchCriteria) {
+            this.$emit('searchCriteria', searchCriteria)
         },
 
         publishSearchResults(results) {
@@ -205,7 +209,7 @@ const Component = {
 
             try {
                 this.isSearching = true
-                const results = await this.getSessionReports(query)
+                const results = await this.fetchSessionReports(query)
                 this.publishSearchResults(results)
             } catch (e) {
                 this.addErrors(extractErrors({e, defaultMsg: `Problem searching session reports`}))
@@ -214,19 +218,22 @@ const Component = {
             }
         },
 
-        async setMentors() {
+        async initialiseMentors() {
             try {
-                this.mentors = await this.getMentors()
+                this.mentors = await this.fetchMentors()
             } catch (e) {
                 this.addErrors(extractErrors({e, defaultMsg: `Problem getting mentors lookup`}))
             }
         },
 
-        async getSessionReports(queryParameters) {
+        /**
+         * API data
+         */
+        async fetchSessionReports(queryParameters) {
             return (await axios.get(`/api/session-reports`, { params: queryParameters })).data
         },
 
-        async getMentors() {
+        async fetchMentors() {
             return (await axios.get(`/api/users`, { params: {role: 'mentor'} })).data
         }
     }

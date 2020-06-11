@@ -23,8 +23,8 @@ const Component = {
                 </div>
                 <div id="collapsed-find-by-id" class="card-body collapse">
                     <form 
-                        v-on:keyup.enter.prevent="openSessionReport(sessionReportId)" 
-                        @submit.prevent="openSessionReport(sessionReportId)">
+                        v-on:keyup.enter.prevent="handleOpenSessionReport(sessionReportId)" 
+                        @submit.prevent="handleOpenSessionReport(sessionReportId)">
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <input id="idInput" type="text" 
@@ -33,7 +33,7 @@ const Component = {
                                 <div class="invalid-feedback invalid-id">Type a valid numerical ID</div>
                             </div>
                             <div class="form-group col-md-3">
-                                <span v-on:click="openSessionReport(sessionReportId)" class="search btn btn-primary btn-sm">
+                                <span v-on:click="handleOpenSessionReport(sessionReportId)" class="search btn btn-primary btn-sm">
                                 <span class="fas fa-chevron-circle-right" /> Go</span>
                             </div>
                         </div>
@@ -60,7 +60,7 @@ const Component = {
                 <div class="card-body">
                     <session-report-list
                         :sessionReports="searchResults"
-                        @sessionReportSelected="sessionReportSelected($event)">
+                        @sessionReportSelected="handleSelectSessionReport($event)">
                     </session-report-list>
                 </div>
             </div>
@@ -111,16 +111,17 @@ const Component = {
         isValidId(sessionReportId) {
             return /^\d+$/.test(sessionReportId)
         },
-        openSessionReport(sessionReportId) {
+
+        // View handlers
+        handleOpenSessionReport(sessionReportId) {
             if (this.isValidId(sessionReportId)) {
                 this.$router.push({ name: 'session-reports-view-one', params: { 'sessionReportId': sessionReportId } })
             }
         }, 
-        sessionReportSelected(sessionReportId) {
+        handleSelectSessionReport(sessionReportId) {
             this.$store.commit('setCurrentSessionReport', sessionReportId)
             this.$router.push({ name: 'session-reports-workflow' })
         },
-
 
         // Search parameter functions
         hasSearchParameters() {
@@ -156,7 +157,7 @@ const Component = {
         },
         buildDefaultSearchParameters() {
             return {
-                // last one month
+                // last one month by default for performance reasons
                 sessionDateRangeStart : moment().subtract(1, 'months').format(SEARCH_DATE_FORMAT),
                 sessionDateRangeEnd: moment().format(SEARCH_DATE_FORMAT)
             }

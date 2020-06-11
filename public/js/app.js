@@ -120722,7 +120722,7 @@ var Component = {
   props: ['sessionReportId'],
   mixins: [_status_box_mixin__WEBPACK_IMPORTED_MODULE_4__["default"]],
   components: {},
-  template: "\n        <div class=\"session-report-edit\">            \n            <status-box\n                ref=\"status-box\"\n                class=\"status\"\n                :successes=\"successes\"\n                :errors=\"errors\">\n            </status-box>   \n\n            <div class=\"container\">\n            <form v-if=\"sessionReport\" class=\"form-horizontal\" role=\"form\">\n                <!-- Mentee's Name -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"menteeInput\">Mentee</label>\n                    <div class=\"col-md-6\">\n                        <select id=\"menteeInput\" class=\"form-control\" name=\"mentee_id\" disabled>\n                            <option\n                                :value=\"sessionReport.mentee.id\" selected>\n                                {{ sessionReport.mentee.name }}\n                            </option>\n                        </select>\n                    </div>\n                </div>\n\n                <!-- Date of Session -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"sessionDateInput\">Session Date</label>\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"sessionDateInput\"\n                               type=\"text\" \n                               :class=\"{ 'form-control': true, 'datepicker': true, 'sessiondate' : true, 'edited': isDirty('sessionDate') }\"\n                               v-model=\"sessionDate\"\n                               autocomplete=\"off\">\n                        <div v-if=\"isDirty('sessionDate')\"\n                               class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('sessionDate')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Session Rating -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"ratingInput\">Session Rating</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"ratingInput\" \n                                :class=\"{ 'form-control': true, 'edited': isDirty('ratingId') }\"\n                                v-model=\"ratingId\">\n                            <option v-for=\"rating in sessionRatingsLookup\"\n                                :value=\"rating.id\">\n                                {{ rating.value }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('ratingId')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('ratingId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Length of Session -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"lengthInput\">Length of Session (hours)</label>\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"lengthInput\"\n                               type=\"text\" \n                               :class=\"{ 'form-control': true, 'edited': isDirty('lengthOfSession') }\"\n                               v-model=\"lengthOfSession\">\n                        <div v-if=\"isDirty('lengthOfSession')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('lengthOfSession')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Type of Activity -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"activityTypeInput\">Activity Type</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"activityTypeInput\"\n                                :class=\"{ 'form-control': true, 'edited': isDirty('activityTypeId') }\"\n                                v-model=\"activityTypeId\">\n                            <option v-for=\"activityType in activityTypesLookup\"\n                                :value=\"activityType.id\">\n                                {{ activityType.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('activityTypeId')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('activityTypeId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Location -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"locationInput\">Location</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"locationInput\"\n                               type=\"text\" \n                               :class=\"{ 'form-control': true, 'edited': isDirty('location') }\"\n                               v-model=\"location\">\n                        <div v-if=\"isDirty('location')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('location')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Safeguarding Concern -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"safeguardingInput\">Safeguarding Concern</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"safeguardingInput\"\n                                :class=\"{ 'form-control': true, 'edited': isDirty('safeguardingConcern') }\"\n                                v-model=\"safeguardingConcern\">\n                            <option v-for=\"item in safeguardingLookup\"\n                                    :value=\"item.id\">\n                                    {{ item.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('safeguardingConcern')\"\n                             class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('safeguardingConcern')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Emotional State -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"emotionalStateInput\">Mentee's Emotional State</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"emotionalStateInput\"\n                                :class=\"{ 'form-control': true, 'edited': isDirty('emotionalStateId') }\"\n                                v-model=\"emotionalStateId\">\n                            <option v-for=\"emotionalState in emotionalStatesLookup\"\n                                :value=\"emotionalState.id\">\n                                {{ emotionalState.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isDirty('emotionalStateId')\"\n                            class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('emotionalStateId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Meeting Details -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"meetingDetailsInput\">Meeting Details</label>\n                    <div class=\"col-md-6 entry\">\n                        <textarea id=\"meetingDetailsInput\"\n                                  :class=\"{ 'form-control': true, 'edited': isDirty('meetingDetails') }\"\n                                  rows=\"10\"\n                                  v-model=\"meetingDetails\"/>\n                        <div v-if=\"isDirty('meetingDetails')\"\n                            class=\"revert\"><span class=\"fas fa-history\" @click=\"revert('meetingDetails')\"/></div>\n                    </div>\n                </div>\n\n                <div class=\"form-group row\">\n                    <div class=\"col-md offset-md-4\">\n                        <span @click=\"handleSaveSessionReport\" class=\"save btn btn-success \" :disabled=\"isBusy\">\n                        <span class=\"fas fa-save\" /> Save</span>\n                        <span class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#delete-confirmation\" :disabled=\"isBusy\">\n                        <span class=\"fas fa-times\" /> Delete</span>\n                    </div>\n                </div>\n\n                <div class=\"modal fade\" id=\"delete-confirmation\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"delete report\" aria-hidden=\"true\">\n                    <div class=\"modal-dialog\" role=\"document\">\n                        <div class=\"modal-content\">\n                            <div class=\"modal-header\">\n                                <h3 class=\"modal-title\" id=\"exampleModalLabel\">Confirm deletion of report</h3>\n                            </div>\n                            <div class=\"modal-body\">\n                                <p>Are you sure you want to delete the session report?</p>\n\n                                <p>This will <b>delete all associated expense claims</b>, so make sure they have not been processed / paid already.</p>\n                            </div>\n                            <div class=\"modal-footer\">\n                                <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Cancel</button>\n                                <button @click=\"handleDeleteSessionReport\" data-dismiss=\"modal\" class=\"btn btn-danger\">\n                                    <span class=\"fas fa-times\"></span>\n                                    <span>Delete</span>\n                                </button>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </form>\n            </div>\n        </div>\n    ",
+  template: "\n        <div class=\"session-report-edit\">            \n            <status-box\n                ref=\"status-box\"\n                class=\"status\"\n                :successes=\"successes\"\n                :errors=\"errors\">\n            </status-box>   \n\n            <div class=\"container\">\n            <form v-if=\"sessionReport\" class=\"form-horizontal\" role=\"form\">\n                <!-- Mentee's Name -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"menteeInput\">Mentee</label>\n                    <div class=\"col-md-6\">\n                        <select id=\"menteeInput\" class=\"form-control\" name=\"mentee_id\" disabled>\n                            <option\n                                :value=\"sessionReport.mentee.id\" selected>\n                                {{ sessionReport.mentee.name }}\n                            </option>\n                        </select>\n                    </div>\n                </div>\n\n                <!-- Date of Session -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"sessionDateInput\">Session Date</label>\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"sessionDateInput\"\n                               type=\"text\" \n                               :class=\"{ 'form-control': true, 'datepicker': true, 'sessiondate' : true, 'edited': isFieldDirty('sessionDate') }\"\n                               v-model=\"sessionDate\"\n                               autocomplete=\"off\">\n                        <div v-if=\"isFieldDirty('sessionDate')\"\n                               class=\"revertField\"><span class=\"fas fa-history\" @click=\"revertField('sessionDate')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Session Rating -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"ratingInput\">Session Rating</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"ratingInput\" \n                                :class=\"{ 'form-control': true, 'edited': isFieldDirty('ratingId') }\"\n                                v-model=\"ratingId\">\n                            <option v-for=\"rating in sessionRatingsLookup\"\n                                :value=\"rating.id\">\n                                {{ rating.value }}\n                            </option>\n                        </select>\n                        <div v-if=\"isFieldDirty('ratingId')\"\n                             class=\"revertField\"><span class=\"fas fa-history\" @click=\"revertField('ratingId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Length of Session -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"lengthInput\">Length of Session (hours)</label>\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"lengthInput\"\n                               type=\"text\" \n                               :class=\"{ 'form-control': true, 'edited': isFieldDirty('lengthOfSession') }\"\n                               v-model=\"lengthOfSession\">\n                        <div v-if=\"isFieldDirty('lengthOfSession')\"\n                             class=\"revertField\"><span class=\"fas fa-history\" @click=\"revertField('lengthOfSession')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Type of Activity -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"activityTypeInput\">Activity Type</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"activityTypeInput\"\n                                :class=\"{ 'form-control': true, 'edited': isFieldDirty('activityTypeId') }\"\n                                v-model=\"activityTypeId\">\n                            <option v-for=\"activityType in activityTypesLookup\"\n                                :value=\"activityType.id\">\n                                {{ activityType.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isFieldDirty('activityTypeId')\"\n                             class=\"revertField\"><span class=\"fas fa-history\" @click=\"revertField('activityTypeId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Location -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"locationInput\">Location</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <input id=\"locationInput\"\n                               type=\"text\" \n                               :class=\"{ 'form-control': true, 'edited': isFieldDirty('location') }\"\n                               v-model=\"location\">\n                        <div v-if=\"isFieldDirty('location')\"\n                             class=\"revertField\"><span class=\"fas fa-history\" @click=\"revertField('location')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Safeguarding Concern -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"safeguardingInput\">Safeguarding Concern</label>\n\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"safeguardingInput\"\n                                :class=\"{ 'form-control': true, 'edited': isFieldDirty('safeguardingConcern') }\"\n                                v-model=\"safeguardingConcern\">\n                            <option v-for=\"item in safeguardingLookup\"\n                                    :value=\"item.id\">\n                                    {{ item.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isFieldDirty('safeguardingConcern')\"\n                             class=\"revertField\"><span class=\"fas fa-history\" @click=\"revertField('safeguardingConcern')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Emotional State -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"emotionalStateInput\">Mentee's Emotional State</label>\n                    <div class=\"col-md-6 entry\">\n                        <select id=\"emotionalStateInput\"\n                                :class=\"{ 'form-control': true, 'edited': isFieldDirty('emotionalStateId') }\"\n                                v-model=\"emotionalStateId\">\n                            <option v-for=\"emotionalState in emotionalStatesLookup\"\n                                :value=\"emotionalState.id\">\n                                {{ emotionalState.name }}\n                            </option>\n                        </select>\n                        <div v-if=\"isFieldDirty('emotionalStateId')\"\n                            class=\"revertField\"><span class=\"fas fa-history\" @click=\"revertField('emotionalStateId')\"/></div>\n                    </div>\n                </div>\n\n                <!-- Meeting Details -->\n                <div class=\"form-group row\">\n                    <label class=\"col-md-4 col-form-label\" for=\"meetingDetailsInput\">Meeting Details</label>\n                    <div class=\"col-md-6 entry\">\n                        <textarea id=\"meetingDetailsInput\"\n                                  :class=\"{ 'form-control': true, 'edited': isFieldDirty('meetingDetails') }\"\n                                  rows=\"10\"\n                                  v-model=\"meetingDetails\"/>\n                        <div v-if=\"isFieldDirty('meetingDetails')\"\n                            class=\"revertField\"><span class=\"fas fa-history\" @click=\"revertField('meetingDetails')\"/></div>\n                    </div>\n                </div>\n\n                <div class=\"form-group row\">\n                    <div class=\"col-md offset-md-4\">\n                        <span @click=\"handleSaveSessionReport\" class=\"save btn btn-success \" :disabled=\"isBusy\">\n                        <span class=\"fas fa-save\" /> Save</span>\n                        <span class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#delete-confirmation\" :disabled=\"isBusy\">\n                        <span class=\"fas fa-times\" /> Delete</span>\n                    </div>\n                </div>\n\n                <div class=\"modal fade\" id=\"delete-confirmation\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"delete report\" aria-hidden=\"true\">\n                    <div class=\"modal-dialog\" role=\"document\">\n                        <div class=\"modal-content\">\n                            <div class=\"modal-header\">\n                                <h3 class=\"modal-title\" id=\"exampleModalLabel\">Confirm deletion of report</h3>\n                            </div>\n                            <div class=\"modal-body\">\n                                <p>Are you sure you want to delete the session report?</p>\n\n                                <p>This will <b>delete all associated expense claims</b>, so make sure they have not been processed / paid already.</p>\n                            </div>\n                            <div class=\"modal-footer\">\n                                <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Cancel</button>\n                                <button @click=\"handleDeleteSessionReport\" data-dismiss=\"modal\" class=\"btn btn-danger\">\n                                    <span class=\"fas fa-times\"></span>\n                                    <span>Delete</span>\n                                </button>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </form>\n            </div>\n        </div>\n    ",
   data: function data() {
     return {
       // lookups
@@ -120753,7 +120753,7 @@ var Component = {
   watch: {
     sessionReportId: function sessionReportId() {
       this.clearStatus();
-      this.setSessionReport();
+      this.intialiseSessionReport();
     },
     sessionReport: function sessionReport() {
       Object.assign(this.$data, this.buildState(this.sessionReport));
@@ -120767,15 +120767,15 @@ var Component = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.setSessionReport();
+              _this.intialiseSessionReport();
 
-              _this.setActivityTypesLookup();
+              _this.initialiseActivityTypesLookup();
 
-              _this.setEmotionalStatesLookup();
+              _this.initialiseEmotionalStatesLookup();
 
-              _this.setSessionRatingsLookup();
+              _this.initialiseSessionRatingsLookup();
 
-              _this.setSafeguardingConcernLookup();
+              _this.initialiseSafeguardingConcernLookup();
 
             case 5:
             case "end":
@@ -120796,15 +120796,15 @@ var Component = {
     });
   },
   methods: {
-    isDirty: function isDirty(editableFieldName) {
+    isFieldDirty: function isFieldDirty(editableFieldName) {
       return this._originalState[editableFieldName] !== this[editableFieldName];
     },
-    revert: function revert(editableFieldName) {
+    revertField: function revertField(editableFieldName) {
       if (this.hasOwnProperty(editableFieldName)) {
         this[editableFieldName] = this._originalState[editableFieldName];
       }
     },
-    setActivityTypesLookup: function setActivityTypesLookup() {
+    initialiseActivityTypesLookup: function initialiseActivityTypesLookup() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
@@ -120814,7 +120814,7 @@ var Component = {
               case 0:
                 _context2.prev = 0;
                 _context2.next = 3;
-                return _this2.getActivityTypes();
+                return _this2.fetchActivityTypes();
 
               case 3:
                 _this2.activityTypesLookup = _context2.sent;
@@ -120838,7 +120838,7 @@ var Component = {
         }, _callee2, null, [[0, 6]]);
       }))();
     },
-    setEmotionalStatesLookup: function setEmotionalStatesLookup() {
+    initialiseEmotionalStatesLookup: function initialiseEmotionalStatesLookup() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
@@ -120848,7 +120848,7 @@ var Component = {
               case 0:
                 _context3.prev = 0;
                 _context3.next = 3;
-                return _this3.getEmotionalStates();
+                return _this3.fetchEmotionalStates();
 
               case 3:
                 _this3.emotionalStatesLookup = _context3.sent;
@@ -120872,7 +120872,7 @@ var Component = {
         }, _callee3, null, [[0, 6]]);
       }))();
     },
-    setSessionRatingsLookup: function setSessionRatingsLookup() {
+    initialiseSessionRatingsLookup: function initialiseSessionRatingsLookup() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
@@ -120882,7 +120882,7 @@ var Component = {
               case 0:
                 _context4.prev = 0;
                 _context4.next = 3;
-                return _this4.getSessionRatings();
+                return _this4.fetchSessionRatings();
 
               case 3:
                 _this4.sessionRatingsLookup = _context4.sent;
@@ -120906,7 +120906,7 @@ var Component = {
         }, _callee4, null, [[0, 6]]);
       }))();
     },
-    setSafeguardingConcernLookup: function setSafeguardingConcernLookup() {
+    initialiseSafeguardingConcernLookup: function initialiseSafeguardingConcernLookup() {
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
@@ -120916,7 +120916,7 @@ var Component = {
               case 0:
                 _context5.prev = 0;
                 _context5.next = 3;
-                return _this5.getSafeguardingOptions();
+                return _this5.fetchSafeguardingOptions();
 
               case 3:
                 _this5.safeguardingLookup = _context5.sent;
@@ -120940,7 +120940,7 @@ var Component = {
         }, _callee5, null, [[0, 6]]);
       }))();
     },
-    setSessionReport: function setSessionReport() {
+    intialiseSessionReport: function intialiseSessionReport() {
       var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
@@ -120959,7 +120959,7 @@ var Component = {
                 _this6.sessionReport = null;
                 _context6.prev = 3;
                 _context6.next = 6;
-                return _this6.getSessionReport(_this6.sessionReportId);
+                return _this6.fetchSessionReport(_this6.sessionReportId);
 
               case 6:
                 _this6.sessionReport = _context6.sent;
@@ -121131,7 +121131,7 @@ var Component = {
         }, _callee10);
       }))();
     },
-    getSessionReport: function getSessionReport(id) {
+    fetchSessionReport: function fetchSessionReport(id) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee11() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee11$(_context11) {
           while (1) {
@@ -121151,7 +121151,7 @@ var Component = {
         }, _callee11);
       }))();
     },
-    getActivityTypes: function getActivityTypes() {
+    fetchActivityTypes: function fetchActivityTypes() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee12() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee12$(_context12) {
           while (1) {
@@ -121175,7 +121175,7 @@ var Component = {
         }, _callee12);
       }))();
     },
-    getEmotionalStates: function getEmotionalStates() {
+    fetchEmotionalStates: function fetchEmotionalStates() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee13() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee13$(_context13) {
           while (1) {
@@ -121199,7 +121199,7 @@ var Component = {
         }, _callee13);
       }))();
     },
-    getSessionRatings: function getSessionRatings() {
+    fetchSessionRatings: function fetchSessionRatings() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee14() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee14$(_context14) {
           while (1) {
@@ -121219,7 +121219,7 @@ var Component = {
         }, _callee14);
       }))();
     },
-    getSafeguardingOptions: function getSafeguardingOptions() {
+    fetchSafeguardingOptions: function fetchSafeguardingOptions() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee15() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee15$(_context15) {
           while (1) {
@@ -121293,7 +121293,7 @@ var Component = {
     }
   },
   components: {},
-  template: "\n        <div class=\"session-report-list\">         \n            <div class=\"table-responsive\">   \n                <table class=\"items table table-hover\">\n                    <thead>\n                        <tr>\n                            <th>Session ID</th>\n                            <th>Mentor Name</th>\n                            <th>Mentee Name</th>\n                            <th>Session Length</th>\n                            <th>Session Date</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr \n                            v-for=\"sessionReport in itemsForCurrentPage\"\n                            :id=\"'item-' + sessionReport.id\"\n                            class=\"item\"\n                            @click=\"sessionReportClicked(sessionReport.id)\">   \n\n                            <td class=\"session-id\">\n                                {{sessionReport.id}}\n                            </td>\n                            <td class=\"mentor-name\">\n                                {{sessionReport.mentor.name}}\n                            </td>\n                            <td class=\"mentee-name\">\n                                {{sessionReport.mentee.name}}\n                            </td>\n                            <td class=\"session-length\">\n                                {{sessionReport.length_of_session}}\n                            </td>\n                            <td class=\"session-date\">\n                                {{handleDate(sessionReport.session_date)}}\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <div class=\"pagination-bar\">\n                <div class=\"page-size-list\">\n                    <span class=\"btn-group dropdown dropup\">\n                        <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">\n                            <span class=\"page-size\">{{currentPageSize}}</span>\n                        </button>\n                        <div class=\"dropdown-menu\" role=\"menu\">\n                            <a  v-for=\"size in pageSizes\"\n                                :class=\"'dropdown-item page-size ' + ((size === currentPageSize) ? 'active' : '')\" \n                                @click=\"currentPageSize = size\"\n                                role=\"menuitem\"\n                                href=\"#\">{{size}}</a>\n                        </div>\n                    </span> rows per page\n                </div>\n                <div class=\"page-selector\" v-if=\"pages.length > 1\">\n                    <ul class=\"pagination pages-list justify-content-end\">\n                        <li class=\"page-item\" \n                            v-if=\"currentPage != 1\" \n                            @click=\"currentPage--\">\n                            <a class=\"page-link\"  href=\"#\"> &lt; </a>\n                        </li>\n                        <li :class=\"'page-item ' + ((page === currentPage) ? 'active' : '')\" \n                            v-for=\"page in pages\" \n                            @click=\"currentPage = page\">\n                            <a class=\"page-link\"  href=\"#\"> {{page}} </a>\n                        </li>\n                        <li class=\"page-item\" \n                            @click=\"currentPage++\" \n                            v-if=\"currentPage < pages.length\">\n                            <a class=\"page-link\" href=\"#\"> &gt; </a>\n                        </li>\n                    </ul>\n                </div>\t\n            </div>\n        </div>\n    ",
+  template: "\n        <div class=\"session-report-list\">         \n            <div class=\"table-responsive\">   \n                <table class=\"items table table-hover\">\n                    <thead>\n                        <tr>\n                            <th>Session ID</th>\n                            <th>Mentor Name</th>\n                            <th>Mentee Name</th>\n                            <th>Session Length</th>\n                            <th>Session Date</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr \n                            v-for=\"sessionReport in itemsForCurrentPage\"\n                            :id=\"'item-' + sessionReport.id\"\n                            class=\"item\"\n                            @click=\"handleClickSessionReport(sessionReport.id)\">   \n\n                            <td class=\"session-id\">\n                                {{sessionReport.id}}\n                            </td>\n                            <td class=\"mentor-name\">\n                                {{sessionReport.mentor.name}}\n                            </td>\n                            <td class=\"mentee-name\">\n                                {{sessionReport.mentee.name}}\n                            </td>\n                            <td class=\"session-length\">\n                                {{sessionReport.length_of_session}}\n                            </td>\n                            <td class=\"session-date\">\n                                {{displayableDate(sessionReport.session_date)}}\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <div class=\"pagination-bar\">\n                <div class=\"page-size-list\">\n                    <span class=\"btn-group dropdown dropup\">\n                        <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">\n                            <span class=\"page-size\">{{currentPageSize}}</span>\n                        </button>\n                        <div class=\"dropdown-menu\" role=\"menu\">\n                            <a  v-for=\"size in pageSizes\"\n                                :class=\"'dropdown-item page-size ' + ((size === currentPageSize) ? 'active' : '')\" \n                                @click=\"currentPageSize = size\"\n                                role=\"menuitem\"\n                                href=\"#\">{{size}}</a>\n                        </div>\n                    </span> rows per page\n                </div>\n                <div class=\"page-selector\" v-if=\"pages.length > 1\">\n                    <ul class=\"pagination pages-list justify-content-end\">\n                        <li class=\"page-item\" \n                            v-if=\"currentPage != 1\" \n                            @click=\"currentPage--\">\n                            <a class=\"page-link\"  href=\"#\"> &lt; </a>\n                        </li>\n                        <li :class=\"'page-item ' + ((page === currentPage) ? 'active' : '')\" \n                            v-for=\"page in pages\" \n                            @click=\"currentPage = page\">\n                            <a class=\"page-link\"  href=\"#\"> {{page}} </a>\n                        </li>\n                        <li class=\"page-item\" \n                            @click=\"currentPage++\" \n                            v-if=\"currentPage < pages.length\">\n                            <a class=\"page-link\" href=\"#\"> &gt; </a>\n                        </li>\n                    </ul>\n                </div>\t\n            </div>\n        </div>\n    ",
   data: function data() {
     return {
       // pagination state
@@ -121320,10 +121320,10 @@ var Component = {
   created: function created() {},
   mounted: function mounted() {},
   methods: {
-    handleDate: function handleDate(dateString) {
+    displayableDate: function displayableDate(dateString) {
       return Object(_utils_date__WEBPACK_IMPORTED_MODULE_1__["formatDate"])(Object(_utils_date__WEBPACK_IMPORTED_MODULE_1__["parseDate"])(dateString));
     },
-    sessionReportClicked: function sessionReportClicked(sessionReportId) {
+    handleClickSessionReport: function handleClickSessionReport(sessionReportId) {
       this.$emit('sessionReportSelected', sessionReportId);
     }
   }
@@ -121456,7 +121456,7 @@ var Component = {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _this2.setMentors();
+              return _this2.initialiseMentors();
 
             case 2:
               _this2.applySearchCriteria();
@@ -121504,7 +121504,7 @@ var Component = {
     },
     handleClickSearch: function handleClickSearch() {
       this.clearErrors();
-      this.publishSearchCriteria();
+      this.publishSearchCriteria(this.buildSearchCriteria());
     },
     applySearchCriteria: function applySearchCriteria() {
       this.mentorId = this.searchCriteria.mentorId ? this.searchCriteria.mentorId : null;
@@ -121512,8 +121512,8 @@ var Component = {
       this.sessionDateRangeStart = this.searchCriteria.sessionDateRangeStart ? this.searchCriteria.sessionDateRangeStart : null;
       this.sessionDateRangeEnd = this.searchCriteria.sessionDateRangeEnd ? this.searchCriteria.sessionDateRangeEnd : null;
     },
-    publishSearchCriteria: function publishSearchCriteria() {
-      var criteria = _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, this.mentorId ? {
+    buildSearchCriteria: function buildSearchCriteria() {
+      return _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, this.mentorId ? {
         mentorId: this.mentorId
       } : {}), this.menteeId ? {
         menteeId: this.menteeId
@@ -121522,8 +121522,9 @@ var Component = {
       } : {}), this.sessionDateRangeEnd ? {
         sessionDateRangeEnd: this.sessionDateRangeEnd
       } : {});
-
-      this.$emit('searchCriteria', criteria);
+    },
+    publishSearchCriteria: function publishSearchCriteria(searchCriteria) {
+      this.$emit('searchCriteria', searchCriteria);
     },
     publishSearchResults: function publishSearchResults(results) {
       this.$emit('searchResults', results);
@@ -121555,7 +121556,7 @@ var Component = {
                 _context2.prev = 1;
                 _this3.isSearching = true;
                 _context2.next = 5;
-                return _this3.getSessionReports(query);
+                return _this3.fetchSessionReports(query);
 
               case 5:
                 results = _context2.sent;
@@ -121587,7 +121588,7 @@ var Component = {
         }, _callee2, null, [[1, 9, 12, 15]]);
       }))();
     },
-    setMentors: function setMentors() {
+    initialiseMentors: function initialiseMentors() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
@@ -121597,7 +121598,7 @@ var Component = {
               case 0:
                 _context3.prev = 0;
                 _context3.next = 3;
-                return _this4.getMentors();
+                return _this4.fetchMentors();
 
               case 3:
                 _this4.mentors = _context3.sent;
@@ -121621,7 +121622,11 @@ var Component = {
         }, _callee3, null, [[0, 6]]);
       }))();
     },
-    getSessionReports: function getSessionReports(queryParameters) {
+
+    /**
+     * API data
+     */
+    fetchSessionReports: function fetchSessionReports(queryParameters) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
@@ -121643,7 +121648,7 @@ var Component = {
         }, _callee4);
       }))();
     },
-    getMentors: function getMentors() {
+    fetchMentors: function fetchMentors() {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
@@ -121708,7 +121713,7 @@ var Component = {
   components: {
     'popper': vue_popperjs__WEBPACK_IMPORTED_MODULE_2___default.a
   },
-  template: "\n        <div class=\"session-report-view\">     \n            <status-box\n                ref=\"status-box\"\n                class=\"status\"\n                :errors=\"errors\">\n            </status-box>  \n\n            <div class=\"table-responsive\" v-if=\"sessionReport\">\n                <table class=\"table\">\n                    <tr>\n                        <th>Field</th>\n                        <th>Value</th>\n                    </tr>\n                    <tr class=\"session-id\">\n                        <td class=\"label\">Session ID</td>\n                        <td class=\"value\">\n                            {{ sessionReport.id }}\n                        </td>\n                    </tr>\n                    <tr class=\"session-link\">\n                        <td class=\"label\">Direct Link</td>\n                        <td class=\"value\">\n                            <span>\n                                <a :href=\"getSessionReportHref(sessionReport)\">Open</a> \n                                <popper\n                                    :trigger=\"popover.trigger\"\n                                    :options=\"popover.options\"\n                                    :delay-on-mouse-over=\"popover.delayOnMouseOver\">\n                                    <div class=\"popper\">You can open link in a new tab</div>\n                                    <span slot=\"reference\">\n                                        <i class=\"fas fa-info-circle\"></i>\n                                    </span>\n                                </popper>\n                            </span>\n                        </td>\n                    </tr>\n                    <tr class=\"mentor-name\">\n                        <td class=\"label\">Mentor Name</td>\n                        <td class=\"value\">{{ sessionReport.mentor.name }}</td>\n                    </tr>\n                    <tr class=\"mentee-name\">\n                        <td class=\"label\">Mentee Name</td>\n                        <td class=\"value\">{{ sessionReport.mentee.name }}</td>\n                    </tr>\n                    <tr class=\"session-date\">\n                        <td class=\"label\">Session Date</td>\n                        <td class=\"value\">{{ handleDate(sessionReport.session_date) }}</td>\n                    </tr>\n                    <tr class=\"session-rating\">\n                        <td class=\"label\">Session Rating</td>\n                        <td class=\"value\">{{ sessionReport.rating.value }}</td>\n                    </tr>\n                    <tr class=\"session-length\">\n                        <td class=\"label\">Session Length (Hours)</td>\n                        <td class=\"value\">{{ sessionReport.length_of_session }}</td>\n                    </tr>\n                    <tr class=\"activity-type\">\n                        <td class=\"label\">Activity Type</td>\n                        <td class=\"value\">{{ sessionReport.activity_type.name }}</td>\n                    </tr>\n                    <tr class=\"session-location\">\n                        <td class=\"label\">Location</td>\n                        <td class=\"value\">{{ sessionReport.location }}</td>\n                    </tr>\n                    <tr class=\"safeguarding-concern\">\n                        <td class=\"label\">Safeguarding Concern</td>\n                        <td class=\"value\" v-if=\"sessionReport.safeguarding_concern.id > 0\">\n                            Yes - {{sessionReport.safeguarding_concern.type}}\n                        </td>\n                        <td v-else>\n                            No\n                        </td>\n                    </tr>\n                    <tr class=\"mentee-emotional-state\">\n                        <td class=\"label\">Mentee's Emotional State</td>\n                        <td class=\"value\">{{ sessionReport.emotional_state.name }}</td>\n                    </tr>\n                    <tr class=\"meeting-details\">\n                        <td class=\"label\">Meeting Details</td>\n                        <td class=\"value\">{{ sessionReport.meeting_details }}</td>\n                    </tr>\n                </table> \n            </div>\n        </div>\n    ",
+  template: "\n        <div class=\"session-report-view\">     \n            <status-box\n                ref=\"status-box\"\n                class=\"status\"\n                :errors=\"errors\">\n            </status-box>  \n\n            <div class=\"table-responsive\" v-if=\"sessionReport\">\n                <table class=\"table\">\n                    <tr>\n                        <th>Field</th>\n                        <th>Value</th>\n                    </tr>\n                    <tr class=\"session-id\">\n                        <td class=\"label\">Session ID</td>\n                        <td class=\"value\">\n                            {{ sessionReport.id }}\n                        </td>\n                    </tr>\n                    <tr class=\"session-link\">\n                        <td class=\"label\">Direct Link</td>\n                        <td class=\"value\">\n                            <span>\n                                <a :href=\"getSessionReportHref(sessionReport)\">Open</a> \n                                <popper\n                                    :trigger=\"popover.trigger\"\n                                    :options=\"popover.options\"\n                                    :delay-on-mouse-over=\"popover.delayOnMouseOver\">\n                                    <div class=\"popper\">You can open link in a new tab</div>\n                                    <span slot=\"reference\">\n                                        <i class=\"fas fa-info-circle\"></i>\n                                    </span>\n                                </popper>\n                            </span>\n                        </td>\n                    </tr>\n                    <tr class=\"mentor-name\">\n                        <td class=\"label\">Mentor Name</td>\n                        <td class=\"value\">{{ sessionReport.mentor.name }}</td>\n                    </tr>\n                    <tr class=\"mentee-name\">\n                        <td class=\"label\">Mentee Name</td>\n                        <td class=\"value\">{{ sessionReport.mentee.name }}</td>\n                    </tr>\n                    <tr class=\"session-date\">\n                        <td class=\"label\">Session Date</td>\n                        <td class=\"value\">{{ displayableDate(sessionReport.session_date) }}</td>\n                    </tr>\n                    <tr class=\"session-rating\">\n                        <td class=\"label\">Session Rating</td>\n                        <td class=\"value\">{{ sessionReport.rating.value }}</td>\n                    </tr>\n                    <tr class=\"session-length\">\n                        <td class=\"label\">Session Length (Hours)</td>\n                        <td class=\"value\">{{ sessionReport.length_of_session }}</td>\n                    </tr>\n                    <tr class=\"activity-type\">\n                        <td class=\"label\">Activity Type</td>\n                        <td class=\"value\">{{ sessionReport.activity_type.name }}</td>\n                    </tr>\n                    <tr class=\"session-location\">\n                        <td class=\"label\">Location</td>\n                        <td class=\"value\">{{ sessionReport.location }}</td>\n                    </tr>\n                    <tr class=\"safeguarding-concern\">\n                        <td class=\"label\">Safeguarding Concern</td>\n                        <td class=\"value\" v-if=\"sessionReport.safeguarding_concern.id > 0\">\n                            Yes - {{sessionReport.safeguarding_concern.type}}\n                        </td>\n                        <td v-else>\n                            No\n                        </td>\n                    </tr>\n                    <tr class=\"mentee-emotional-state\">\n                        <td class=\"label\">Mentee's Emotional State</td>\n                        <td class=\"value\">{{ sessionReport.emotional_state.name }}</td>\n                    </tr>\n                    <tr class=\"meeting-details\">\n                        <td class=\"label\">Meeting Details</td>\n                        <td class=\"value\">{{ sessionReport.meeting_details }}</td>\n                    </tr>\n                </table> \n            </div>\n        </div>\n    ",
   data: function data() {
     return {
       popover: {
@@ -121725,18 +121730,18 @@ var Component = {
   watch: {
     sessionReportId: function sessionReportId() {
       this.clearStatus();
-      this.setSessionReport();
+      this.initialiseSessionReport();
     }
   },
   created: function created() {
-    this.setSessionReport();
+    this.initialiseSessionReport();
   },
   mounted: function mounted() {},
   methods: {
-    handleDate: function handleDate(dateString) {
+    displayableDate: function displayableDate(dateString) {
       return Object(_utils_date__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(Object(_utils_date__WEBPACK_IMPORTED_MODULE_3__["parseDate"])(dateString));
     },
-    setSessionReport: function setSessionReport() {
+    initialiseSessionReport: function initialiseSessionReport() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
@@ -121755,7 +121760,7 @@ var Component = {
                 _this.sessionReport = null;
                 _context.prev = 3;
                 _context.next = 6;
-                return _this.getSessionReport(_this.sessionReportId);
+                return _this.fetchSessionReport(_this.sessionReportId);
 
               case 6:
                 _this.sessionReport = _context.sent;
@@ -121788,7 +121793,7 @@ var Component = {
       });
       return props.href;
     },
-    getSessionReport: function getSessionReport(id) {
+    fetchSessionReport: function fetchSessionReport(id) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
@@ -122556,7 +122561,7 @@ var Component = {
     'session-report-search': _components_session_reports_search__WEBPACK_IMPORTED_MODULE_1__["default"],
     'session-report-list': _components_session_reports_list__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  template: "\n        <div>\n            <div class=\"card\">\n                <div class=\"card-header\" data-toggle=\"collapse\" href=\"#collapsed-find-by-id\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapsed-find-by-id\">\n                    Find By ID\n                    <span class=\"float-right\"><a>Toggle Find By ID</a></span>\n                </div>\n                <div id=\"collapsed-find-by-id\" class=\"card-body collapse\">\n                    <form \n                        v-on:keyup.enter.prevent=\"openSessionReport(sessionReportId)\" \n                        @submit.prevent=\"openSessionReport(sessionReportId)\">\n                        <div class=\"form-row\">\n                            <div class=\"form-group col-md-3\">\n                                <input id=\"idInput\" type=\"text\" \n                                        :class=\"{'form-control form-control-sm': true, 'is-invalid' : !isValidId(sessionReportId)}\" \n                                        v-model=\"sessionReportId\">\n                                <div class=\"invalid-feedback invalid-id\">Type a valid numerical ID</div>\n                            </div>\n                            <div class=\"form-group col-md-3\">\n                                <span v-on:click=\"openSessionReport(sessionReportId)\" class=\"search btn btn-primary btn-sm\">\n                                <span class=\"fas fa-chevron-circle-right\" /> Go</span>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n            </div>\n            <div class=\"card\">\n                <div class=\"card-header\" data-toggle=\"collapse\" href=\"#collapsed-search\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapsed-search\">\n                    Session Search\n                    <span class=\"float-right\"><a>Toggle Search</a></span>\n                </div>\n                <div id=\"collapsed-search\" class=\"card-body collapse\">\n                    <session-report-search \n                        :searchCriteria=\"searchParams\"\n                        @searchCriteria=\"searchParams = $event\"\n                        @searchResults=\"searchResults = $event\">\n                    </session-report-search>\n                </div>\n            </div>\n            <div class=\"card\">\n                <div class=\"card-header\">\n                    Session Reports\n                </div>\n                <div class=\"card-body\">\n                    <session-report-list\n                        :sessionReports=\"searchResults\"\n                        @sessionReportSelected=\"sessionReportSelected($event)\">\n                    </session-report-list>\n                </div>\n            </div>\n        </div>\n    ",
+  template: "\n        <div>\n            <div class=\"card\">\n                <div class=\"card-header\" data-toggle=\"collapse\" href=\"#collapsed-find-by-id\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapsed-find-by-id\">\n                    Find By ID\n                    <span class=\"float-right\"><a>Toggle Find By ID</a></span>\n                </div>\n                <div id=\"collapsed-find-by-id\" class=\"card-body collapse\">\n                    <form \n                        v-on:keyup.enter.prevent=\"handleOpenSessionReport(sessionReportId)\" \n                        @submit.prevent=\"handleOpenSessionReport(sessionReportId)\">\n                        <div class=\"form-row\">\n                            <div class=\"form-group col-md-3\">\n                                <input id=\"idInput\" type=\"text\" \n                                        :class=\"{'form-control form-control-sm': true, 'is-invalid' : !isValidId(sessionReportId)}\" \n                                        v-model=\"sessionReportId\">\n                                <div class=\"invalid-feedback invalid-id\">Type a valid numerical ID</div>\n                            </div>\n                            <div class=\"form-group col-md-3\">\n                                <span v-on:click=\"handleOpenSessionReport(sessionReportId)\" class=\"search btn btn-primary btn-sm\">\n                                <span class=\"fas fa-chevron-circle-right\" /> Go</span>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n            </div>\n            <div class=\"card\">\n                <div class=\"card-header\" data-toggle=\"collapse\" href=\"#collapsed-search\" role=\"button\" aria-expanded=\"false\" aria-controls=\"collapsed-search\">\n                    Session Search\n                    <span class=\"float-right\"><a>Toggle Search</a></span>\n                </div>\n                <div id=\"collapsed-search\" class=\"card-body collapse\">\n                    <session-report-search \n                        :searchCriteria=\"searchParams\"\n                        @searchCriteria=\"searchParams = $event\"\n                        @searchResults=\"searchResults = $event\">\n                    </session-report-search>\n                </div>\n            </div>\n            <div class=\"card\">\n                <div class=\"card-header\">\n                    Session Reports\n                </div>\n                <div class=\"card-body\">\n                    <session-report-list\n                        :sessionReports=\"searchResults\"\n                        @sessionReportSelected=\"handleSelectSessionReport($event)\">\n                    </session-report-list>\n                </div>\n            </div>\n        </div>\n    ",
   data: function data() {
     return {
       sessionReportId: null
@@ -122592,7 +122597,8 @@ var Component = {
     isValidId: function isValidId(sessionReportId) {
       return /^\d+$/.test(sessionReportId);
     },
-    openSessionReport: function openSessionReport(sessionReportId) {
+    // View handlers
+    handleOpenSessionReport: function handleOpenSessionReport(sessionReportId) {
       if (this.isValidId(sessionReportId)) {
         this.$router.push({
           name: 'session-reports-view-one',
@@ -122602,7 +122608,7 @@ var Component = {
         });
       }
     },
-    sessionReportSelected: function sessionReportSelected(sessionReportId) {
+    handleSelectSessionReport: function handleSelectSessionReport(sessionReportId) {
       this.$store.commit('setCurrentSessionReport', sessionReportId);
       this.$router.push({
         name: 'session-reports-workflow'
@@ -122659,7 +122665,7 @@ var Component = {
     },
     buildDefaultSearchParameters: function buildDefaultSearchParameters() {
       return {
-        // last one month
+        // last one month by default for performance reasons
         sessionDateRangeStart: moment().subtract(1, 'months').format(_components_session_reports_consts__WEBPACK_IMPORTED_MODULE_3__["SEARCH_DATE_FORMAT"]),
         sessionDateRangeEnd: moment().format(_components_session_reports_consts__WEBPACK_IMPORTED_MODULE_3__["SEARCH_DATE_FORMAT"])
       };

@@ -61,7 +61,7 @@ const Component = {
                     </tr>
                     <tr class="session-date">
                         <td class="label">Session Date</td>
-                        <td class="value">{{ handleDate(sessionReport.session_date) }}</td>
+                        <td class="value">{{ displayableDate(sessionReport.session_date) }}</td>
                     </tr>
                     <tr class="session-rating">
                         <td class="label">Session Rating</td>
@@ -122,26 +122,26 @@ const Component = {
     watch: {
         sessionReportId: function() { 
             this.clearStatus()
-            this.setSessionReport() 
+            this.initialiseSessionReport() 
         }
     },
 
     created() {
-        this.setSessionReport()
+        this.initialiseSessionReport()
     },
 
     mounted() {
     },
 
     methods: { 
-        handleDate: dateString => formatDate(parseDate(dateString)),
+        displayableDate: dateString => formatDate(parseDate(dateString)),
 
-        async setSessionReport() {
+        async initialiseSessionReport() {
             if (!this.sessionReportId) return
             
             this.sessionReport = null
             try {
-                this.sessionReport = await this.getSessionReport(this.sessionReportId)
+                this.sessionReport = await this.fetchSessionReport(this.sessionReportId)
             } catch (e) {
                 this.addErrors(extractErrors({e, defaultMsg: `Problem loading session report (${this.sessionReportId})`}))
             }
@@ -155,7 +155,7 @@ const Component = {
             return props.href;
         },
 
-        async getSessionReport(id) {
+        async fetchSessionReport(id) {
             return (await axios.get(`/api/session-reports/${id}`)).data
         },
     }
