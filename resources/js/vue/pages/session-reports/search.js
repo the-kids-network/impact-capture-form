@@ -22,13 +22,14 @@ const Component = {
                     <span class="float-right"><a>Toggle Find By ID</a></span>
                 </div>
                 <div id="collapsed-find-by-id" class="card-body collapse">
-                    <form>
+                    <form 
+                        v-on:keyup.enter.prevent="openSessionReport(sessionReportId)" 
+                        @submit.prevent="openSessionReport(sessionReportId)">
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <input id="idInput" type="text" 
                                         :class="{'form-control form-control-sm': true, 'is-invalid' : !isValidId(sessionReportId)}" 
-                                        v-model="sessionReportId" 
-                                        v-on:keyup.enter="openSessionReport(sessionReportId)">
+                                        v-model="sessionReportId">
                                 <div class="invalid-feedback invalid-id">Type a valid numerical ID</div>
                             </div>
                             <div class="form-group col-md-3">
