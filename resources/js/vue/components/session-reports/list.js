@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { formatDate as fd } from '../utils/date'
+import { parseDate, formatDate } from '../utils/date'
 import { range } from '../utils/number'
 import { numberOfPages, itemsForPage } from '../utils/pagination'
 
@@ -47,7 +47,7 @@ const Component = {
                                 {{sessionReport.length_of_session}}
                             </td>
                             <td class="session-date">
-                                {{formatDate(sessionReport.session_date)}}
+                                {{handleDate(sessionReport.session_date)}}
                             </td>
                         </tr>
                     </tbody>
@@ -124,7 +124,7 @@ const Component = {
     },
 
     methods: { 
-        formatDate: fd,
+        handleDate: dateString => formatDate(parseDate(dateString)),
 
         sessionReportClicked(sessionReportId) {
             this.$emit('sessionReportSelected', sessionReportId)

@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import Popper from 'vue-popperjs';
-import { formatDate as fd } from '../utils/date'
+import { parseDate, formatDate } from '../utils/date'
 import { extractErrors } from '../utils/api'
 import statusMixin from '../status-box/mixin'
 
@@ -61,7 +61,7 @@ const Component = {
                     </tr>
                     <tr class="session-date">
                         <td class="label">Session Date</td>
-                        <td class="value">{{ formatDate(sessionReport.session_date) }}</td>
+                        <td class="value">{{ handleDate(sessionReport.session_date) }}</td>
                     </tr>
                     <tr class="session-rating">
                         <td class="label">Session Rating</td>
@@ -134,7 +134,7 @@ const Component = {
     },
 
     methods: { 
-        formatDate: fd,
+        handleDate: dateString => formatDate(parseDate(dateString)),
 
         async setSessionReport() {
             if (!this.sessionReportId) return

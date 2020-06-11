@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import { extractErrors } from '../utils/api'
-import { formatDate as df } from '../utils/date'
+import { parseDate, formatDate } from '../utils/date'
 import statusMixin from '../status-box/mixin'
+import { SESSION_DATE_FORMAT } from './consts';
 
 const Component = {
 
@@ -387,7 +388,7 @@ const Component = {
         buildState : sessionReport =>  ( 
             sessionReport ?
                 {
-                    sessionDate: df(sessionReport.session_date,  'DD-MM-YYYY'),
+                    sessionDate: formatDate(parseDate(sessionReport.session_date), SESSION_DATE_FORMAT),
                     ratingId: sessionReport.rating.id,
                     lengthOfSession: sessionReport.length_of_session.toString(),
                     activityTypeId: sessionReport.activity_type.id,

@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import SessionReportSearch from '../../components/session-reports/search';
 import SessionReportList from '../../components/session-reports/list';
+import { SEARCH_DATE_FORMAT } from '../../components/session-reports/consts'
 
 const Component = {
 
@@ -155,8 +156,8 @@ const Component = {
         buildDefaultSearchParameters() {
             return {
                 // last one month
-                sessionDateRangeStart : moment().subtract(1, 'months').format('DD-MM-YYYY'),
-                sessionDateRangeEnd: moment().format('DD-MM-YYYY')
+                sessionDateRangeStart : moment().subtract(1, 'months').format(SEARCH_DATE_FORMAT),
+                sessionDateRangeEnd: moment().format(SEARCH_DATE_FORMAT)
             }
         }
     }

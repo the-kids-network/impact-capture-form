@@ -2,6 +2,8 @@ import _ from 'lodash'
 import { List } from 'immutable';
 import { extractErrors } from '../utils/api'
 import statusMixin from '../status-box/mixin'
+import { SEARCH_DATE_FORMAT } from './consts'
+import { dateRange } from '../utils/date';
 
 const Component = {
 
@@ -24,9 +26,9 @@ const Component = {
                 :errors="errors">
             </status-box>   
 
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
+            <form class="form">
+                <div class="form-row border-bottom">
+                    <div class="form-group col-md-4">
                         <label class="col-form-label" for="mentorSelect">Mentor</label>
                         <select id="mentorSelect" 
                                 class="form-control form-control-sm" 
@@ -41,7 +43,7 @@ const Component = {
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-3">
                         <label class="col-form-label" for="menteeSelect">Mentee</label>
                         <select id="menteeSelect" 
                                 class="form-control form-control-sm" 
@@ -58,24 +60,41 @@ const Component = {
                 </div> 
                 <div class="form-row">
                     <span class="col-md-12">Session date range (dates inclusive)</span>
-                    <div class="form-group col-md-6">
-                        <label class="col-form-label" for="sessionDateRangeStartInput">Start</label>
-                        <input id="sessionDateRangeStartInput"
-                            type="text" 
-                            class="form-control form-control-sm datepicker session-date-range-start"
-                            v-model="sessionDateRangeStart"
-                            autocomplete="off">
+                    <div class="col-md-7">
+                        <div class="form-row">
+                            <div class="col-md-6 form-group">
+                                <label class="col-form-label" for="sessionDateRangeStartInput">Start</label>
+                                <input id="sessionDateRangeStartInput"
+                                    type="text" 
+                                    class="form-control form-control-sm datepicker session-date-range-start"
+                                    v-model="sessionDateRangeStart"
+                                    autocomplete="off">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="col-form-label" for="sessionDateRangeEndInput">End</label>
+                                <input id="sessionDateRangeEndInput"
+                                    type="text" 
+                                    class="form-control form-control-sm datepicker session-date-range-end"
+                                    v-model="sessionDateRangeEnd"
+                                    autocomplete="off">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label class="col-form-label" for="sessionDateRangeEndInput">End</label>
-                        <input id="sessionDateRangeEndInput"
-                            type="text" 
-                            class="form-control form-control-sm datepicker session-date-range-end"
-                            v-model="sessionDateRangeEnd"
-                            autocomplete="off">
-                    </div>
+                    <div class="col-md-4 offset-md-1 mb-auto mt-auto">
+                        <div class="row date-quick-fill">
+                            <div class="col-md-12">
+                                <span class="btn btn-secondary btn-sm" @click="handleClickDateQuickFill('today')">Today</span>
+                                <span class="btn btn-secondary btn-sm" @click="handleClickDateQuickFill('yesterday')">Yesterday</span>
+                            </div>
+                            <div class="col-md-12">
+                                <span class="btn btn-secondary btn-sm" @click="handleClickDateQuickFill('past-1-week')">Past 1 week</span>
+                                <span class="btn btn-secondary btn-sm" @click="handleClickDateQuickFill('past-1-month')">Past 1 month</span>
+                                <span class="btn btn-secondary btn-sm" @click="handleClickDateQuickFill('past-3-month')">Past 3 months</span>
+                            </div>
+                        </div>
+                    </div> 
                 </div> 
-                <div class="form-group row">
+                <div class="form-row mt-2">
                     <div class="col-md-4">
                         <span v-on:click="handleClickSearch" class="search btn btn-primary " :disabled="isSearching">
                         <span class="fas fa-search" /> Search</span>
@@ -138,11 +157,16 @@ const Component = {
     },
 
     methods: { 
+        handleClickDateQuickFill(type) {
+            const dateFormat = SEARCH_DATE_FORMAT
+            const {startDate, endDate} = dateRange(type)
+            this.sessionDateRangeStart = startDate.format(dateFormat)
+            this.sessionDateRangeEnd = endDate.format(dateFormat)
+        },
         handleClickSearch() {
             this.clearErrors()
             this.publishSearchCriteria()
         },
-
         applySearchCriteria() {
             this.mentorId = this.searchCriteria.mentorId ? this.searchCriteria.mentorId : null
             this.menteeId = this.searchCriteria.menteeId ? this.searchCriteria.menteeId : null
