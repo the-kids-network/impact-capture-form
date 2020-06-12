@@ -193,10 +193,10 @@ class SessionReportApiController extends Controller {
         return Validator::make(
             $params,  
             [
-                'session_date_range_start' => 'date|before_or_equal:session_date_range_end',
+                'session_date_range_end' => 'date|after_or_equal:session_date_range_start',
             ], 
             [
-                'session_date_range_start.before_or_equal' => 'The start date should be before or equal to the end date',
+                'session_date_range_end.after_or_equal' => 'The end date should be after or equal to the start date',
             ]
         );  
     }
