@@ -14,7 +14,7 @@ const Component = {
 
     template: `
         <div class="session-report-manage">  
-            <div class="row edit-view-toggle">
+            <div class="row edit-view-toggle" v-if="isInternalUser">
                 <div class="col-md mt-auto mb-auto text-left mode-selector">
                     <span :class="{'btn btn-primary btn-sm': true, 'disabled': false}" 
                             type="button" 

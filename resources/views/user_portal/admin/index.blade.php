@@ -9,7 +9,17 @@
             <div class="col-md-4">
                 <div class="card link-panel">
                     <div class="card-body text-center">
-                        <i class="fa fa-download text-feature"></i>
+                        <i class="fab fa-searchengin text-feature"></i>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/session-reports') }}">
+                            <span class="fas fa-sun"></span> Session Reports <span class="fas fa-sun"></span> (New!)
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card link-panel">
+                    <div class="card-body text-center">
+                        <i class="fa fa-search text-feature"></i>
                         <a class="btn btn-primary btn-block btn-lg" href="{{ url('/report') }}">Session Reports</a>
                     </div>
                 </div>
@@ -17,15 +27,7 @@
             <div class="col-md-4">
                 <div class="card link-panel">
                     <div class="card-body text-center">
-                        <i class="fa fa-download text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/session-reports') }}">Session Reports (New!)</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card link-panel">
-                    <div class="card-body text-center">
-                        <i class="fa fa-download text-feature"></i>
+                        <i class="fas fa-search-dollar text-feature"></i>
                         <a class="btn btn-primary btn-block btn-lg" href="{{ url('/expense-claim') }}">Expense Claims</a>
                     </div>
                 </div>

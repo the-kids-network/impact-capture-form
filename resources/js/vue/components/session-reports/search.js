@@ -27,7 +27,7 @@ const Component = {
             </status-box>   
 
             <form class="form">
-                <div class="form-row border-bottom">
+                <div class="form-row border-bottom" v-if="isInternalUser">
                     <div class="form-group col-md-4">
                         <label class="col-form-label" for="mentorSelect">Mentor</label>
                         <select id="mentorSelect" 
