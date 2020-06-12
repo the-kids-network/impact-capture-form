@@ -131,7 +131,7 @@ const Component = {
             }
         }, 
         handleSelectSessionReport(sessionReportId) {
-            this.$store.commit('setCurrentSessionReport', sessionReportId)
+            this.$store.commit('setCurrentSessionReportId', sessionReportId)
             this.$router.push({ name: 'session-reports-workflow' })
         },
 

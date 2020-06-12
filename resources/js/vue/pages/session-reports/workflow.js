@@ -15,7 +15,11 @@ const Component = {
         <div>
             <div class="container">
                 <div class="row page-nav">
-                    <div class="col-4 mt-auto mb-auto text-left back-forward">
+                    <div class="col-8 mt-auto mb-auto text-left back-forward">
+                        <span :class="{'btn btn-primary btn-sm': true, 'disabled': !firstSessionReport}" 
+                                type="button" 
+                                aria-label="Beginning"
+                                @click='goToSessionReport(firstSessionReport)'><span class="fas fa-fast-backward" /></span>
                         <span :class="{'btn btn-primary btn-sm': true, 'disabled': !previousSessionReport}" 
                                 type="button" 
                                 aria-label="Previous"
@@ -24,16 +28,20 @@ const Component = {
                                 type="button" 
                                 aria-label="Next"
                                 @click='goToSessionReport(nextSessionReport)'><span class="fas fa-forward" /></span>
+                        <span :class="{'btn btn-primary btn-sm': true, 'disabled': !lastSessionReport}" 
+                                type="button" 
+                                aria-label="End"
+                                @click='goToSessionReport(lastSessionReport)'><span class="fas fa-fast-forward" /></span>
                     </div>
                     <div class="col mt-auto mb-auto text-right close-workflow">
-                        <a type="button" @click="closeWorkflow">Close workflow</a>
+                        <a type="button" @click="closeWorkflow">Close</a>
                     </div>
                 </div>
             </div>
             
             <div>
-                <div v-if="currentSessionReport">
-                    <session-view-toggler  :session-report-id="currentSessionReport" />
+                <div v-if="currentSessionReportId">
+                    <session-view-toggler  :session-report-id="currentSessionReportId" />
                 </div>
                 <div v-else class="card">
                     <div class="card-body">
@@ -50,12 +58,22 @@ const Component = {
     },
 
     computed: {
-        currentSessionReport: {
+        currentSessionReportId: {
             get () {
-                return this.$store.getters.currentSessionReport
+                return this.$store.getters.currentSessionReportId
             },
             set (value) {
-                this.$store.commit('setCurrentSessionReport', value)
+                this.$store.commit('setCurrentSessionReportId', value)
+            }
+        },
+        firstSessionReport: {
+            get () {
+                return this.$store.getters.firstSessionReport
+            }
+        },
+        lastSessionReport: {
+            get () {
+                return this.$store.getters.lastSessionReport
             }
         },
         previousSessionReport: {
@@ -63,7 +81,6 @@ const Component = {
                 return this.$store.getters.previousSessionReport
             }
         },
-
         nextSessionReport: {
             get () {
                 return this.$store.getters.nextSessionReport
@@ -83,7 +100,7 @@ const Component = {
 
     methods: { 
         goToSessionReport(sessionReportId) {
-            if (sessionReportId) this.currentSessionReport = sessionReportId
+            if (sessionReportId) this.currentSessionReportId = sessionReportId
         },
         closeWorkflow() {    
             this.$router.go(-1)
