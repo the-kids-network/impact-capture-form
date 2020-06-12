@@ -12,12 +12,14 @@ export default {
     },
 
     methods: {
-        scrollTo(statusBoxRef, position) {
+        scrollTo(position) {
+            const statusBox = this.$refs['status-box']
+
             if (position === 'bottom') {
-                const elem = this.$refs[statusBoxRef].$refs['bottom-of-status']
+                const elem = statusBox.$refs['bottom-of-status']
                 this.$scrollTo(elem)          
             } else {
-                const elem = this.$refs[statusBoxRef].$refs['top-of-status']
+                const elem = statusBox.$refs['top-of-status']
                 // offset to account for nav bar
                 this.$scrollTo(elem, {offset: -75})          
             }
@@ -36,14 +38,14 @@ export default {
             this.successes = [];
         },
 
-        addErrors({errs=[], scrollTo='status-box', scrollToPos='top'}) {
+        addErrors({errs=[], scrollToPos='top'}) {
             this.errors.push(...errs)
-            this.scrollTo(scrollTo, scrollToPos)
+            this.scrollTo(scrollToPos)
         },
 
-        addSuccesses({succs=[], scrollTo='status-box', scrollToPos='top'}) {
+        addSuccesses({succs=[], scrollToPos='top'}) {
             this.successes.push(...succs)
-            this.scrollTo(scrollTo, scrollToPos)
+            this.scrollTo(scrollToPos)
         }
     }
 };

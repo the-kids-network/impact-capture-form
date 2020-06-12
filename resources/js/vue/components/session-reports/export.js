@@ -16,12 +16,12 @@ const Component = {
     template: `
         <div class="session-report-export">  
             <status-box
-                ref="export-status-box"
+                ref="status-box"
                 class="status"
                 :errors="errors">
             </status-box> 
 
-            <a @click="handleExportSessionReports">{{label}}</a>
+            <a @click="clearStatus(); handleExportSessionReports()">{{label}}</a>
         </div>
     `,
 
@@ -66,7 +66,7 @@ const Component = {
                     this.csvFileName = filename
                 } catch (e) {
                     const messages = extractErrors({e, defaultMsg: `Problem exporting session report data`})
-                    this.addErrors({errs: messages, scrollTo: 'export-status-box', scrollToPos: 'bottom'})
+                    this.addErrors({errs: messages, scrollToPos: 'bottom'})
                     return
                 }
             }

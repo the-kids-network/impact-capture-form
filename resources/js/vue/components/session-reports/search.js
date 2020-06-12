@@ -21,7 +21,7 @@ const Component = {
     template: `
         <div class="session-report-search">      
             <status-box
-                ref="search-status-box"
+                ref="status-box"
                 class="status"
                 :errors="errors">
             </status-box>   
@@ -213,7 +213,7 @@ const Component = {
                 this.publishSearchResults(results)
             } catch (e) {
                 const messages = extractErrors({e, defaultMsg: `Problem searching session reports`})
-                this.addErrors({errs: messages, scrollTo: 'search-status-box'})
+                this.addErrors({errs: messages})
             } finally {
                 this.isSearching = false
             }
@@ -224,7 +224,7 @@ const Component = {
                 this.mentors = await this.fetchMentors()
             } catch (e) {
                 const messages = extractErrors({e, defaultMsg: `Problem getting mentors lookup`})
-                this.addErrors({errs: messages, scrollTo: 'search-status-box'})
+                this.addErrors({errs: messages})
             }
         },
 
