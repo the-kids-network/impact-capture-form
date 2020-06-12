@@ -41,13 +41,19 @@ class SessionReportApiController extends Controller {
     }
 
     public function get(Request $request) {
+        // validate    
+        $validator = $this->queryValidator($request->all());    
+        if ($validator->fails()) {
+            return $this->handleError($validator);
+        }
+       
+        // Run search
         $search = (new SessionSearch())
             ->mentorId($request->mentor_id)
             ->menteeId($request->mentee_id)
             ->sessionDateRangeStart($request->session_date_range_start)
             ->sessionDateRangeEnd($request->session_date_range_end);
 
-        // Run search
         $reports = $this->sessionReportService->getReportsUsing($search);
  
         // Construct response as JSON
@@ -66,13 +72,28 @@ class SessionReportApiController extends Controller {
     }
 
     public function export(Request $request) {
+        // validate
+        $validator = Validator::make(
+            $request->all(),  
+            [
+                'session_date_range_start' => 'date|before_or_equal:session_date_range_end',
+            ], 
+            [
+                'session_date_range_start.before_or_equal' => 'The start date should be before or equal to the end date',
+            ]
+        );
+        
+        if ($validator->fails()) {
+            return $this->handleError($validator);
+        }
+
+        // Run search
         $search = (new SessionSearch())
             ->mentorId($request->mentor_id)
             ->menteeId($request->mentee_id)
             ->sessionDateRangeStart($request->session_date_range_start)
             ->sessionDateRangeEnd($request->session_date_range_end);
 
-        // Run search
         $reports = $this->sessionReportService->getReportsUsing($search);
 
         // Construct response as CSV
@@ -160,6 +181,18 @@ class SessionReportApiController extends Controller {
             'rating' => $report->session_rating,
             'meeting_details' => $report->meeting_details
         ];
+    }
+
+    private function queryValidator($params) {
+        return Validator::make(
+            $params,  
+            [
+                'session_date_range_start' => 'date|before_or_equal:session_date_range_end',
+            ], 
+            [
+                'session_date_range_start.before_or_equal' => 'The start date should be before or equal to the end date',
+            ]
+        );  
     }
     
 }
