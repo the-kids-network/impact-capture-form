@@ -19009,6 +19009,7 @@ be a descendant of the grid when it is being dragged.
 .tkn-app a {
   color: #198e8f;
   text-decoration: none;
+  cursor: pointer;
 }
 .tkn-app a:hover {
   color: #116364;

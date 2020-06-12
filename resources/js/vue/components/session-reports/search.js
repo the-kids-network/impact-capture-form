@@ -63,20 +63,20 @@ const Component = {
                     <div class="col-md-7">
                         <div class="form-row">
                             <div class="col-md-6 form-group">
-                                <label class="col-form-label" for="sessionDateRangeStartInput">Start</label>
+                                <label class="col-form-label" for="sessionDateRangeStartInput">Start <a @click.prevent="handleClearData('sessionDateRangeStart')" class="fas fa-times"/></label>
                                 <input id="sessionDateRangeStartInput"
                                     type="text" 
                                     class="form-control form-control-sm datepicker session-date-range-start"
                                     v-model="sessionDateRangeStart"
-                                    autocomplete="off">
+                                    autocomplete="off" />
                             </div>
                             <div class="col-md-6 form-group">
-                                <label class="col-form-label" for="sessionDateRangeEndInput">End</label>
+                                <label class="col-form-label" for="sessionDateRangeEndInput">End <a @click.prevent="handleClearData('sessionDateRangeEnd')" class="fas fa-times"/></label>
                                 <input id="sessionDateRangeEndInput"
                                     type="text" 
                                     class="form-control form-control-sm datepicker session-date-range-end"
                                     v-model="sessionDateRangeEnd"
-                                    autocomplete="off">
+                                    autocomplete="off" />
                             </div>
                         </div>
                     </div>
@@ -158,6 +158,12 @@ const Component = {
     },
 
     methods: { 
+        handleClearData(field) {
+            if (this.hasOwnProperty(field)) {
+                this[field] = null
+            }
+        },
+
         handleClickDateQuickFill(type) {
             const dateFormat = SEARCH_DATE_FORMAT
             const {startDate, endDate} = dateRange(type)
