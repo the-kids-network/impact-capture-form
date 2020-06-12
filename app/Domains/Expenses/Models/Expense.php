@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Domains\Expenses\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,6 +28,6 @@ class Expense extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function expense_claim(){
-        return $this->belongsTo('App\ExpenseClaim');
+        return $this->belongsTo('App\Domains\Expenses\Models\ExpenseClaim');
     }
 }

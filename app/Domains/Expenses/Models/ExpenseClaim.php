@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Domains\Expenses\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,7 +30,7 @@ class ExpenseClaim extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function receipts() {
-        return $this->hasMany('App\Receipt');
+        return $this->hasMany('App\Domains\Expenses\Models\Receipt');
     }
 
     /**
@@ -38,7 +38,7 @@ class ExpenseClaim extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function expenses() {
-        return $this->hasMany('App\Expense');
+        return $this->hasMany('App\Domains\Expenses\Models\Expense');
     }
 
     /**

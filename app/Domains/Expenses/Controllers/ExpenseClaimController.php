@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Domains\Expenses\Controllers;
 
-use App\Expense;
-use App\ExpenseClaim;
+use App\Domains\Expenses\Models\Expense;
+use App\Domains\Expenses\Models\ExpenseClaim;
 use App\Mail\ClaimProcessedToMentor;
 use App\Mail\ClaimRejectedToMentor;
 use App\Mail\ClaimSubmittedToMentor;
-use App\Receipt;
+use App\Domains\Expenses\Models\Receipt;
 use App\Domains\SessionReports\Services\SessionReportService;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;

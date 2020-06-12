@@ -90,7 +90,7 @@ class User extends Authenticatable
     }
 
     public function expense_claims(){
-        return $this->hasMany('App\ExpenseClaim','mentor_id');
+        return $this->hasMany('App\Domains\Expenses\Models\ExpenseClaim','mentor_id');
     }
 
     public function manager() {
@@ -106,7 +106,7 @@ class User extends Authenticatable
     }
 
     public function processedClaims() {
-        return $this->hasMany('App\ExpenseClaim','processed_by_id')->whereIn('status', ['rejected', 'processed']);
+        return $this->hasMany('App\Domains\Expenses\Models\ExpenseClaim','processed_by_id')->whereIn('status', ['rejected', 'processed']);
     }
 
     public function hasRole($role) {

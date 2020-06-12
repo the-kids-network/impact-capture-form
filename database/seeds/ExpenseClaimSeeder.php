@@ -1,13 +1,12 @@
 <?php
 
 use App\Domains\SessionReports\Models\Report;
-use App\Expense;
-use App\ExpenseClaim;
+use App\Domains\Expenses\Models\Expense;
+use App\Domains\Expenses\Models\ExpenseClaim;
 use App\Domains\UserManagement\Models\Mentee;
 use App\Domains\UserManagement\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class ExpenseClaimSeeder extends Seeder
 {

@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\ExpenseClaim;
+use App\Domains\Expenses\Models\ExpenseClaim;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

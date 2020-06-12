@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Domains\Expenses\Controllers;
 
-use App\ExpenseClaim;
+use App\Domains\Expenses\Models\ExpenseClaim;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

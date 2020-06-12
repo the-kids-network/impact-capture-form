@@ -62,12 +62,6 @@ Route::get('/user-management/admins','\App\Domains\UserManagement\Controllers\Us
 Route::get('/settings', 'Settings\DashboardController@show')->name('settings');
 
 /**
- * Finance
- */
-Route::get('/finance/expense-claim/export','FinanceController@exportExpenseClaims');
-Route::get('/finance/process-expense-claims','FinanceController@processExpenseClaims');
-
-/**
  * Session reports
  */
 // Lookups
@@ -95,11 +89,13 @@ Route::redirect('/session-reports', '/app#/session-reports');
 /**
  * Expense Claims
  */
-Route::get('/expense-claim/export','ExpenseClaimController@export')->name('expense-claim.export');
-Route::get('/receipt/download-all','ReceiptController@downloadAll')->name('receipt.download-all');
-Route::get('/expense-claim/new','ExpenseClaimController@newExpenseClaim');
-Route::resource('/expense-claim','ExpenseClaimController');
-Route::resource('/receipt','ReceiptController');
+Route::get('/expense-claim/export','\App\Domains\Expenses\Controllers\ExpenseClaimController@export')->name('expense-claim.export');
+Route::get('/receipt/download-all','\App\Domains\Expenses\Controllers\ReceiptController@downloadAll')->name('receipt.download-all');
+Route::get('/expense-claim/new','\App\Domains\Expenses\Controllers\ExpenseClaimController@newExpenseClaim');
+Route::resource('/expense-claim','\App\Domains\Expenses\Controllers\ExpenseClaimController');
+Route::resource('/receipt','\App\Domains\Expenses\Controllers\ReceiptController');
+Route::get('/finance/expense-claim/export','\App\Domains\Expenses\Controllers\FinanceController@exportExpenseClaims');
+Route::get('/finance/process-expense-claims','\App\Domains\Expenses\Controllers\FinanceController@processExpenseClaims');
 
 /**
  * BI Reporting Routes
