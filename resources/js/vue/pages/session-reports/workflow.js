@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import SessionReportManage from '../../components/session-reports/manage';
+import SessionReportViewToggler from './view-toggler';
 
 const Component = {
 
@@ -8,7 +8,7 @@ const Component = {
     },
 
     components: {
-        'session-manage': SessionReportManage
+        'session-view-toggler': SessionReportViewToggler,
     },
 
     template: `
@@ -31,13 +31,14 @@ const Component = {
                 </div>
             </div>
             
-            <div class="card">
-                <div class="card-header">
-                    Session Report: {{ currentSessionReport }}
+            <div>
+                <div v-if="currentSessionReport">
+                    <session-view-toggler  :session-report-id="currentSessionReport" />
                 </div>
-                <div class="card-body">
-                    <session-manage v-if="currentSessionReport" :session-report-id="currentSessionReport" />
-                    <span v-else>No session reports selected for workflow. <a type="button" @click="goToSearch">Try searching again</a>.</span>
+                <div v-else class="card">
+                    <div class="card-body">
+                        <span>No session reports selected for workflow. <a type="button" @click="goToSearch">Try searching again</a>.</span>
+                    </div>
                 </div>
             </div>
         </div>

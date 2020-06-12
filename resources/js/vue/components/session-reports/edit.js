@@ -22,175 +22,175 @@ const Component = {
                 :errors="errors">
             </status-box>   
 
-            <div class="container">
-            <form v-if="sessionReport" class="form-horizontal" role="form">
-                <!-- Mentee's Name -->
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="menteeInput">Mentee</label>
-                    <div class="col-md-6">
-                        <select id="menteeInput" class="form-control" name="mentee_id" disabled>
-                            <option
-                                :value="sessionReport.mentee.id" selected>
-                                {{ sessionReport.mentee.name }}
-                            </option>
-                        </select>
+            <div class="container" v-if="sessionReport">
+                <form class="form-horizontal" role="form">
+                    <!-- Mentee's Name -->
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="menteeInput">Mentee</label>
+                        <div class="col-md-6">
+                            <select id="menteeInput" class="form-control" name="mentee_id" disabled>
+                                <option
+                                    :value="sessionReport.mentee.id" selected>
+                                    {{ sessionReport.mentee.name }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Date of Session -->
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="sessionDateInput">Session Date</label>
-                    <div class="col-md-6 entry">
-                        <input id="sessionDateInput"
-                               type="text" 
-                               :class="{ 'form-control': true, 'datepicker': true, 'sessiondate' : true, 'edited': isFieldDirty('sessionDate') }"
-                               v-model="sessionDate"
-                               autocomplete="off">
-                        <div v-if="isFieldDirty('sessionDate')"
-                               class="revertField"><span class="fas fa-history" @click="revertField('sessionDate')"/></div>
+                    <!-- Date of Session -->
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="sessionDateInput">Session Date</label>
+                        <div class="col-md-6 entry">
+                            <input id="sessionDateInput"
+                                type="text" 
+                                :class="{ 'form-control': true, 'datepicker': true, 'sessiondate' : true, 'edited': isFieldDirty('sessionDate') }"
+                                v-model="sessionDate"
+                                autocomplete="off">
+                            <div v-if="isFieldDirty('sessionDate')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('sessionDate')"/></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Session Rating -->
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="ratingInput">Session Rating</label>
-                    <div class="col-md-6 entry">
-                        <select id="ratingInput" 
-                                :class="{ 'form-control': true, 'edited': isFieldDirty('ratingId') }"
-                                v-model="ratingId">
-                            <option v-for="rating in sessionRatingsLookup"
-                                :value="rating.id">
-                                {{ rating.value }}
-                            </option>
-                        </select>
-                        <div v-if="isFieldDirty('ratingId')"
-                             class="revertField"><span class="fas fa-history" @click="revertField('ratingId')"/></div>
+                    <!-- Session Rating -->
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="ratingInput">Session Rating</label>
+                        <div class="col-md-6 entry">
+                            <select id="ratingInput" 
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('ratingId') }"
+                                    v-model="ratingId">
+                                <option v-for="rating in sessionRatingsLookup"
+                                    :value="rating.id">
+                                    {{ rating.value }}
+                                </option>
+                            </select>
+                            <div v-if="isFieldDirty('ratingId')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('ratingId')"/></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Length of Session -->
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="lengthInput">Length of Session (hours)</label>
-                    <div class="col-md-6 entry">
-                        <input id="lengthInput"
-                               type="text" 
-                               :class="{ 'form-control': true, 'edited': isFieldDirty('lengthOfSession') }"
-                               v-model="lengthOfSession">
-                        <div v-if="isFieldDirty('lengthOfSession')"
-                             class="revertField"><span class="fas fa-history" @click="revertField('lengthOfSession')"/></div>
+                    <!-- Length of Session -->
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="lengthInput">Length of Session (hours)</label>
+                        <div class="col-md-6 entry">
+                            <input id="lengthInput"
+                                type="text" 
+                                :class="{ 'form-control': true, 'edited': isFieldDirty('lengthOfSession') }"
+                                v-model="lengthOfSession">
+                            <div v-if="isFieldDirty('lengthOfSession')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('lengthOfSession')"/></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Type of Activity -->
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="activityTypeInput">Activity Type</label>
-                    <div class="col-md-6 entry">
-                        <select id="activityTypeInput"
-                                :class="{ 'form-control': true, 'edited': isFieldDirty('activityTypeId') }"
-                                v-model="activityTypeId">
-                            <option v-for="activityType in activityTypesLookup"
-                                :value="activityType.id">
-                                {{ activityType.name }}
-                            </option>
-                        </select>
-                        <div v-if="isFieldDirty('activityTypeId')"
-                             class="revertField"><span class="fas fa-history" @click="revertField('activityTypeId')"/></div>
+                    <!-- Type of Activity -->
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="activityTypeInput">Activity Type</label>
+                        <div class="col-md-6 entry">
+                            <select id="activityTypeInput"
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('activityTypeId') }"
+                                    v-model="activityTypeId">
+                                <option v-for="activityType in activityTypesLookup"
+                                    :value="activityType.id">
+                                    {{ activityType.name }}
+                                </option>
+                            </select>
+                            <div v-if="isFieldDirty('activityTypeId')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('activityTypeId')"/></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Location -->
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="locationInput">Location</label>
+                    <!-- Location -->
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="locationInput">Location</label>
 
-                    <div class="col-md-6 entry">
-                        <input id="locationInput"
-                               type="text" 
-                               :class="{ 'form-control': true, 'edited': isFieldDirty('location') }"
-                               v-model="location">
-                        <div v-if="isFieldDirty('location')"
-                             class="revertField"><span class="fas fa-history" @click="revertField('location')"/></div>
+                        <div class="col-md-6 entry">
+                            <input id="locationInput"
+                                type="text" 
+                                :class="{ 'form-control': true, 'edited': isFieldDirty('location') }"
+                                v-model="location">
+                            <div v-if="isFieldDirty('location')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('location')"/></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Safeguarding Concern -->
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="safeguardingInput">Safeguarding Concern</label>
+                    <!-- Safeguarding Concern -->
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="safeguardingInput">Safeguarding Concern</label>
 
-                    <div class="col-md-6 entry">
-                        <select id="safeguardingInput"
-                                :class="{ 'form-control': true, 'edited': isFieldDirty('safeguardingConcern') }"
-                                v-model="safeguardingConcern">
-                            <option v-for="item in safeguardingLookup"
-                                    :value="item.id">
-                                    {{ item.name }}
-                            </option>
-                        </select>
-                        <div v-if="isFieldDirty('safeguardingConcern')"
-                             class="revertField"><span class="fas fa-history" @click="revertField('safeguardingConcern')"/></div>
+                        <div class="col-md-6 entry">
+                            <select id="safeguardingInput"
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('safeguardingConcern') }"
+                                    v-model="safeguardingConcern">
+                                <option v-for="item in safeguardingLookup"
+                                        :value="item.id">
+                                        {{ item.name }}
+                                </option>
+                            </select>
+                            <div v-if="isFieldDirty('safeguardingConcern')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('safeguardingConcern')"/></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Emotional State -->
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="emotionalStateInput">Mentee's Emotional State</label>
-                    <div class="col-md-6 entry">
-                        <select id="emotionalStateInput"
-                                :class="{ 'form-control': true, 'edited': isFieldDirty('emotionalStateId') }"
-                                v-model="emotionalStateId">
-                            <option v-for="emotionalState in emotionalStatesLookup"
-                                :value="emotionalState.id">
-                                {{ emotionalState.name }}
-                            </option>
-                        </select>
-                        <div v-if="isFieldDirty('emotionalStateId')"
-                            class="revertField"><span class="fas fa-history" @click="revertField('emotionalStateId')"/></div>
+                    <!-- Emotional State -->
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="emotionalStateInput">Mentee's Emotional State</label>
+                        <div class="col-md-6 entry">
+                            <select id="emotionalStateInput"
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('emotionalStateId') }"
+                                    v-model="emotionalStateId">
+                                <option v-for="emotionalState in emotionalStatesLookup"
+                                    :value="emotionalState.id">
+                                    {{ emotionalState.name }}
+                                </option>
+                            </select>
+                            <div v-if="isFieldDirty('emotionalStateId')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('emotionalStateId')"/></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Meeting Details -->
-                <div class="form-group row">
-                    <label class="col-md-4 col-form-label" for="meetingDetailsInput">Meeting Details</label>
-                    <div class="col-md-6 entry">
-                        <textarea id="meetingDetailsInput"
-                                  :class="{ 'form-control': true, 'edited': isFieldDirty('meetingDetails') }"
-                                  rows="10"
-                                  v-model="meetingDetails"/>
-                        <div v-if="isFieldDirty('meetingDetails')"
-                            class="revertField"><span class="fas fa-history" @click="revertField('meetingDetails')"/></div>
+                    <!-- Meeting Details -->
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="meetingDetailsInput">Meeting Details</label>
+                        <div class="col-md-6 entry">
+                            <textarea id="meetingDetailsInput"
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('meetingDetails') }"
+                                    rows="10"
+                                    v-model="meetingDetails"/>
+                            <div v-if="isFieldDirty('meetingDetails')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('meetingDetails')"/></div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group row">
-                    <div class="col-md offset-md-4">
-                        <span @click="handleSaveSessionReport" class="save btn btn-success " :disabled="isBusy">
-                        <span class="fas fa-save" /> Save</span>
-                        <span class="btn btn-danger" data-toggle="modal" data-target="#delete-confirmation" :disabled="isBusy">
-                        <span class="fas fa-times" /> Delete</span>
+                    <div class="form-group row">
+                        <div class="col-md offset-md-4">
+                            <span @click="handleSaveSessionReport" class="save btn btn-success " :disabled="isBusy">
+                            <span class="fas fa-save" /> Save</span>
+                            <span class="btn btn-danger" data-toggle="modal" data-target="#delete-confirmation" :disabled="isBusy">
+                            <span class="fas fa-times" /> Delete</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="modal fade" id="delete-confirmation" tabindex="-1" role="dialog" aria-labelledby="delete report" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="exampleModalLabel">Confirm deletion of report</h3>
-                            </div>
-                            <div class="modal-body">
-                                <p>Are you sure you want to delete the session report?</p>
+                    <div class="modal fade" id="delete-confirmation" tabindex="-1" role="dialog" aria-labelledby="delete report" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="exampleModalLabel">Confirm deletion of report</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete the session report?</p>
 
-                                <p>This will <b>delete all associated expense claims</b>, so make sure they have not been processed / paid already.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                <button @click="handleDeleteSessionReport" data-dismiss="modal" class="btn btn-danger">
-                                    <span class="fas fa-times"></span>
-                                    <span>Delete</span>
-                                </button>
+                                    <p>This will <b>delete all associated expense claims</b>, so make sure they have not been processed / paid already.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                    <button @click="handleDeleteSessionReport" data-dismiss="modal" class="btn btn-danger">
+                                        <span class="fas fa-times"></span>
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
             </div>
         </div>
     `,
@@ -338,6 +338,7 @@ const Component = {
                 this.isBusy = true
                 this.sessionReport = await this.updateSessionReport(this.sessionReport.id, reportBody)
                 this.addSuccesses({succs: ['Report was saved successfully']})
+                this.$emit('sessionReportSaved')
             } catch (e) {
                 const messages = extractErrors({e, defaultMsg: 'Problem saving the session report'})
                 this.addErrors({errs: messages})
@@ -353,6 +354,7 @@ const Component = {
                 await this.deleteSessionReport(this.sessionReport.id)
                 this.sessionReport = null
                 this.addSuccesses({succs: ['Report was deleted successfully']})
+                this.$emit('sessionReportDeleted')
             } catch (e) {
                 const messages = extractErrors({e, defaultMsg: 'Problem deleting the session report'})
                 this.addErrors({errs: messages})

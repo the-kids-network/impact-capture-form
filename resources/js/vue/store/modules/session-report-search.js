@@ -8,7 +8,7 @@ const module = {
     },
     mutations: {
         setSessionReports(state, reportsList) {
-            state.list = List(reportsList)
+            state.list = reportsList
             state.current = null
         },
 

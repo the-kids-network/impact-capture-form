@@ -7,7 +7,7 @@ const Component = {
 
     props: {
         sessionReports: {
-            default: () => []
+            default: () => List()
         }
     },
 
@@ -63,7 +63,7 @@ const Component = {
                         <div class="dropdown-menu" role="menu">
                             <a  v-for="size in pageSizes"
                                 :class="'dropdown-item page-size ' + ((size === currentPageSize) ? 'active' : '')" 
-                                @click="currentPageSize = size"
+                                @click.prevent="currentPageSize = size"
                                 role="menuitem"
                                 href="#">{{size}}</a>
                         </div>
@@ -74,17 +74,17 @@ const Component = {
                         <li class="page-item" 
                             v-if="currentPage != 1" 
                             @click="currentPage--">
-                            <a class="page-link"  href="#"> &lt; </a>
+                            <a @click.prevent class="page-link"  href="#"> &lt; </a>
                         </li>
                         <li :class="'page-item ' + ((page === currentPage) ? 'active' : '')" 
                             v-for="page in pages" 
                             @click="currentPage = page">
-                            <a class="page-link"  href="#"> {{page}} </a>
+                            <a @click.prevent class="page-link"  href="#"> {{page}} </a>
                         </li>
                         <li class="page-item" 
                             @click="currentPage++" 
                             v-if="currentPage < pages.length">
-                            <a class="page-link" href="#"> &gt; </a>
+                            <a @click.prevent class="page-link" href="#"> &gt; </a>
                         </li>
                     </ul>
                 </div>	
@@ -97,7 +97,7 @@ const Component = {
             // pagination state
             currentPage: 1,
             pageSizes: [10, 25, 50, 100],
-            currentPageSize: 2
+            currentPageSize: 25
         }
     },
 

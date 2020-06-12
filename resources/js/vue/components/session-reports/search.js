@@ -190,7 +190,7 @@ const Component = {
         },
 
         publishSearchResults(results) {
-            this.$emit('searchResults', results)
+            this.$emit('searchResults', List(results))
         },
 
         clearSearchResults() {

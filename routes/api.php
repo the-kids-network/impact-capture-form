@@ -29,3 +29,6 @@ Route::get('/session-reports/export', '\App\Domains\SessionReports\Controllers\S
 Route::get('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@getById');
 Route::put('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@update');
 Route::delete('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@delete');
+
+// Expenses
+Route::get('/expense-claims', '\App\Domains\Expenses\Controllers\ExpenseClaimApiController@get');

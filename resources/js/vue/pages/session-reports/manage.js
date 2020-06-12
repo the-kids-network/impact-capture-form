@@ -1,4 +1,4 @@
-import SessionReportManage from '../../components/session-reports/manage'
+import SessionReportViewToggler from './view-toggler'
 
 import _ from 'lodash'
 
@@ -7,7 +7,7 @@ const Component = {
     props: ['sessionReportId'],
 
     components: {
-        'session-report-manage': SessionReportManage,
+        'session-view-toggler': SessionReportViewToggler,
     },
 
     template: `
@@ -19,15 +19,11 @@ const Component = {
                     </nav>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    Session Report: {{ sessionReportId }}
-                </div>
-                <div class="card-body">
-                    <session-report-manage
-                        :session-report-id=sessionReportId>
-                    </session-report-manage>
-                </div>
+        
+            <div>
+                <session-view-toggler
+                    :session-report-id=sessionReportId>
+                </session-view-toggler>
             </div>
         </div>
     `,

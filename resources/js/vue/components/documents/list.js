@@ -173,7 +173,7 @@ const Component = {
                         <div class="dropdown-menu" role="menu">
                             <a  v-for="size in pageSizes"
                                 :class="'dropdown-item page-size ' + ((size === currentPageSize) ? 'active' : '')" 
-                                @click="currentPageSize = size"
+                                @click.prevent="currentPageSize = size"
                                 role="menuitem"
                                 href="#">{{size}}</a>
                         </div>
@@ -184,17 +184,17 @@ const Component = {
                         <li class="page-item" 
                             v-if="currentPage != 1" 
                             @click="currentPage--">
-                            <a class="page-link"  href="#"> &lt; </a>
+                            <a @click.prevent class="page-link"  href="#"> &lt; </a>
                         </li>
                         <li :class="'page-item ' + ((page === currentPage) ? 'active' : '')" 
                             v-for="page in _pages" 
                             @click="currentPage = page">
-                            <a class="page-link"  href="#"> {{page}} </a>
+                            <a @click.prevent class="page-link"  href="#"> {{page}} </a>
                         </li>
                         <li class="page-item" 
                             @click="currentPage++" 
                             v-if="currentPage < _pages.length">
-                            <a class="page-link" href="#"> &gt; </a>
+                            <a @click.prevent class="page-link" href="#"> &gt; </a>
                         </li>
                     </ul>
                 </div>	
