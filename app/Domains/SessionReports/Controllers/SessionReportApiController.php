@@ -50,7 +50,7 @@ class SessionReportApiController extends Controller {
         // Run search
         $reports = $this->sessionReportService->getReportsUsing($search);
  
-        // Construct response
+        // Construct response as JSON
         $payload = $reports->map(function($report) use($request) {
             $reportDto = $this->mapReportToDto($report);
 
@@ -63,6 +63,31 @@ class SessionReportApiController extends Controller {
 
         // return update report
         return response()->json($payload);
+    }
+
+    public function export(Request $request) {
+        $search = (new SessionSearch())
+            ->mentorId($request->mentor_id)
+            ->menteeId($request->mentee_id)
+            ->sessionDateRangeStart($request->session_date_range_start)
+            ->sessionDateRangeEnd($request->session_date_range_end);
+
+        // Run search
+        $reports = $this->sessionReportService->getReportsUsing($search);
+
+        // Construct response as CSV
+        $csvExporter = new \Laracsv\Export();
+        $csvExporter->beforeEach(fn ($report) => $report->safeguarding_text = $report->safeguardingConcernTextAttribute());
+        $csvExporter->build($reports, 
+            ['id' => 'Session ID', 'mentor.name' => 'Mentor', 
+            'mentee.name' => 'Mentee', 'session_date' => 'Session Date', 
+            'length_of_session' => 'Length of Session',
+            'activity_type.name' => 'Activity Type', 
+            'location' => 'Location', 
+            'safeguarding_text' => 'Safeguarding Concern', 
+            'emotional_state.name' => 'Emotional State',
+            'meeting_details' => 'Meeting Details']
+        )->download('session-reports.csv');
     }
 
     public function getById($id) {

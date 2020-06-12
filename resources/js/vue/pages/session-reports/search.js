@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import SessionReportSearch from '../../components/session-reports/search';
 import SessionReportList from '../../components/session-reports/list';
+import SessionReportExport from '../../components/session-reports/export';
 import { SEARCH_DATE_FORMAT } from '../../components/session-reports/consts'
 
 const Component = {
@@ -12,6 +13,7 @@ const Component = {
     components: {
         'session-report-search': SessionReportSearch,
         'session-report-list': SessionReportList,
+        'session-report-export': SessionReportExport
     },
 
     template: `
@@ -62,6 +64,16 @@ const Component = {
                         :sessionReports="searchResults"
                         @sessionReportSelected="handleSelectSessionReport($event)">
                     </session-report-list>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    Session Reports Export
+                </div>
+                <div class="card-body">
+                    <session-report-export 
+                        label="Export your search results"
+                        :searchParams="searchParams"/>
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +25,7 @@ Route::get('/safeguarding-options','\App\Domains\SessionReports\Controllers\Safe
 
 // Session reports - v2
 Route::get('/session-reports', '\App\Domains\SessionReports\Controllers\SessionReportApiController@get');
+Route::get('/session-reports/export', '\App\Domains\SessionReports\Controllers\SessionReportApiController@export');
 Route::get('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@getById');
 Route::put('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@update');
 Route::delete('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@delete');

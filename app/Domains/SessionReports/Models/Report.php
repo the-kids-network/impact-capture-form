@@ -55,6 +55,14 @@ class Report extends Model
             return "None";
     }
 
+    public function safeguardingConcernTextAttribute() {
+        if ($this->safeguarding_concern == 0) {
+            return "No";
+        } else {
+            return "Yes - ".$this->safeguardingConcernTypeAttribute();
+        }
+    }
+
     public function scopeCanSee($query) {
         if (Auth::user()->isAdmin()) {
             // nothing to filter if admin
