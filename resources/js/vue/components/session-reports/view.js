@@ -143,7 +143,8 @@ const Component = {
             try {
                 this.sessionReport = await this.fetchSessionReport(this.sessionReportId)
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: `Problem loading session report (${this.sessionReportId})`}))
+                const messages = extractErrors({e, defaultMsg: `Problem loading session report (${this.sessionReportId})`})
+                this.addErrors({errs: messages})
             }
         },
 

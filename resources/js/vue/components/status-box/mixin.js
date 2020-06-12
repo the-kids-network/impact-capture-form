@@ -12,10 +12,15 @@ export default {
     },
 
     methods: {
-        scrollTo(refName) {
-            var element = this.$refs[refName];
-            var top = element.offsetTop;
-            window.scrollTo(0, top);
+        scrollTo(statusBoxRef, position) {
+            if (position === 'bottom') {
+                const elem = this.$refs[statusBoxRef].$refs['bottom-of-status']
+                this.$scrollTo(elem)          
+            } else {
+                const elem = this.$refs[statusBoxRef].$refs['top-of-status']
+                // offset to account for nav bar
+                this.$scrollTo(elem, {offset: -75})          
+            }
         },
 
         clearStatus() {
@@ -23,7 +28,7 @@ export default {
             this.clearErrors();
         },
 
-        clearErrors() {
+        clearErrors() { 
             this.errors = [];
         },
 
@@ -31,14 +36,14 @@ export default {
             this.successes = [];
         },
 
-        addErrors(errors=[]) {
-            this.errors.push(...errors)
-            this.scrollTo('status-box')
+        addErrors({errs=[], scrollTo='status-box', scrollToPos='top'}) {
+            this.errors.push(...errs)
+            this.scrollTo(scrollTo, scrollToPos)
         },
 
-        addSuccesses(successes=[]) {
-            this.successes.push(...successes)
-            this.scrollTo('status-box')
+        addSuccesses({succs=[], scrollTo='status-box', scrollToPos='top'}) {
+            this.successes.push(...succs)
+            this.scrollTo(scrollTo, scrollToPos)
         }
     }
 };

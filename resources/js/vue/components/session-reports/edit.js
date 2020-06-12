@@ -273,7 +273,8 @@ const Component = {
             try {
                 this.activityTypesLookup = await this.fetchActivityTypes()
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: `Problem loading activity types lookup`}))
+                const messages = extractErrors({e, defaultMsg: `Problem loading activity types lookup`})
+                this.addErrors({errs: messages})
             }
         },
 
@@ -281,7 +282,8 @@ const Component = {
             try {
                 this.emotionalStatesLookup = await this.fetchEmotionalStates()
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: `Problem loading emotional states lookup`}))
+                const messages = extractErrors({e, defaultMsg: `Problem loading emotional states lookup`})
+                this.addErrors({errs: messages})
             }
         },
 
@@ -289,7 +291,8 @@ const Component = {
             try {
                 this.sessionRatingsLookup = await this.fetchSessionRatings()
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: `Problem loading session ratings lookup`}))
+                const messages = extractErrors({e, defaultMsg: `Problem loading session ratings lookup`})
+                this.addErrors({errs: messages})
             }
         },
 
@@ -297,7 +300,8 @@ const Component = {
             try {
                 this.safeguardingLookup = await this.fetchSafeguardingOptions()
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: `Problem loading safeguarding lookup`}))
+                const messages = extractErrors({e, defaultMsg: `Problem loading safeguarding lookup`})
+                this.addErrors({errs: messages})
             }
         },
 
@@ -308,7 +312,8 @@ const Component = {
             try {
                 this.sessionReport = await this.fetchSessionReport(this.sessionReportId)
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: `Problem loading session report (${this.sessionReportId})`}))
+                const messages = extractErrors({e, defaultMsg: `Problem loading session report (${this.sessionReportId})`})
+                this.addErrors({errs: messages})
             }
         },
 
@@ -332,9 +337,10 @@ const Component = {
             try {
                 this.isBusy = true
                 this.sessionReport = await this.updateSessionReport(this.sessionReport.id, reportBody)
-                this.addSuccesses(['Report was saved successfully'])
+                this.addSuccesses({succs: ['Report was saved successfully']})
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: 'Problem saving the session report'}))
+                const messages = extractErrors({e, defaultMsg: 'Problem saving the session report'})
+                this.addErrors({errs: messages})
             } finally {
                 this.isBusy = false
             }
@@ -346,9 +352,10 @@ const Component = {
                 this.isBusy = true
                 await this.deleteSessionReport(this.sessionReport.id)
                 this.sessionReport = null
-                this.addSuccesses(['Report was deleted successfully'])
+                this.addSuccesses({succs: ['Report was deleted successfully']})
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: 'Problem deleting the session report'}))
+                const messages = extractErrors({e, defaultMsg: 'Problem deleting the session report'})
+                this.addErrors({errs: messages})
             } finally {
                 this.isBusy = false
             }

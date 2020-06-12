@@ -20,8 +20,10 @@ const Component = {
 
     template: `
         <div>
+            <div class="top-of-status" ref="top-of-status" />
             <error :errors="errors" />
             <success :messages="successes" />
+            <div class="bottom-of-status" ref="bottom-of-status" />
         </div>
     `,
 

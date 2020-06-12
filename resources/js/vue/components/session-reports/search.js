@@ -21,7 +21,7 @@ const Component = {
     template: `
         <div class="session-report-search">      
             <status-box
-                ref="status-box"
+                ref="search-status-box"
                 class="status"
                 :errors="errors">
             </status-box>   
@@ -128,6 +128,7 @@ const Component = {
 
     watch: {
         searchCriteria() {
+            this.clearErrors()
             this.applySearchCriteria()
             this.search()
         }
@@ -165,7 +166,6 @@ const Component = {
         },
 
         handleClickSearch() {
-            this.clearErrors()
             this.publishSearchCriteria(this.buildSearchCriteria())
         },
 
@@ -212,7 +212,8 @@ const Component = {
                 const results = await this.fetchSessionReports(query)
                 this.publishSearchResults(results)
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: `Problem searching session reports`}))
+                const messages = extractErrors({e, defaultMsg: `Problem searching session reports`})
+                this.addErrors({errs: messages, scrollTo: 'search-status-box'})
             } finally {
                 this.isSearching = false
             }
@@ -222,7 +223,8 @@ const Component = {
             try {
                 this.mentors = await this.fetchMentors()
             } catch (e) {
-                this.addErrors(extractErrors({e, defaultMsg: `Problem getting mentors lookup`}))
+                const messages = extractErrors({e, defaultMsg: `Problem getting mentors lookup`})
+                this.addErrors({errs: messages, scrollTo: 'search-status-box'})
             }
         },
 

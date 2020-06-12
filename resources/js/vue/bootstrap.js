@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 import LocalStorage from 'vue-ls';
 import VueSessionStorage from 'vue-sessionstorage'
 import VModal from 'vue-js-modal'
-import VueClipboard from 'vue-clipboard2'
+import VueScrollTo from 'vue-scrollto'
 
 import globalMixins from './mixin';
 import routes from './routes';
@@ -77,7 +77,7 @@ Vue.use(VueSessionStorage)
 
 Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false } })
 
-Vue.use(VueClipboard)
+Vue.use(VueScrollTo)
 
 // Vuex
 const store = new Vuex.Store({
