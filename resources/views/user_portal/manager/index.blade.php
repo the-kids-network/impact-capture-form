@@ -11,7 +11,7 @@
                     <div class="card link-panel">
                         <div class="card-body text-center">
                             <i class="fab fa-searchengin text-feature"></i>
-                            <a class="btn btn-primary btn-block btn-lg" href="{{ url('/session-reports') }}">
+                            <a class="btn btn-primary btn-block btn-lg v2-session-reports" href="{{ url('/session-reports') }}">
                                 <span class="fas fa-sun"></span> Session Reports <span class="fas fa-sun"></span> (New!)
                             </a>
                         </div>
@@ -21,7 +21,7 @@
                     <div class="card link-panel">
                         <div class="card-body text-center">
                             <i class="fas fa-search text-feature"></i>
-                            <a class="btn btn-primary btn-block btn-lg" href="{{ url('/report') }}">Session Reports</a>
+                            <a class="btn btn-primary btn-block btn-lg v1-session-reports" href="{{ url('/report') }}">Session Reports</a>
                         </div>
                     </div>
                 </div>
