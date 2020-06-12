@@ -72,21 +72,12 @@ class SessionReportApiController extends Controller {
     }
 
     public function export(Request $request) {
-        // validate
-        $validator = Validator::make(
-            $request->all(),  
-            [
-                'session_date_range_start' => 'date|before_or_equal:session_date_range_end',
-            ], 
-            [
-                'session_date_range_start.before_or_equal' => 'The start date should be before or equal to the end date',
-            ]
-        );
-        
+        // validate    
+        $validator = $this->queryValidator($request->all());    
         if ($validator->fails()) {
             return $this->handleError($validator);
         }
-
+        
         // Run search
         $search = (new SessionSearch())
             ->mentorId($request->mentor_id)
