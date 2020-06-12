@@ -39,15 +39,6 @@ const Component = {
                         <td class="value">
                             <span>
                                 <a :href="getSessionReportHref(sessionReport)">Open</a> 
-                                <popper
-                                    :trigger="popover.trigger"
-                                    :options="popover.options"
-                                    :delay-on-mouse-over="popover.delayOnMouseOver">
-                                    <div class="popper">You can open link in a new tab</div>
-                                    <span slot="reference">
-                                        <i class="fas fa-info-circle"></i>
-                                    </span>
-                                </popper>
                             </span>
                         </td>
                     </tr>
