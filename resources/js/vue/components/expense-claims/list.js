@@ -24,14 +24,14 @@ const Component = {
                             <th>Created On</th>
                             <th>Status</th>
                             <th>Amount</th>
+                            <th>Link</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr 
                             v-for="claim in itemsForCurrentPage"
                             :id="'item-' + claim.id"
-                            class="item"
-                            @click="handleClickExpenseClaim(claim.id)">   
+                            class="item">   
 
                             <td class="claim-id">
                                 {{claim.id}}
@@ -44,6 +44,9 @@ const Component = {
                             </td>
                             <td class="total-amount">
                                 {{claim.amount_total}}
+                            </td>
+                            <td class="link">
+                                <a :href="'/expense-claim/' + claim.id">Link</a>
                             </td>
                         </tr>
                     </tbody>
@@ -121,10 +124,6 @@ const Component = {
 
     methods: { 
         displayableDate: dateString => formatDate(parseDate(dateString)),
-
-        handleClickExpenseClaim(claimId) {
-            this.$emit('expenseClaimSelected', claimId)
-        }
     }
 };
 
