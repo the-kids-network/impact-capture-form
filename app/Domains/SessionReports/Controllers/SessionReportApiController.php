@@ -98,16 +98,22 @@ class SessionReportApiController extends Controller {
 
         // Construct response as CSV
         $csvExporter = new \Laracsv\Export();
-        $csvExporter->beforeEach(fn ($report) => $report->safeguarding_text = $report->safeguardingConcernTextAttribute());
+        $csvExporter->beforeEach(function ($report) {
+            $report->safeguarding_text = $report->safeguardingConcernTextAttribute();
+            $report->session_date_formatted = $report->session_date->format('d-m-Y');
+            $report->meeting_details_escaped = str_replace(array("\r\n", "\n", "\r"), ' ', $report->meeting_details);
+        });
         $csvExporter->build($reports, 
-            ['id' => 'Session ID', 'mentor.name' => 'Mentor', 
-            'mentee.name' => 'Mentee', 'session_date' => 'Session Date', 
+            ['id' => 'Session ID', 
+            'mentor.name' => 'Mentor', 
+            'mentee.name' => 'Mentee', 
+            'session_date_formatted' => 'Session Date', 
             'length_of_session' => 'Length of Session',
             'activity_type.name' => 'Activity Type', 
             'location' => 'Location', 
             'safeguarding_text' => 'Safeguarding Concern', 
             'emotional_state.name' => 'Emotional State',
-            'meeting_details' => 'Meeting Details']
+            'meeting_details_escaped' => 'Meeting Details']
         )->download('session-reports.csv');
     }
 
