@@ -19221,6 +19221,9 @@ be a descendant of the grid when it is being dragged.
   margin-bottom: 0.25rem !important;
   font-size: 0.75rem;
 }
+.edit-view-toggle {
+  margin-bottom: 0.75rem;
+}
 .mentor-management .expand-all {
   cursor: pointer;
 }
