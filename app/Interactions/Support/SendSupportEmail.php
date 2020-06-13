@@ -3,7 +3,7 @@
 namespace App\Interactions\Support;
 
 use RuntimeException;
-use App\Configuration\Spark;
+use App\Configuration\SupportContactConfiguration;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Contracts\Interactions\Support\SendSupportEmail as Contract;
@@ -31,7 +31,7 @@ class SendSupportEmail implements Contract
     public function handle($user, array $data)
     {
         Mail::raw($data['message'], function ($m) use ($data) {
-            $m->to(Spark::supportAddress())->subject('Support Request: '.$data['subject']);
+            $m->to(SupportContactConfiguration::supportAddress())->subject('Support Request: '.$data['subject']);
 
             $m->replyTo($data['from']);
         });

@@ -33,6 +33,8 @@ window.moment.locale('en');
 if (window.$ === undefined || window.jQuery === undefined) {
     window.$ = window.jQuery = require('jquery');
 }
+
+// Date picker
 require('jquery-ui/ui/widgets/datepicker');
 
 // Popper.js
@@ -45,26 +47,9 @@ require('bootstrap-table/dist/bootstrap-table');
 // Sweetalert
 window.Swal = require('sweetalert2/dist/sweetalert2');
 
-// Full calendar
-require('@fullcalendar/core');
-require('@fullcalendar/daygrid');
-require('@fullcalendar/timegrid');
-require('@fullcalendar/interaction');
-require('@fullcalendar/vue');
-
 /**
- * Load Vue if this application is using Vue as its framework.
+ * Load Vue - if this application is using Vue as its framework.
  */
 if ($('#app').length > 0) {
-    require('./vue-bootstrap');
+    require('./vue/bootstrap');
 }
-
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-window.axios.defaults.headers.common = {
-    'X-Requested-With': 'XMLHttpRequest',
-    'X-CSRF-TOKEN': Spark.csrfToken
-};

@@ -17,13 +17,13 @@ class HomeController extends Controller {
 
     public function show(Request $request) {
         if ($request->user()->isAdmin()){
-            return view('admin.index');
+            return view('user_portal.admin.index');
         }
         else if ($request->user()->isManager()){
-            return view('manager.index');
+            return view('user_portal.manager.index');
         }
         else if ($request->user()->isMentor()){
-            return view('mentor.index');
+            return view('user_portal.mentor.index');
         } else {
             abort(401,'Unauthorized');
         }

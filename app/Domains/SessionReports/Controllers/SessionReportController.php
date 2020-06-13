@@ -13,19 +13,18 @@ use App\Domains\SessionReports\Services\SessionReportService;
 use App\Exceptions\DuplicateException;
 use App\Exceptions\NotAuthorisedException;
 use App\Exceptions\NotFoundException;
-use App\ExpenseClaim;
+use App\Domains\Expenses\Models\ExpenseClaim;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Domains\SessionReports\Controllers\SessionReportValidation;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 
 class SessionReportController extends Controller {
 
-    private $sessionReportService;
-    private $plannedSessionService;
-    private $mentorLeaveService;
-    private $menteeLeaveService;
+    private SessionReportService $sessionReportService;
+    private PlannedSessionService $plannedSessionService;
+    private MentorLeaveService $mentorLeaveService;
+    private MenteeLeaveService $menteeLeaveService;
 
     public function __construct(SessionReportService $sessionReportService, 
                                 PlannedSessionService $plannedSessionService,
@@ -45,7 +44,7 @@ class SessionReportController extends Controller {
     public function newReportForm(Request $request) {
         $reports = $this->sessionReportService->getReports();
 
-        return view('session_report.new')
+        return view('session_reports.new')
             ->with('mentees',$request->user()->mentees)
             ->with('activity_types', ActivityType::all())
             ->with('emotional_states',EmotionalState::all())
@@ -57,14 +56,14 @@ class SessionReportController extends Controller {
         $report = $this->sessionReportService->getReport($id);
         $report->mentee = $report->mentee;
         
-        return view('session_report.edit')
+        return view('session_reports.edit')
             ->with('activity_types',  ActivityType::all())
             ->with('emotional_states', EmotionalState::all())
             ->with('session_ratings', SessionRating::selectable())
             ->with('report', $report);
     }
 
-    public function getMany(Request $request) {
+    public function get(Request $request) {
         $reports = [];
         if ($request->mentor_id) {
             $reports = $this->sessionReportService->getReportsForMentor($request->mentor_id);
@@ -72,10 +71,9 @@ class SessionReportController extends Controller {
             $reports = $this->sessionReportService->getReports();
         }
 
-        return view('session_report.index')->with('reports',  $reports);
+        return view('session_reports.index')->with('reports',  $reports);
     }
-
-    public function getOne($id) {
+    public function getById($id) {
         $report = null;
         try {
             $report = $this->sessionReportService->getReport($id);
@@ -88,7 +86,7 @@ class SessionReportController extends Controller {
         // and ideally the UI could fetch these separately via a REST call to the expenses domain
         $claims = ExpenseClaim::canSee()->whereReportId($report->id)->orderBy('created_at','desc')->get();
 
-        return view('session_report.show')
+        return view('session_reports.show')
             ->with('report', $report)
             ->with('claims', $claims);
     }
@@ -116,28 +114,6 @@ class SessionReportController extends Controller {
         return redirect('/report/'.$report->id)->with('status', 'Report Created');
     }
 
-    // The only REST endpoint right now
-    public function update(Request $request, $id) {
-        list($validations, $messages) = SessionReportValidation::getRulesFor(['users', 'session_report']);
-        $bodyJson = $request->json()->all();
-        $validator = Validator::make($bodyJson, $validations, $messages);
-        if ($validator->fails()) {
-            return $this->handleError($validator);
-        }
-        
-        // Update the session report
-        $report = null;
-        try {
-            $report = $this->sessionReportService->updateReport($id, $request->all());
-        } catch (NotAuthorisedException $e) {
-            Log::error($e);
-            abort(401,'Unauthorized');
-        }
-
-        // return update report
-        return response()->json($report);
-    }
-
     public function delete($id) {
         try {
             $this->sessionReportService->deleteReport($id);
@@ -159,7 +135,7 @@ class SessionReportController extends Controller {
         // get reports
         $reports = $query->get();
 
-        return view('session_report.export')->with('reports', $reports);
+        return view('session_reports.export')->with('reports', $reports);
     }
 
     private function createPlannedSession(Request $request) {

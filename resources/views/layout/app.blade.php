@@ -31,11 +31,10 @@
         </script>
         @endif
 
-        <!-- Global Spark Object -->
+        <!-- Window properties -->
         <script>
-            window.Spark = <?php echo json_encode(array_merge(
-                App\Configuration\Spark::scriptVariables(), []
-            )); ?>;
+            window.csrfToken = "{{ csrf_token() }}"
+            window.env = "{{ config('app.env') }}"
         </script>
 
     </head>

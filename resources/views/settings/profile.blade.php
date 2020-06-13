@@ -1,4 +1,4 @@
-<profile :user="user" inline-template>
+<profile inline-template>
     <div>
         <!-- Update Profile Photo -->
         @include('settings.profile.update-profile-photo')

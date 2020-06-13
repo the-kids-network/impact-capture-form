@@ -1,4 +1,4 @@
-<update-contact-information :user="user" inline-template>
+<update-contact-information inline-template>
     <div class="card contact-info">
         <div class="card-header">Contact Information</div>
 

@@ -2,7 +2,7 @@
 
 namespace App\Domains\Calendar\Models;
 
-use App\Mentee;
+use App\Domains\UserManagement\Models\Mentee;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,7 +32,7 @@ class PlannedSession extends Model
      * @var array
      */
     public function mentee(){
-        return $this->belongsTo('App\Mentee');
+        return $this->belongsTo('App\Domains\UserManagement\Models\Mentee');
     }
 
     public function scopeCanSee($query) {

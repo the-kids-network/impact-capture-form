@@ -68,7 +68,7 @@ describe('User registration', () => {
 
     describe('For mentee (non-authenticated)', () => {
         beforeEach(() => {
-            cy.visit('/mentee')
+            cy.visit('/mentees')
         })
 
         it('Creates new mentee', () => {

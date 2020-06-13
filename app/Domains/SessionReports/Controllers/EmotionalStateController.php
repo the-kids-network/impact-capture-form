@@ -20,18 +20,8 @@ class EmotionalStateController extends Controller {
      */
     public function index()
     {
-        return view('emotional_state.index')
+        return view('session_reports.emotional_states.index')
             ->with('emotional_states', EmotionalState::withTrashed()->get());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return redirect('/emotional-state');
     }
 
     /**
@@ -40,7 +30,7 @@ class EmotionalStateController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'name' => 'required|string'
@@ -50,18 +40,7 @@ class EmotionalStateController extends Controller {
         $emotional_state->name = $request->name;
         $emotional_state->save();
 
-        return redirect('/emotional-state')->with('status','Emotional State Added');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return redirect('/emotional-state');
+        return redirect('/emotional-states')->with('status','Emotional State Added');
     }
 
     /**
@@ -70,11 +49,11 @@ class EmotionalStateController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
         $emotional_state = EmotionalState::find($id);
         $emotional_state->delete();
-        return redirect('/emotional-state')->with('status','Emotional State Deactivated');
+        return redirect('/emotional-states')->with('status','Emotional State Deactivated');
     }
 
     /**
@@ -89,7 +68,7 @@ class EmotionalStateController extends Controller {
             ->where('id', $id)
             ->restore();
 
-        return redirect('/emotional-state')->with('status','Emotional State Restored');
+        return redirect('/emotional-states')->with('status','Emotional State Restored');
     }
 
 }

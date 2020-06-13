@@ -2,96 +2,108 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Home Page
+Route::get('/app/{vue_capture?}', 'VueController@index')->where('vue_capture', '.*');
+
+// Welcome
 Route::get('/', 'WelcomeController@show');
-
-// Customer Support...
-Route::post('/support/email', 'SupportController@sendEmail');
-
-// Users...
-Route::get('/user/current', 'UserController@current');
-Route::delete('/user/{user_id}','UserController@delete');
-Route::post('/user/{user_id}/restore','UserController@restore');
-
-// Settings Dashboard...
-Route::get('/settings', 'Settings\DashboardController@show')->name('settings');
-
-// Profile Contact Information...
-Route::put('/settings/contact', 'Settings\Profile\ContactInformationController@update');
-
-// Profile Photo...
-Route::post('/settings/photo', 'Settings\Profile\PhotoController@store');
-Route::delete('/settings/photo', 'Settings\Profile\PhotoController@remove');
-
-// Security Settings...
-Route::put('/settings/password', 'Settings\Security\PasswordController@update');
-
-// Authentication...
-Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('/login', 'Auth\LoginController@login');
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
-
-// Password Reset...
-Route::get('/password/reset/{token?}', 'Auth\PasswordController@showResetForm')->name('password.reset');
-Route::post('/password/email', 'Auth\PasswordController@sendResetLinkEmail');
-Route::post('/password/reset', 'Auth\PasswordController@reset');
-
-// Registration Route
-Route::get('/register','Auth\RegisterController@showRegistrationForm');
-Route::post('/register','Auth\RegisterController@register');
-
-/*
- * Role Management Routes
- */
-Route::get('/roles/mentor','RoleController@mentor');
-Route::get('/roles/manager','RoleController@manager');
-Route::get('/roles/admin','RoleController@admin');
-Route::post('/roles/manager','RoleController@store_manager_role');
-Route::post('/roles/admin','RoleController@store_admin_role');
-Route::post('/roles/assign-mentor','RoleController@assignMentor');
-Route::post('/roles/assign-manager','RoleController@assignManager');
-Route::delete('/roles/mentor/{mentor_id}/mentee/{mentee_id}','RoleController@disassociate_mentee');
-Route::delete('/roles/manager','RoleController@delete_manager_role');
-Route::delete('/roles/admin','RoleController@delete_admin_role');
 
 // Home
 Route::get('/home', 'HomeController@show');
 
-// Finance
-Route::get('/finance/expense-claim/export','FinanceController@exportExpenseClaims');
-Route::get('/finance/process-expense-claims','FinanceController@processExpenseClaims');
+// Customer Support...
+Route::post('/support/email', 'SupportController@sendEmail');
+
+/**
+ * User management
+ */
+// Registration 
+Route::get('/register','\App\Domains\UserManagement\Controllers\RegisterController@showRegistrationForm');
+Route::post('/register','\App\Domains\UserManagement\Controllers\RegisterController@register');
+// Authentication
+Route::get('/login', '\App\Domains\UserManagement\Controllers\LoginController@showLoginForm')->name('login');
+Route::post('/login', '\App\Domains\UserManagement\Controllers\LoginController@login');
+Route::get('/logout', '\App\Domains\UserManagement\Controllers\LoginController@logout')->name('logout');
+// Password reset flow
+Route::get('/password/reset/{token?}', '\App\Domains\UserManagement\Controllers\PasswordResetController@showResetForm')->name('password.reset');
+Route::post('/password/reset/email', '\App\Domains\UserManagement\Controllers\PasswordResetController@sendResetLinkEmail');
+Route::post('/password/reset', '\App\Domains\UserManagement\Controllers\PasswordResetController@reset');
+
+// User profile
+Route::put('/users/{user_id}/password', '\App\Domains\UserManagement\Controllers\UserPasswordController@update');
+Route::put('/users/{user_id}/contact', '\App\Domains\UserManagement\Controllers\UserContactInformationController@update');
+Route::post('/users/{user_id}/photo', '\App\Domains\UserManagement\Controllers\UserPhotoController@store');
+Route::delete('/users/{user_id}/photo', '\App\Domains\UserManagement\Controllers\UserPhotoController@remove');
+Route::delete('/users/{user_id}','\App\Domains\UserManagement\Controllers\UserController@delete');
+Route::post('/users/{user_id}/restore','\App\Domains\UserManagement\Controllers\UserController@restore');
+
+// User roles
+Route::put('/users/{id}/roles/{role}','\App\Domains\UserManagement\Controllers\UserRoleController@setRole');
+Route::delete('/users/{id}/roles/{role}','\App\Domains\UserManagement\Controllers\UserRoleController@removeRole');
+
+// User relationships
+Route::put('/users/{manager_id}/mentors/{mentor_id}','\App\Domains\UserManagement\Controllers\UserRelationshipController@assignMentorToManager');
+Route::put('/users/{mentor_id}/mentees/{mentee_id}','\App\Domains\UserManagement\Controllers\UserRelationshipController@assignMenteeToMentor');
+Route::delete('/users/{mentor_id}/mentees/{mentee_id}','\App\Domains\UserManagement\Controllers\UserRelationshipController@unassignMenteeFromMentor');
 
 // Mentee
-Route::post('/mentee/restore/{id}','MenteeController@restore');
-Route::resource('/mentee','MenteeController');
+Route::post('/mentees/{id}/restore','\App\Domains\UserManagement\Controllers\MenteeController@restore');
+Route::resource('/mentees','\App\Domains\UserManagement\Controllers\MenteeController');
 
-// Session reports
-Route::post('/activity-type/restore/{id}','\App\Domains\SessionReports\Controllers\ActivityTypeController@restore');
-Route::post('/emotional-state/restore/{id}','\App\Domains\SessionReports\Controllers\EmotionalStateController@restore');
-Route::resource('/emotional-state','\App\Domains\SessionReports\Controllers\EmotionalStateController');
-Route::resource('/activity-type','\App\Domains\SessionReports\Controllers\ActivityTypeController');
+// User management landing pages
+Route::get('/user-management/mentors','\App\Domains\UserManagement\Controllers\UserManagementPageController@mentor');
+Route::get('/user-management/managers','\App\Domains\UserManagement\Controllers\UserManagementPageController@manager');
+Route::get('/user-management/admins','\App\Domains\UserManagement\Controllers\UserManagementPageController@admin');
 
+/**
+ * Settings dashboard
+ */
+Route::get('/settings', 'Settings\DashboardController@show')->name('settings');
+
+/**
+ * Session reports
+ */
+// Lookups
+Route::get('/activity-types', '\App\Domains\SessionReports\Controllers\ActivityTypeController@index');
+Route::post('/activity-types', '\App\Domains\SessionReports\Controllers\ActivityTypeController@create');
+Route::delete('/activity-types/{id}', '\App\Domains\SessionReports\Controllers\ActivityTypeController@delete');
+Route::post('/activity-types/{id}/restore/','\App\Domains\SessionReports\Controllers\ActivityTypeController@restore');
+
+Route::get('/emotional-states', '\App\Domains\SessionReports\Controllers\EmotionalStateController@index');
+Route::post('/emotional-states', '\App\Domains\SessionReports\Controllers\EmotionalStateController@create');
+Route::delete('/emotional-states/{id}', '\App\Domains\SessionReports\Controllers\EmotionalStateController@delete');
+Route::post('/emotional-states/{id}/restore/','\App\Domains\SessionReports\Controllers\EmotionalStateController@restore');
+// Session reports - v1
 Route::get('/report/new','\App\Domains\SessionReports\Controllers\SessionReportController@newReportForm');
 Route::get('/report/{id}/edit','\App\Domains\SessionReports\Controllers\SessionReportController@editReportForm');
 Route::get('/report/export','\App\Domains\SessionReports\Controllers\SessionReportController@export')->name('report.export');
-Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@getMany')->name('reports.get');
-Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@getOne');
+Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@get')->name('reports.get');
+Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@getById');
 Route::post('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@create');
-Route::put('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@update');
 Route::delete('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@delete');
+// session reports v2
+// redirect to vue routed app
+Route::redirect('/session-reports', '/app#/session-reports');
 
-// Expense claims
-Route::get('/expense-claim/export','ExpenseClaimController@export')->name('expense-claim.export');
-Route::get('/receipt/download-all','ReceiptController@downloadAll')->name('receipt.download-all');
-Route::get('/expense-claim/new','ExpenseClaimController@newExpenseClaim');
-Route::resource('/expense-claim','ExpenseClaimController');
-Route::resource('/receipt','ReceiptController');
+/**
+ * Expense Claims
+ */
+Route::get('/expense-claim/export','\App\Domains\Expenses\Controllers\ExpenseClaimController@export')->name('expense-claim.export');
+Route::get('/receipt/download-all','\App\Domains\Expenses\Controllers\ReceiptController@downloadAll')->name('receipt.download-all');
+Route::get('/expense-claim/new','\App\Domains\Expenses\Controllers\ExpenseClaimController@newExpenseClaim');
+Route::resource('/expense-claim','\App\Domains\Expenses\Controllers\ExpenseClaimController');
+Route::resource('/receipt','\App\Domains\Expenses\Controllers\ReceiptController');
+Route::get('/finance/expense-claim/export','\App\Domains\Expenses\Controllers\FinanceController@exportExpenseClaims');
+Route::get('/finance/process-expense-claims','\App\Domains\Expenses\Controllers\FinanceController@processExpenseClaims');
 
-// BI Reporting Routes
+/**
+ * BI Reporting Routes
+ */
 Route::get('/reporting/mentor','MentorReportingController@generateIndexReport')->name('mentor-reporting-index');
 Route::get('/reporting/mentor/export','MentorReportingController@generateExportableReport')->name('mentor-reporting-export');
 
-// Calendar and events
+/**
+ * Calendar and events  
+ */ 
 Route::get('/mentee/leave/new','\App\Domains\Calendar\Controllers\MenteeLeaveController@newLeave');
 Route::get('/mentee/leave/{id}','\App\Domains\Calendar\Controllers\MenteeLeaveController@getOne');
 Route::post('/mentee/leave','\App\Domains\Calendar\Controllers\MenteeLeaveController@create');
@@ -113,7 +125,9 @@ Route::delete('/planned-session/{id}','\App\Domains\Calendar\Controllers\Planned
 
 Route::resource('/calendar','\App\Domains\Calendar\Controllers\CalendarController');
 
-// Documents
+/**
+ * Documents 
+ */
 Route::get('/documents/upload/index','\App\Domains\Documents\Controllers\DocumentController@uploadIndex');
 Route::get('/documents/index','\App\Domains\Documents\Controllers\DocumentController@index');
 
@@ -125,7 +139,9 @@ Route::get('/documents/{id}/download','\App\Domains\Documents\Controllers\Docume
 Route::get('/documents/{id}','\App\Domains\Documents\Controllers\DocumentController@getOne');
 Route::get('/documents','\App\Domains\Documents\Controllers\DocumentController@getAll');
 
-// Resource Tagging
+/**
+ * Resource Tagging
+ */
 Route::get('/tags','\App\Domains\Tagging\Controllers\TagController@getTags');
 Route::post('/tags','\App\Domains\Tagging\Controllers\TagController@createTags');
 Route::delete('/tags/{id}','\App\Domains\Tagging\Controllers\TagController@deleteTag');
@@ -134,17 +150,10 @@ Route::get('/tag-labels/associated', '\App\Domains\Tagging\Controllers\TagLabelC
 
 Route::get('/tagged-items', '\App\Domains\Tagging\Controllers\TaggedItemController@getTaggedItems');
 
-// Funding
-Route::get('/fundings/export','\App\Domains\Funding\Controllers\FundingController@export')->name('funding.export');
+/**
+ * Funding
+ */ 
+Route::get('/fundings/export','\App\Domains\Funding\Controllers\FundingController@export')->name('fundings.export');
 Route::post('/funders/{id}/restore','\App\Domains\Funding\Controllers\FunderController@restore');
 Route::resource('/fundings','\App\Domains\Funding\Controllers\FundingController');
 Route::resource('/funders','\App\Domains\Funding\Controllers\FunderController');
-
-// Old routes to deprecate eventually once people's symlinks are updated
-Route::redirect('/my-reports', '/report/new');
-Route::redirect('/own-reports', '/report');
-Route::redirect('/my-expense-claims', '/expense-claim/new');
-Route::redirect('/manager/expense-claim/export', '/expense-claim/export');
-Route::redirect('/manager/view-expense-claims', '/expense-claim');
-Route::redirect('/schedule', '/calendar');
-

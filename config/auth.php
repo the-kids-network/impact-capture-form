@@ -42,9 +42,10 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            // Not ideal to use sessions for REST apis, but for now it's safest approach that works
+            // Ties login session to usage of the APIs - this is NOT stateless
+            'driver' => 'session',
             'provider' => 'users',
-            'hash' => false,
         ],
     ],
 
@@ -68,7 +69,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Domains\UserManagement\Models\User::class,
         ]
     ],
 

@@ -8,22 +8,37 @@
     }
 }
 
-.session-report.edit {
-    .session-report-editor {
-        .entry {
-            display: flex;
+.session-report-edit {
+    .entry {
+        display: flex;
 
-            .revert {
-                margin-left: 10px;
+        .revert {
+            margin-left: 10px;
 
-                span {
-                    vertical-align: middle;
-                }
+            span {
+                vertical-align: middle;
             }
         }
-        .edited {
-            background-color: lighten(@brand-tertiary, 10%);
-            color: @white;
+    }
+    .edited {
+        background-color: lighten(@brand-tertiary, 10%);
+        color: @white;
+    }
+}
+
+.session-report-search {
+    .form {
+        .date-quick-fill {
+            .btn {
+                margin-bottom: 0.25rem !important;
+                font-size: 0.75rem;
+            }
         }
+    }
+}
+
+.session-manage-view-toggler {
+    .mode-selector {
+        margin-bottom: 0.75rem;
     }
 }

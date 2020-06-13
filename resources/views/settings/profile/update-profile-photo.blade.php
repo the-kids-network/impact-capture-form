@@ -1,4 +1,4 @@
-<update-profile-photo :user="user" inline-template>
+<update-profile-photo inline-template>
     <div class="card profile" v-if="user">
         <div class="card-header">Profile Photo</div>
 

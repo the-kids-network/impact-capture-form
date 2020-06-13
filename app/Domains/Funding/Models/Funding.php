@@ -2,7 +2,7 @@
 
 namespace App\Domains\Funding\Models;
 
-use App\User;
+use App\Domains\UserManagement\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ class Funding extends Model
     ];
 
     public function mentor() {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\Domains\UserManagement\Models\User', 'user_id');
     }
 
     public function funder() {

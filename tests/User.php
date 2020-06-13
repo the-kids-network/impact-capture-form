@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\User as AppUser;
+use App\Domains\UserManagement\Models\User as AppUser;
 
 class User extends AppUser
 {

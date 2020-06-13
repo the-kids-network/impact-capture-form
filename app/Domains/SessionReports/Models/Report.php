@@ -20,12 +20,18 @@ class Report extends Model
         'session_date'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function mentee(){
-        return $this->belongsTo('App\Mentee')->withTrashed();
+        return $this->belongsTo('App\Domains\UserManagement\Models\Mentee')->withTrashed();
     }
 
     public function mentor(){
-        return $this->belongsTo('App\User')->withTrashed();
+        return $this->belongsTo('App\Domains\UserManagement\Models\User')->withTrashed();
     }
 
     public function activity_type(){
@@ -47,6 +53,14 @@ class Report extends Model
             return "Mild";
         else
             return "None";
+    }
+
+    public function safeguardingConcernTextAttribute() {
+        if ($this->safeguarding_concern == 0) {
+            return "No";
+        } else {
+            return "Yes - ".$this->safeguardingConcernTypeAttribute();
+        }
     }
 
     public function scopeCanSee($query) {

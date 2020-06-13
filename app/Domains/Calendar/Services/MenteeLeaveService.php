@@ -5,7 +5,7 @@ namespace App\Domains\Calendar\Services;
 use App\Domains\Calendar\Models\MenteeLeave;
 use App\Exceptions\NotAuthorisedException;
 use App\Exceptions\NotFoundException;
-use App\Mentee;
+use App\Domains\UserManagement\Models\Mentee;
 use Carbon\Carbon;
 
 class MenteeLeaveService {

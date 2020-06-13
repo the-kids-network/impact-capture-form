@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-<settings :user="user" inline-template>
+<settings inline-template>
     <div class="container settings">
         <div class="row">
             <!-- Tabs -->

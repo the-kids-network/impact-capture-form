@@ -1,8 +1,8 @@
 <?php
 
 use App\Domains\SessionReports\Models\Report;
-use App\Mentee;
-use App\User;
+use App\Domains\UserManagement\Models\Mentee;
+use App\Domains\UserManagement\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +37,7 @@ class ReportTableSeeder extends Seeder
         $report->safeguarding_concern = false;
         $report->emotional_state_id = 1;
         $report->meeting_details = "Meeting between ".$mentorName." and ". $menteeName;
-        $report->rating_id = 1;
+        $report->rating_id = 4;
         $report->save();
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Domains\EventHandling\Listeners;
 
 use App\Domains\SessionReports\Events\SessionReportDeleted;
-use App\ExpenseClaim;
+use App\Domains\Expenses\Models\ExpenseClaim;
 
 class SessionReportDeletedListener {
 
