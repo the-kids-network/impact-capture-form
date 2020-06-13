@@ -27,7 +27,7 @@ const Component = {
             </status-box>   
 
             <form class="form">
-                <div class="form-row border-bottom" v-if="isInternalUser">
+                <div class="form-row" v-if="isInternalUser">
                     <div class="form-group col-md-4">
                         <label class="col-form-label" for="mentorSelect">Mentor</label>
                         <select id="mentorSelect" 
@@ -59,11 +59,10 @@ const Component = {
                     </div>
                 </div> 
                 <div class="form-row">
-                    <span class="col-md-12">Session date range (dates inclusive)</span>
                     <div class="col-md-7">
                         <div class="form-row">
                             <div class="col-md-6 form-group">
-                                <label class="col-form-label" for="sessionDateRangeStartInput">Start <a @click.prevent="handleClearData('sessionDateRangeStart')" class="fas fa-times"/></label>
+                                <label class="col-form-label" for="sessionDateRangeStartInput">Session Date Start <a @click.prevent="handleClearData('sessionDateRangeStart')" class="fas fa-times"/></label>
                                 <input id="sessionDateRangeStartInput"
                                     type="text" 
                                     class="form-control form-control-sm datepicker session-date-range-start"
@@ -71,7 +70,7 @@ const Component = {
                                     autocomplete="off" />
                             </div>
                             <div class="col-md-6 form-group">
-                                <label class="col-form-label" for="sessionDateRangeEndInput">End <a @click.prevent="handleClearData('sessionDateRangeEnd')" class="fas fa-times"/></label>
+                                <label class="col-form-label" for="sessionDateRangeEndInput">Session Date End <a @click.prevent="handleClearData('sessionDateRangeEnd')" class="fas fa-times"/></label>
                                 <input id="sessionDateRangeEndInput"
                                     type="text" 
                                     class="form-control form-control-sm datepicker session-date-range-end"
