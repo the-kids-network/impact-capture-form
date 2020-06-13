@@ -47,7 +47,7 @@ const Component = {
                     Session Search
                     <span class="float-right"><a>Toggle Search</a></span>
                 </div>
-                <div id="collapsed-search" class="card-body collapse">
+                <div id="collapsed-search" class="card-body collapse show">
                     <session-report-search 
                         :searchCriteria="searchParams"
                         @searchCriteria="searchParams = $event"
