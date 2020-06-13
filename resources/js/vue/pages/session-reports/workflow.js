@@ -34,7 +34,7 @@ const Component = {
                                 @click='goToSessionReport(lastSessionReport)'><span class="fas fa-fast-forward" /></span>
                     </div>
                     <div class="col mt-auto mb-auto text-right close-workflow">
-                        <a type="button" @click="closeWorkflow">Close</a>
+                        <a type="button" @click.prevent="closeWorkflow">Close</a>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@ const Component = {
                 </div>
                 <div v-else class="card">
                     <div class="card-body">
-                        <span>No session reports selected for workflow. <a type="button" @click="goToSearch">Try searching again</a>.</span>
+                        <span>No session reports selected for workflow. <a type="button" @click.prevent="goToSearch">Try searching again</a>.</span>
                     </div>
                 </div>
             </div>

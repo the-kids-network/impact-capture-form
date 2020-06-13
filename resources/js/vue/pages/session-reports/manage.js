@@ -15,7 +15,7 @@ const Component = {
             <div class="row">
                 <div class="col-md-12">
                     <nav class="nav page-nav">
-                        <a class="nav-link" type="button" @click="goBack">Go back</a>
+                        <a class="nav-link" type="button" @click.prevent="goBack">Go back</a>
                     </nav>
                 </div>
             </div>

@@ -96,6 +96,7 @@ const Component = {
         switchMode(mode) {
             this.mode = mode
         },
+        
         async initialiseAssociatedExpenseClaims() {
             this.associatedExpenseClaims = List()
             try {
