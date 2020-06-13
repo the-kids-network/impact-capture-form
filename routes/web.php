@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->get('/app/{vue_capture?}', function () {
-    return view('vue.index');
-})->where('vue_capture', '.*');
+Route::get('/app/{vue_capture?}', 'VueController@index')->where('vue_capture', '.*');
 
 // Welcome
 Route::get('/', 'WelcomeController@show');
