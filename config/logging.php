@@ -41,13 +41,13 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/'.env('APP_ENV').'/laravel.log'),
+            'path' => env('APP_ENV') != 'production' ? storage_path('logs/'.env('APP_ENV').'/laravel.log') : storage_path('logs/laravel.log'),
             'level' => 'debug',
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/'.env('APP_ENV').'/laravel.log'),
+            'path' => env('APP_ENV') != 'production' ? storage_path('logs/'.env('APP_ENV').'/laravel.log') : storage_path('logs/laravel.log'),
             'level' => 'debug',
             'days' => 7,
         ],
