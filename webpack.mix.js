@@ -26,7 +26,8 @@ mix
                 'node_modules'
             ],
             alias: {
-                'vue$': 'vue/dist/vue.js'
+                'vue$': mix.inProduction() ? 'vue/dist/vue.min.js' : 'vue/dist/vue.js',
+
             }
         }
    });
