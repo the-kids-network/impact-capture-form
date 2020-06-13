@@ -4,9 +4,9 @@ namespace App\Domains\Expenses\Controllers;
 
 use App\Domains\Expenses\Models\Expense;
 use App\Domains\Expenses\Models\ExpenseClaim;
-use App\Mail\ClaimProcessedToMentor;
-use App\Mail\ClaimRejectedToMentor;
-use App\Mail\ClaimSubmittedToMentor;
+use App\Domains\Expenses\Mail\ClaimProcessedToMentor;
+use App\Domains\Expenses\Mail\ClaimRejectedToMentor;
+use App\Domains\Expenses\Mail\ClaimSubmittedToMentor;
 use App\Domains\Expenses\Models\Receipt;
 use App\Domains\SessionReports\Services\SessionReportService;
 use App\Http\Controllers\Controller;

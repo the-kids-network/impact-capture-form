@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Domains\Expenses\Mail;
 
 use App\Domains\Expenses\Models\ExpenseClaim;
 use Illuminate\Bus\Queueable;
@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ClaimRejectedToMentor extends Mailable implements ShouldQueue
+class ClaimSubmittedToMentor extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -32,8 +32,8 @@ class ClaimRejectedToMentor extends Mailable implements ShouldQueue
     public function build()
     {
         $mail = $this
-        ->subject('Expense Claim Rejected')
-        ->markdown('emails.claim.rejected_to_mentor');
+            ->subject('Expense Claim Received')
+            ->markdown('emails.claim.submitted_to_mentor');
 
         if (isset($this->claim->mentor->manager)){
             $mail->replyTo($this->claim->mentor->manager);
