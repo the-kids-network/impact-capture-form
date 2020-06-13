@@ -33,21 +33,11 @@ const Component = {
                             :id="'item-' + claim.id"
                             class="item">   
 
-                            <td class="claim-id">
-                                {{claim.id}}
-                            </td>
-                            <td class="created-on">
-                                {{displayableDate(claim.created_at)}}
-                            </td>
-                            <td class="status">
-                                {{claim.status}}
-                            </td>
-                            <td class="total-amount">
-                                {{claim.amount_total}}
-                            </td>
-                            <td class="link">
-                                <a :href="'/expense-claim/' + claim.id">Link</a>
-                            </td>
+                            <td class="claim-id">{{claim.id}}</td>
+                            <td class="created-on">{{displayableDate(claim.created_at)}}</td>
+                            <td class="status">{{claim.status}}</td>
+                            <td class="total-amount">{{claim.amount_total}}</td>
+                            <td class="link"><a :href="'/expense-claim/' + claim.id">Link</a></td>
                         </tr>
                     </tbody>
                 </table>

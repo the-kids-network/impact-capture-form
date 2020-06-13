@@ -22,7 +22,7 @@ const Component = {
                 :errors="errors">
             </status-box>   
 
-            <div class="container" v-if="sessionReport">
+            <div class="session-report-edit-form container" v-if="sessionReport">
                 <form class="form-horizontal" role="form">
                     <!-- Mentee's Name -->
                     <div class="form-group row">
@@ -160,7 +160,7 @@ const Component = {
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row edit-actions">
                         <div class="col-md offset-md-4">
                             <span @click="handleSaveSessionReport" class="save btn btn-success " :disabled="isBusy">
                             <span class="fas fa-save" /> Save</span>

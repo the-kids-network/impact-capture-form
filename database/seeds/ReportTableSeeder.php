@@ -37,7 +37,7 @@ class ReportTableSeeder extends Seeder
         $report->safeguarding_concern = false;
         $report->emotional_state_id = 1;
         $report->meeting_details = "Meeting between ".$mentorName." and ". $menteeName;
-        $report->rating_id = 1;
+        $report->rating_id = 4;
         $report->save();
     }
 }

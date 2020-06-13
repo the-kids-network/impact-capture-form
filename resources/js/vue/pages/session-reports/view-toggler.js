@@ -21,18 +21,18 @@ const Component = {
     },
 
     template: `
-        <div>
+        <div class="session-manage-view-toggler">
             <div class="card">
                 <div class="card-header">
                     Session Report: {{ sessionReportId }}
                 </div>
                 <div class="card-body">
-                    <div class="row edit-view-toggle" v-if="isInternalUser">
-                        <div class="col-md mt-auto mb-auto text-left mode-selector">
-                            <span :class="{'btn btn-primary btn-sm': true, 'disabled': false}" 
+                    <div class="row mode-selector" v-if="isInternalUser">
+                        <div class="col-md mt-auto mb-auto text-left">
+                            <span :class="{'edit-report btn btn-primary btn-sm': true, 'disabled': false}" 
                                     type="button" 
                                     @click="switchMode('edit')">Edit</span>
-                            <span :class="{'btn btn-primary btn-sm': true, 'disabled': false}" 
+                            <span :class="{'view-report btn btn-primary btn-sm': true, 'disabled': false}" 
                                     type="button" 
                                     @click="switchMode('view')">View</span>
                         </div>

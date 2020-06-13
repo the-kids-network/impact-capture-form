@@ -23,7 +23,7 @@ const Component = {
             </status-box>  
 
             <div class="table-responsive" v-if="sessionReport">
-                <table class="table">
+                <table class="table session-report">
                     <tr>
                         <th>Field</th>
                         <th>Value</th>

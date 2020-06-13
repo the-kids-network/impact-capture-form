@@ -34,21 +34,11 @@ const Component = {
                             class="item"
                             @click="handleClickSessionReport(sessionReport.id)">   
 
-                            <td class="session-id">
-                                {{sessionReport.id}}
-                            </td>
-                            <td class="mentor-name">
-                                {{sessionReport.mentor.name}}
-                            </td>
-                            <td class="mentee-name">
-                                {{sessionReport.mentee.name}}
-                            </td>
-                            <td class="session-length">
-                                {{sessionReport.length_of_session}}
-                            </td>
-                            <td class="session-date">
-                                {{displayableDate(sessionReport.session_date)}}
-                            </td>
+                            <td class="session-id">{{sessionReport.id}}</td>
+                            <td class="mentor-name">{{sessionReport.mentor.name}}</td>
+                            <td class="mentee-name">{{sessionReport.mentee.name}}</td>
+                            <td class="session-length">{{sessionReport.length_of_session}}</td>
+                            <td class="session-date">{{displayableDate(sessionReport.session_date)}}</td>
                         </tr>
                     </tbody>
                 </table>

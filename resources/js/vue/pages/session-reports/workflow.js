@@ -13,28 +13,28 @@ const Component = {
 
     template: `
         <div>
-            <div class="container">
+            <div class="container session-report-workflow">
                 <div class="row page-nav">
-                    <div class="col-8 mt-auto mb-auto text-left back-forward">
-                        <span :class="{'btn btn-primary btn-sm': true, 'disabled': !firstSessionReport}" 
+                    <div class="navigation-buttons col-8 mt-auto mb-auto text-left ">
+                        <span :class="{'first-report btn btn-primary btn-sm': true, 'disabled': !firstSessionReport}" 
                                 type="button" 
                                 aria-label="Beginning"
                                 @click='goToSessionReport(firstSessionReport)'><span class="fas fa-fast-backward" /></span>
-                        <span :class="{'btn btn-primary btn-sm': true, 'disabled': !previousSessionReport}" 
+                        <span :class="{'previous-report btn btn-primary btn-sm': true, 'disabled': !previousSessionReport}" 
                                 type="button" 
                                 aria-label="Previous"
                                 @click='goToSessionReport(previousSessionReport)'><span class="fas fa-backward" /></span>
-                        <span :class="{'btn btn-primary btn-sm': true, 'disabled': !nextSessionReport}" 
+                        <span :class="{'next-report btn btn-primary btn-sm': true, 'disabled': !nextSessionReport}" 
                                 type="button" 
                                 aria-label="Next"
                                 @click='goToSessionReport(nextSessionReport)'><span class="fas fa-forward" /></span>
-                        <span :class="{'btn btn-primary btn-sm': true, 'disabled': !lastSessionReport}" 
+                        <span :class="{'last-report btn btn-primary btn-sm': true, 'disabled': !lastSessionReport}" 
                                 type="button" 
                                 aria-label="End"
                                 @click='goToSessionReport(lastSessionReport)'><span class="fas fa-fast-forward" /></span>
                     </div>
                     <div class="col mt-auto mb-auto text-right close-workflow">
-                        <a type="button" @click.prevent="closeWorkflow">Close</a>
+                        <a type="button" class="btn btn-link" @click.prevent="closeWorkflow">Close</a>
                     </div>
                 </div>
             </div>

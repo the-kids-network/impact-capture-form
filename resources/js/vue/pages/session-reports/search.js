@@ -21,10 +21,11 @@ const Component = {
             <div class="card">
                 <div class="card-header" data-toggle="collapse" href="#collapsed-find-by-id" role="button" aria-expanded="false" aria-controls="collapsed-find-by-id">
                     Find By ID
-                    <span class="float-right"><a>Toggle Find By ID</a></span>
+                    <span class="float-right find-by-id-toggle"><a>Toggle Find By ID</a></span>
                 </div>
                 <div id="collapsed-find-by-id" class="card-body collapse">
                     <form 
+                        class="find-by-id-form"
                         v-on:keyup.enter.prevent="handleOpenSessionReport(sessionReportId)" 
                         @submit.prevent="handleOpenSessionReport(sessionReportId)">
                         <div class="form-row">
