@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import statusMixin from '../status-box/mixin'
-import { extractErrors } from '../utils/api'
-import { downloadFileData } from '../utils/download'
+import { extractErrors } from '../../utils/api'
+import { downloadFileData } from '../../utils/download'
 import contentDisposition from 'content-disposition'
 
 const Component = {

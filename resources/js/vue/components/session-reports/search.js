@@ -1,9 +1,9 @@
 import _ from 'lodash'
 import { List } from 'immutable';
-import { extractErrors } from '../utils/api'
+import { extractErrors } from '../../utils/api'
 import statusMixin from '../status-box/mixin'
 import { SEARCH_DATE_FORMAT } from './consts'
-import { dateRange } from '../utils/date';
+import { dateRange } from '../../utils/date';
 
 const Component = {
 

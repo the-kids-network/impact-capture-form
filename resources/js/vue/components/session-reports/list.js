@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import { parseDate, formatDate } from '../utils/date'
-import { range } from '../utils/number'
-import { numberOfPages, itemsForPage } from '../utils/pagination'
+import { parseDate, formatDate } from '../../utils/date'
+import { range } from '../../utils/number'
+import { numberOfPages, itemsForPage } from '../../utils/pagination'
 
 const Component = {
 

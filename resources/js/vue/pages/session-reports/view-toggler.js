@@ -6,7 +6,7 @@ import statusMixin from '../../components/status-box/mixin'
 
 import _ from 'lodash'
 import { List } from 'immutable';
-import { extractErrors } from '../../components/utils/api'
+import { extractErrors } from '../../utils/api'
 
 const Component = {
 

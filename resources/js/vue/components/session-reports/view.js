@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Popper from 'vue-popperjs';
-import { parseDate, formatDate } from '../utils/date'
-import { extractErrors } from '../utils/api'
+import { parseDate, formatDate } from '../../utils/date'
+import { extractErrors } from '../../utils/api'
 import statusMixin from '../status-box/mixin'
 
 const Component = {

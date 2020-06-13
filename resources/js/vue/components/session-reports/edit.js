@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { extractErrors } from '../utils/api'
-import { parseDate, formatDate } from '../utils/date'
+import { extractErrors } from '../../utils/api'
+import { parseDate, formatDate } from '../../utils/date'
 import statusMixin from '../status-box/mixin'
 import { SESSION_DATE_FORMAT } from './consts';
 
