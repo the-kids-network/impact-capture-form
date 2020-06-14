@@ -16,13 +16,11 @@
             <div class="card">
                 <div class="card-header">Documents</div>
                 <div class="card-body">
-                    <documents
-                        usertype="{{ (isset(Auth::user()->role)) ? Auth::user()->role : 'mentor'}}">
+                    <document-browse-index>
                         <template v-slot:csrf>
                             {{ csrf_field() }}
                         </template>
-                    </documents>
-
+                    </document-browse-index>
                 </div>
             </div>
         </div>

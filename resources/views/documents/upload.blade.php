@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-header">Document Upload</div>
                 <div class="card-body">
-                    <document-upload> </document-upload>                    
+                    <document-upload-index></document-upload-index>                    
                 </div>
             </div>
         </div>

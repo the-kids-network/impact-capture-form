@@ -1,65 +1,82 @@
 import _ from 'lodash'
-import {Set, Map} from 'immutable';
-import VueTagsInput from '@johmun/vue-tags-input';
+import statusMixin from '../status-box/mixin'
+import VueTagsInput from '@johmun/vue-tags-input'
+import { extractErrors } from '../../utils/api'
+import { createNamespacedHelpers } from 'vuex'
+import { Set } from 'immutable'
+const { mapState, mapActions, mapMutations, mapGetters } = createNamespacedHelpers('documents/search')
 
 const Component = {
 
     props: [],
+
+    mixins: [statusMixin],
 
     components: {
         VueTagsInput,
     },
 
     template: `
-        <div class="search">
-            <vue-tags-input class='tags-input'
-                v-model="inputText"
-                placeholder="Add Search Tag"
-                :tags="_tagsSelected"
-                :max-tags="maximumTagsAllowed"
-                :autocomplete-items="_tagSuggestions"
-                :autocomplete-min-length="autoCompleteMinLength"
-                :add-only-from-autocomplete="autoCompleteStrict"
-                @tags-changed="newTags => updateSelectedTags(newTags)"
-                />
-            <div class="buttons">
-                <span class="clear btn btn-light" 
-                    @click="clearSearch"><span class="fas fa-times"></span> Reset</span>
+        <div class="documents-search">
+            <status-box 
+                ref="status-box"
+                class="status" 
+                :successes="successes"
+                :errors="errors" />
+
+            <div class="search-bar">
+                <vue-tags-input class='documents tags-input'
+                    v-model="inputText"
+                    placeholder="Add Search Tag"
+                    :tags="selectedSearchTagsForVueTagInput"
+                    :max-tags="maximumTagsAllowed"
+                    :autocomplete-items="suggestedSearchTagsForVueTagInput"
+                    :autocomplete-min-length="autoCompleteMinLength"
+                    :add-only-from-autocomplete="autoCompleteStrict"
+                    @tags-changed="newTags => handleSelectSearchTags(newTags)"/>
+
+                <div class="buttons">
+                    <span class="clear btn btn-light" 
+                        @click="handleClearSearchTags"><span class="fas fa-times"></span> Reset</span>
+                </div>
             </div>
         </div>
     `,
 
     data() {
         return {
+            // vue-tags-input config
             autoCompleteMinLength:0,
             autoCompleteStrict: true,
             maximumTagsAllowed: 5,
 
-            // tag input key state
-            inputText: '',
-            tagsSelected: Set(),
-            tagSuggestions: Set(),
+            // tag input state
+            inputText: '',    
         };
     },
 
     computed: {
-        _tagsSelected() {
-            return this.tagsSelected
-                .map(i => ({ text: i }))
-                .toArray();
+        selectedSearchTagsForVueTagInput() {
+            return this.selectedSearchTags.map(i => ({ text: i })).toArray();
         },
 
-        _tagSuggestions() {
-            return this.tagSuggestions
-                // filter to entered characters
-                .filter(i => (i.toLowerCase().indexOf(this.inputText.toLowerCase()) !== -1))
-                .map(i => ({ text: i }))
-                .toArray();
-        }
+        suggestedSearchTagsForVueTagInput() {
+            return this.suggestedSearchTags(this.inputText).map(i => ({ text: i }))
+        },
+
+        ...mapState(['selectedSearchTags']),
+        ...mapGetters(['suggestedSearchTags'])
+    },
+
+    watch: {
+        selectedSearchTags() {
+           this.clearStatus()
+       },
     },
 
     async created() {
-        this.setTagSuggestions()
+        await this.handleInitialiseDocuments()
+        this.handleInitialiseSuggestedSearchTags()
     },
 
     async mounted() {
@@ -67,86 +84,42 @@ const Component = {
     },
 
     methods: {
-        async setTagSuggestions() {
-            if (!this.tagsSelected.size) {
-                // if no tags selected, show all possible tag labels that can be selected
-                this.tagSuggestions = await this.getAllTags()
-            } else {
-                // if tags selected, show associated tags to those selected
-                const associations = await this.getAssociatedTagsFor(this.tagsSelected.toArray())
-                this.tagSuggestions = Set.intersect(associations.toSetSeq())
-            }
-        },
-
-        updateSelectedTags(newTags) {
-            this.tagsSelected = Set(newTags.map(t => t.text))
-            this.setTagSuggestions();
-            this.submitSearch();
-        },
-
-        async submitSearch() {
-            // if no tags, clear search filter
-            if(!this.tagsSelected.size) {
-                this.clearSearch()
-                return
-            }
-
-            // reset any errors for new search
-            this.$emit('error', [])
-
+        async handleInitialiseSuggestedSearchTags() {
             try {
-                const matchingDocumentIds = await this.getDocumentsMatchingTags(this.tagsSelected.toArray());
-
-                // send to parent component to handle filtering based on results
-                this.$emit('results', matchingDocumentIds)
+                await this.fetchSuggestedSearchTags()
             } catch(e) {
-                this.$emit('error', "Search failed.")
+                const messages = extractErrors({e, defaultMsg: "Problem initialising search tag suggestions"})
+                this.addErrors({errs: messages})
             }
         },
 
-        async clearSearch() {
-            this.tagsSelected = Set()
-            this.setTagSuggestions();
-            // send event to parent to clear filtering
-            this.$emit('error', [])
-            this.$emit('clear')
+        async handleInitialiseDocuments() {
+            try {
+                await this.fetchDocuments()
+            } catch(e) {
+                const messages = extractErrors({e, defaultMsg: "Problem initialising documents"})
+                this.addErrors({errs: messages})
+            }
         },
 
-        /*
-        * Functions that do not interact with component state directly
-        */
-        async getAllTags() {
-            const tags = (await axios.get(
-                `/tags`,
-                { params: { resource_type: "document" } }
-            )).data
-            return Set(tags.map(t => t.label))
+        async handleSelectSearchTags(tags) {
+            try {
+                const tagsSet = Set(tags.map(t => t.text))
+                await this.selectSearchTags(tagsSet)
+            } catch(e) {
+                console.log(e)
+                const messages = extractErrors({e, defaultMsg: "Problem performing search"})
+                this.addErrors({errs: messages})
+            }
         },
 
-        async getAssociatedTagsFor(tags) {
-            const data = (await axios.get(
-                `/tag-labels/associated`,
-                { params: { tag_labels: tags } }
-            )).data
-            return Map(data);
+        async handleClearSearchTags() {
+            this.selectSearchTags(null)
         },
 
-        async getDocumentsMatchingTags(tags) {
-            const data = (await axios.get(
-                `/tagged-items`,
-                { 
-                    params: { 
-                        resource_type: "document",
-                        tag_labels: tags 
-                    } 
-                }
-            )).data
-
-            return data.map(ti => ti.resource_id)
-        }
+        ...mapActions(['fetchDocuments', 'fetchSuggestedSearchTags', 'selectSearchTags'])
     },
 };
-
 
 export default Component;
 

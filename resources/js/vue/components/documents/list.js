@@ -1,30 +1,36 @@
 import _ from 'lodash'
 import Popper from 'vue-popperjs';
 import 'vue-popperjs/dist/vue-popper.css';
-
+import statusMixin from '../status-box/mixin'
+import { extractErrors } from '../../utils/api'
 import fileIconFor from "./fileicons";
-import Tagger from "./tagger";
-import DocumentSearch from './search'
+
+import Paginator from "./paginator"
+import Tagger from "./tagger"
+
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions, mapGetters } = createNamespacedHelpers('documents/search')
 
 const Component = {
 
     props: {
-        usertype: {     
-        }
     },
 
+    mixins: [statusMixin],
+
     components: {
-        'document-search': DocumentSearch,
+        'paginator': Paginator,
         'popper': Popper
     },
 
     template: `
         <div class="documents-list">
-            <document-search 
-                class="list-search"
-                @results="setDocumentFilter($event)"
-                @clear="removeDocumentFilter"
-                @error="$emit('error', $event)" />
+            <status-box
+                class="documents-status"
+                ref="status-box"
+                :errors="errors"
+                :successes="successes">
+            </status-box>   
 
             <table class="items table">
                 <thead>
@@ -34,10 +40,9 @@ const Component = {
                         <th>Actions</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     <tr 
-                        v-for="(document) in _documentsForCurrentPage"
+                        v-for="(document) in itemsForCurrentPage"
                         :id="'item-' + document.id"
                         class="item" >   
 
@@ -82,7 +87,7 @@ const Component = {
                                     </a>
                                 </popper>
                                 <popper
-                                    v-if="isAdminUser && document.trashed"
+                                    v-if="isInternalUser && document.trashed"
                                     :trigger="popover.trigger"
                                     :options="popover.options"
                                     :delay-on-mouse-over="popover.delayOnMouseOver">
@@ -95,7 +100,7 @@ const Component = {
                                     </a>
                                 </popper>
                                 <popper
-                                    v-if="isAdminUser && document.trashed" 
+                                    v-if="isInternalUser && document.trashed" 
                                     :trigger="popover.trigger"
                                     :options="popover.options"
                                     :delay-on-mouse-over="popover.delayOnMouseOver">
@@ -108,7 +113,7 @@ const Component = {
                                     </a>
                                 </popper>
                                 <popper
-                                    v-if="isAdminUser && !document.trashed"
+                                    v-if="isInternalUser && !document.trashed"
                                     :trigger="popover.trigger"
                                     :options="popover.options"
                                     :delay-on-mouse-over="popover.delayOnMouseOver">
@@ -121,7 +126,7 @@ const Component = {
                                     </a>
                                 </popper>
                                 <popper
-                                    v-if="isAdminUser && !document.is_shared"
+                                    v-if="isInternalUser && !document.is_shared"
                                     :trigger="popover.trigger"
                                     :options="popover.options"
                                     :delay-on-mouse-over="popover.delayOnMouseOver">
@@ -134,7 +139,7 @@ const Component = {
                                     </a>
                                 </popper>
                                 <popper
-                                    v-if="isAdminUser && document.is_shared"
+                                    v-if="isInternalUser && document.is_shared"
                                     :trigger="popover.trigger"
                                     :options="popover.options"
                                     :delay-on-mouse-over="popover.delayOnMouseOver">
@@ -147,7 +152,7 @@ const Component = {
                                     </a>
                                 </popper>
                                 <popper
-                                    v-if="isAdminUser"
+                                    v-if="isInternalUser"
                                     :trigger="popover.trigger"
                                     :options="popover.options"
                                     :delay-on-mouse-over="popover.delayOnMouseOver">
@@ -179,7 +184,7 @@ const Component = {
                         </div>
                     </span> rows per page
                 </div>
-                <div class="page-selector" v-if="_pages.length > 1">
+                <div class="page-selector" v-if="pages.length > 1">
                     <ul class="pagination pages-list justify-content-end">
                         <li class="page-item" 
                             v-if="currentPage != 1" 
@@ -187,13 +192,13 @@ const Component = {
                             <a @click.prevent class="page-link"  href="#"> &lt; </a>
                         </li>
                         <li :class="'page-item ' + ((page === currentPage) ? 'active' : '')" 
-                            v-for="page in _pages" 
+                            v-for="page in pages" 
                             @click="currentPage = page">
                             <a @click.prevent class="page-link"  href="#"> {{page}} </a>
                         </li>
                         <li class="page-item" 
                             @click="currentPage++" 
-                            v-if="currentPage < _pages.length">
+                            v-if="currentPage < pages.length">
                             <a @click.prevent class="page-link" href="#"> &gt; </a>
                         </li>
                     </ul>
@@ -214,123 +219,103 @@ const Component = {
                 }
             },
 
-            // core document state
-            documentIdsToFilter: undefined,
-            documents: [],
-
             // client-side pagination state
             currentPage: 1,
             pageSizes: [10, 25, 50, 100],
-            currentPageSize: 25
+            currentPageSize: 5
         }
     },
 
     computed: {
-        _documentsFiltered() {
-           return this.documentIdsToFilter ? filterToIds(this.documents, this.documentIdsToFilter) : this.documents
-        },
-        _documentsForCurrentPage() {
-             return itemsForPage(this._documentsFiltered, this.currentPage, this.currentPageSize)
-        },
-        _pages() {
-            const numberOfPages = Math.ceil(this._documentsFiltered.length / this.currentPageSize);
-            const range = (start, end) => [...Array(end - start + 1)].map((_, i) => start + i);
-            return range(1, numberOfPages);
-        },
+        ...mapGetters(['documents']),
 
-        isAdminUser() {
-            return this.usertype === 'manager' || this.usertype === 'admin';
+        allItems() {
+            return this.documents
+        },
+        itemsForCurrentPage() {
+            return itemsForPage(this.allItems, this.currentPage, this.currentPageSize)
+        },
+        pages() {
+            // all pages
+            const numberOfPages = Math.ceil(this.allItems.size / this.currentPageSize);
+            const range = (start, end) => [...Array(end - start + 1)].map((_, i) => start + i);
+            const allPages = range(1, numberOfPages)
+            return allPages;
         },
     },
 
     watch: {
-        documentIdsToFilter() {
-            this.currentPage = 1
-        },
-        _pages () {
-            if (this.currentPage > this._pages.length) {
-                this.currentPage = this._pages.length
-            }
-        },
-        currentPage() {
-            // clear status box
-            this.$emit('error', [])
+        allItems() {
+            if (this.itemsForCurrentPage === 0 && this.currentPage > 1) {
+                // no items left on current page, so go back one
+                this.currentPage = this.currentPage - 1
+            } 
         }
     },
 
-    async created() {
-        this.setDocuments()
+    created() {
     },
 
     mounted() {
     },
 
     methods: { 
-        removeDocumentFilter() {
-            this.documentIdsToFilter = undefined
-        },
-
-        setDocumentFilter(documentIdsToFilter) {
-            this.documentIdsToFilter = documentIdsToFilter;
-        },
-
-        async setDocuments() {
-            try {
-                this.documents = await this.getDocuments()
-            } catch (err) {
-                this.$emit('error', "Unable to fetch documents list")
-            }
-        },
-
         async handleDownloadDocument(document) {
+            this.clearStatus()
             try {
-                const url = await this.getDocumentDownloadUrl(document.id)
+                const url = await this.fetchDocumentDownloadUrl(document.id)
                 window.open(url)
-            } catch (err) {
-                this.$emit('error', "Download unsuccessful")
+            } catch (e) {
+                const messages = extractErrors({e, defaultMsg: `Problem downloading document`})
+                this.setErrors({errs: messages})
             }
         },
 
         handleDeleteDocument(document, hardDelete=false) {
-            this.locking(document, async doc => {
+            this.clearStatus()
+            this.locking(document, async document => {
                 try {
-                    const updatedDoc = await this.deleteDocument(doc.id, hardDelete)
-
-                    hardDelete
-                        ? this.documents = deleteUsingId(this.documents, document)
-                        : this.documents = updateUsingId(this.documents, updatedDoc)
-
-                    this.$emit('success', 
-                                (hardDelete) ? "Permanent delete successful" : "Trash successful")
-                } catch (err) {
-                    this.$emit('error', (hardDelete) ? "Permanent delete unsuccessful" : "Trash unsuccessful")
+                    await this.deleteDocument({document, hardDelete})
+                    this.setSuccesses({succs: (hardDelete) ? ["Permanently deleted document"] : ["Trashed document"]})
+                } catch (e) {
+                    const messages = extractErrors({e, defaultMsg: (hardDelete) ? "Problem permanently deleting document" : "Problem trashing document"})
+                    this.setErrors({errs: messages})
                 }
             })
         },
 
         handleRestoreDocument(document) {
-            this.locking(document, async doc => {
+            this.clearStatus()
+            this.locking(document, async document => {
                 try {
-                    const updatedDoc = await this.restoreDocument(doc.id)
-                    this.documents = updateUsingId(this.documents, updatedDoc)  
-                    this.$emit('success', "Restore successful")
-                } catch (err) {
-                    this.$emit('error', "Restore unsuccessful")
+                    await this.restoreDocument({document})
+                    this.setSuccesses({succs: ["Restored document"]})
+                } catch (e) {
+                    const messages = extractErrors({e, defaultMsg: "Problem restoring document"})
+                    this.setErrors({errs: messages})
                 }
             })
         },
 
-        async handleShareDocument(document, share=true) {
-            this.locking(document, async doc => {
+        handleShareDocument(document, share=true) {
+            this.clearStatus()
+            this.locking(document, async document => {
                 try {
-                    const updatedDoc = await this.shareDocument(doc.id, share)
-                    this.documents = updateUsingId(this.documents, updatedDoc)
-                    this.$emit('success', (share) ? "Share successful" : "Unshare successful")
-                } catch (err) {
-                    this.$emit('error', (share) ? "Share not successful" : "Unshare not successful")
+                    await this.shareDocument({document, share})
+                    this.setSuccesses({succs: (share) ? ["Shared document"] : ["Unshared document"]})
+                } catch (e) {
+                    const messages = extractErrors({e, defaultMsg: (share) ? "Problem sharing document" : "Problem unsharing document"})
+                    this.setErrors({errs: messages})
                 }
             })
         },
+
+        ...mapActions([
+            'fetchDocumentDownloadUrl', 
+            'deleteDocument', 
+            'restoreDocument', 
+            'shareDocument'
+        ]),
 
         handleOpenTagger(documentId) {
             this.$modal.show(
@@ -355,39 +340,6 @@ const Component = {
             )
         },
 
-        /*
-        * Functions that do not interact with component state directly
-        */
-
-        async getDocuments() {
-            const urlGetDocuments = `/documents`
-            return (await axios.get(urlGetDocuments)).data
-        },
-
-        async getDocumentDownloadUrl(documentId) {
-            const urlGetDownloadUrl = `/documents/${documentId}/download`
-            const downloadData = (await axios.get(urlGetDownloadUrl)).data
-            return downloadData.download_url
-        },
-
-        async deleteDocument(documentId, hardDelete=false) {
-            const urlDeleteDocument = `/documents/${documentId}`
-            const updatedDoc = (await axios.delete(
-                urlDeleteDocument, { params: { 'really_delete': hardDelete } })
-            ).data
-            return updatedDoc
-        },
-        async restoreDocument(documentId) {
-            const urlRestoreDocument = `/documents/${documentId}/restore`
-            const updatedDoc = (await axios.post(urlRestoreDocument)).data
-            return updatedDoc
-        },
-
-        async shareDocument(documentId, share=true) {
-            const urlShareDocument = `/documents/${documentId}/share`
-            return (await axios.post(urlShareDocument, { 'share': share })).data
-        },
-
         fileIconFor(extension) {
             return fileIconFor(extension);
         },
@@ -404,12 +356,6 @@ const Component = {
 };
 
 export default Component;
-
-const filterToIds = (items, idsToFilter) => items.filter(item => idsToFilter.includes(item.id)) 
-
-const updateUsingId = (items, updated) => items.map(i => (i.id === updated.id) ? updated : i)
-
-const deleteUsingId = (items, toDelete) => items.filter(i => i.id !== toDelete.id)
 
 const itemsForPage = (allItems, page, itemsPerPage) => {
     let from = (page * itemsPerPage) - itemsPerPage;

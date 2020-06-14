@@ -131,24 +131,10 @@ Route::resource('/calendar','\App\Domains\Calendar\Controllers\CalendarControlle
 Route::get('/documents/upload/index','\App\Domains\Documents\Controllers\DocumentController@uploadIndex');
 Route::get('/documents/index','\App\Domains\Documents\Controllers\DocumentController@index');
 
-Route::post('/documents/{id}/share','\App\Domains\Documents\Controllers\DocumentController@share');
-Route::post('/documents/{id}/restore','\App\Domains\Documents\Controllers\DocumentController@restore');
-Route::delete('/documents/{id}','\App\Domains\Documents\Controllers\DocumentController@delete');
-Route::post('/documents','\App\Domains\Documents\Controllers\DocumentController@store');
-Route::get('/documents/{id}/download','\App\Domains\Documents\Controllers\DocumentController@download');
-Route::get('/documents/{id}','\App\Domains\Documents\Controllers\DocumentController@getOne');
-Route::get('/documents','\App\Domains\Documents\Controllers\DocumentController@getAll');
-
 /**
  * Resource Tagging
  */
-Route::get('/tags','\App\Domains\Tagging\Controllers\TagController@getTags');
-Route::post('/tags','\App\Domains\Tagging\Controllers\TagController@createTags');
-Route::delete('/tags/{id}','\App\Domains\Tagging\Controllers\TagController@deleteTag');
 
-Route::get('/tag-labels/associated', '\App\Domains\Tagging\Controllers\TagLabelController@getAssociatedTagLabels');
-
-Route::get('/tagged-items', '\App\Domains\Tagging\Controllers\TaggedItemController@getTaggedItems');
 
 /**
  * Funding

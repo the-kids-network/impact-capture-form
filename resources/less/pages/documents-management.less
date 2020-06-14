@@ -1,5 +1,19 @@
 // Document browser / manager
 .documents-management {
+    
+    .documents-search {
+        
+        .search-bar {
+            margin-bottom: 15px;
+            display: flex;
+
+            .buttons {
+                margin-left: 0.5rem;
+                min-width: fit-content;
+            }  
+        }
+    }
+
     .documents-list {
         .popper {
             color: inherit;
@@ -60,16 +74,6 @@
                 }
             }
         }
-        .list-search {
-            margin-top: 10px;
-            margin-bottom: 15px;
-            display: flex;
-
-            .buttons {
-                margin-left: 0.5rem;
-                min-width: fit-content;
-            }
-        }
         .tagger {
             margin: 15px;
 
@@ -87,30 +91,32 @@
                 }
             }
         }
-        .tags-input {
-            width: 100%;
-            max-width: inherit;
-
-            .ti-input {
-                .ti-tags {
-                    .ti-tag {
-                        background-color: @brand-tertiary;
-                        font-size: inherit;
-                    }
-                    .ti-tag.ti-deletion-mark {
-                        background-color: #ff0000;
-                    }
-                }
-            }
-            .ti-autocomplete {
-                // to enable scroll on long autocomplete list
-                overflow-y: auto; 
-                max-height: 200px;
-
-                .ti-selected-item {
-                    background-color: @brand-secondary;
-                }
-            }
-        } 
     }
+
+    // Shared CSS from any document page
+    .documents.tags-input {
+        width: 100%;
+        max-width: inherit;
+
+        .ti-input {
+            .ti-tags {
+                .ti-tag {
+                    background-color: @brand-tertiary;
+                    font-size: inherit;
+                }
+                .ti-tag.ti-deletion-mark {
+                    background-color: #ff0000;
+                }
+            }
+        }
+        .ti-autocomplete {
+            // to enable scroll on long autocomplete list
+            overflow-y: auto; 
+            max-height: 200px;
+
+            .ti-selected-item {
+                background-color: @brand-secondary;
+            }
+        }
+    } 
 }

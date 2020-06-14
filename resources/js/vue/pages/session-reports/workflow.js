@@ -60,30 +60,30 @@ const Component = {
     computed: {
         currentSessionReportId: {
             get () {
-                return this.$store.getters.currentSessionReportId
+                return this.$store.getters['sessionReportSearch/currentSessionReportId']
             },
             set (value) {
-                this.$store.commit('setCurrentSessionReportId', value)
+                this.$store.commit('sessionReportSearch/setCurrentSessionReportId', value)
             }
         },
         firstSessionReport: {
             get () {
-                return this.$store.getters.firstSessionReport
+                return this.$store.getters['sessionReportSearch/firstSessionReport']
             }
         },
         lastSessionReport: {
             get () {
-                return this.$store.getters.lastSessionReport
+                return this.$store.getters['sessionReportSearch/lastSessionReport']
             }
         },
         previousSessionReport: {
             get () {
-                return this.$store.getters.previousSessionReport
+                return this.$store.getters['sessionReportSearch/previousSessionReport']
             }
         },
         nextSessionReport: {
             get () {
-                return this.$store.getters.nextSessionReport
+                return this.$store.getters['sessionReportSearch/nextSessionReport']
             }
         }
     },

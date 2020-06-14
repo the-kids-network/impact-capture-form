@@ -12,6 +12,8 @@ import routes from './routes';
 
 import globalStore from './store/modules/global'
 import sessionReportsSearchStore from './store/modules/session-report-search'
+import documents from './store/modules/documents'
+
 
 import app from './components/app';
 import statusBox from './components/status-box/root';
@@ -24,8 +26,8 @@ import security from './components/settings/security';
 import updatePassword from './components/settings/security/update-password';
 import register from './components/register/register';
 import calendar from './components/calendar/calendar';
-import documentUpload from './components/documents/upload';
-import documents from './components/documents/root';
+import documentUploadIndex from './pages/documents/upload';
+import documentBrowseIndex from './pages/documents/browse';
 import sessionReportEdit from './components/session-reports/edit'
 
 /*
@@ -59,8 +61,8 @@ Vue.component('security', security)
 Vue.component('update-password', updatePassword)
 Vue.component('register', register)
 Vue.component('calendar', calendar)
-Vue.component('document-upload', documentUpload)
-Vue.component('documents', documents)
+Vue.component('document-upload-index', documentUploadIndex)
+Vue.component('document-browse-index', documentBrowseIndex)
 Vue.component('session-report-editor', sessionReportEdit)
 
 // Vue plugins#
@@ -83,7 +85,8 @@ Vue.use(VueScrollTo)
 const store = new Vuex.Store({
     modules: {
         global: globalStore,
-        sessionReportSearch: sessionReportsSearchStore
+        sessionReportSearch: sessionReportsSearchStore,
+        documents: documents
     }
 })
 store.dispatch('getUser');
