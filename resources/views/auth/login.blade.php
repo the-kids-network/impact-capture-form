@@ -18,7 +18,8 @@
                             <div class="col-md-6 offset-md-3">
                                 <input id="email" type="email" class="form-control" name="email" 
                                        placeholder="Your email address"
-                                       value="{{ old('email') }}" autofocus>
+                                       value="{{ old('email') }}" autofocus
+                                       autocomplete="username">
                             </div>
                         </div>
 
@@ -26,7 +27,8 @@
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-3">
                                 <input id="password" type="password" class="form-control" name="password"
-                                       placeholder="Your password">
+                                       placeholder="Your password"
+                                       autocomplete="current-password">
                             </div>
                         </div>
 

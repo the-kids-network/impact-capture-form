@@ -24,10 +24,7 @@
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'UA-167891964-1');
-
-            const userType = '{{ (!Auth::user()) ? "non-authenticated" : ((Auth::user()->role) ? Auth::user()->role : "mentor") }}';
-            ga('set', 'user_type', userType);   
+            gtag('config', 'UA-167891964-1'); 
         </script>
         @endif
 
