@@ -1,15 +1,14 @@
 import _ from 'lodash'
 import Popper from 'vue-popperjs';
 import 'vue-popperjs/dist/vue-popper.css';
-import statusMixin from '../status-box/mixin'
-import { extractErrors } from '../../utils/api'
-import fileIconFor from "./fileicons";
-
-import Paginator from "../pagination/paginator"
-import Tagger from "./tagger"
-
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapGetters } = createNamespacedHelpers('documents/search')
+
+import { extractErrors } from '../../utils/api'
+import fileIconFor from "./fileicons";
+import statusMixin from '../status-box/mixin'
+import Paginator from "../pagination/paginator"
+import Tagger from "./tagger"
 
 const Component = {
 

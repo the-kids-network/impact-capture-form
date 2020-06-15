@@ -1,10 +1,11 @@
 import _ from 'lodash'
-import statusMixin from '../status-box/mixin'
 import VueTagsInput from '@johmun/vue-tags-input'
-import { extractErrors } from '../../utils/api'
 import { createNamespacedHelpers } from 'vuex'
 import { Set } from 'immutable'
-const { mapState, mapActions, mapMutations, mapGetters } = createNamespacedHelpers('documents/search')
+const { mapState, mapActions, mapGetters } = createNamespacedHelpers('documents/search')
+
+import { extractErrors } from '../../utils/api'
+import statusMixin from '../status-box/mixin'
 
 const Component = {
 

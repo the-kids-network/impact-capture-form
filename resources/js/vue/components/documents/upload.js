@@ -1,11 +1,13 @@
 // For PHP backend, be sure the php.ini is updated to set the post_max_size, max_file_uploads, and upload_max_filesize
 
 import _ from 'lodash'
+import { List } from 'immutable'
+
+import { createNamespacedHelpers } from 'vuex'
+const { mapState, mapActions, mapMutations } = createNamespacedHelpers('documents/upload')
+
 import statusMixin from '../status-box/mixin'
 import { extractErrors } from '../../utils/api'
-import { createNamespacedHelpers } from 'vuex'
-import { List } from 'immutable'
-const { mapState, mapActions, mapMutations } = createNamespacedHelpers('documents/upload')
 
 const STATUS_EDITABLE = 0, STATUS_SAVING = 1
 const MAX_FILES_UPLOAD = 10
