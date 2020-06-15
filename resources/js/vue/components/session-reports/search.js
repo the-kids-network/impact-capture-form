@@ -28,13 +28,13 @@ const Component = {
 
             <form class="form">
                 <div class="form-row" v-if="isInternalUser">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label class="col-form-label" for="mentorSelect">Mentor</label>
                         <select id="mentorSelect" 
                                 class="form-control form-control-sm" 
-                                v-model="mentorId"
-                                @change="menteeId = null">
-                                <option value="" selected>Any</option>
+                                v-model="mentor_id"
+                                @change="mentee_id = null">
+                                <option :value="null_value" selected>Any</option>
                                 <option 
                                     v-for="mentor in mentors"
                                     :value="mentor.id">
@@ -47,8 +47,8 @@ const Component = {
                         <label class="col-form-label" for="menteeSelect">Mentee</label>
                         <select id="menteeSelect" 
                                 class="form-control form-control-sm" 
-                                v-model="menteeId">
-                                <option value="" selected>Any</option>
+                                v-model="mentee_id">
+                                <option :value="null_value" selected>Any</option>
                                 <option 
                                     v-for="mentee in selectableMentees"
                                     :value="mentee.id">
@@ -59,27 +59,58 @@ const Component = {
                     </div>
                 </div> 
                 <div class="form-row">
-                    <div class="col-md-7">
+                    <div class="form-group col-md-3">
+                        <label class="col-form-label" for="safeguardingSelect">Safeguarding</label>
+                        <select id="safeguardingSelect" 
+                                class="form-control form-control-sm" 
+                                v-model="safeguarding_id">
+                                <option :value="null_value" selected>Any</option>
+                                <option 
+                                    v-for="safeguardingOption in safeguardingOptions"
+                                    :value="safeguardingOption.id">
+                                    {{ safeguardingOption.label }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="col-form-label" for="safeguardingSelect">Rating</label>
+                        <select id="ratingSelect" 
+                                class="form-control form-control-sm" 
+                                v-model="session_rating_id">
+                                <option :value="null_value" selected>Any</option>
+                                <option 
+                                    v-for="item in sessionRatingsLookup"
+                                    v-if="item.selectable"
+                                    :value="item.id">
+                                    {{ item.value }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6">
                         <div class="form-row">
                             <div class="col-md-6 form-group">
-                                <label class="col-form-label" for="sessionDateRangeStartInput">Session Date Start <a @click.prevent="handleClearData('sessionDateRangeStart')" class="fas fa-times"/></label>
+                                <label class="col-form-label" for="sessionDateRangeStartInput">Session Date Start <a @click.prevent="handleClearData('session_date_range_start')" class="fas fa-times"/></label>
                                 <input id="sessionDateRangeStartInput"
                                     type="text" 
                                     class="form-control form-control-sm datepicker session-date-range-start"
-                                    v-model="sessionDateRangeStart"
+                                    v-model="session_date_range_start"
                                     autocomplete="off" />
                             </div>
                             <div class="col-md-6 form-group">
-                                <label class="col-form-label" for="sessionDateRangeEndInput">Session Date End <a @click.prevent="handleClearData('sessionDateRangeEnd')" class="fas fa-times"/></label>
+                                <label class="col-form-label" for="sessionDateRangeEndInput">Session Date End <a @click.prevent="handleClearData('session_date_range_end')" class="fas fa-times"/></label>
                                 <input id="sessionDateRangeEndInput"
                                     type="text" 
                                     class="form-control form-control-sm datepicker session-date-range-end"
-                                    v-model="sessionDateRangeEnd"
+                                    v-model="session_date_range_end"
                                     autocomplete="off" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 offset-md-1 mb-auto mt-auto">
+                    <div class="col-md-5 offset-md-1 mb-auto mt-auto">
                         <div class="row date-quick-fill">
                             <div class="col-md-12">
                                 <span class="btn btn-secondary btn-sm" @click="handleClickDateQuickFill('today')">Today</span>
@@ -105,22 +136,27 @@ const Component = {
 
     data() {
         return {
+            null_value: null,
             isSearching: false,
 
             // lookups
             mentors:[],
+            safeguardingOptions: [],
+            sessionRatingsLookup: [],
 
             // default search state
-            mentorId: null,
-            menteeId: null,
-            sessionDateRangeStart: null,
-            sessionDateRangeEnd: null
+            mentor_id: null,
+            mentee_id: null,
+            safeguarding_id: null,
+            session_rating_id: null,
+            session_date_range_start: null,
+            session_date_range_end: null
         }
     },
 
     computed: {
         selectableMentees() {
-            const mentor = List(this.mentors).find(m => m.id === this.mentorId)
+            const mentor = List(this.mentors).find(m => m.id === this.mentor_id)
             return mentor ? mentor.mentees : []
         }
     },
@@ -135,6 +171,8 @@ const Component = {
 
     async created() {
         await this.initialiseMentors()
+        await this.initialiseSafeguardingOptions()
+        await this.initialiseSessionRatingsLookup()
         this.applySearchCriteria()
         this.search()
     },
@@ -146,11 +184,11 @@ const Component = {
                 // replace with a decent vuejs component
                 $(".datepicker.session-date-range-start").datepicker({ 
                     dateFormat: 'dd-mm-yy', 
-                    onSelect: dateText => vm.sessionDateRangeStart = dateText
+                    onSelect: dateText => vm.session_date_range_start = dateText
                 });
                 $(".datepicker.session-date-range-end").datepicker({ 
                     dateFormat: 'dd-mm-yy', 
-                    onSelect: dateText => vm.sessionDateRangeEnd = dateText
+                    onSelect: dateText => vm.session_date_range_end = dateText
                 });
             });
         });
@@ -166,8 +204,8 @@ const Component = {
         handleClickDateQuickFill(type) {
             const dateFormat = SEARCH_DATE_FORMAT
             const {startDate, endDate} = dateRange(type)
-            this.sessionDateRangeStart = startDate.format(dateFormat)
-            this.sessionDateRangeEnd = endDate.format(dateFormat)
+            this.session_date_range_start = startDate.format(dateFormat)
+            this.session_date_range_end = endDate.format(dateFormat)
         },
 
         handleClickSearch() {
@@ -175,18 +213,17 @@ const Component = {
         },
 
         applySearchCriteria() {
-            this.mentorId = this.searchCriteria.mentorId ? this.searchCriteria.mentorId : null
-            this.menteeId = this.searchCriteria.menteeId ? this.searchCriteria.menteeId : null
-            this.sessionDateRangeStart = this.searchCriteria.sessionDateRangeStart ? this.searchCriteria.sessionDateRangeStart : null
-            this.sessionDateRangeEnd = this.searchCriteria.sessionDateRangeEnd ? this.searchCriteria.sessionDateRangeEnd : null
+            Object.assign(this.$data, this.searchCriteria)
         },
 
         buildSearchCriteria() {
             return { 
-                ...(this.mentorId ? {mentorId: this.mentorId}: {}),
-                ...(this.menteeId ? {menteeId: this.menteeId}: {}),
-                ...(this.sessionDateRangeStart ? {sessionDateRangeStart: this.sessionDateRangeStart}: {}),
-                ...(this.sessionDateRangeEnd ? {sessionDateRangeEnd: this.sessionDateRangeEnd}: {}),
+                mentor_id: this.mentor_id,
+                mentee_id: this.mentee_id,
+                safeguarding_id: this.safeguarding_id,
+                session_rating_id: this.session_rating_id,
+                session_date_range_start: this.session_date_range_start,
+                session_date_range_end: this.session_date_range_end
             }
         },
 
@@ -204,12 +241,14 @@ const Component = {
 
         async search() {
             const query = {
-                ...(this.mentorId ? {'mentor_id': this.mentorId}: {}),
-                ...(this.menteeId ? {'mentee_id': this.menteeId}: {}),
-                ...(this.sessionDateRangeStart ? {'session_date_range_start': this.sessionDateRangeStart}: {} ),
-                ...(this.sessionDateRangeEnd ? {'session_date_range_end': this.sessionDateRangeEnd}: {} ),
+                mentor_id: this.mentor_id,
+                mentee_id: this.mentee_id,
+                safeguarding_id: this.safeguarding_id,
+                session_rating_id: this.session_rating_id,
+                session_date_range_start: !(_.isEmpty(this.session_date_range_start)) ? this.session_date_range_start : null,
+                session_date_range_end: !(_.isEmpty(this.session_date_range_end)) ? this.session_date_range_end : null,
                 // large field that doesnt need to be returned at this point
-                'exclude_fields': ['meeting_details']
+                exclude_fields: ['meeting_details']
             }
 
             try {
@@ -233,6 +272,26 @@ const Component = {
             }
         },
 
+        async initialiseSafeguardingOptions() {
+            try {
+
+                this.safeguardingOptions = await this.fetchSafeguardingOptions()
+            } catch (e) {
+                const messages = extractErrors({e, defaultMsg: `Problem getting safeguarding lookup`})
+                this.addErrors({errs: messages})
+            }
+        },
+
+        async initialiseSessionRatingsLookup() {
+            try {
+
+                this.sessionRatingsLookup = await this.fetchSessionRatingsLookup()
+            } catch (e) {
+                const messages = extractErrors({e, defaultMsg: `Problem getting session ratings lookup`})
+                this.addErrors({errs: messages})
+            }
+        },
+
         /**
          * API data
          */
@@ -242,7 +301,16 @@ const Component = {
 
         async fetchMentors() {
             return (await axios.get(`/api/users`, { params: {role: 'mentor'} })).data
+        },
+
+        async fetchSafeguardingOptions() {
+            return (await axios.get(`/api/safeguarding-options`)).data
+        },
+
+        async fetchSessionRatingsLookup() {
+            return (await axios.get(`/api/session-ratings`)).data
         }
+
     }
 };
 

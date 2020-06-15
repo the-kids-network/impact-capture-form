@@ -35,7 +35,6 @@ const Component = {
                                 :id="'item-' + sessionReport.id"
                                 class="item"
                                 @click="handleClickSessionReport(sessionReport.id)">   
-
                                 <td class="session-id">{{sessionReport.id}}</td>
                                 <td class="mentor-name">{{sessionReport.mentor.name}}</td>
                                 <td class="mentee-name">{{sessionReport.mentee.name}}</td>

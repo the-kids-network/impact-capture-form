@@ -47,20 +47,11 @@ class Report extends Model
     }
 
     public function safeguardingConcernTypeAttribute() {
-        if ($this->safeguarding_concern == 1)
-            return "Serious";
-        else if ($this->safeguarding_concern == 2)
-            return "Mild";
-        else
-            return "None";
+        return SafeguardingConcernLookup::$values[$this->safeguarding_concern]['type'];
     }
 
     public function safeguardingConcernTextAttribute() {
-        if ($this->safeguarding_concern == 0) {
-            return "No";
-        } else {
-            return "Yes - ".$this->safeguardingConcernTypeAttribute();
-        }
+        return SafeguardingConcernLookup::$values[$this->safeguarding_concern]['label'];
     }
 
     public function scopeCanSee($query) {

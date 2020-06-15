@@ -108,7 +108,6 @@ const Component = {
                 const tagsSet = Set(tags.map(t => t.text))
                 await this.selectSearchTags(tagsSet)
             } catch(e) {
-                console.log(e)
                 const messages = extractErrors({e, defaultMsg: "Problem performing search"})
                 this.addErrors({errs: messages})
             }

@@ -6,6 +6,8 @@ class SessionSearch {
 
     private $mentorId;
     private $menteeId;
+    private $safeguardingId;
+    private $sessionRatingId;
     private $sessionDateRangeStart;
     private $sessionDateRangeEnd;
 
@@ -17,6 +19,15 @@ class SessionSearch {
 
     public function menteeId(?string $menteeId) {
         $this->menteeId = $menteeId;
+        return $this;
+    }
+
+    public function safeguardingId(?string $safeguardingId) {
+        $this->safeguardingId = $safeguardingId;
+        return $this;
+    }
+    public function sessionRatingId(?string $sessionRatingId) {
+        $this->sessionRatingId = $sessionRatingId;
         return $this;
     }
 

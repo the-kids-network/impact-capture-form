@@ -72,11 +72,8 @@ const Component = {
                     </tr>
                     <tr class="safeguarding-concern">
                         <td class="label">Safeguarding Concern</td>
-                        <td class="value" v-if="sessionReport.safeguarding_concern.id > 0">
-                            Yes - {{sessionReport.safeguarding_concern.type}}
-                        </td>
-                        <td v-else>
-                            No
+                        <td class="value">
+                            {{sessionReport.safeguarding_concern.label}}
                         </td>
                     </tr>
                     <tr class="mentee-emotional-state">
