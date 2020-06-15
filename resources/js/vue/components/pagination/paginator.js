@@ -8,7 +8,7 @@ const Component = {
             default: () => List()
         },
         initialPageSize: {
-            default: () => 1
+            default: () => 25
         },
         pageSizes: {
             default: () => [10, 25, 50, 100]
