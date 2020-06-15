@@ -47,15 +47,25 @@ const Component = {
                 </div>
                 <div class="page-selector" v-if="pages.length > 1">
                     <ul class="pagination pages-list justify-content-end">
+                    
                         <li class="page-item" 
                             v-if="currentPage != 1" 
                             @click="currentPage--">
                             <a @click.prevent class="page-link"  href="#"> &lt; </a>
                         </li>
+                        <li class="page-item" 
+                            v-if="(currentPage - 4) > 1" >
+                            <span class="page-link">...</span>
+                        </li>
                         <li :class="'page-item ' + ((page === currentPage) ? 'active' : '')" 
                             v-for="page in pages" 
+                            v-if="page >= currentPage - 4 && page <= currentPage + 4"
                             @click="currentPage = page">
                             <a @click.prevent class="page-link"  href="#"> {{page}} </a>
+                        </li>
+                        <li class="page-item" 
+                            v-if="currentPage + 4 < pages.length">
+                            <span class="page-link">...</span>
                         </li>
                         <li class="page-item" 
                             @click="currentPage++" 
