@@ -13,9 +13,18 @@ const Component = {
 
     template: `
         <div>
-            <document-search />
-
-            <document-list />
+            <div class="card">
+                <div class="card-header">Document Search</div>
+                <div class="card-body">
+                    <document-search />
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">Documents</div>
+                <div class="card-body">
+                    <document-list />
+                </div>
+            </div>
         </div>
     `,
 
