@@ -37,7 +37,7 @@ const Component = {
                                 role="menuitem"
                                 href="#">{{size}}</a>
                         </div>
-                    </span> rows per page
+                    </span> rows
                 </div>
                 <div class="page-selector" v-if="pages.length > 1">
                     <ul class="pagination pages-list justify-content-end">
@@ -48,17 +48,17 @@ const Component = {
                             <a @click.prevent class="page-link"  href="#"> &lt; </a>
                         </li>
                         <li class="page-item" 
-                            v-if="(currentPage - 4) > 1" >
+                            v-if="(currentPage - numberSurroundingPageItemsToShow) > 1" >
                             <span class="page-link">...</span>
                         </li>
                         <li :class="'page-item ' + ((page === currentPage) ? 'active' : '')" 
                             v-for="page in pages" 
-                            v-if="page >= currentPage - 4 && page <= currentPage + 4"
+                            v-if="page >= currentPage - numberSurroundingPageItemsToShow && page <= currentPage + numberSurroundingPageItemsToShow"
                             @click="currentPage = page">
                             <a @click.prevent class="page-link"  href="#"> {{page}} </a>
                         </li>
                         <li class="page-item" 
-                            v-if="currentPage + 4 < pages.length">
+                            v-if="currentPage + numberSurroundingPageItemsToShow < pages.length">
                             <span class="page-link">...</span>
                         </li>
                         <li class="page-item" 
@@ -74,8 +74,9 @@ const Component = {
 
     data() {
         return {
-             currentPage: 1,
-             currentPageSize: 25
+            numberSurroundingPageItemsToShow: 3,
+            currentPage: 1,
+            currentPageSize: 25
         }
     },
 
