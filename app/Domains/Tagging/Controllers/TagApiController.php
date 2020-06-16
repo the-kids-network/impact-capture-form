@@ -8,7 +8,7 @@ use App\Domains\Tagging\Services\TagService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class TagController extends Controller {
+class TagApiController extends Controller {
 
     private $tagService;
 
@@ -16,12 +16,12 @@ class TagController extends Controller {
         $this->tagService = $tagService;
 
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,manager')->only('createTags', 'deleteTag');
+        $this->middleware('hasAnyOfRoles:admin,manager')->only('create', 'delete');
     }
 
     // Right now, only supports finding by resource type and id
     // Though flexible enough design to extend
-    public function getTags(Request $request) {
+    public function get(Request $request) {
         $this->validate($request, [
             'resource_type' => 'required|in:document',
             'resource_id' => 'integer'
@@ -51,7 +51,7 @@ class TagController extends Controller {
         return response()->json($response);
     }
 
-    public function createTags(Request $request) {
+    public function create(Request $request) {
         $tagsToCreate = $request->json()->all();
         $validator = Validator::make($tagsToCreate, [
             '*.tagged_item.resource_type' => 'required|in:document',
@@ -81,7 +81,7 @@ class TagController extends Controller {
         return response()->json($response);
     }
 
-    public function deleteTag(Request $request, $id) {
+    public function delete(Request $request, $id) {
         $deletedTag = $this->tagService->deleteTag($id);
 
         return response()->json([

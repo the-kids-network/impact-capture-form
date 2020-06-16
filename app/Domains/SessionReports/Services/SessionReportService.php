@@ -29,6 +29,15 @@ class SessionReportService {
             $query->whereMenteeId($sessionSearch->menteeId);
         }
 
+        // must null check as value can be validly zero
+        if ($sessionSearch->safeguardingId != null) {
+            $query->whereSafeguardingConcern($sessionSearch->safeguardingId);
+        }
+
+        if ($sessionSearch->sessionRatingId) {
+            $query->whereRatingId($sessionSearch->sessionRatingId);
+        }
+
         if ($sessionSearch->sessionDateRangeStart) {
             $query->where('session_date', '>=', Carbon::createFromFormat('d-m-Y', $sessionSearch->sessionDateRangeStart)->setTime(0,0,0));
         }

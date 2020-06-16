@@ -7,16 +7,16 @@
                 <div class="col-md-12">
                     <h3>Main</h3>
                 </div>
-                {{-- <div class="col-md-4">
+                <div class="col-md-4">
                     <div class="card link-panel">
                         <div class="card-body text-center">
                             <i class="fab fa-searchengin text-feature"></i>
                             <a class="btn btn-primary btn-block btn-lg v2-session-reports" href="{{ url('/session-reports') }}">
-                                <span class="fas fa-sun"></span> Session Reports <span class="fas fa-sun"></span> (New!)
+                                <span class="fas fa-sun"></span> Session Reports V2 <span class="fas fa-sun"></span>
                             </a>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <div class="col-md-4">
                     <div class="card link-panel">
                         <div class="card-body text-center">

@@ -7,7 +7,7 @@ use App\Domains\Tagging\Models\TaggedItemSearch;
 use App\Domains\Tagging\Services\TaggedItemService;
 use Illuminate\Http\Request;
 
-class TaggedItemController extends Controller {
+class TaggedItemApiController extends Controller {
 
     private $taggedItemService;
 
@@ -17,7 +17,7 @@ class TaggedItemController extends Controller {
     }
 
     // get documents matching
-    public function getTaggedItems(Request $request) {
+    public function get(Request $request) {
         $this->validate($request, [
             'resource_type' => 'required|in:document',
             'resource_id' => 'integer'

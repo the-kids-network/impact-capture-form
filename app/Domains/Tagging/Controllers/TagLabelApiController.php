@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Domains\Tagging\Services\TagService;
 use Illuminate\Http\Request;
 
-class TagLabelController extends Controller {
+class TagLabelApiController extends Controller {
 
     private $tagService;
 
@@ -16,7 +16,7 @@ class TagLabelController extends Controller {
         $this->middleware('auth');
     }
 
-    public function getAssociatedTagLabels(Request $request) {
+    public function getAssociated(Request $request) {
         $this->validate($request, [
             'tag_labels' => 'required',
         ]);

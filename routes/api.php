@@ -32,3 +32,19 @@ Route::delete('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\
 
 // Expenses
 Route::get('/expense-claims', '\App\Domains\Expenses\Controllers\ExpenseClaimApiController@get');
+
+// Documents
+Route::post('/documents/{id}/share','\App\Domains\Documents\Controllers\DocumentApiController@share');
+Route::post('/documents/{id}/restore','\App\Domains\Documents\Controllers\DocumentApiController@restore');
+Route::delete('/documents/{id}','\App\Domains\Documents\Controllers\DocumentApiController@delete');
+Route::post('/documents','\App\Domains\Documents\Controllers\DocumentApiController@create');
+Route::get('/documents/{id}/download','\App\Domains\Documents\Controllers\DocumentApiController@download');
+Route::get('/documents/{id}','\App\Domains\Documents\Controllers\DocumentApiController@getById');
+Route::get('/documents','\App\Domains\Documents\Controllers\DocumentApiController@get');
+
+// Resource tagging
+Route::get('/tags','\App\Domains\Tagging\Controllers\TagApiController@get');
+Route::post('/tags','\App\Domains\Tagging\Controllers\TagApiController@create');
+Route::delete('/tags/{id}','\App\Domains\Tagging\Controllers\TagApiController@delete');
+Route::get('/tag-labels/associated', '\App\Domains\Tagging\Controllers\TagLabelApiController@getAssociated');
+Route::get('/tagged-items', '\App\Domains\Tagging\Controllers\TaggedItemApiController@get');

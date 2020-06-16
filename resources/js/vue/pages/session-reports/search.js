@@ -100,7 +100,7 @@ const Component = {
                 return this.$store.state.sessionReportSearch.list
             },
             set(sessionReports) {
-                this.$store.commit('setSessionReports', sessionReports)
+                this.$store.commit('sessionReportSearch/setSessionReports', sessionReports)
             }
         },
     },
@@ -132,7 +132,7 @@ const Component = {
             }
         }, 
         handleSelectSessionReport(sessionReportId) {
-            this.$store.commit('setCurrentSessionReportId', sessionReportId)
+            this.$store.commit('sessionReportSearch/setCurrentSessionReportId', sessionReportId)
             this.$router.push({ name: 'session-reports-workflow' })
         },
 
@@ -141,17 +141,8 @@ const Component = {
             return ! _.isEmpty(this.$route.query)
         },
         setSearchParameters(params, type="push") {
-            const {mentorId, menteeId, sessionDateRangeStart, sessionDateRangeEnd} = params
-
-            const queryParamsToAdd = { 
-                ...(mentorId ? {'mentor_id': mentorId}: {}),
-                ...(menteeId ? {'mentee_id': menteeId}: {}),
-                ...(sessionDateRangeStart ? {'session_date_range_start': sessionDateRangeStart}: {} ),
-                ...(sessionDateRangeEnd ? {'session_date_range_end': sessionDateRangeEnd}: {} ),
-            }
-
-            // save as url query parameters
-            const routeProps = { path: this.$route.path, query: queryParamsToAdd }
+            const cleanedParams = _.omitBy(params, _.isNil)
+            const routeProps = { path: this.$route.path, query: cleanedParams }
             if ("replace" === type) {
                 this.$router.replace(routeProps)
             } else {
@@ -159,20 +150,22 @@ const Component = {
             }
         },
         getSearchParameters() {
-            const {mentor_id, mentee_id, session_date_range_start, session_date_range_end} = this.$route.query
+            const {mentor_id, mentee_id, session_rating_id, safeguarding_id, session_date_range_start, session_date_range_end} = this.$route.query
 
             return {
-                ...(mentor_id ? {mentorId: parseInt(mentor_id)}: {}),
-                ...(mentee_id ? {menteeId: parseInt(mentee_id)}: {}),
-                ...(session_date_range_start ? {sessionDateRangeStart: session_date_range_start}: {} ),
-                ...(session_date_range_end ? {sessionDateRangeEnd: session_date_range_end}: {} ),
+                mentor_id: !_.isNil(mentor_id) ? _.parseInt(mentor_id) : null,
+                mentee_id: !_.isNil(mentee_id) ? _.parseInt(mentee_id) : null,
+                session_rating_id: !_.isNil(session_rating_id) ? _.parseInt(session_rating_id): null,
+                safeguarding_id: !_.isNil(safeguarding_id) ? _.parseInt(safeguarding_id) : null,
+                session_date_range_start: !_.isNil(session_date_range_start) ? session_date_range_start : null,
+                session_date_range_end: !_.isNil(session_date_range_end) ? session_date_range_end : null
             }
         },
         buildDefaultSearchParameters() {
             return {
                 // last one month by default for performance reasons
-                sessionDateRangeStart : moment().subtract(1, 'months').format(SEARCH_DATE_FORMAT),
-                sessionDateRangeEnd: moment().format(SEARCH_DATE_FORMAT)
+                session_date_range_start : moment().subtract(1, 'months').format(SEARCH_DATE_FORMAT),
+                session_date_range_end: moment().format(SEARCH_DATE_FORMAT)
             }
         }
     }

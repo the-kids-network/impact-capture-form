@@ -122,7 +122,7 @@ const Component = {
                                     v-model="safeguardingConcern">
                                 <option v-for="item in safeguardingLookup"
                                         :value="item.id">
-                                        {{ item.name }}
+                                        {{ item.label }}
                                 </option>
                             </select>
                             <div v-if="isFieldDirty('safeguardingConcern')"

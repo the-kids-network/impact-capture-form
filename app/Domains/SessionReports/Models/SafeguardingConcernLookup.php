@@ -7,15 +7,21 @@ class SafeguardingConcernLookup {
     public static $values = [
         [
             'id' => 0,
-            'name' => 'None'
+            'value' => false,
+            'type' => 'None',
+            'label' => 'No'
         ],
         [
             'id' => 1,
-            'name' => 'Serious'
+            'value' => true,
+            'type' => 'Serious',
+            'label' => 'Yes - Serious'
         ],
         [
             'id' => 2,
-            'name' => 'Mild'
+            'value' => true,
+            'type' => 'Mild',
+            'label' => 'Yes - Mild'
         ]
     ];
 }

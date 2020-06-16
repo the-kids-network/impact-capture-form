@@ -13,18 +13,11 @@
     @endif
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Documents</div>
-                <div class="card-body">
-                    <documents
-                        usertype="{{ (isset(Auth::user()->role)) ? Auth::user()->role : 'mentor'}}">
-                        <template v-slot:csrf>
-                            {{ csrf_field() }}
-                        </template>
-                    </documents>
-
-                </div>
-            </div>
+            <document-browse-index>
+                <template v-slot:csrf>
+                    {{ csrf_field() }}
+                </template>
+            </document-browse-index>
         </div>
     </div>
 </div>

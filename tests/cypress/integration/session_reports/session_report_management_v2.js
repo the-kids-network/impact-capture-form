@@ -1,6 +1,12 @@
 const moment = require("moment")
 
 describe('Search session reports', () => {
+    beforeEach(() => {
+        cy.server()
+        cy.route('**/api/session-reports/*').as('findReport')
+        cy.route('**/api/session-reports*').as('searchReports')
+    })
+
     describe('For mentor', () => {
         beforeEach(() => {
             // Login
@@ -11,6 +17,7 @@ describe('Search session reports', () => {
             // session reports search
             cy.visit('/session-reports')
             cy.url().should('contain', '/session-reports/search')
+            cy.wait('@searchReports')
         })
 
         describe('Default search', () => {
@@ -25,6 +32,7 @@ describe('Search session reports', () => {
                 cy.get('.find-by-id-toggle').click()
                 cy.get('.find-by-id-form #idInput').type('1')
                 cy.get('.find-by-id-form .btn.search').click()
+                cy.wait('@findReport')
 
                 cy.url().should('contain', '/session-reports/1')
                 cy.get('.session-report-view .table.session-report').should('exist')
@@ -34,6 +42,7 @@ describe('Search session reports', () => {
                 cy.get('.find-by-id-toggle').click()
                 cy.get('.find-by-id-form #idInput').type('2')
                 cy.get('.find-by-id-form .btn.search').click()
+                cy.wait('@findReport')
 
                 cy.url().should('contain', '/session-reports/2')
                 cy.get('.session-report-view .table.session-report').should('not.exist')
@@ -45,6 +54,7 @@ describe('Search session reports', () => {
             it('Displays reports where matched', () => {
                 cy.get('.session-report-search .btn').contains('Today').click()
                 cy.get('.session-report-search .btn').contains('Search').click()
+                cy.wait('@searchReports')
 
                 cy.get('.session-report-list .items .item').should('have.length', 1)
             })
@@ -52,6 +62,7 @@ describe('Search session reports', () => {
             it('Does not display reports where no match', () => {
                 cy.get('.session-report-search .btn').contains('Yesterday').click()
                 cy.get('.session-report-search .btn').contains('Search').click()
+                cy.wait('@searchReports')
 
                 cy.get('.session-report-list .items .item').should('have.length', 0)
             })
@@ -84,6 +95,8 @@ describe('Search session reports', () => {
              // session reports search
              cy.visit('/session-reports')
              cy.url().should('contain', '/session-reports/search')
+
+             cy.wait('@searchReports')
         })
 
         describe('Default search', () => {
@@ -100,6 +113,7 @@ describe('Search session reports', () => {
                 cy.get('.find-by-id-toggle').click()
                 cy.get('.find-by-id-form #idInput').type('2')
                 cy.get('.find-by-id-form .btn.search').click()
+                cy.wait('@findReport')
 
                 cy.url().should('contain', '/session-reports/2')
                 cy.get('.session-report-view .table.session-report').should('exist')
@@ -109,6 +123,7 @@ describe('Search session reports', () => {
                 cy.get('.find-by-id-toggle').click()
                 cy.get('.find-by-id-form #idInput').type('3')
                 cy.get('.find-by-id-form .btn.search').click()
+                cy.wait('@findReport')
 
                 cy.url().should('contain', '/session-reports/3')
                 cy.get('.session-report-view .table.session-report').should('not.exist')
@@ -120,6 +135,7 @@ describe('Search session reports', () => {
             it('Displays reports where matched', () => {
                 cy.get('.session-report-search .btn').contains('Today').click()
                 cy.get('.session-report-search .btn').contains('Search').click()
+                cy.wait('@searchReports')
 
                 cy.get('.session-report-list .items .item').should('have.length', 2)
             })
@@ -127,6 +143,7 @@ describe('Search session reports', () => {
             it('Does not display reports where no match', () => {
                 cy.get('.session-report-search .btn').contains('Yesterday').click()
                 cy.get('.session-report-search .btn').contains('Search').click()
+                cy.wait('@searchReports')
 
                 cy.get('.session-report-list .items .item').should('have.length', 0)
             })
@@ -135,8 +152,8 @@ describe('Search session reports', () => {
         describe('Search by mentor', () => {
             it('Displays reports for mentor only', () => {
                 cy.get('.session-report-search select[id=mentorSelect]').select('mentor-2')
-
                 cy.get('.session-report-search .btn').contains('Search').click()
+                cy.wait('@searchReports')
 
                 cy.get('.session-report-list .items .item').should('have.length', 1)
                 cy.get('.session-report-list .items .item .mentor-name').should('contain', 'mentor-2')
@@ -175,6 +192,8 @@ describe('Search session reports', () => {
             // session reports search
             cy.visit('/session-reports')
             cy.url().should('contain', '/session-reports/search')
+
+            cy.wait('@searchReports')
         })
 
         describe('Default search', () => {
@@ -191,6 +210,7 @@ describe('Search session reports', () => {
                 cy.get('.find-by-id-toggle').click()
                 cy.get('.find-by-id-form #idInput').type('1')
                 cy.get('.find-by-id-form .btn.search').click()
+                cy.wait('@findReport')
 
                 cy.url().should('contain', '/session-reports/1')
                 cy.get('.session-report-view .table.session-report').should('exist')
@@ -200,6 +220,7 @@ describe('Search session reports', () => {
                 cy.get('.find-by-id-toggle').click()
                 cy.get('.find-by-id-form #idInput').type('4')
                 cy.get('.find-by-id-form .btn.search').click()
+                cy.wait('@findReport')
 
                 cy.url().should('contain', '/session-reports/4')
                 cy.get('.session-report-view .table.session-report').should('exist')
@@ -210,6 +231,7 @@ describe('Search session reports', () => {
                 cy.get('.find-by-id-toggle').click()
                 cy.get('.find-by-id-form #idInput').type('633')
                 cy.get('.find-by-id-form .btn.search').click()
+                cy.wait('@findReport')
 
                 cy.get('.session-report-view .table.session-report').should('not.exist')
                 cy.get('.session-report-view .status').should('contain', 'Problem loading session report')
@@ -220,6 +242,7 @@ describe('Search session reports', () => {
             it('Displays reports where matched', () => {
                 cy.get('.session-report-search .btn').contains('Today').click()
                 cy.get('.session-report-search .btn').contains('Search').click()
+                cy.wait('@searchReports')
 
                 cy.get('.session-report-list .items .item').should('have.length', 4)
             })
@@ -227,6 +250,7 @@ describe('Search session reports', () => {
             it('Does not display reports where no match', () => {
                 cy.get('.session-report-search .btn').contains('Yesterday').click()
                 cy.get('.session-report-search .btn').contains('Search').click()
+                cy.wait('@searchReports')
 
                 cy.get('.session-report-list .items .item').should('have.length', 0)
             })
@@ -235,8 +259,8 @@ describe('Search session reports', () => {
         describe('Search by mentor', () => {
             it('Displays reports for mentor only', () => {
                 cy.get('.session-report-search select[id=mentorSelect]').select('mentor-2')
-
                 cy.get('.session-report-search .btn').contains('Search').click()
+                cy.wait('@searchReports')
 
                 cy.get('.session-report-list .items .item').should('have.length', 1)
                 cy.get('.session-report-list .items .item .mentor-name').should('contain', 'mentor-2')
@@ -267,6 +291,12 @@ describe('Search session reports', () => {
 })
 
 describe('Session workflow', () => {
+    beforeEach(() => {
+        cy.server()
+        cy.route('**/api/session-reports/*').as('findReport')
+        cy.route('**/api/session-reports*').as('searchReports')
+    })
+
     describe('For mentor', () => {
         beforeEach(() => {
             // Login
@@ -277,11 +307,15 @@ describe('Session workflow', () => {
             // session reports search
             cy.visit('/session-reports')
             cy.url().should('contain', '/session-reports/search')
+            cy.wait("@searchReports")
             cy.get('.session-report-list .items .item').click()
+            cy.wait("@findReport")
+            cy.get('.session-report-workflow').should('exist')
+
         })
 
-        it('Shows workflow', () => {
-            cy.get('.session-report-workflow').should('exist')
+        it('Shows workflow nav bar', () => {
+            cy.get('.workflow-nav').should('exist')
         })
 
         it('Shows selected session report in view mode', () => {
@@ -306,11 +340,14 @@ describe('Session workflow', () => {
             // session reports search
             cy.visit('/session-reports')
             cy.url().should('contain', '/session-reports/search')
+            cy.wait("@searchReports")
             cy.get('.session-report-list .items .item').first().click()
+            cy.wait("@findReport")
+            cy.get('.session-report-workflow').should('exist')
         })
 
-        it('Shows workflow', () => {
-            cy.get('.session-report-workflow').should('exist')
+        it('Shows workflow nav bar', () => {
+            cy.get('.workflow-nav').should('exist')
         })
 
         it('Allows navigation', () => {
@@ -342,11 +379,14 @@ describe('Session workflow', () => {
             // session reports search
             cy.visit('/session-reports')
             cy.url().should('contain', '/session-reports/search')
+            cy.wait("@searchReports")
             cy.get('.session-report-list .items .item').first().click()
+            cy.wait("@findReport")
+            cy.get('.session-report-workflow').should('exist')
         })
 
-        it('Shows workflow', () => {
-            cy.get('.session-report-workflow').should('exist')
+        it('Shows workflow nav bar', () => {
+            cy.get('.workflow-nav').should('exist')
         })
 
         it('Allows navigation', () => {
@@ -370,7 +410,12 @@ describe('Session workflow', () => {
 })
 
 describe('Session manage', () => {
-    
+    beforeEach(() => {
+        cy.server()
+        cy.route('**/api/session-reports/*').as('findReport')
+        cy.route('**/api/session-reports*').as('searchReports')
+        cy.route('**/api/expense-claims?session_id=*').as('searchClaimsBySessionReport')
+    })
     describe('As mentor', () => {
         beforeEach(() => {
             // Login
@@ -380,7 +425,8 @@ describe('Session manage', () => {
     
             // specific session report manager
             cy.visit('app#/session-reports/1')
-            cy.get('.session-manage-view-toggler').should('exist')
+            cy.wait('@findReport')
+            cy.get('.session-report-manage').should('exist')
         })
 
         it ('Displays in view mode', () => {
@@ -389,6 +435,8 @@ describe('Session manage', () => {
         })
 
         it ('Shows associated expense claims', () => {
+            cy.wait('@searchClaimsBySessionReport')
+
             cy.get('.expense-claims-list').should('exist')
             cy.get('.expense-claims-list .items .item').should('have.length', 2)
             cy.get('.expense-claims-list .items .item .claim-id').each(item =>
@@ -410,7 +458,8 @@ describe('Session manage', () => {
     
             // specific session report manager
             cy.visit('app#/session-reports/2')
-            cy.get('.session-manage-view-toggler').should('exist')
+            cy.wait('@findReport')
+            cy.get('.session-report-manage').should('exist')
         })
 
         it ('Defaults to view mode', () => {
@@ -419,6 +468,8 @@ describe('Session manage', () => {
         })
 
         it ('Shows associated expense claims', () => {
+            cy.wait('@searchClaimsBySessionReport')
+
             cy.get('.expense-claims-list').should('exist')
             cy.get('.expense-claims-list .items .item').should('have.length', 1)
             cy.get('.expense-claims-list .items .item .claim-id').should('contain', '3')
@@ -463,7 +514,8 @@ describe('Session manage', () => {
     
             // specific session report manager
             cy.visit('app#/session-reports/2')
-            cy.get('.session-manage-view-toggler').should('exist')
+            cy.wait('@findReport')
+            cy.get('.session-report-manage').should('exist')
         })
 
         it ('Defaults to view mode', () => {
@@ -472,6 +524,8 @@ describe('Session manage', () => {
         })
 
         it ('Shows associated expense claims', () => {
+            cy.wait('@searchClaimsBySessionReport')
+
             cy.get('.expense-claims-list').should('exist')
             cy.get('.expense-claims-list .items .item').should('have.length', 1)
             cy.get('.expense-claims-list .items .item .claim-id').should('contain', '3')

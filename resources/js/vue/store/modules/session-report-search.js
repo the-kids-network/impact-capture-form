@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { List } from 'immutable'
 
 const module = {
+    namespaced: true,
     state: {
         list: List(),
         current: null,

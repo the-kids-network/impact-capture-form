@@ -1,10 +1,13 @@
 import _ from 'lodash'
-import {Map, Set} from 'immutable';
+import { Map, Set } from 'immutable';
 import VueTagsInput from '@johmun/vue-tags-input';
+import statusMixin from '../status-box/mixin'
 
 const Component = {
 
     props: ['documentId'],
+
+    mixins: [statusMixin],
 
     components: {
         VueTagsInput,
@@ -12,13 +15,16 @@ const Component = {
 
     template: `
         <div class="tagger">
-            <status-box class="status" 
+            <status-box 
+                ref="status-box"
+                class="status" 
+                :successes="successes"
                 :errors="errors" />
 
             <div class="entry">
                 <div class="description"> Please select tags (maximum of {{ maximumTagsAllowed }}) for the document:</div>
                 
-                <vue-tags-input class='tags-input'
+                <vue-tags-input class='documents tags-input'
                     v-model="tagToEnter"
                     :disabled="tagEntryDisabled"
                     :tags="_tags"
@@ -38,7 +44,6 @@ const Component = {
 
     data() {
         return {
-            errors: [],
             // tag input config
             tagEntryDisabled: false,
             autocompleteMinLength:0,
@@ -67,8 +72,8 @@ const Component = {
     },
 
     async created() {
-        this.setTagsForDocument()
-        this.setTagSuggestions()
+        this.initialiseTagsForDocument()
+        this.initialiseTagSuggestions()
     },
 
     async mounted() {
@@ -78,37 +83,30 @@ const Component = {
         /**
          * View read/write functions below
          */
-        handleError({ messages, disableTagEntry=false } = obj) {
-            this.tagEntryDisabled = disableTagEntry
-            this.errors = messages
+        disableTagEntry() {
+            this.tagEntryDisabled = true
         },
 
-        clearError() {
-            this.errors = []
+        async initialiseTagSuggestions() {
+            this.tagSuggestions = await this.fetchTagSuggestions()
         },
 
-        async setTagSuggestions() {
-            this.tagSuggestions = await this.getTagSuggestions()
-        },
-
-        async setTagsForDocument() {
+        async initialiseTagsForDocument() {
             try {
-                this.tags = await this.getTagsForDocument(this.documentId)
+                this.tags = await this.fetchTagsForDocument(this.documentId)
             } catch (err) {
-                this.handleError({
-                    messages: ["Failed to get tags for document."],
-                    disableTagEntry: true
-                })
+                this.setErrors({errs: ["Problem getting existing tags for document"]})
+                this.disableTagEntry()
             }
         },
 
         async handleCreateTag(tagLabel) {      
-            this.clearError()
+            this.clearErrors()
 
             // validate tag
             const { valid, reasons } = this.validateTagLabel(this.tags, tagLabel, this.maximumTagsAllowed)
             if (!valid) {
-                this.handleError({messages: reasons})
+                this.setErrors({errs: reasons})
                 return;
             } 
 
@@ -119,7 +117,7 @@ const Component = {
                 this.tags = this.tags.merge(keyedCreatedTags)
                 this.tagToEnter = ''
             } catch (err) {
-                this.handleError({messages: [`Failed to create tag: ${tagLabel}`]})
+                this.setErrors({errs: [`Problem creating tag: ${tagLabel}`]})
             }
         },
 
@@ -128,19 +126,19 @@ const Component = {
             const tagId = this.tags.get(tagLabel)
             
             try {
-                await axios.delete(`/tags/${tagId}`)
+                await axios.delete(`/api/tags/${tagId}`)
                 // remove from view tags
                 this.tags = this.tags.delete(tagLabel)
             } catch (err) {
-                this.handleError({messages: [`Failed to delete tag: ${tagLabel}`]})
+                this.setErrors({errs: [`Problem deleting tag: ${tagLabel}`]})
             }
         },
 
         /*
         * Functions that do not interact with component state directly
         */
-        async getTagSuggestions() {
-            const urlGetTags = `/tags`
+        async fetchTagSuggestions() {
+            const urlGetTags = `/api/tags`
             const tags = (await axios.get(
                 urlGetTags,
                 { params: { resource_type: "document" } }
@@ -148,8 +146,8 @@ const Component = {
             return Set(tags.map(t => t.label))
         },
 
-        async getTagsForDocument(documentId) {
-            const urlGetTags = `/tags`
+        async fetchTagsForDocument(documentId) {
+            const urlGetTags = `/api/tags`
             const params = {
                 resource_type: "document",
                 resource_id: `${documentId}`
@@ -169,12 +167,12 @@ const Component = {
                     tag_label: tagLabel
                 }
             ];
-            const createdTagsPayload = (await axios.post(`/tags`, tagsBody)).data
+            const createdTagsPayload = (await axios.post(`/api/tags`, tagsBody)).data
             return Object.assign({}, ...createdTagsPayload.map(t => ({ [t.label]: t.id })))
         },
 
         async deleteTag(tagId) {        
-            return (await axios.delete(`/tags/${tagId}`)).data
+            return (await axios.delete(`/api/tags/${tagId}`)).data
         },
 
         validateTagLabel(existingTags, tagLabel, maximumTagsAllowed) {

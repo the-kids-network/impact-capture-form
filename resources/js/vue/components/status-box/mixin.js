@@ -38,8 +38,18 @@ export default {
             this.successes = [];
         },
 
+        setErrors({errs=[], scrollToPos='top'}) {
+            this.errors = errs
+            this.scrollTo(scrollToPos)
+        },
+
         addErrors({errs=[], scrollToPos='top'}) {
             this.errors.push(...errs)
+            this.scrollTo(scrollToPos)
+        },
+
+        setSuccesses({succs=[], scrollToPos='top'}) {
+            this.successes = succs
             this.scrollTo(scrollToPos)
         },
 

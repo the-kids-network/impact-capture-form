@@ -48,12 +48,7 @@ class SessionReportApiController extends Controller {
         }
        
         // Run search
-        $search = (new SessionSearch())
-            ->mentorId($request->mentor_id)
-            ->menteeId($request->mentee_id)
-            ->sessionDateRangeStart($request->session_date_range_start)
-            ->sessionDateRangeEnd($request->session_date_range_end);
-
+        $search = $this->buildSearchParameters($request);
         $reports = $this->sessionReportService->getReportsUsing($search);
  
         // Construct response as JSON
@@ -79,12 +74,7 @@ class SessionReportApiController extends Controller {
         }
         
         // Run search
-        $search = (new SessionSearch())
-            ->mentorId($request->mentor_id)
-            ->menteeId($request->mentee_id)
-            ->sessionDateRangeStart($request->session_date_range_start)
-            ->sessionDateRangeEnd($request->session_date_range_end);
-
+        $search = $this->buildSearchParameters($request);
         $reports = $this->sessionReportService->getReportsUsing($search);
 
         // Construct response as CSV
@@ -154,6 +144,16 @@ class SessionReportApiController extends Controller {
         ]);
     }
 
+    private function buildSearchParameters(Request $request) {
+        return (new SessionSearch())
+            ->mentorId($request->mentor_id)
+            ->menteeId($request->mentee_id)
+            ->safeguardingId($request->safeguarding_id)
+            ->sessionRatingId($request->session_rating_id)
+            ->sessionDateRangeStart($request->session_date_range_start)
+            ->sessionDateRangeEnd($request->session_date_range_end);
+    }
+
     private function mapReportToDto($report) {
         return [
             'id' => $report->id,
@@ -169,10 +169,7 @@ class SessionReportApiController extends Controller {
             'length_of_session' => $report->length_of_session,
             'activity_type' => $report->activity_type,
             'location' => $report->location,
-            'safeguarding_concern' => [
-                'id' => $report->safeguarding_concern,
-                'type' => SafeguardingConcernLookup::$values[$report->safeguarding_concern]['name']
-            ],
+            'safeguarding_concern' => SafeguardingConcernLookup::$values[$report->safeguarding_concern],
             'physical_appearance' => $report->physical_appearance,
             'emotional_state' => $report->emotional_state,
             'rating' => $report->session_rating,

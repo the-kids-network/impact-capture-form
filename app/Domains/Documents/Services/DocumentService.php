@@ -4,6 +4,7 @@ namespace App\Domains\Documents\Services;
 
 use App\Domains\Documents\Events\DocumentDeleted;
 use App\Domains\Documents\Models\Document;
+use App\Domains\Documents\Models\DocumentSearch;
 use App\Exceptions\NotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -11,11 +12,14 @@ use Illuminate\Support\Facades\Log;
 
 class DocumentService {
 
-    public function getAll() {
-        $documents = Document::viewable()->orderBy('updated_at', 'desc')->get();
+    public function getWithSearch(DocumentSearch $search) {
+        $query = Document::viewable();
+        
+        if ($search->documentIds) {
+            $query->whereIn('id', $search->documentIds);
+        }
 
-        // return 
-        return $documents;
+        return $query->orderBy('updated_at', 'desc')->get();
     }
 
     public function getViewableUrlFor($documentId) {
