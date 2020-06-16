@@ -11,7 +11,7 @@ const Component = {
     },
 
     template: `
-        <div>
+        <div class="session-report-manage">
             <div class="row">
                 <div class="col-md-12">
                     <nav class="nav page-nav">

@@ -12,8 +12,8 @@ const Component = {
     },
 
     template: `
-        <div>
-            <div class="container session-report-workflow">
+        <div class="session-report-workflow">
+            <div class="container workflow-nav">
                 <div class="row page-nav">
                     <div class="navigation-buttons col-8 mt-auto mb-auto text-left ">
                         <span :class="{'first-report btn btn-primary btn-sm': true, 'disabled': !firstSessionReport}" 
