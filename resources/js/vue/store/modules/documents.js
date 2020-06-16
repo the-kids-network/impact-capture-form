@@ -118,12 +118,16 @@ const module = {
                 },
                 setSuggestedSearchTags(state, suggestions) {
                     state.suggestedSearchTags = suggestions
+                },
+                clearSuggestedSearchTags(state) {
+                    state.suggestedSearchTags = Set()
                 }
             },
             actions: {
                 async selectSearchTags({state, commit, dispatch}, tags) {
                     if (_.get(tags, 'size')) {
                         commit('setSelectedSearchTags', tags)
+                        commit('clearSuggestedSearchTags')
                         await dispatch('search')
                         await dispatch('fetchSuggestedSearchTags')
                     } else {

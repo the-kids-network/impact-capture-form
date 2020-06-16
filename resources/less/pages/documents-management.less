@@ -90,6 +90,12 @@
                     margin-bottom: 15px;
                 }
             }
+
+            .documents.tags-input {
+                .ti-autocomplete {
+                    position: absolute;
+                }
+            }
         }
     }
 
@@ -113,6 +119,7 @@
             // to enable scroll on long autocomplete list
             overflow-y: auto; 
             max-height: 200px;
+            position: relative;
 
             .ti-selected-item {
                 background-color: @brand-secondary;
