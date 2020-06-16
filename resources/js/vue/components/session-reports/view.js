@@ -24,6 +24,8 @@ const Component = {
 
             <div class="table-responsive" v-if="sessionReport">
                 <table class="table session-report">
+                    <col class="col-field">
+	                <col class="col-value">
                     <tr>
                         <th>Field</th>
                         <th>Value</th>

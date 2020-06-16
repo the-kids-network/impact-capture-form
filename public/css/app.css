@@ -19204,6 +19204,9 @@ be a descendant of the grid when it is being dragged.
 .session-report.show .modify-session-report .delete-report {
   margin-left: 10px;
 }
+.session-report-view .col-field {
+  width: 25%;
+}
 .session-report-edit .entry {
   display: flex;
 }
