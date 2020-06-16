@@ -50,18 +50,10 @@ const Component = {
 
     methods: { 
         async handleExportSessionReports() {
-            // search params
-            const params = {
-                ...(this.searchParams.mentorId ? {'mentor_id': this.searchParams.mentorId}: {}),
-                ...(this.searchParams.menteeId ? {'mentee_id': this.searchParams.menteeId}: {}),
-                ...(this.searchParams.sessionDateRangeStart ? {'session_date_range_start': this.searchParams.sessionDateRangeStart}: {} ),
-                ...(this.searchParams.sessionDateRangeEnd ? {'session_date_range_end': this.searchParams.sessionDateRangeEnd}: {} ),
-            }
-
             // fetch data if not already cached
             if (!this.csvData) {
                 try {
-                    const {data, filename} = await this.fetchSessionReportsExport(params)
+                    const {data, filename} = await this.fetchSessionReportsExport(this.searchParams)
                     this.csvData = data
                     this.csvFileName = filename
                 } catch (e) {
