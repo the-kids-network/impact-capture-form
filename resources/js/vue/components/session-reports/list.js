@@ -45,6 +45,9 @@ const Component = {
                     </table>
                 </div>
             </paginator>
+            <div class="container mt-4">
+                <span class="row">Session report count: <span class="list-size">{{sessionReports.size}}</span></span>
+            </div>
         </div>
     `,
 

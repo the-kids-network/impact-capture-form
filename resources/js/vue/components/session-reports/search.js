@@ -36,7 +36,7 @@ const Component = {
                                 @change="mentee_id = null">
                                 <option :value="null_value" selected>Any</option>
                                 <option 
-                                    v-for="mentor in mentors"
+                                    v-for="mentor in mentorsLookup"
                                     :value="mentor.id">
                                     {{ mentor.name }}
                                 </option>
@@ -50,7 +50,7 @@ const Component = {
                                 v-model="mentee_id">
                                 <option :value="null_value" selected>Any</option>
                                 <option 
-                                    v-for="mentee in selectableMentees"
+                                    v-for="mentee in menteesLookup"
                                     :value="mentee.id">
                                     {{ mentee.name }}
                                 </option>
@@ -140,7 +140,7 @@ const Component = {
             isSearching: false,
 
             // lookups
-            mentors:[],
+            mentors: List(),
             safeguardingOptions: [],
             sessionRatingsLookup: [],
 
@@ -155,9 +155,14 @@ const Component = {
     },
 
     computed: {
-        selectableMentees() {
-            const mentor = List(this.mentors).find(m => m.id === this.mentor_id)
-            return mentor ? mentor.mentees : []
+        mentorsLookup() {
+            return this.mentors.sortBy(m => m.name)
+        },
+
+        menteesLookup() {
+            const mentor = this.mentors.find(m => m.id === this.mentor_id)
+            const mentees = mentor ? List(mentor.mentees) : List()
+            return mentees.sortBy(m => m.name)
         }
     },
 
@@ -265,7 +270,7 @@ const Component = {
 
         async initialiseMentors() {
             try {
-                this.mentors = await this.fetchMentors()
+                this.mentors = List(await this.fetchMentors())
             } catch (e) {
                 const messages = extractErrors({e, defaultMsg: `Problem getting mentors lookup`})
                 this.addErrors({errs: messages})
