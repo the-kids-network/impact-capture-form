@@ -20,12 +20,6 @@ const Component = {
         },
     },
 
-    components: {
- 
-    },
-
-    //
-
     template: `
         <div>
             <slot :itemsToDisplay="itemsForCurrentPage"></slot>
