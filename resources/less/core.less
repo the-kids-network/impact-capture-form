@@ -137,34 +137,42 @@
     }
 
     // Pagination
-    .pagination {
-        flex-wrap: wrap;
-        
-        .page-item {
-            &.active {
-                .page-link {
-                    background-color: @brand-primary;
-                    border-color: @brand-primary;
-                    color: @white;
+    .pagination-bar {
 
-                    &:hover {
-                        color: @white;
+        .page-size-list {
+            margin-top: 1rem;
+        }
+
+        .pages-list {
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            
+            .page-item {
+                &.active {
+                    .page-link {
                         background-color: @brand-primary;
+                        border-color: @brand-primary;
+                        color: @white;
+    
+                        &:hover {
+                            color: @white;
+                            background-color: @brand-primary;
+                        }
                     }
                 }
-            }
-
-            .page-link {
-                background-color: @white;
-                color: @brand-primary;
-
-                &:hover {
+    
+                .page-link {
+                    background-color: @white;
                     color: @brand-primary;
-                    background-color: @brand-neutral;
-                }
-
-                &:focus {
-                    box-shadow: 0 0 0 0.2rem lighten(@brand-primary, 30%);
+    
+                    &:hover {
+                        color: @brand-primary;
+                        background-color: @brand-neutral;
+                    }
+    
+                    &:focus {
+                        box-shadow: 0 0 0 0.2rem lighten(@brand-primary, 30%);
+                    }
                 }
             }
         }
