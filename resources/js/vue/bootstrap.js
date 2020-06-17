@@ -10,9 +10,9 @@ import VueScrollTo from 'vue-scrollto'
 import globalMixins from './mixin';
 import routes from './routes';
 
-import globalStore from './store/modules/global'
-import sessionReportsSearchStore from './store/modules/session-report-search'
-import documents from './store/modules/documents'
+import globalStoreModule from './store/modules/global'
+import sessionReportsStoreModule from './store/modules/session-reports'
+import documentsStoreModule from './store/modules/documents'
 
 
 import app from './components/app';
@@ -84,9 +84,9 @@ Vue.use(VueScrollTo)
 // Vuex
 const store = new Vuex.Store({
     modules: {
-        global: globalStore,
-        sessionReportSearch: sessionReportsSearchStore,
-        documents: documents
+        global: globalStoreModule,
+        sessionReports: sessionReportsStoreModule,
+        documents: documentsStoreModule
     }
 })
 store.dispatch('getUser');

@@ -8,6 +8,7 @@ const module = {
     modules: {
         upload: {
             namespaced: true,
+            
             state: {
                 files: List()
             },
@@ -40,7 +41,7 @@ const module = {
             },
             actions: {
                 // upload 
-                async upload({state, commit, rootState}) {
+                async upload({state, commit}) {
                     const filesToUpload = state.files
                     const clearFiles = () => commit('clearFiles');
 
@@ -124,26 +125,26 @@ const module = {
                 }
             },
             actions: {
-                async selectSearchTags({state, commit, dispatch}, tags) {
+                async selectSearchTags({commit, dispatch}, tags) {
                     if (_.get(tags, 'size')) {
                         commit('setSelectedSearchTags', tags)
                         commit('clearSuggestedSearchTags')
-                        await dispatch('search')
                         await dispatch('fetchSuggestedSearchTags')
+                        await dispatch('search')
                     } else {
                         commit('clearSelectedSearchTags')
                         await dispatch('fetchSuggestedSearchTags')
                     }
                 },
 
-                async fetchDocuments({state, commit, rootState}) {
+                async fetchDocuments({commit}) {
                     const apiFetch = async () => List((await axios.get(`/api/documents`)).data)
                     const setDocuments = (documents) => commit('setDocuments', documents)
 
                     setDocuments(await apiFetch())
                 },
 
-                async fetchSuggestedSearchTags({state, commit, rootState}) {
+                async fetchSuggestedSearchTags({state, commit}) {
                     const selectedSearchTags = state.selectedSearchTags
 
                     const fetchAllTags = async () => {
@@ -162,7 +163,7 @@ const module = {
                     )
                 },
 
-                async search({state, commit, rootState}) {
+                async search({state, commit}) {
                     const selectedSearchTags = state.selectedSearchTags
 
                     const fetchDocuments = async (tags) => {
@@ -175,12 +176,13 @@ const module = {
                     setMatchedItems(await fetchDocuments(selectedSearchTags.toArray()))
                 },
 
-                async fetchDocumentDownloadUrl({state, commit, rootState}, documentId) {
+                async fetchDocumentDownloadUrl({state, commit}, documentId) {
                     const downloadData = (await axios.get(`/api/documents/${documentId}/download`)).data
+                    
                     return downloadData.download_url
                 },
 
-                async deleteDocument({state, commit, rootState}, {document, hardDelete=false}) {
+                async deleteDocument({commit}, {document, hardDelete=false}) {
                     const deleteDoc = async (document, hardDelete) => 
                         (await axios.delete(`/api/documents/${document.id}`, { params: { 'really_delete': hardDelete } })).data
 
@@ -191,7 +193,7 @@ const module = {
                         : commit('updateDocument', updatedDoc)
                 },
 
-                async restoreDocument({state, commit, rootState}, {document}) {
+                async restoreDocument({commit}, {document}) {
                     const restoreDoc = async (document) => (await axios.post(`/api/documents/${document.id}/restore`)).data
 
                     const updatedDoc = await restoreDoc(document)
@@ -199,7 +201,7 @@ const module = {
                     commit('updateDocument', updatedDoc)
                 },
 
-                async shareDocument({state, commit, rootState}, {document, share=true}) {
+                async shareDocument({commit}, {document, share=true}) {
                     const shareDoc = async (document, share) => (await axios.post(`/api/documents/${document.id}/share`, { 'share': share })).data
 
                     const updatedDoc = await shareDoc(document, share)

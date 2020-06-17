@@ -97,10 +97,10 @@ const Component = {
         },
         searchResults: {
             get() {
-                return this.$store.state.sessionReportSearch.list
+                return this.$store.state.sessionReports.search.list
             },
             set(sessionReports) {
-                this.$store.commit('sessionReportSearch/setSessionReports', sessionReports)
+                this.$store.commit('sessionReports/search/setSessionReports', sessionReports)
             }
         },
     },
@@ -132,7 +132,7 @@ const Component = {
             }
         }, 
         handleSelectSessionReport(sessionReportId) {
-            this.$store.commit('sessionReportSearch/setCurrentSessionReportId', sessionReportId)
+            this.$store.commit('sessionReports/search/setCurrentSessionReportId', sessionReportId)
             this.$router.push({ name: 'session-reports-workflow' })
         },
 
