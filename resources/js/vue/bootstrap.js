@@ -8,13 +8,17 @@ import VModal from 'vue-js-modal'
 import VueScrollTo from 'vue-scrollto'
 
 import globalMixins from './mixin';
+
+// Vue router routes
 import routes from './routes';
 
+// vuex modules
 import globalStoreModule from './store/modules/global'
 import sessionReportsStoreModule from './store/modules/session-reports'
+import expensesStoreModule from './store/modules/expenses'
 import documentsStoreModule from './store/modules/documents'
 
-
+// vue reusable components
 import app from './components/app';
 import statusBox from './components/status-box/root';
 import navbar from './components/layout/navbar/navbar';
@@ -26,9 +30,11 @@ import security from './components/settings/security';
 import updatePassword from './components/settings/security/update-password';
 import register from './components/register/register';
 import calendar from './components/calendar/calendar';
+import sessionReportEdit from './components/session-reports/edit'
+
+// vue pages
 import documentUploadIndex from './pages/documents/upload';
 import documentBrowseIndex from './pages/documents/browse';
-import sessionReportEdit from './components/session-reports/edit'
 
 /*
  * Load Vue & Vue-Resource.
@@ -73,8 +79,7 @@ Vue.use(LocalStorage, {
     namespace: 'tkn',
     name: 'ls',
     storage: 'local'
-  }
-);
+});
 Vue.use(VueSessionStorage)
 
 Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false } })
@@ -86,6 +91,7 @@ const store = new Vuex.Store({
     modules: {
         global: globalStoreModule,
         sessionReports: sessionReportsStoreModule,
+        expenses: expensesStoreModule,
         documents: documentsStoreModule
     }
 })
@@ -104,4 +110,3 @@ new Vue({
     components: {
     }
 });
-

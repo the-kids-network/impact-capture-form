@@ -19,7 +19,9 @@ const Component = {
                 ref="status-box"
                 class="status" 
                 :successes="successes"
-                :errors="errors" />
+                :errors="errors"
+                @clearErrors="clearErrors"
+                @clearSuccesses="clearSuccesses" />
 
             <div class="entry">
                 <div class="description"> Please select tags (maximum of {{ maximumTagsAllowed }}) for the document:</div>
@@ -92,10 +94,11 @@ const Component = {
         },
 
         async initialiseTagsForDocument() {
-            try {
-                this.tags = await this.fetchTagsForDocument(this.documentId)
-            } catch (err) {
-                this.setErrors({errs: ["Problem getting existing tags for document"]})
+            await this.try("get existing tags for document",
+                async () => this.tags = await this.fetchTagsForDocument(this.documentId)
+            )
+
+            if (this.errors.length) {
                 this.disableTagEntry()
             }
         },
@@ -106,32 +109,31 @@ const Component = {
             // validate tag
             const { valid, reasons } = this.validateTagLabel(this.tags, tagLabel, this.maximumTagsAllowed)
             if (!valid) {
-                this.setErrors({errs: reasons})
+                this.addError({rootMessage: "Failure --> invalid tag", messages: reasons })
                 return;
             } 
 
             // create if valid
-            try {
-                const keyedCreatedTags = await this.createTagForDocument(this.documentId, tagLabel)
-                // update view tags
-                this.tags = this.tags.merge(keyedCreatedTags)
-                this.tagToEnter = ''
-            } catch (err) {
-                this.setErrors({errs: [`Problem creating tag: ${tagLabel}`]})
-            }
+            this.try("create tag",
+                async () => {
+                    const keyedCreatedTags = await this.createTagForDocument(this.documentId, tagLabel)
+                    // update view tags
+                    this.tags = this.tags.merge(keyedCreatedTags)
+                    this.tagToEnter = ''
+                }
+            )
         },
 
         async handleDeleteTag(tagLabel) {
             // find tag id for label
             const tagId = this.tags.get(tagLabel)
             
-            try {
-                await axios.delete(`/api/tags/${tagId}`)
-                // remove from view tags
-                this.tags = this.tags.delete(tagLabel)
-            } catch (err) {
-                this.setErrors({errs: [`Problem deleting tag: ${tagLabel}`]})
-            }
+            this.try(`delete tag:  ${tagLabel}`,
+                async () => {
+                    await this.deleteTag(tagId)
+                    this.tags = this.tags.delete(tagLabel)
+                }
+            )
         },
 
         /*

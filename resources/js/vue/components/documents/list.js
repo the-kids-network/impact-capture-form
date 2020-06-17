@@ -1,9 +1,8 @@
 import _ from 'lodash'
 import Popper from 'vue-popperjs';
 import 'vue-popperjs/dist/vue-popper.css';
-import {  mapActions, mapGetters } from 'vuex'
+import {  mapActions } from 'vuex'
 
-import { extractErrors } from '../../utils/api'
 import fileIconFor from "./fileicons";
 import statusMixin from '../status-box/mixin'
 import Paginator from "../pagination/paginator"
@@ -31,7 +30,9 @@ const Component = {
                 class="documents-status"
                 ref="status-box"
                 :errors="errors"
-                :successes="successes">
+                :successes="successes"
+                @clearErrors="clearErrors"
+                @clearSuccesses="clearSuccesses">
             </status-box>   
 
             <paginator 
@@ -206,51 +207,37 @@ const Component = {
     methods: { 
         async handleDownloadDocument(document) {
             this.clearStatus()
-            try {
+            this.try("download document", async () => {
                 const url = await this.fetchDocumentDownloadUrl(document.id)
                 window.open(url)
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem downloading document`})
-                this.setErrors({errs: messages})
-            }
+            })
         },
 
         handleDeleteDocument(document, hardDelete=false) {
             this.clearStatus()
-            this.locking(document, async document => {
-                try {
-                    await this.deleteDocument({document, hardDelete})
-                    this.setSuccesses({succs: (hardDelete) ? ["Permanently deleted document"] : ["Trashed document"]})
-                } catch (e) {
-                    const messages = extractErrors({e, defaultMsg: (hardDelete) ? "Problem permanently deleting document" : "Problem trashing document"})
-                    this.setErrors({errs: messages})
-                }
-            })
+
+            const action = (hardDelete)? "permanently delete document" : "trash document"
+
+            this.locking(document, async () =>
+                this.try(action, async () => await this.deleteDocument({document, hardDelete}))
+            )
         },
 
         handleRestoreDocument(document) {
             this.clearStatus()
-            this.locking(document, async document => {
-                try {
-                    await this.restoreDocument({document})
-                    this.setSuccesses({succs: ["Restored document"]})
-                } catch (e) {
-                    const messages = extractErrors({e, defaultMsg: "Problem restoring document"})
-                    this.setErrors({errs: messages})
-                }
+
+            this.locking(document, async () => {
+                this.try("restore document", async () => await this.restoreDocument({document}))
             })
         },
 
         handleShareDocument(document, share=true) {
             this.clearStatus()
-            this.locking(document, async document => {
-                try {
-                    await this.shareDocument({document, share})
-                    this.setSuccesses({succs: (share) ? ["Shared document"] : ["Unshared document"]})
-                } catch (e) {
-                    const messages = extractErrors({e, defaultMsg: (share) ? "Problem sharing document" : "Problem unsharing document"})
-                    this.setErrors({errs: messages})
-                }
+
+            const action  = (share) ? "share document" : "unshare document"
+
+            this.locking(document, async () => {
+                this.try(action, async () => await this.shareDocument({document, share}))
             })
         },
 
@@ -291,7 +278,7 @@ const Component = {
         async locking(document, func) {
             this.$set(document, 'wip', true)
             try {
-                await func(document);
+                await func();
             } finally {
                 this.$set(document, 'wip', false)
             }

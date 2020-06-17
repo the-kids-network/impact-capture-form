@@ -8,9 +8,14 @@ const Component = {
     },
 
     template: `
-        <div 
-            v-if="messages.length"
-            class="alert alert-success">
+        <div v-if="messages.length"
+             class="alert alert-success">
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                @click="$emit('clear')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
             <p v-if="messages.length === 1">
                 {{ messages[0] }}
             </p>

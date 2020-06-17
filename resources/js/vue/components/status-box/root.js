@@ -21,8 +21,10 @@ const Component = {
     template: `
         <div>
             <div class="top-of-status" ref="top-of-status" />
-            <error :errors="errors" />
-            <success :messages="successes" />
+            <error :errors="errors" 
+                    @clear="$emit('clearErrors')"/>
+            <success :messages="successes" 
+                    @clear="$emit('clearSuccesses')"/>
             <div class="bottom-of-status" ref="bottom-of-status" />
         </div>
     `,

@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import statusMixin from '../status-box/mixin'
-import { extractErrors } from '../../utils/api'
 import { downloadFileData } from '../../utils/download'
-import contentDisposition from 'content-disposition'
+import { mapActions } from 'vuex';
 
 const Component = {
 
@@ -18,7 +17,9 @@ const Component = {
             <status-box
                 ref="status-box"
                 class="status"
-                :errors="errors">
+                :errors="errors"
+                @clearErrors="clearErrors"
+                @clearSuccesses="clearSuccesses">
             </status-box> 
 
             <a @click="clearStatus(); handleExportSessionReports()">{{label}}</a>
@@ -52,37 +53,20 @@ const Component = {
         async handleExportSessionReports() {
             // fetch data if not already cached
             if (!this.csvData) {
-                try {
-                    const {data, filename} = await this.fetchSessionReportsExport(this.searchParams)
-                    this.csvData = data
-                    this.csvFileName = filename
-                } catch (e) {
-                    const messages = extractErrors({e, defaultMsg: `Problem exporting session report data`})
-                    this.addErrors({errs: messages, scrollToPos: 'bottom'})
-                    return
-                }
+                await this.try("export session report data",
+                    async () => {
+                        const {data, filename} = await this.fetchSessionReportsExport(this.searchParams)
+                        this.csvData = data
+                        this.csvFileName = filename
+                    }
+                )
             }
 
             // initiate download of data
             downloadFileData(this.csvFileName, this.csvData)
         },
 
-        async fetchSessionReportsExport(params) {
-            const response = await axios({
-                method: 'GET',
-                url: '/api/session-reports/export',
-                params: params,
-                responseType: 'blob',
-            })
-
-            const data = _.get(response, 'data')
-
-            const filename = _.has(response, 'headers.content-disposition') 
-                ? contentDisposition.parse(_.get(response, 'headers.content-disposition')).parameters.filename
-                : null
-
-            return {data, filename}
-        }
+        ...mapActions('sessionReports/search', ['fetchSessionReportsExport'])
     },
 };
 

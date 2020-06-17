@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import SessionReportViewToggler from './view-toggler';
+import { mapGetters } from 'vuex';
 
 const Component = {
 
@@ -60,43 +61,26 @@ const Component = {
     computed: {
         currentSessionReportId: {
             get () {
-                return this.$store.getters['sessionReports/search/currentSessionReportId']
+                return this.$store.getters['sessionReports/currentSessionReportId']
             },
             set (value) {
-                this.$store.commit('sessionReports/search/setCurrentSessionReportId', value)
+                this.$store.commit('sessionReports/setCurrentSessionReportId', value)
             }
         },
-        firstSessionReport: {
-            get () {
-                return this.$store.getters['sessionReports/search/firstSessionReport']
-            }
-        },
-        lastSessionReport: {
-            get () {
-                return this.$store.getters['sessionReports/search/lastSessionReport']
-            }
-        },
-        previousSessionReport: {
-            get () {
-                return this.$store.getters['sessionReports/search/previousSessionReport']
-            }
-        },
-        nextSessionReport: {
-            get () {
-                return this.$store.getters['sessionReports/search/nextSessionReport']
-            }
-        }
-    },
-
-    watch: {
         
+        ...mapGetters('sessionReports', [
+            'previousSessionReport',
+            'nextSessionReport',
+            'firstSessionReport',
+            'lastSessionReport'
+        ])
     },
 
-    created() {
-    },
+    watch: {},
 
-    mounted() {
-    },
+    created() {},
+
+    mounted() {},
 
     methods: { 
         goToSessionReport(sessionReportId) {

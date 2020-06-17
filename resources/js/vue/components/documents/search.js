@@ -3,7 +3,6 @@ import VueTagsInput from '@johmun/vue-tags-input'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import { Set } from 'immutable'
 
-import { extractErrors } from '../../utils/api'
 import statusMixin from '../status-box/mixin'
 
 const Component = {
@@ -22,7 +21,9 @@ const Component = {
                 ref="status-box"
                 class="status" 
                 :successes="successes"
-                :errors="errors" />
+                :errors="errors"
+                @clearErrors="clearErrors"
+                @clearSuccesses="clearSuccesses"/>
 
             <div class="search-bar">
                 <vue-tags-input class='documents tags-input'
@@ -75,8 +76,7 @@ const Component = {
     },
 
     async created() {
-        await this.handleInitialiseDocuments()
-        this.handleInitialiseSuggestedSearchTags()
+        await this.tryInitialise()
     },
 
     async mounted() {
@@ -84,32 +84,22 @@ const Component = {
     },
 
     methods: {
-        async handleInitialiseSuggestedSearchTags() {
-            try {
-                await this.initialiseSuggestedSearchTags()
-            } catch(e) {
-                const messages = extractErrors({e, defaultMsg: "Problem initialising search tag suggestions"})
-                this.addErrors({errs: messages})
-            }
-        },
+        async tryInitialise() {
+            await this.try("initialise search tag suggestions",
+                async () => await this.initialiseSuggestedSearchTags() 
+            )
 
-        async handleInitialiseDocuments() {
-            try {
-                await this.initialiseDocuments()
-            } catch(e) {
-                const messages = extractErrors({e, defaultMsg: "Problem initialising documents"})
-                this.addErrors({errs: messages})
-            }
+            this.try("initialise documents",
+                async () => await this.initialiseDocuments() 
+            )
         },
 
         async handleSelectSearchTags(tags) {
-            try {
-                const tagsSet = Set(tags.map(t => t.text))
-                await this.submitSearchTags(tagsSet)
-            } catch(e) {
-                const messages = extractErrors({e, defaultMsg: "Problem performing search"})
-                this.addErrors({errs: messages})
-            }
+            const tagsSet = Set(tags.map(t => t.text))
+
+            this.try("perform search",
+                async () => await this.submitSearchTags(tagsSet)
+            )
         },
 
         async handleClearSearchTags() {

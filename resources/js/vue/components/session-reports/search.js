@@ -1,9 +1,9 @@
 import _ from 'lodash'
 import { List } from 'immutable';
-import { extractErrors } from '../../utils/api'
 import statusMixin from '../status-box/mixin'
 import { SEARCH_DATE_FORMAT } from './consts'
 import { dateRange } from '../../utils/date';
+import { mapActions, mapState } from 'vuex';
 
 const Component = {
 
@@ -23,7 +23,9 @@ const Component = {
             <status-box
                 ref="status-box"
                 class="status"
-                :errors="errors">
+                :errors="errors"
+                @clearErrors="clearErrors"
+                @clearSuccesses="clearSuccesses">
             </status-box>   
 
             <form class="form">
@@ -36,7 +38,7 @@ const Component = {
                                 @change="mentee_id = null">
                                 <option :value="null_value" selected>Any</option>
                                 <option 
-                                    v-for="mentor in mentorsLookup"
+                                    v-for="mentor in mentorsLookupSorted"
                                     :value="mentor.id">
                                     {{ mentor.name }}
                                 </option>
@@ -50,7 +52,7 @@ const Component = {
                                 v-model="mentee_id">
                                 <option :value="null_value" selected>Any</option>
                                 <option 
-                                    v-for="mentee in menteesLookup"
+                                    v-for="mentee in menteesLookupSorted"
                                     :value="mentee.id">
                                     {{ mentee.name }}
                                 </option>
@@ -66,7 +68,7 @@ const Component = {
                                 v-model="safeguarding_id">
                                 <option :value="null_value" selected>Any</option>
                                 <option 
-                                    v-for="safeguardingOption in safeguardingOptions"
+                                    v-for="safeguardingOption in safeguardingLookup"
                                     :value="safeguardingOption.id">
                                     {{ safeguardingOption.label }}
                                 </option>
@@ -93,7 +95,7 @@ const Component = {
                     <div class="col-md-6">
                         <div class="form-row">
                             <div class="col-md-6 form-group">
-                                <label class="col-form-label" for="sessionDateRangeStartInput">Session Date Start <a @click.prevent="handleClearData('session_date_range_start')" class="fas fa-times"/></label>
+                                <label class="col-form-label" for="sessionDateRangeStartInput">Session Date Start <a @click.prevent="handleClearField('session_date_range_start')" class="fas fa-times"/></label>
                                 <input id="sessionDateRangeStartInput"
                                     type="text" 
                                     class="form-control form-control-sm datepicker session-date-range-start"
@@ -101,7 +103,7 @@ const Component = {
                                     autocomplete="off" />
                             </div>
                             <div class="col-md-6 form-group">
-                                <label class="col-form-label" for="sessionDateRangeEndInput">Session Date End <a @click.prevent="handleClearData('session_date_range_end')" class="fas fa-times"/></label>
+                                <label class="col-form-label" for="sessionDateRangeEndInput">Session Date End <a @click.prevent="handleClearField('session_date_range_end')" class="fas fa-times"/></label>
                                 <input id="sessionDateRangeEndInput"
                                     type="text" 
                                     class="form-control form-control-sm datepicker session-date-range-end"
@@ -139,11 +141,6 @@ const Component = {
             null_value: null,
             isSearching: false,
 
-            // lookups
-            mentors: List(),
-            safeguardingOptions: [],
-            sessionRatingsLookup: [],
-
             // default search state
             mentor_id: null,
             mentee_id: null,
@@ -155,12 +152,14 @@ const Component = {
     },
 
     computed: {
-        mentorsLookup() {
-            return this.mentors.sortBy(m => m.name)
+        ...mapState('sessionReports/lookups', ['mentorsLookup', 'safeguardingLookup', 'sessionRatingsLookup']),
+
+        mentorsLookupSorted() {
+            return this.mentorsLookup.sortBy(m => m.name)
         },
 
-        menteesLookup() {
-            const mentor = this.mentors.find(m => m.id === this.mentor_id)
+        menteesLookupSorted() {
+            const mentor = this.mentorsLookup.find(m => m.id === this.mentor_id)
             const mentees = mentor ? List(mentor.mentees) : List()
             return mentees.sortBy(m => m.name)
         }
@@ -170,16 +169,14 @@ const Component = {
         searchCriteria() {
             this.clearErrors()
             this.applySearchCriteria()
-            this.search()
+            this.trySearch()
         }
     },
 
     async created() {
-        await this.initialiseMentors()
-        await this.initialiseSafeguardingOptions()
-        await this.initialiseSessionRatingsLookup()
+        await this.tryInitialiseLookups()
         this.applySearchCriteria()
-        this.search()
+        this.trySearch()
     },
 
     mounted() {
@@ -200,7 +197,7 @@ const Component = {
     },
 
     methods: { 
-        handleClearData(field) {
+        handleClearField(field) {
             if (this.hasOwnProperty(field)) {
                 this[field] = null
             }
@@ -214,7 +211,9 @@ const Component = {
         },
 
         handleClickSearch() {
-            this.publishSearchCriteria(this.buildSearchCriteria())
+            const searchCriteria = this.buildSearchCriteria()
+            this.$emit('searchCriteria', searchCriteria)
+
         },
 
         applySearchCriteria() {
@@ -232,19 +231,7 @@ const Component = {
             }
         },
 
-        publishSearchCriteria(searchCriteria) {
-            this.$emit('searchCriteria', searchCriteria)
-        },
-
-        publishSearchResults(results) {
-            this.$emit('searchResults', List(results))
-        },
-
-        clearSearchResults() {
-            this.$emit('searchResults', [])
-        },
-
-        async search() {
+        async trySearch() {
             const query = {
                 mentor_id: this.mentor_id,
                 mentee_id: this.mentee_id,
@@ -256,66 +243,33 @@ const Component = {
                 exclude_fields: ['meeting_details']
             }
 
+            this.isSearching = true
             try {
-                this.isSearching = true
-                const results = await this.fetchSessionReports(query)
-                this.publishSearchResults(results)
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem searching session reports`})
-                this.addErrors({errs: messages})
+                await this.try("search session reports", 
+                    async () => await this.search(query), 
+                )
             } finally {
                 this.isSearching = false
             }
         },
 
-        async initialiseMentors() {
-            try {
-                this.mentors = List(await this.fetchMentors())
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem getting mentors lookup`})
-                this.addErrors({errs: messages})
-            }
+        tryInitialiseLookups() {
+            this.try("initialise mentors lookup", 
+                async () => await this.initialiseMentorsLookup(),
+            )
+            this.try("initialise safeguarding lookup", 
+                async () => await this.initialiseSafeguardingLookup(),
+            )
+            this.try("initialise session rating lookup", 
+                async () => await this.initialiseSessionRatingsLookup(),
+            )
         },
 
-        async initialiseSafeguardingOptions() {
-            try {
+        ...mapActions('sessionReports/lookups', 
+            ['initialiseMentorsLookup', 'initialiseSafeguardingLookup', 'initialiseSessionRatingsLookup']),
 
-                this.safeguardingOptions = await this.fetchSafeguardingOptions()
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem getting safeguarding lookup`})
-                this.addErrors({errs: messages})
-            }
-        },
-
-        async initialiseSessionRatingsLookup() {
-            try {
-
-                this.sessionRatingsLookup = await this.fetchSessionRatingsLookup()
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem getting session ratings lookup`})
-                this.addErrors({errs: messages})
-            }
-        },
-
-        /**
-         * API data
-         */
-        async fetchSessionReports(queryParameters) {
-            return (await axios.get(`/api/session-reports`, { params: queryParameters })).data
-        },
-
-        async fetchMentors() {
-            return (await axios.get(`/api/users`, { params: {role: 'mentor'} })).data
-        },
-
-        async fetchSafeguardingOptions() {
-            return (await axios.get(`/api/safeguarding-options`)).data
-        },
-
-        async fetchSessionRatingsLookup() {
-            return (await axios.get(`/api/session-ratings`)).data
-        }
-
+        ...mapActions('sessionReports/search', 
+            ['search'])
     }
 };
 

@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import { extractErrors } from '../../utils/api'
 import { parseDate, formatDate } from '../../utils/date'
 import statusMixin from '../status-box/mixin'
 import { SESSION_DATE_FORMAT } from './consts';
+import { mapActions, mapState } from 'vuex';
 
 const Component = {
 
@@ -19,7 +19,9 @@ const Component = {
                 ref="status-box"
                 class="status"
                 :successes="successes"
-                :errors="errors">
+                :errors="errors"
+                @clearErrors="clearErrors"
+                @clearSuccesses="clearSuccesses">
             </status-box>   
 
             <div class="session-report-edit-form container" v-if="sessionReport">
@@ -43,11 +45,11 @@ const Component = {
                         <div class="col-md-6 entry">
                             <input id="sessionDateInput"
                                 type="text" 
-                                :class="{ 'form-control': true, 'datepicker': true, 'sessiondate' : true, 'edited': isFieldDirty('sessionDate') }"
-                                v-model="sessionDate"
+                                :class="{ 'form-control': true, 'datepicker': true, 'sessiondate' : true, 'edited': isFieldDirty('f_sessionDate') }"
+                                v-model="f_sessionDate"
                                 autocomplete="off">
-                            <div v-if="isFieldDirty('sessionDate')"
-                                class="revertField"><span class="fas fa-history" @click="revertField('sessionDate')"/></div>
+                            <div v-if="isFieldDirty('f_sessionDate')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('f_sessionDate')"/></div>
                         </div>
                     </div>
 
@@ -56,15 +58,15 @@ const Component = {
                         <label class="col-md-4 col-form-label" for="ratingInput">Session Rating</label>
                         <div class="col-md-6 entry">
                             <select id="ratingInput" 
-                                    :class="{ 'form-control': true, 'edited': isFieldDirty('ratingId') }"
-                                    v-model="ratingId">
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('f_ratingId') }"
+                                    v-model="f_ratingId">
                                 <option v-for="rating in sessionRatingsLookup"
                                     :value="rating.id">
                                     {{ rating.value }}
                                 </option>
                             </select>
-                            <div v-if="isFieldDirty('ratingId')"
-                                class="revertField"><span class="fas fa-history" @click="revertField('ratingId')"/></div>
+                            <div v-if="isFieldDirty('f_ratingId')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('f_ratingId')"/></div>
                         </div>
                     </div>
 
@@ -74,10 +76,10 @@ const Component = {
                         <div class="col-md-6 entry">
                             <input id="lengthInput"
                                 type="text" 
-                                :class="{ 'form-control': true, 'edited': isFieldDirty('lengthOfSession') }"
-                                v-model="lengthOfSession">
-                            <div v-if="isFieldDirty('lengthOfSession')"
-                                class="revertField"><span class="fas fa-history" @click="revertField('lengthOfSession')"/></div>
+                                :class="{ 'form-control': true, 'edited': isFieldDirty('f_lengthOfSession') }"
+                                v-model="f_lengthOfSession">
+                            <div v-if="isFieldDirty('f_lengthOfSession')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('f_lengthOfSession')"/></div>
                         </div>
                     </div>
 
@@ -86,15 +88,15 @@ const Component = {
                         <label class="col-md-4 col-form-label" for="activityTypeInput">Activity Type</label>
                         <div class="col-md-6 entry">
                             <select id="activityTypeInput"
-                                    :class="{ 'form-control': true, 'edited': isFieldDirty('activityTypeId') }"
-                                    v-model="activityTypeId">
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('f_activityTypeId') }"
+                                    v-model="f_activityTypeId">
                                 <option v-for="activityType in activityTypesLookup"
                                     :value="activityType.id">
                                     {{ activityType.name }}
                                 </option>
                             </select>
-                            <div v-if="isFieldDirty('activityTypeId')"
-                                class="revertField"><span class="fas fa-history" @click="revertField('activityTypeId')"/></div>
+                            <div v-if="isFieldDirty('f_activityTypeId')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('f_activityTypeId')"/></div>
                         </div>
                     </div>
 
@@ -105,10 +107,10 @@ const Component = {
                         <div class="col-md-6 entry">
                             <input id="locationInput"
                                 type="text" 
-                                :class="{ 'form-control': true, 'edited': isFieldDirty('location') }"
-                                v-model="location">
-                            <div v-if="isFieldDirty('location')"
-                                class="revertField"><span class="fas fa-history" @click="revertField('location')"/></div>
+                                :class="{ 'form-control': true, 'edited': isFieldDirty('f_location') }"
+                                v-model="f_location">
+                            <div v-if="isFieldDirty('f_location')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('f_location')"/></div>
                         </div>
                     </div>
 
@@ -118,15 +120,15 @@ const Component = {
 
                         <div class="col-md-6 entry">
                             <select id="safeguardingInput"
-                                    :class="{ 'form-control': true, 'edited': isFieldDirty('safeguardingConcern') }"
-                                    v-model="safeguardingConcern">
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('f_safeguardingConcernId') }"
+                                    v-model="f_safeguardingConcernId">
                                 <option v-for="item in safeguardingLookup"
                                         :value="item.id">
                                         {{ item.label }}
                                 </option>
                             </select>
-                            <div v-if="isFieldDirty('safeguardingConcern')"
-                                class="revertField"><span class="fas fa-history" @click="revertField('safeguardingConcern')"/></div>
+                            <div v-if="isFieldDirty('f_safeguardingConcernId')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('f_safeguardingConcernId')"/></div>
                         </div>
                     </div>
 
@@ -135,15 +137,15 @@ const Component = {
                         <label class="col-md-4 col-form-label" for="emotionalStateInput">Mentee's Emotional State</label>
                         <div class="col-md-6 entry">
                             <select id="emotionalStateInput"
-                                    :class="{ 'form-control': true, 'edited': isFieldDirty('emotionalStateId') }"
-                                    v-model="emotionalStateId">
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('f_emotionalStateId') }"
+                                    v-model="f_emotionalStateId">
                                 <option v-for="emotionalState in emotionalStatesLookup"
                                     :value="emotionalState.id">
                                     {{ emotionalState.name }}
                                 </option>
                             </select>
-                            <div v-if="isFieldDirty('emotionalStateId')"
-                                class="revertField"><span class="fas fa-history" @click="revertField('emotionalStateId')"/></div>
+                            <div v-if="isFieldDirty('f_emotionalStateId')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('f_emotionalStateId')"/></div>
                         </div>
                     </div>
 
@@ -152,11 +154,11 @@ const Component = {
                         <label class="col-md-4 col-form-label" for="meetingDetailsInput">Meeting Details</label>
                         <div class="col-md-6 entry">
                             <textarea id="meetingDetailsInput"
-                                    :class="{ 'form-control': true, 'edited': isFieldDirty('meetingDetails') }"
+                                    :class="{ 'form-control': true, 'edited': isFieldDirty('f_meetingDetails') }"
                                     rows="10"
-                                    v-model="meetingDetails"/>
-                            <div v-if="isFieldDirty('meetingDetails')"
-                                class="revertField"><span class="fas fa-history" @click="revertField('meetingDetails')"/></div>
+                                    v-model="f_meetingDetails"/>
+                            <div v-if="isFieldDirty('f_meetingDetails')"
+                                class="revertField"><span class="fas fa-history" @click="revertField('f_meetingDetails')"/></div>
                         </div>
                     </div>
 
@@ -197,24 +199,18 @@ const Component = {
 
     data() {
         return {
-            // lookups
-            activityTypesLookup: [],
-            emotionalStatesLookup: [],
-            sessionRatingsLookup: [],
-            safeguardingLookup: [],
-
             // original session report
             sessionReport: null,
 
-            // editable (current unsaved) state
-            sessionDate: null,
-            ratingId: null,
-            lengthOfSession: null,
-            activityTypeId: null,
-            location: null,
-            safeguardingConcern: null,
-            emotionalStateId: null,
-            meetingDetails: null,
+            // editable (current unsaved) form state
+            f_sessionDate: null,
+            f_ratingId: null,
+            f_lengthOfSession: null,
+            f_activityTypeId: null,
+            f_location: null,
+            f_safeguardingConcernId: null,
+            f_emotionalStateId: null,
+            f_meetingDetails: null,
 
             // disabled elements
             isBusy: false,
@@ -222,8 +218,16 @@ const Component = {
     },
 
     computed: {
+         // lookups
+         ...mapState('sessionReports/lookups', [
+            'safeguardingLookup',
+            'sessionRatingsLookup',
+            'activityTypesLookup',
+            'emotionalStatesLookup'
+        ]),
+
         _originalState() {
-            return this.buildState(this.sessionReport)            
+            return this.buildFormState(this.sessionReport)            
         }
     },
 
@@ -233,16 +237,13 @@ const Component = {
             this.intialiseSessionReport()
         },
         sessionReport: function() {
-            Object.assign(this.$data, this.buildState(this.sessionReport));          
+            Object.assign(this.$data, this.buildFormState(this.sessionReport));          
         }
     },
 
     async created() {
         this.intialiseSessionReport()
-        this.initialiseActivityTypesLookup()
-        this.initialiseEmotionalStatesLookup()
-        this.initialiseSessionRatingsLookup()
-        this.initialiseSafeguardingConcernLookup()
+        this.initialiseLookups()
     },
 
     mounted() {
@@ -253,7 +254,7 @@ const Component = {
         $( ".datepicker.sessiondate" ).datepicker({ 
             dateFormat: 'dd-mm-yy', 
             onSelect: function(dateText) {
-                vm.sessionDate = dateText
+                vm.f_sessionDate = dateText
             }
         });
     },
@@ -269,79 +270,47 @@ const Component = {
             }
         },
 
-        async initialiseActivityTypesLookup() {
-            try {
-                this.activityTypesLookup = await this.fetchActivityTypes()
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem loading activity types lookup`})
-                this.addErrors({errs: messages})
-            }
-        },
-
-        async initialiseEmotionalStatesLookup() {
-            try {
-                this.emotionalStatesLookup = await this.fetchEmotionalStates()
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem loading emotional states lookup`})
-                this.addErrors({errs: messages})
-            }
-        },
-
-        async initialiseSessionRatingsLookup() {
-            try {
-                this.sessionRatingsLookup = await this.fetchSessionRatings()
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem loading session ratings lookup`})
-                this.addErrors({errs: messages})
-            }
-        },
-
-        async initialiseSafeguardingConcernLookup() {
-            try {
-                this.safeguardingLookup = await this.fetchSafeguardingOptions()
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem loading safeguarding lookup`})
-                this.addErrors({errs: messages})
-            }
+        async initialiseLookups() {
+            this.try("initialise activity types lookup", async () => await this.initialiseActivityTypesLookup())
+            this.try("initialise emotional states lookup", async () => await this.initialiseEmotionalStatesLookup())
+            this.try("initialise session ratings lookup", async () => await this.initialiseSessionRatingsLookup())
+            this.try("initialise safeguarding lookup", async () => await this.initialiseSafeguardingLookup())
         },
 
         async intialiseSessionReport() {
             if (!this.sessionReportId) return
 
             this.sessionReport = null
-            try {
-                this.sessionReport = await this.fetchSessionReport(this.sessionReportId)
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem loading session report (${this.sessionReportId})`})
-                this.addErrors({errs: messages})
-            }
+            this.try("load session report", async( )=> this.sessionReport = await this.fetchSessionReport(this.sessionReportId))
         },
 
         async handleSaveSessionReport() {
             this.clearStatus()
 
-            const reportBody = {
+            const reportData = {
                 mentor_id: this.sessionReport.mentor.id,
                 mentee_id: this.sessionReport.mentee.id,
                 // editable properties
-                session_date: this.sessionDate,
-                rating_id: this.ratingId,
-                length_of_session: this.lengthOfSession,
-                activity_type_id: this.activityTypeId,
-                location: this.location,
-                safeguarding_concern: this.safeguardingConcern,
-                emotional_state_id: this.emotionalStateId,
-                meeting_details: this.meetingDetails
+                session_date: this.f_sessionDate,
+                rating_id: this.f_ratingId,
+                length_of_session: this.f_lengthOfSession,
+                activity_type_id: this.f_activityTypeId,
+                location: this.f_location,
+                safeguarding_concern: this.f_safeguardingConcernId,
+                emotional_state_id: this.f_emotionalStateId,
+                meeting_details: this.f_meetingDetails
             }
 
+            this.isBusy = true
             try {
-                this.isBusy = true
-                this.sessionReport = await this.updateSessionReport(this.sessionReport.id, reportBody)
-                this.addSuccesses({succs: ['Report was saved successfully']})
-                this.$emit('sessionReportSaved')
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: 'Problem saving the session report'})
-                this.addErrors({errs: messages})
+                await this.try(
+                    "save report",
+                    async () => {
+                        this.sessionReport = await this.updateSessionReport({ id: this.sessionReport.id, reportData})
+                        this.$emit('sessionReportSaved')
+                    },
+                    {handleSuccess: true}
+                )
             } finally {
                 this.isBusy = false
             }
@@ -349,73 +318,58 @@ const Component = {
 
         async handleDeleteSessionReport() {
             this.clearStatus()
+
+            this.isBusy = true
             try {
-                this.isBusy = true
-                await this.deleteSessionReport(this.sessionReport.id)
-                this.sessionReport = null
-                this.addSuccesses({succs: ['Report was deleted successfully']})
-                this.$emit('sessionReportDeleted')
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: 'Problem deleting the session report'})
-                this.addErrors({errs: messages})
+                await this.try(
+                    "delete report",
+                    async () => {
+                        await this.deleteSessionReport(this.sessionReport.id)
+                        this.sessionReport = null
+                        this.$emit('sessionReportDeleted')
+                    },
+                    {handleSuccess: true}
+                )
             } finally {
                 this.isBusy = false
             }
         },
 
-        /**
-         * Functions that do not interact with Vue state
-         */
-        async deleteSessionReport(id) {
-            return (await axios.delete(`/api/session-reports/${id}`)).data
-        },
+        ...mapActions('sessionReports', [
+            'deleteSessionReport' , 
+            'updateSessionReport', 
+            'fetchSessionReport'
+        ]),
 
-        async updateSessionReport(id, reportData) {
-            return (await axios.put(`/api/session-reports/${id}`, reportData)).data
-        },
+        ...mapActions('sessionReports/lookups', [
+            'initialiseActivityTypesLookup' , 
+            'initialiseEmotionalStatesLookup',
+            'initialiseSessionRatingsLookup',
+            'initialiseSafeguardingLookup'
+        ]),
 
-        async fetchSessionReport(id) {
-            return (await axios.get(`/api/session-reports/${id}`)).data
-        },
-
-        async fetchActivityTypes() {
-            return (await axios.get('/api/activity-types', { params: {trashed: true} })).data
-        },
-
-        async fetchEmotionalStates() {
-            return (await axios.get('/api/emotional-states', { params: {trashed: true} })).data
-        },
-
-        async fetchSessionRatings() {
-            return (await axios.get('/api/session-ratings')).data
-        },
-
-        async fetchSafeguardingOptions() {
-            return (await axios.get('/api/safeguarding-options')).data
-        },
-
-        buildState : sessionReport =>  ( 
+        buildFormState : sessionReport =>  ( 
             sessionReport ?
                 {
-                    sessionDate: formatDate(parseDate(sessionReport.session_date), SESSION_DATE_FORMAT),
-                    ratingId: sessionReport.rating.id,
-                    lengthOfSession: sessionReport.length_of_session.toString(),
-                    activityTypeId: sessionReport.activity_type.id,
-                    location: sessionReport.location,
-                    safeguardingConcern: sessionReport.safeguarding_concern.id,
-                    emotionalStateId: sessionReport.emotional_state.id,
-                    meetingDetails: sessionReport.meeting_details
+                    f_sessionDate: formatDate(parseDate(sessionReport.session_date), SESSION_DATE_FORMAT),
+                    f_ratingId: sessionReport.rating.id,
+                    f_lengthOfSession: sessionReport.length_of_session.toString(),
+                    f_activityTypeId: sessionReport.activity_type.id,
+                    f_location: sessionReport.location,
+                    f_safeguardingConcernId: sessionReport.safeguarding_concern.id,
+                    f_emotionalStateId: sessionReport.emotional_state.id,
+                    f_meetingDetails: sessionReport.meeting_details
                 }
                 : 
                 {
-                    sessionDate: null,
-                    ratingId: null,
-                    lengthOfSession: null,
-                    activityTypeId: null,
-                    location: null,
-                    safeguardingConcern: null,
-                    emotionalStateId: null,
-                    meetingDetails: null
+                    f_sessionDate: null,
+                    f_ratingId: null,
+                    f_lengthOfSession: null,
+                    f_activityTypeId: null,
+                    f_location: null,
+                    f_safeguardingConcernId: null,
+                    f_emotionalStateId: null,
+                    f_meetingDetails: null
                 }
         )
     }
