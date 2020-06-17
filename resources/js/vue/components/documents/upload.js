@@ -2,6 +2,7 @@
 
 import _ from 'lodash'
 import { List } from 'immutable'
+import filesize from 'filesize'
 
 import { createNamespacedHelpers } from 'vuex'
 const { mapState, mapActions, mapMutations } = createNamespacedHelpers('documents/upload')
@@ -138,7 +139,15 @@ const Component = {
         
         handleAddFiles(files) {
             List(files).forEach(f => {
-                if (!this.documentLimitReached) this.addFile(f) 
+                const file = {
+                    key: f.name,
+                    shared: true,
+                    title: f.name,
+                    file: f,
+                    fileSizeFormatted: filesize(f.size)
+                }
+
+                if (!this.documentLimitReached) this.addFile(file) 
             })
         },
 

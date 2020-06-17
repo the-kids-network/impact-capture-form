@@ -1,18 +1,21 @@
 import _ from 'lodash'
 import Popper from 'vue-popperjs';
 import 'vue-popperjs/dist/vue-popper.css';
-import { createNamespacedHelpers } from 'vuex'
-const { mapActions, mapGetters } = createNamespacedHelpers('documents/search')
+import {  mapActions, mapGetters } from 'vuex'
 
 import { extractErrors } from '../../utils/api'
 import fileIconFor from "./fileicons";
 import statusMixin from '../status-box/mixin'
 import Paginator from "../pagination/paginator"
 import Tagger from "./tagger"
+import { List } from 'immutable';
 
 const Component = {
 
     props: {
+        documents: {
+            default: () => List()
+        }
     },
 
     mixins: [statusMixin],
@@ -191,18 +194,14 @@ const Component = {
     },
 
     computed: {
-        ...mapGetters(['documents']),
+        
     },
 
-    watch: {
+    watch: {},
 
-    },
+    created() {},
 
-    created() {
-    },
-
-    mounted() {
-    },
+    mounted() {},
 
     methods: { 
         async handleDownloadDocument(document) {
@@ -255,7 +254,7 @@ const Component = {
             })
         },
 
-        ...mapActions([
+        ...mapActions('documents', [
             'fetchDocumentDownloadUrl', 
             'deleteDocument', 
             'restoreDocument', 

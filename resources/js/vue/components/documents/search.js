@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import VueTagsInput from '@johmun/vue-tags-input'
-import { createNamespacedHelpers } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { Set } from 'immutable'
-const { mapState, mapActions, mapGetters } = createNamespacedHelpers('documents/search')
 
 import { extractErrors } from '../../utils/api'
 import statusMixin from '../status-box/mixin'
@@ -29,7 +28,7 @@ const Component = {
                 <vue-tags-input class='documents tags-input'
                     v-model="inputText"
                     placeholder="Add Search Tag"
-                    :tags="selectedSearchTagsForVueTagInput"
+                    :tags="searchTagsForVueTagInput"
                     :max-tags="maximumTagsAllowed"
                     :autocomplete-items="suggestedSearchTagsForVueTagInput"
                     :autocomplete-min-length="autoCompleteMinLength"
@@ -57,20 +56,20 @@ const Component = {
     },
 
     computed: {
-        selectedSearchTagsForVueTagInput() {
-            return this.selectedSearchTags.map(i => ({ text: i })).toArray();
+        ...mapState('documents/search', ['searchTags']),
+        ...mapGetters('documents/search', ['suggestedSearchTags']),
+
+        searchTagsForVueTagInput() {
+            return this.searchTags.map(i => ({ text: i })).toArray();
         },
 
         suggestedSearchTagsForVueTagInput() {
             return this.suggestedSearchTags(this.inputText).map(i => ({ text: i }))
         },
-
-        ...mapState(['selectedSearchTags']),
-        ...mapGetters(['suggestedSearchTags'])
     },
 
     watch: {
-        selectedSearchTags() {
+        searchTags() {
            this.clearStatus()
        },
     },
@@ -87,7 +86,7 @@ const Component = {
     methods: {
         async handleInitialiseSuggestedSearchTags() {
             try {
-                await this.fetchSuggestedSearchTags()
+                await this.initialiseSuggestedSearchTags()
             } catch(e) {
                 const messages = extractErrors({e, defaultMsg: "Problem initialising search tag suggestions"})
                 this.addErrors({errs: messages})
@@ -96,7 +95,7 @@ const Component = {
 
         async handleInitialiseDocuments() {
             try {
-                await this.fetchDocuments()
+                await this.initialiseDocuments()
             } catch(e) {
                 const messages = extractErrors({e, defaultMsg: "Problem initialising documents"})
                 this.addErrors({errs: messages})
@@ -106,7 +105,7 @@ const Component = {
         async handleSelectSearchTags(tags) {
             try {
                 const tagsSet = Set(tags.map(t => t.text))
-                await this.selectSearchTags(tagsSet)
+                await this.submitSearchTags(tagsSet)
             } catch(e) {
                 const messages = extractErrors({e, defaultMsg: "Problem performing search"})
                 this.addErrors({errs: messages})
@@ -114,10 +113,11 @@ const Component = {
         },
 
         async handleClearSearchTags() {
-            this.selectSearchTags(null)
+            this.submitSearchTags(null)
         },
 
-        ...mapActions(['fetchDocuments', 'fetchSuggestedSearchTags', 'selectSearchTags'])
+        ...mapActions('documents', ['initialiseDocuments']),
+        ...mapActions('documents/search', ['initialiseSuggestedSearchTags', 'submitSearchTags'])
     },
 };
 

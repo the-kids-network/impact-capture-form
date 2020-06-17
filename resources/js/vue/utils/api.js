@@ -1,6 +1,7 @@
 import _ from 'lodash'
 
 export const extractErrors = ({e, defaultMsg}) => {
+    console.log(e)
     if (401 === _.get(e, 'response.status')) {
         return [`${defaultMsg} : not authorised - do you have permission?`]
     } else if (429 === _.get(e, 'response.status')) {

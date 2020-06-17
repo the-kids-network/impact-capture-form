@@ -1,4 +1,6 @@
 import _ from 'lodash'
+import { mapActions, mapGetters } from 'vuex'
+
 import DocumentSearch from '../../components/documents/search'
 import DocumentList from '../../components/documents/list'
 
@@ -22,7 +24,7 @@ const Component = {
             <div class="card">
                 <div class="card-header">Documents</div>
                 <div class="card-body">
-                    <document-list />
+                    <document-list :documents="documents"/>
                 </div>
             </div>
         </div>
@@ -35,6 +37,9 @@ const Component = {
     },
 
     computed: {
+        ...mapGetters('documents', {
+            documents: 'documentsFiltered'
+        }),
     },
 
     methods: {
