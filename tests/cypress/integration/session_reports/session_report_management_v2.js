@@ -46,7 +46,7 @@ describe('Search session reports', () => {
 
                 cy.url().should('contain', '/session-reports/2')
                 cy.get('.session-report-view .table.session-report').should('not.exist')
-                cy.get('.session-report-view .status').should('contain', 'Problem loading session report')
+                cy.get('.session-report-view .status').should('contain', 'Failure --> load session report')
             })
         })
 
@@ -127,7 +127,7 @@ describe('Search session reports', () => {
 
                 cy.url().should('contain', '/session-reports/3')
                 cy.get('.session-report-view .table.session-report').should('not.exist')
-                cy.get('.session-report-view .status').should('contain', 'Problem loading session report')
+                cy.get('.session-report-view .status').should('contain', 'Failure --> load session report')
             })
         })
 
@@ -234,7 +234,7 @@ describe('Search session reports', () => {
                 cy.wait('@findReport')
 
                 cy.get('.session-report-view .table.session-report').should('not.exist')
-                cy.get('.session-report-view .status').should('contain', 'Problem loading session report')
+                cy.get('.session-report-view .status').should('contain', 'Failure --> load session report')
             })
         })
 
@@ -486,7 +486,7 @@ describe('Session manage', () => {
             cy.get('.btn').contains("Save").click()
 
             // assert edit mode
-            cy.get('.status').should('contain', "Report was saved successfully")
+            cy.get('.status').should('contain', "Success --> save report")
             cy.get('#meetingDetailsInput').should('have.value', "Something else")
 
             // assert view mode 
@@ -500,7 +500,7 @@ describe('Session manage', () => {
             cy.get('.edit-actions .btn').contains("Delete").click()
             cy.get('.modal .btn').contains("Delete").click() // confirm dialog
 
-            cy.get('.status').should('contain', "Report was deleted successfully")
+            cy.get('.status').should('contain', "Success --> delete report")
             cy.get('.expense-claims-list .items .item').should('have.length', 0)
         })
     })
@@ -542,7 +542,7 @@ describe('Session manage', () => {
             cy.get('.btn').contains("Save").click()
 
             // assert edit mode
-            cy.get('.status').should('contain', "Report was saved successfully")
+            cy.get('.status').should('contain', "Success --> save report")
             cy.get('#meetingDetailsInput').should('have.value', "Something else")
 
             // assert view mode 
@@ -556,7 +556,7 @@ describe('Session manage', () => {
             cy.get('.edit-actions .btn').contains("Delete").click()
             cy.get('.modal .btn').contains("Delete").click() // confirm dialog
 
-            cy.get('.status').should('contain', "Report was deleted successfully")
+            cy.get('.status').should('contain', "Success --> delete report")
             cy.get('.expense-claims-list .items .item').should('have.length', 0)
         })
     })

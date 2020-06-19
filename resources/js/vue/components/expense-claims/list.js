@@ -1,4 +1,6 @@
 import _ from 'lodash'
+import { List } from 'immutable';
+
 import { parseDate, formatDate } from '../../utils/date'
 import Paginator from '../pagination/paginator'
 
@@ -68,8 +70,7 @@ const Component = {
 
     created() {},
 
-    mounted() {
-    },
+    mounted() {},
 
     methods: { 
         displayableDate: dateString => formatDate(parseDate(dateString)),

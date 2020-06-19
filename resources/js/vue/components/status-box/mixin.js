@@ -1,3 +1,5 @@
+import { mapErrors } from "../../utils/error";
+
 export default {
 
     data: function() {
@@ -12,17 +14,11 @@ export default {
     },
 
     methods: {
-        scrollTo(position) {
+        scrollToStatus() {
             const statusBox = this.$refs['status-box']
-
-            if (position === 'bottom') {
-                const elem = statusBox.$refs['bottom-of-status']
-                this.$scrollTo(elem)          
-            } else {
-                const elem = statusBox.$refs['top-of-status']
-                // offset to account for nav bar
-                this.$scrollTo(elem, {offset: -75})          
-            }
+            const elem = statusBox.$refs['top-of-status']
+            // offset to account for nav bar
+            this.$scrollTo(elem, {offset: -75})          
         },
 
         clearStatus() {
@@ -38,24 +34,28 @@ export default {
             this.successes = [];
         },
 
-        setErrors({errs=[], scrollToPos='top'}) {
-            this.errors = errs
-            this.scrollTo(scrollToPos)
+        addError(e) {
+            this.errors.push(e)
         },
 
-        addErrors({errs=[], scrollToPos='top'}) {
-            this.errors.push(...errs)
-            this.scrollTo(scrollToPos)
+        addSuccess(mess) {
+            this.successes.push(mess)
         },
 
-        setSuccesses({succs=[], scrollToPos='top'}) {
-            this.successes = succs
-            this.scrollTo(scrollToPos)
-        },
-
-        addSuccesses({succs=[], scrollToPos='top'}) {
-            this.successes.push(...succs)
-            this.scrollTo(scrollToPos)
+        async try(actionName, toExecute, {handleError=true, handleSuccess=false, scroll=true}={}) {
+            try {
+                await toExecute()
+                if (handleSuccess) {
+                    this.addSuccess(`Success --> ${actionName}`)
+                    if (scroll) this.scrollToStatus()
+                }
+            } catch (e) {
+                e = mapErrors({e, actionName})
+                if (handleError) {
+                    this.addError(e)
+                    if (scroll) this.scrollToStatus()
+                }
+            }
         }
     }
 };

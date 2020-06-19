@@ -2,12 +2,12 @@
 
 import _ from 'lodash'
 import { List } from 'immutable'
+import filesize from 'filesize'
 
 import { createNamespacedHelpers } from 'vuex'
 const { mapState, mapActions, mapMutations } = createNamespacedHelpers('documents/upload')
 
 import statusMixin from '../status-box/mixin'
-import { extractErrors } from '../../utils/api'
 
 const STATUS_EDITABLE = 0, STATUS_SAVING = 1
 const MAX_FILES_UPLOAD = 10
@@ -26,7 +26,9 @@ const Component = {
                 ref="status-box"
                 class="status" 
                 :successes="successes"
-                :errors="errors" />
+                :errors="errors"
+                @clearErrors="clearErrors"
+                @clearSuccesses="clearSuccesses" />
 
             <form novalidate>
                 <div class="dropbox">
@@ -138,7 +140,15 @@ const Component = {
         
         handleAddFiles(files) {
             List(files).forEach(f => {
-                if (!this.documentLimitReached) this.addFile(f) 
+                const file = {
+                    key: f.name,
+                    shared: true,
+                    title: f.name,
+                    file: f,
+                    fileSizeFormatted: filesize(f.size)
+                }
+
+                if (!this.documentLimitReached) this.addFile(file) 
             })
         },
 
@@ -151,13 +161,7 @@ const Component = {
             this.currentStatus = STATUS_SAVING;
 
             try {
-                const messages = await this.upload()
-                this.setSuccesses({ succs: messages ? [messages] 
-                    : ["Upload was successful. Though, double check the document listings to make sure."] })
-                this.makeEditable(); 
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: "Problem uploading files"})
-                this.addErrors({errs: messages})        
+                await this.try("upload file(s)", async () => await this.upload(), {handleSuccess: true})
             } finally {
                 this.makeEditable(); 
             }

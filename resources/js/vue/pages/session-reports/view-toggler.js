@@ -1,12 +1,12 @@
+import _ from 'lodash'
+import { List } from 'immutable';
+import { mapActions } from 'vuex'
+
 import SessionReportView from '../../components/session-reports/view'
 import SessionReportEdit from '../../components/session-reports/edit'
 import ExpenseClaimList from '../../components/expense-claims/list'
 
 import statusMixin from '../../components/status-box/mixin'
-
-import _ from 'lodash'
-import { List } from 'immutable';
-import { extractErrors } from '../../utils/api'
 
 const Component = {
 
@@ -46,7 +46,7 @@ const Component = {
                     <session-report-edit
                         v-if="mode === 'edit'"
                         :session-report-id=sessionReportId
-                        @sessionReportDeleted="initialiseAssociatedExpenseClaims">
+                        @sessionReportDeleted="tryInitialiseAssociatedExpenseClaims">
                     </session-report-edit>
                 </div>
             </div>
@@ -59,7 +59,9 @@ const Component = {
                         ref="status-box"
                         class="status"
                         :successes="successes"
-                        :errors="errors">
+                        :errors="errors"
+                        @clearErrors="clearErrors"
+                        @clearSuccesses="clearSuccesses">
                     </status-box>   
                     <expense-claim-list 
                         :expense-claims="associatedExpenseClaims" />
@@ -81,12 +83,12 @@ const Component = {
 
     watch: {
         sessionReportId() {
-            this.initialiseAssociatedExpenseClaims()
+            this.tryInitialiseAssociatedExpenseClaims()
         }
     },
 
     created() {
-        this.initialiseAssociatedExpenseClaims()
+        this.tryInitialiseAssociatedExpenseClaims()
     },
 
     mounted() {
@@ -97,19 +99,14 @@ const Component = {
             this.mode = mode
         },
         
-        async initialiseAssociatedExpenseClaims() {
+        async tryInitialiseAssociatedExpenseClaims() {
             this.associatedExpenseClaims = List()
-            try {
-                this.associatedExpenseClaims = List(await this.fetchExpenseClaimsForSessionReport(this.sessionReportId))
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem getting associated expense claims`})
-                this.addErrors({errs: messages})
-            }
+            this.try("get associated expense claims", 
+                async () => this.associatedExpenseClaims = List(await this.fetchExpenseClaimsForSessionReport(this.sessionReportId))
+            )
         },
 
-        async fetchExpenseClaimsForSessionReport(sessionReportId) {
-            return (await axios.get(`/api/expense-claims`, { params: {session_id: sessionReportId} } )).data
-        }
+        ...mapActions('expenses', ['fetchExpenseClaimsForSessionReport'])
     },
 };
 

@@ -3,12 +3,11 @@ import SessionReportSearch from '../../components/session-reports/search';
 import SessionReportList from '../../components/session-reports/list';
 import SessionReportExport from '../../components/session-reports/export';
 import { SEARCH_DATE_FORMAT } from '../../components/session-reports/consts'
+import { mapState } from 'vuex';
 
 const Component = {
 
-    props: {
-        
-    },
+    props: {},
 
     components: {
         'session-report-search': SessionReportSearch,
@@ -51,8 +50,7 @@ const Component = {
                 <div id="collapsed-search" class="card-body collapse show">
                     <session-report-search 
                         :searchCriteria="searchParams"
-                        @searchCriteria="searchParams = $event"
-                        @searchResults="searchResults = $event">
+                        @searchCriteria="searchParams = $event">
                     </session-report-search>
                 </div>
             </div>
@@ -87,20 +85,16 @@ const Component = {
     },
 
     computed: {
+        ...mapState('sessionReports', {
+            searchResults: 'reports'
+        }),
+
         searchParams: {
             get() {
                 return this.getSearchParameters()
             },
             set(params) {
                 this.setSearchParameters(params)
-            }
-        },
-        searchResults: {
-            get() {
-                return this.$store.state.sessionReportSearch.list
-            },
-            set(sessionReports) {
-                this.$store.commit('sessionReportSearch/setSessionReports', sessionReports)
             }
         },
     },
@@ -132,7 +126,7 @@ const Component = {
             }
         }, 
         handleSelectSessionReport(sessionReportId) {
-            this.$store.commit('sessionReportSearch/setCurrentSessionReportId', sessionReportId)
+            this.$store.commit('sessionReports/setCurrentSessionReportId', sessionReportId)
             this.$router.push({ name: 'session-reports-workflow' })
         },
 
@@ -143,11 +137,7 @@ const Component = {
         setSearchParameters(params, type="push") {
             const cleanedParams = _.omitBy(params, _.isNil)
             const routeProps = { path: this.$route.path, query: cleanedParams }
-            if ("replace" === type) {
-                this.$router.replace(routeProps)
-            } else {
-                this.$router.push(routeProps)
-            }
+            "replace" === type ? this.$router.replace(routeProps) : this.$router.push(routeProps)
         },
         getSearchParameters() {
             const {mentor_id, mentee_id, session_rating_id, safeguarding_id, session_date_range_start, session_date_range_end} = this.$route.query

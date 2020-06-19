@@ -1,10 +1,8 @@
 import _ from 'lodash'
 import VueTagsInput from '@johmun/vue-tags-input'
-import { createNamespacedHelpers } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { Set } from 'immutable'
-const { mapState, mapActions, mapGetters } = createNamespacedHelpers('documents/search')
 
-import { extractErrors } from '../../utils/api'
 import statusMixin from '../status-box/mixin'
 
 const Component = {
@@ -23,13 +21,15 @@ const Component = {
                 ref="status-box"
                 class="status" 
                 :successes="successes"
-                :errors="errors" />
+                :errors="errors"
+                @clearErrors="clearErrors"
+                @clearSuccesses="clearSuccesses"/>
 
             <div class="search-bar">
                 <vue-tags-input class='documents tags-input'
                     v-model="inputText"
                     placeholder="Add Search Tag"
-                    :tags="selectedSearchTagsForVueTagInput"
+                    :tags="searchTagsForVueTagInput"
                     :max-tags="maximumTagsAllowed"
                     :autocomplete-items="suggestedSearchTagsForVueTagInput"
                     :autocomplete-min-length="autoCompleteMinLength"
@@ -57,27 +57,26 @@ const Component = {
     },
 
     computed: {
-        selectedSearchTagsForVueTagInput() {
-            return this.selectedSearchTags.map(i => ({ text: i })).toArray();
+        ...mapState('documents/search', ['searchTags']),
+        ...mapGetters('documents/search', ['suggestedSearchTags']),
+
+        searchTagsForVueTagInput() {
+            return this.searchTags.map(i => ({ text: i })).toArray();
         },
 
         suggestedSearchTagsForVueTagInput() {
             return this.suggestedSearchTags(this.inputText).map(i => ({ text: i }))
         },
-
-        ...mapState(['selectedSearchTags']),
-        ...mapGetters(['suggestedSearchTags'])
     },
 
     watch: {
-        selectedSearchTags() {
+        searchTags() {
            this.clearStatus()
        },
     },
 
     async created() {
-        await this.handleInitialiseDocuments()
-        this.handleInitialiseSuggestedSearchTags()
+        await this.tryInitialise()
     },
 
     async mounted() {
@@ -85,39 +84,30 @@ const Component = {
     },
 
     methods: {
-        async handleInitialiseSuggestedSearchTags() {
-            try {
-                await this.fetchSuggestedSearchTags()
-            } catch(e) {
-                const messages = extractErrors({e, defaultMsg: "Problem initialising search tag suggestions"})
-                this.addErrors({errs: messages})
-            }
-        },
+        async tryInitialise() {
+            await this.try("initialise search tag suggestions",
+                async () => await this.initialiseSuggestedSearchTags() 
+            )
 
-        async handleInitialiseDocuments() {
-            try {
-                await this.fetchDocuments()
-            } catch(e) {
-                const messages = extractErrors({e, defaultMsg: "Problem initialising documents"})
-                this.addErrors({errs: messages})
-            }
+            this.try("initialise documents",
+                async () => await this.initialiseDocuments() 
+            )
         },
 
         async handleSelectSearchTags(tags) {
-            try {
-                const tagsSet = Set(tags.map(t => t.text))
-                await this.selectSearchTags(tagsSet)
-            } catch(e) {
-                const messages = extractErrors({e, defaultMsg: "Problem performing search"})
-                this.addErrors({errs: messages})
-            }
+            const tagsSet = Set(tags.map(t => t.text))
+
+            this.try("perform search",
+                async () => await this.submitSearchTags(tagsSet)
+            )
         },
 
         async handleClearSearchTags() {
-            this.selectSearchTags(null)
+            this.submitSearchTags(null)
         },
 
-        ...mapActions(['fetchDocuments', 'fetchSuggestedSearchTags', 'selectSearchTags'])
+        ...mapActions('documents', ['initialiseDocuments']),
+        ...mapActions('documents/search', ['initialiseSuggestedSearchTags', 'submitSearchTags'])
     },
 };
 

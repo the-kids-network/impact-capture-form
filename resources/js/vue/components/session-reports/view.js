@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import Popper from 'vue-popperjs';
 import { parseDate, formatDate } from '../../utils/date'
-import { extractErrors } from '../../utils/api'
 import statusMixin from '../status-box/mixin'
+import { mapActions } from 'vuex';
 
 const Component = {
 
@@ -19,7 +19,9 @@ const Component = {
             <status-box
                 ref="status-box"
                 class="status"
-                :errors="errors">
+                :errors="errors"
+                @clearErrors="clearErrors"
+                @clearSuccesses="clearSuccesses">
             </status-box>  
 
             <div class="table-responsive" v-if="sessionReport">
@@ -128,14 +130,10 @@ const Component = {
 
         async initialiseSessionReport() {
             if (!this.sessionReportId) return
-            
             this.sessionReport = null
-            try {
-                this.sessionReport = await this.fetchSessionReport(this.sessionReportId)
-            } catch (e) {
-                const messages = extractErrors({e, defaultMsg: `Problem loading session report (${this.sessionReportId})`})
-                this.addErrors({errs: messages})
-            }
+            this.try(`load session report (${this.sessionReportId})`,
+                async () => this.sessionReport = await this.fetchSessionReport(this.sessionReportId)
+            )
         },
 
         getSessionReportHref(sessionReport) {
@@ -146,9 +144,7 @@ const Component = {
             return props.href;
         },
 
-        async fetchSessionReport(id) {
-            return (await axios.get(`/api/session-reports/${id}`)).data
-        },
+        ...mapActions('sessionReports', ['fetchSessionReport'])
     }
 };
 

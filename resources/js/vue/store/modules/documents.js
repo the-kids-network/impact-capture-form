@@ -1,33 +1,104 @@
 import _ from 'lodash'
 import { Map, Set, List } from 'immutable'
-import filesize from 'filesize'
 
 const module = {
     namespaced: true,
 
+    state: {
+        // locally cached documents
+        documents: List(),
+        filteredDocumentIds: null
+    },
+
+    getters: {
+        documentsFiltered: (state) => {
+            const documents = state.documents
+            const filteredDocumentIds = state.filteredDocumentIds
+            
+            return (!filteredDocumentIds) ? documents : documents.filter(d => filteredDocumentIds.includes(d.id))
+        },
+    },
+
+    mutations: {
+        setDocuments(state, documents) {
+            state.documents = documents
+        },
+        setFilteredDocumentIds(state, documentIds) {
+            state.filteredDocumentIds = documentIds
+        },
+        addDocument(state, document) {
+            state.documents = state.documents.insert(0, document)
+        },
+        updateDocument(state, document) {
+            state.documents = updateUsingId(state.documents, document)
+        },
+        deleteDocument(state, docId) {
+            state.documents = deleteUsingId(state.documents, docId)
+        },
+        clearFilteredDocumentIds(state) {
+            state.filteredDocumentIds = null
+        }
+    },
+
+    actions: {
+        async initialiseDocuments({commit}) {
+            const apiFetch = async () => List((await axios.get(`/api/documents`)).data)
+            const setDocuments = (documents) => commit('setDocuments', documents)
+
+            const docs = await apiFetch()
+
+            setDocuments(docs)
+        },
+
+        async fetchDocumentDownloadUrl({commit}, documentId) {
+            const downloadData = (await axios.get(`/api/documents/${documentId}/download`)).data
+            
+            return downloadData.download_url
+        },
+
+        async deleteDocument({commit}, {document, hardDelete=false}) {
+            const deleteDoc = async (document, hardDelete) => 
+                (await axios.delete(`/api/documents/${document.id}`, { params: { 'really_delete': hardDelete } })).data
+
+            const updatedDoc = await deleteDoc(document, hardDelete)
+
+            hardDelete
+                ? commit('deleteDocument', updatedDoc.id)
+                : commit('updateDocument', updatedDoc)
+        },
+
+        async restoreDocument({commit}, {document}) {
+            const restoreDoc = async (document) => (await axios.post(`/api/documents/${document.id}/restore`)).data
+
+            const updatedDoc = await restoreDoc(document)
+
+            commit('updateDocument', updatedDoc)
+        },
+
+        async shareDocument({commit}, {document, share=true}) {
+            const shareDoc = async (document, share) => (await axios.post(`/api/documents/${document.id}/share`, { 'share': share })).data
+
+            const updatedDoc = await shareDoc(document, share)
+
+            commit('updateDocument', updatedDoc)
+        }
+    },
+
     modules: {
         upload: {
             namespaced: true,
+            
             state: {
                 files: List()
             },
+
             mutations: {
                 addFile(state, fileToAdd) {
                     const files = state.files
 
                     const containsKey = (files, keyToCheck) => files.find(file => file.key === keyToCheck)
-                     
-                    if (containsKey(files, fileToAdd.name))  return
-
-                    const data = {
-                        key: fileToAdd.name,
-                        shared: true,
-                        title: fileToAdd.name,
-                        file: fileToAdd,
-                        fileSizeFormatted: filesize(fileToAdd.size)
-                    }
-
-                    state.files = files.push(data)
+                    if (containsKey(files, fileToAdd.key))  return
+                    state.files = files.push(fileToAdd)
                 },
                 removeFile(state, index) {
                     const files = state.files
@@ -40,7 +111,7 @@ const module = {
             },
             actions: {
                 // upload 
-                async upload({state, commit, rootState}) {
+                async upload({state, commit}) {
                     const filesToUpload = state.files
                     const clearFiles = () => commit('clearFiles');
 
@@ -58,7 +129,7 @@ const module = {
                         const successMsg = _.get(data, 'status');
                         clearFiles()
                         return successMsg
-                    } catch(e) {
+                    } catch (e) {
                         const errorCode = _.get(e, 'response.data.code');
                         const errors = _.get(e, 'response.data.errors')
 
@@ -77,18 +148,10 @@ const module = {
         search: {
             namespaced: true,
             state: {
-                list: List(),
-                matchedItems: null,
-
-                selectedSearchTags: Set(),
+                searchTags: Set(),
                 suggestedSearchTags: Set(),
             },
             getters: {
-                documents: state => {
-                    const documents = state.list
-                    const matchedItems = state.matchedItems
-                    return (!matchedItems) ? documents : documents.filter(d => matchedItems.includes(d.id))
-                },
                 suggestedSearchTags: state => (filterText) => {
                     return state.suggestedSearchTags
                         .filter(i => (i.toLowerCase().indexOf(filterText.toLowerCase()) !== -1))
@@ -97,23 +160,11 @@ const module = {
                
             },
             mutations: {
-                setMatchedItems(state, documentIds) {
-                    state.matchedItems = documentIds
+                setSearchTags(state, tags) {
+                    state.searchTags = tags
                 },
-                setDocuments(state, documents) {
-                    state.list = documents
-                },
-                updateDocument(state, document) {
-                    state.list = updateUsingId(state.list, document)
-                },
-                deleteDocument(state, docId) {
-                    state.list = deleteUsingId(state.list, docId)
-                },
-                setSelectedSearchTags(state, tags) {
-                    state.selectedSearchTags = tags
-                },
-                clearSelectedSearchTags(state) {
-                    state.selectedSearchTags = Set()
+                clearSearchTags(state) {
+                    state.searchTags = Set()
                     state.matchedItems = null
                 },
                 setSuggestedSearchTags(state, suggestions) {
@@ -124,27 +175,21 @@ const module = {
                 }
             },
             actions: {
-                async selectSearchTags({state, commit, dispatch}, tags) {
+                async submitSearchTags({commit, dispatch}, tags) {
                     if (_.get(tags, 'size')) {
-                        commit('setSelectedSearchTags', tags)
+                        commit('setSearchTags', tags)
                         commit('clearSuggestedSearchTags')
+                        await dispatch('initialiseSuggestedSearchTags')
                         await dispatch('search')
-                        await dispatch('fetchSuggestedSearchTags')
                     } else {
-                        commit('clearSelectedSearchTags')
-                        await dispatch('fetchSuggestedSearchTags')
+                        commit('documents/clearFilteredDocumentIds', null, {root: true})
+                        commit('clearSearchTags')
+                        await dispatch('initialiseSuggestedSearchTags')
                     }
                 },
 
-                async fetchDocuments({state, commit, rootState}) {
-                    const apiFetch = async () => List((await axios.get(`/api/documents`)).data)
-                    const setDocuments = (documents) => commit('setDocuments', documents)
-
-                    setDocuments(await apiFetch())
-                },
-
-                async fetchSuggestedSearchTags({state, commit, rootState}) {
-                    const selectedSearchTags = state.selectedSearchTags
+                async initialiseSuggestedSearchTags({state, commit}) {
+                    const searchTags = state.searchTags
 
                     const fetchAllTags = async () => {
                         const tags = (await axios.get(`/api/tags`,{ params: { resource_type: "document" } })).data
@@ -156,56 +201,24 @@ const module = {
                     }
                     const setSuggestions = (suggestedTags) => commit('setSuggestedSearchTags', suggestedTags)
 
-                    setSuggestions(!selectedSearchTags.size
+                    setSuggestions(!searchTags.size
                         ? await fetchAllTags()
-                        : await fetchAssociatedTagsFor(selectedSearchTags.toArray())
+                        : await fetchAssociatedTagsFor(searchTags.toArray())
                     )
                 },
 
-                async search({state, commit, rootState}) {
-                    const selectedSearchTags = state.selectedSearchTags
+                async search({state, commit}) {
+                    const searchTags = state.searchTags
 
-                    const fetchDocuments = async (tags) => {
+                    const fetchTaggedItem = async (tags) => {
                         const params = { resource_type: "document", tag_labels: tags }
                         const data = (await axios.get(`/api/tagged-items`, { params:  params })).data
                         return Set(data).map(ti => ti.resource_id)
                     }
-                    const setMatchedItems = (items) => commit('setMatchedItems', items)
+                    const setMatchedItems = (items) => commit('documents/setFilteredDocumentIds', items, {root: true})
 
-                    setMatchedItems(await fetchDocuments(selectedSearchTags.toArray()))
+                    setMatchedItems(await fetchTaggedItem(searchTags.toArray()))
                 },
-
-                async fetchDocumentDownloadUrl({state, commit, rootState}, documentId) {
-                    const downloadData = (await axios.get(`/api/documents/${documentId}/download`)).data
-                    return downloadData.download_url
-                },
-
-                async deleteDocument({state, commit, rootState}, {document, hardDelete=false}) {
-                    const deleteDoc = async (document, hardDelete) => 
-                        (await axios.delete(`/api/documents/${document.id}`, { params: { 'really_delete': hardDelete } })).data
-
-                    const updatedDoc = await deleteDoc(document, hardDelete)
-
-                    hardDelete
-                        ? commit('deleteDocument', updatedDoc.id)
-                        : commit('updateDocument', updatedDoc)
-                },
-
-                async restoreDocument({state, commit, rootState}, {document}) {
-                    const restoreDoc = async (document) => (await axios.post(`/api/documents/${document.id}/restore`)).data
-
-                    const updatedDoc = await restoreDoc(document)
-
-                    commit('updateDocument', updatedDoc)
-                },
-
-                async shareDocument({state, commit, rootState}, {document, share=true}) {
-                    const shareDoc = async (document, share) => (await axios.post(`/api/documents/${document.id}/share`, { 'share': share })).data
-
-                    const updatedDoc = await shareDoc(document, share)
-
-                    commit('updateDocument', updatedDoc)
-                }
             }
         }
     }
