@@ -3,15 +3,14 @@ import _ from 'lodash'
 export const mapErrors = ({e, actionName}) =>{
     const rootMessage = `Failure --> ${actionName}`
 
-    console.log(rootMessage)
-    console.log(e)
-
     const error = {
         rootMessage,
         messages: messagesFromError(e)
     }
 
-    console.log(error)
+    console.error(rootMessage)
+    console.error(error)
+    console.error(e)
 
     return error
 }
