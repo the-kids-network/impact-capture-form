@@ -13,7 +13,7 @@ class UserManagementMentorPage extends Page
      */
     public function url()
     {
-        return '/roles/mentor';
+        return '/user-management/mentors';
     }
 
     public function name()
