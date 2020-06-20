@@ -32,6 +32,8 @@ mix
         }
    });
 
+mix.sourceMaps()
+
 if (mix.inProduction()) {
     mix.version();
 }
