@@ -8,9 +8,9 @@ export const mapErrors = ({e, actionName}) =>{
         messages: messagesFromError(e)
     }
 
-    console.error(rootMessage)
-    console.error(error)
+    e.message = error.rootMessage + ' --> ' + error.messages + ' --> '  + e.message
     console.error(e)
+    Vue.rollbar.error(e)
 
     return error
 }

@@ -6,6 +6,7 @@ import LocalStorage from 'vue-ls';
 import VueSessionStorage from 'vue-sessionstorage'
 import VModal from 'vue-js-modal'
 import VueScrollTo from 'vue-scrollto'
+import Rollbar from 'vue-rollbar';
 
 import globalMixins from './mixin';
 
@@ -35,6 +36,9 @@ import sessionReportEdit from './components/session-reports/edit'
 // vue pages
 import documentUploadIndex from './pages/documents/upload';
 import documentBrowseIndex from './pages/documents/browse';
+
+// env
+const production = process.env.NODE_ENV === 'production'
 
 /*
  * Load Vue & Vue-Resource.
@@ -86,6 +90,23 @@ Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false } })
 
 Vue.use(VueScrollTo)
 
+Vue.use(Rollbar, {
+    accessToken: 'ff3f9c1da39e4b37bac06f8da7a7a823',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    enabled: true,
+    environment: production ? "production" : "development",
+    payload: {
+      client: {
+           javascript: {
+              code_version: '1.0',
+              source_map_enabled: true,
+              guess_uncaught_frames: true
+           }
+      }
+  }
+});
+
 // Vuex
 const store = new Vuex.Store({
     modules: {
@@ -101,6 +122,12 @@ store.dispatch('getUser');
 const router = new VueRouter({
     routes: routes
 })
+
+// Global error handler to Rollbar
+Vue.config.errorHandler = function (err) {
+    console.error(err)
+    Vue.rollbar.error(err);
+};
 
 // Load Vue app
 new Vue({
