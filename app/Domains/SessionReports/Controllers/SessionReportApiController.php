@@ -21,23 +21,8 @@ class SessionReportApiController extends Controller {
         $this->sessionReportService = $sessionReportService;
         
         $this->middleware('auth');
-        $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('get', 'getById');
+        $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('get', 'getById', 'export');
         $this->middleware('hasAnyOfRoles:admin,manager')->only('update', 'delete');
-    }
-
-    public function index(Request $request) {
-        $mentors = User::mentor()->canSee()->get();
-
-        $mentorsResponse = $mentors->map(fn($mentor) => [
-            'id' => $mentor->id,
-            'name' => $mentor->name,
-            'mentees' => $mentor->mentees->map(fn($mentee) => [
-                'id' => $mentee->id,
-                'name' => $mentee->name
-            ])
-        ]);
-    
-        return view('session_reports.beta')->with('mentors', $mentorsResponse);;
     }
 
     public function get(Request $request) {
