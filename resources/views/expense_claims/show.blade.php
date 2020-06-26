@@ -75,7 +75,7 @@
                             <tr>
                                 <td colspan="2">
                                     @foreach($expense_claim->receipts as $receipt)
-                                        <a class="receipt-link" href="{{ url('/receipt/' . $receipt->id) }}"><img class="preview-receipt" width="100" height="100" src="{{ url('/receipt/' . $receipt->id) }}"></a>
+                                        <a class="receipt-link" href="{{ url('/receipts/' . $receipt->id) }}"><img class="preview-receipt" width="100" height="100" src="{{ url('/receipts/' . $receipt->id) }}"></a>
                                     @endforeach
                                 </td>
                             </tr>

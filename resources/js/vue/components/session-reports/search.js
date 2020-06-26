@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import { List } from 'immutable';
 import statusMixin from '../status-box/mixin'
-import { SEARCH_DATE_FORMAT } from './consts'
-import { dateRange } from '../../utils/date';
+import { dateRange, SEARCH_DATE_FORMAT } from '../../utils/date';
 import { mapActions, mapState } from 'vuex';
 
 const Component = {
@@ -42,7 +41,6 @@ const Component = {
                                     :value="mentor.id">
                                     {{ mentor.name }}
                                 </option>
-                            @endforeach
                         </select>
                     </div>
                     <div class="form-group col-md-3">
@@ -56,7 +54,6 @@ const Component = {
                                     :value="mentee.id">
                                     {{ mentee.name }}
                                 </option>
-                            @endforeach
                         </select>
                     </div>
                 </div> 
@@ -72,7 +69,6 @@ const Component = {
                                     :value="safeguardingOption.id">
                                     {{ safeguardingOption.label }}
                                 </option>
-                            @endforeach
                         </select>
                     </div>
                     <div class="form-group col-md-3">
@@ -87,7 +83,6 @@ const Component = {
                                     :value="item.id">
                                     {{ item.value }}
                                 </option>
-                            @endforeach
                         </select>
                     </div>
                 </div>

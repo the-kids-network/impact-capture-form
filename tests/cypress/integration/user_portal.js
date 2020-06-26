@@ -64,7 +64,7 @@ describe('Manager portal index', () => {
     })
 
     it('Has correct number of links', () => {
-        cy.get('.link-panel').should('have.length', 8)
+        cy.get('.link-panel').should('have.length', 9)
     })
 
     it('Can navigate to view session reports (v1)', () => {
@@ -79,10 +79,16 @@ describe('Manager portal index', () => {
         cy.get('.session-report-search').should('exist')
     })
 
-    it('Can navigate to expense claims', () => {
-        cy.get('.btn').contains(/Expense Claims/i).click()
+    it('Can navigate to expenses (v1)', () => {
+        cy.get('.btn').contains(/Expenses V1/i).click()
 
         cy.get('.expense-claim.list').should('exist')
+    })
+
+    it('Can navigate to expenses (vv)', () => {
+        cy.get('.btn').contains(/Expenses V2/i).click()
+
+        cy.get('.expense-claim-search').should('exist')
     })
 
     it('Can navigate to calendar', () => {
@@ -141,10 +147,23 @@ describe('Admin portal index', () => {
         cy.get('.session-report-search').should('exist')
     })
 
-    it('Can navigate to expense claims', () => {
-        cy.get('.btn').contains(/Expense Claims/i).click()
+    it('Can navigate to expenses (v1)', () => {
+        cy.get('.btn').contains(/Expenses V1/i).click()
 
         cy.get('.expense-claim.list').should('exist')
+    })
+
+    it('Can navigate to expenses (v2)', () => {
+        cy.get('.btn').contains(/Expenses V2/i).click()
+
+        cy.get('.expense-claim-search').should('exist')
+    })
+
+    it('Can navigate to pending expense claims', () => {
+        cy.get('.btn').contains(/Pending Expense/i).click()
+
+        cy.get('.expense-claim-search').should('exist')
+        cy.url().should('contain', 'status=Pending')
     })
 
     it('Can navigate to calendar', () => {
@@ -175,18 +194,6 @@ describe('Admin portal index', () => {
         cy.get('.btn').contains(/Browse & Manage/i).click()
 
         cy.get('.documents-management').should('exist')
-    })
-
-    it('Can navigate to process expenses', () => {
-        cy.get('.btn').contains(/Process Expense/i).click()
-
-        cy.get('.expense-claim.processing').should('exist')
-    })
-
-    it('Can navigate to download expenses', () => {
-        cy.get('.btn').contains(/Download Expense/i).click()
-
-        cy.get('.expense-claim.export').should('exist')
     })
    
     it('Can navigate to reporting', () => {

@@ -22,7 +22,7 @@ class ReceiptController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function getById($id) {
         if (!Receipt::find($id)) abort(404);
 
         $receipt = Receipt::canSee()->find($id);
@@ -32,7 +32,7 @@ class ReceiptController extends Controller {
         return Storage::download($receipt->path);
     }
 
-    public function downloadAll(Request $request) {
+    public function get(Request $request) {
         // apply filters
         $query = ExpenseClaim::canSee();
         if ($request->mentor_id) {

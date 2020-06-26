@@ -2,8 +2,8 @@ import _ from 'lodash'
 import SessionReportSearch from '../../components/session-reports/search';
 import SessionReportList from '../../components/session-reports/list';
 import SessionReportExport from '../../components/session-reports/export';
-import { SEARCH_DATE_FORMAT } from '../../components/session-reports/consts'
 import { mapState } from 'vuex';
+import { SEARCH_DATE_FORMAT } from '../../utils/date';
 
 const Component = {
 

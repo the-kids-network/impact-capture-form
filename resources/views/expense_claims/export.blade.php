@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-md-12">
                 <a class="btn btn-lg btn-primary btn-block" 
-                   href="{{ route('receipt.download-all', ['mentor_id'=>Request()->mentor_id]) }}">Click to Download Receipts</a>
+                   href="{{ route('receipts.download-all', ['mentor_id'=>Request()->mentor_id]) }}">Click to Download Receipts</a>
                 <br />
             </div>
         </div>

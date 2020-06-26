@@ -3,9 +3,9 @@
 namespace App\Domains\UserManagement\Controllers;
 
 use App\Domains\UserManagement\Models\User;
-use App\Domains\UserManagement\Repositories\UserRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UserApiController extends Controller {
@@ -14,8 +14,11 @@ class UserApiController extends Controller {
     }
 
     public function current() {
-        $repo = new UserRepository();
-        return $repo->current();
+        if (Auth::check()) {
+            return Auth::user();
+        }
+
+        return null;
     }
 
     public function get(Request $request) {

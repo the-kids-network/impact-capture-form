@@ -31,7 +31,11 @@ Route::put('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\Ses
 Route::delete('/session-reports/{id}', '\App\Domains\SessionReports\Controllers\SessionReportApiController@delete');
 
 // Expenses
+Route::get('/expense-claims/statuses', '\App\Domains\Expenses\Controllers\StatusApiController@get');
 Route::get('/expense-claims', '\App\Domains\Expenses\Controllers\ExpenseClaimApiController@get');
+Route::get('/expense-claims/export', '\App\Domains\Expenses\Controllers\ExpenseClaimApiController@export');
+Route::get('/expense-claims/{id}', '\App\Domains\Expenses\Controllers\ExpenseClaimApiController@getById');
+Route::put('/expense-claims/{id}/status', '\App\Domains\Expenses\Controllers\ExpenseClaimApiController@updateClaimStatus');
 
 // Documents
 Route::post('/documents/{id}/share','\App\Domains\Documents\Controllers\DocumentApiController@share');

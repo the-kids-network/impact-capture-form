@@ -23,7 +23,7 @@ describe('Search session reports', () => {
         describe('Default search', () => {
             it('Displays reports for mentor only', () => {
                 cy.get('.session-report-list .items .item').should('have.length', 1)
-                cy.get('.session-report-list .items .item .mentor-name').should('contain', 'mentor-1')
+                cy.get('.session-report-list .items .item .mentee-name').should('contain', 'mentee 1')
             })
         })
 
@@ -437,9 +437,9 @@ describe('Session manage', () => {
         it ('Shows associated expense claims', () => {
             cy.wait('@searchClaimsBySessionReport')
 
-            cy.get('.expense-claims-list').should('exist')
-            cy.get('.expense-claims-list .items .item').should('have.length', 2)
-            cy.get('.expense-claims-list .items .item .claim-id').each(item =>
+            cy.get('.expense-claim-list').should('exist')
+            cy.get('.expense-claim-list .items .item').should('have.length', 2)
+            cy.get('.expense-claim-list .items .item .claim-id').each(item =>
                 expect(item.text()).to.be.oneOf(['1', '2'])
             ) 
         })
@@ -470,9 +470,9 @@ describe('Session manage', () => {
         it ('Shows associated expense claims', () => {
             cy.wait('@searchClaimsBySessionReport')
 
-            cy.get('.expense-claims-list').should('exist')
-            cy.get('.expense-claims-list .items .item').should('have.length', 1)
-            cy.get('.expense-claims-list .items .item .claim-id').should('contain', '3')
+            cy.get('.expense-claim-list').should('exist')
+            cy.get('.expense-claim-list .items .item').should('have.length', 1)
+            cy.get('.expense-claim-list .items .item .claim-id').should('contain', '3')
         })
 
         it ('Does show edit button', () => {
@@ -501,7 +501,7 @@ describe('Session manage', () => {
             cy.get('.modal .btn').contains("Delete").click() // confirm dialog
 
             cy.get('.status').should('contain', "Success --> delete report")
-            cy.get('.expense-claims-list .items .item').should('have.length', 0)
+            cy.get('.expense-claim-list .items .item').should('have.length', 0)
         })
     })
 
@@ -526,9 +526,9 @@ describe('Session manage', () => {
         it ('Shows associated expense claims', () => {
             cy.wait('@searchClaimsBySessionReport')
 
-            cy.get('.expense-claims-list').should('exist')
-            cy.get('.expense-claims-list .items .item').should('have.length', 1)
-            cy.get('.expense-claims-list .items .item .claim-id').should('contain', '3')
+            cy.get('.expense-claim-list').should('exist')
+            cy.get('.expense-claim-list .items .item').should('have.length', 1)
+            cy.get('.expense-claim-list .items .item .claim-id').should('contain', '3')
         })
 
         it ('Does show edit button', () => {
@@ -557,7 +557,7 @@ describe('Session manage', () => {
             cy.get('.modal .btn').contains("Delete").click() // confirm dialog
 
             cy.get('.status').should('contain', "Success --> delete report")
-            cy.get('.expense-claims-list .items .item').should('have.length', 0)
+            cy.get('.expense-claim-list .items .item').should('have.length', 0)
         })
     })
 })
