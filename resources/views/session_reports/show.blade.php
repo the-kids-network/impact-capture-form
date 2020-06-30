@@ -139,8 +139,8 @@
                                         <td>{{ $claim->id }}</td>
                                         <td>{{ $claim->created_at->toFormattedDateString() }}</td>
                                         <td class="text-capitalize">{{ $claim->status }}</td>
-                                        <td>{{ $claim->expenses->sum('amount') }}
-                                    </td>
+                                        <td>{{ $claim->expenses->sum('amount') }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -148,8 +148,8 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
-    @endif
 @endsection
 
 @section('scripts')
