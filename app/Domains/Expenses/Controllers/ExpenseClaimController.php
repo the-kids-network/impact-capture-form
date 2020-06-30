@@ -103,7 +103,8 @@ class ExpenseClaimController extends Controller {
         $claim = $this->saveExpense($request);
 
         // Send an Email to the Mentor
-        Mail::to($request->user())->send(new ClaimSubmittedToMentor($claim));
+        Mail::to($request->user())->send(
+            new ClaimSubmittedToMentor($claim, $report->mentee->name, $report->session_date->toFormattedDateString()));
 
         return redirect('/expense-claim/'.$claim->id)->with('status','Expense Claim Submitted for Processing');
     }
@@ -141,13 +142,18 @@ class ExpenseClaimController extends Controller {
         $claim->save();
 
         // Send Emails
+        $report = $this->sessionReportService->getReport($claim->report_id);
+
         if ($request->status == 'processed'){
-            Mail::to($claim->mentor)->send(new ClaimProcessedToMentor($claim));
+            Mail::to($claim->mentor)->send(
+                new ClaimProcessedToMentor($claim, $report->mentee->name, $report->session_date->toFormattedDateString()));
+
             return redirect('/expense-claim/'.$id)->with('status','Expense Claim Processed');
         }
 
         if ($request->status == 'rejected'){
             Mail::to($claim->mentor)->send(new ClaimRejectedToMentor($claim));
+            
             return redirect('/expense-claim')->with('status','Expense Claim Rejected');
         }
     }

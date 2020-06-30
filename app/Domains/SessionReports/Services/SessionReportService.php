@@ -73,7 +73,7 @@ class SessionReportService {
     }
 
     public function getReport($id) {
-        if (!Report::find($id)) throw new NotFoundException("Report with ID not found");
+        if (!Report::find($id)) throw new NotFoundException("Report with ID (".$id.") not found");
         
         $report = Report::canSee()->with(['mentor', 'mentee', 'activity_type', 'emotional_state', 'session_rating'])
                                   ->whereId($id)
