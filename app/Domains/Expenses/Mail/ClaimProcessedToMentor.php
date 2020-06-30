@@ -14,14 +14,20 @@ class ClaimProcessedToMentor extends Mailable implements ShouldQueue
 
     public $claim;
 
+    public $sessionMentee;
+
+    public $sessionDate;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(ExpenseClaim $claim)
+    public function __construct(ExpenseClaim $claim, $sessionMentee, $sessionDate)
     {
         $this->claim = $claim;
+        $this->sessionMentee = $sessionMentee;
+        $this->sessionDate = $sessionDate;
     }
 
     /**

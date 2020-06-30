@@ -8,7 +8,7 @@ use App\Domains\Expenses\Models\ExpenseClaimSearch;
 class ExpenseClaimService {
 
     public function getExpenseClaimsUsing(ExpenseClaimSearch $search) {
-        $query = ExpenseClaim::canSee();
+        $query = ExpenseClaim::canSee()->with(['expenses', 'receipts']);
         
         if ($search->sessionId) {
             $query->whereReportId($search->sessionId);

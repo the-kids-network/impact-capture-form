@@ -30,7 +30,7 @@ class UserApiController extends Controller {
             return $this->handleError($validator);
         }
 
-        $users = User::canSee()->whereRole(null)->get();
+        $users = User::canSee()->with('mentees')->whereRole(null)->get();
 
         $payload = $users->map(fn($user) => [
             'id' => $user->id,

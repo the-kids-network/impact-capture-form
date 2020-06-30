@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Mail;
 class SessionReportService {
 
     public function getReportsUsing(SessionSearch $sessionSearch) {
-        $query = Report::canSee();
+        $query = Report::canSee()->with(['mentor', 'mentee', 'activity_type', 'emotional_state', 'session_rating']);
         
         if ($sessionSearch->mentorId) {
             $query->whereMentorId($sessionSearch->mentorId);
@@ -73,9 +73,14 @@ class SessionReportService {
     }
 
     public function getReport($id) {
-        if (!Report::find($id)) throw new NotFoundException("Report with ID not found");
-        $report = Report::canSee()->whereId($id)->first();
+        if (!Report::find($id)) throw new NotFoundException("Report with ID (".$id.") not found");
+        
+        $report = Report::canSee()->with(['mentor', 'mentee', 'activity_type', 'emotional_state', 'session_rating'])
+                                  ->whereId($id)
+                                  ->first();
+
         if(!$report) throw new NotAuthorisedException("Current user cannot get report with ID");
+        
         return $report;
     }
 

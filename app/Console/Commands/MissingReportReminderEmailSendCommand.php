@@ -57,8 +57,8 @@ class MissingReportReminderEmailSendCommand extends Command
 
     private function getReportForPlannedSession($plannedSession) {
         return Report::where('mentee_id', $plannedSession->mentee_id)
-        ->where('session_date', $plannedSession->date)
-        ->first();
+                     ->where('session_date', $plannedSession->date)
+                     ->first();
     }
 
 }
