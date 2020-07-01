@@ -9,6 +9,49 @@
         </div>
         <div class="row">
             <div class="col-md-12">
+                <div class="card mentee-add">
+                    <div class="card-header">Add Mentee</div>
+                    <div class="card-body">
+                        <form class="form-horizontal" role="form" method="POST" action="/mentees">
+                            {{ csrf_field() }}
+                            <!-- Mentee's First Name -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="firstNameInput">Mentee First Name</label>
+
+                                <div class="col-md-6">
+                                    <input id="firstNameInput" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus>
+                                </div>
+                            </div>
+                            <!-- Mentee's Last Name -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="lastNameInput">Mentee Last Name</label>
+
+                                <div class="col-md-6">
+                                    <input id="lastNameInput" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus>
+                                </div>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="form-group row">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Add Mentee
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                @include('user_management.include.mentor_mentee_pairing_form', ['mentors' => $assignableMentors, 'mentees' => $assignableMentees])
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card mentee-existing">
                     <div class="card-header">Mentees</div>
 
@@ -50,48 +93,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mentee-add">
-                    <div class="card-header">Add Mentee</div>
-                    <div class="card-body">
-                        <form class="form-horizontal" role="form" method="POST" action="/mentees">
-                            {{ csrf_field() }}
-                            <!-- Mentee's First Name -->
-                            <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="firstNameInput">Mentee First Name</label>
-
-                                <div class="col-md-6">
-                                    <input id="firstNameInput" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" autofocus>
-                                </div>
-                            </div>
-                            <!-- Mentee's Last Name -->
-                            <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="lastNameInput">Mentee Last Name</label>
-
-                                <div class="col-md-6">
-                                    <input id="lastNameInput" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" autofocus>
-                                </div>
-                            </div>
-                            <!-- Submit Button -->
-                            <div class="form-group row">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-plus"></i> Add Mentee
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-12">
-                @include('user_management.include.mentor_mentee_pairing_form', ['mentors' => $assignableMentors, 'mentees' => $assignableMentees])
             </div>
         </div>
     </div>
