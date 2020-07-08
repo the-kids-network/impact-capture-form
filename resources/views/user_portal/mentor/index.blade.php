@@ -15,7 +15,7 @@
                 <div class="card link-panel">
                     <div class="card-body text-center">
                         <i class="fa fa-book text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/report') }}">View Reports</a>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/session-reports') }}">View Reports</a>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <div class="card link-panel">
                     <div class="card-body text-center">
                         <i class="fa fa-credit-card text-feature"></i>
-                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/expense-claim') }}">View Expense Claims</a>
+                        <a class="btn btn-primary btn-block btn-lg" href="{{ url('/expenses') }}">View Expense Claims</a>
                     </div>
                 </div>
             </div>

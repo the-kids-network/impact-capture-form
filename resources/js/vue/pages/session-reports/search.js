@@ -17,7 +17,7 @@ const Component = {
 
     template: `
         <div>
-            <div class="card">
+            <div class="card" v-if="isInternalUser">
                 <div class="card-header" data-toggle="collapse" href="#collapsed-find-by-id" role="button" aria-expanded="false" aria-controls="collapsed-find-by-id">
                     Find By ID
                     <span class="float-right find-by-id-toggle"><a>Toggle Find By ID</a></span>

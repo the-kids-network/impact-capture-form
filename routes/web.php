@@ -74,12 +74,7 @@ Route::delete('/emotional-states/{id}', '\App\Domains\SessionReports\Controllers
 Route::post('/emotional-states/{id}/restore/','\App\Domains\SessionReports\Controllers\EmotionalStateController@restore');
 // Session reports - v1
 Route::get('/report/new','\App\Domains\SessionReports\Controllers\SessionReportController@newReportForm');
-Route::get('/report/{id}/edit','\App\Domains\SessionReports\Controllers\SessionReportController@editReportForm');
-Route::get('/report/export','\App\Domains\SessionReports\Controllers\SessionReportController@export')->name('report.export');
-Route::get('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@get')->name('reports.get');
-Route::get('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@getById');
 Route::post('/report', '\App\Domains\SessionReports\Controllers\SessionReportController@create');
-Route::delete('/report/{id}', '\App\Domains\SessionReports\Controllers\SessionReportController@delete');
 // session reports v2
 // redirect to vue routed app
 Route::redirect('/session-reports', '/app#/session-reports');

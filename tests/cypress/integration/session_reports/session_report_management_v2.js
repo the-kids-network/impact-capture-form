@@ -27,29 +27,6 @@ describe('Search session reports', () => {
             })
         })
 
-        describe('Search by ID', () => {
-            it('Displays report for report owned by mentor', () => {
-                cy.get('.find-by-id-toggle').click()
-                cy.get('.find-by-id-form #idInput').type('1')
-                cy.get('.find-by-id-form .btn.search').click()
-                cy.wait('@findReport')
-
-                cy.url().should('contain', '/session-reports/1')
-                cy.get('.session-report-view .table.session-report').should('exist')
-            })
-
-            it('Does not display report for non-owned report', () => {
-                cy.get('.find-by-id-toggle').click()
-                cy.get('.find-by-id-form #idInput').type('2')
-                cy.get('.find-by-id-form .btn.search').click()
-                cy.wait('@findReport')
-
-                cy.url().should('contain', '/session-reports/2')
-                cy.get('.session-report-view .table.session-report').should('not.exist')
-                cy.get('.session-report-view .status').should('contain', 'Failure --> load session report')
-            })
-        })
-
         describe('Search by session dates', () => {
             it('Displays reports where matched', () => {
                 cy.get('.session-report-search .btn').contains('Today').click()

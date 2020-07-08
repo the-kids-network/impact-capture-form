@@ -36,7 +36,7 @@
                             <tr class="session">
                                 <td class="label">Session</td>
                                 <td class="value">
-                                    <a href="{{ url('/report/'.$expense_claim->report_id) }}">With {{ $expense_claim_report->mentee->name }} on {{ $expense_claim_report->session_date->toFormattedDateString() }}</a>
+                                    <a href="{{ url('/app#/session-reports/'.$expense_claim->report_id) }}">With {{ $expense_claim_report->mentee->name }} on {{ $expense_claim_report->session_date->toFormattedDateString() }}</a>
                                 </td>
                             </tr>
                             @if( $expense_claim->check_number && !Auth::user()->isMentor())

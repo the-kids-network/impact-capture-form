@@ -42,7 +42,6 @@ describe('Session report submission', () => {
             cy.get('.alert-success').should('contain', 'Report Created')
           
             // Check details of saved report
-            cy.get('.mentor-name .value').should('contain', 'mentor-1')
             cy.get('.mentee-name .value').should('contain', 'mentee 1')
             cy.get('.session-date .value').should('contain', 'May 28')
             cy.get('.session-rating .value').should('contain', 'Good')
