@@ -37,8 +37,6 @@ class SessionReportController extends Controller {
         
         $this->middleware('auth');
         $this->middleware('mentor')->only('newReportForm', 'create');
-        $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('getMany', 'getOne', 'export');
-        $this->middleware('hasAnyOfRoles:admin,manager')->only('editReportForm', 'update', 'delete');
     }
 
     public function newReportForm(Request $request) {
@@ -47,48 +45,9 @@ class SessionReportController extends Controller {
         return view('session_reports.new')
             ->with('mentees',$request->user()->mentees)
             ->with('activity_types', ActivityType::all())
-            ->with('emotional_states',EmotionalState::all())
-            ->with('session_ratings',SessionRating::selectable())
-            ->with('reports', $reports);
-    }
-
-    public function editReportForm(Request $request, $id) {
-        $report = $this->sessionReportService->getReport($id);
-        $report->mentee = $report->mentee;
-        
-        return view('session_reports.edit')
-            ->with('activity_types',  ActivityType::all())
             ->with('emotional_states', EmotionalState::all())
             ->with('session_ratings', SessionRating::selectable())
-            ->with('report', $report);
-    }
-
-    public function get(Request $request) {
-        $reports = [];
-        if ($request->mentor_id) {
-            $reports = $this->sessionReportService->getReportsForMentor($request->mentor_id);
-        } else {
-            $reports = $this->sessionReportService->getReports();
-        }
-
-        return view('session_reports.index')->with('reports',  $reports);
-    }
-    public function getById($id) {
-        $report = null;
-        try {
-            $report = $this->sessionReportService->getReport($id);
-        } catch (NotFoundException | NotAuthorisedException $e) {
-            Log::error($e);
-            abort(401,'Unauthorized');
-        }
-
-        // Eventually should be in expenses domain in a service class
-        // and ideally the UI could fetch these separately via a REST call to the expenses domain
-        $claims = ExpenseClaim::canSee()->whereReportId($report->id)->orderBy('created_at','desc')->get();
-
-        return view('session_reports.show')
-            ->with('report', $report)
-            ->with('claims', $claims);
+            ->with('reports', $reports);
     }
 
     public function create(Request $request) {
@@ -111,31 +70,7 @@ class SessionReportController extends Controller {
         $this->createPlannedSession($request);
         $this->createLeave($request);
 
-        return redirect('/report/'.$report->id)->with('status', 'Report Created');
-    }
-
-    public function delete($id) {
-        try {
-            $this->sessionReportService->deleteReport($id);
-        } catch (NotFoundException $e) {
-            Log::error($e);
-            abort(401,'Unauthorized');
-        }
-
-        return redirect('/report')->with('status', 'Report Deleted');
-    }
-
-    public function export(Request $request){
-        $query = Report::canSee()->orderBy('created_at','desc');
-
-        if ($request->mentor_id) {
-            $query->whereMentorId($request->mentor_id);
-        }
-
-        // get reports
-        $reports = $query->get();
-
-        return view('session_reports.export')->with('reports', $reports);
+        return redirect('/app#/session-reports/'.$report->id)->with('status', 'Report Created');
     }
 
     private function createPlannedSession(Request $request) {

@@ -4,7 +4,7 @@ import { mapActions } from 'vuex'
 
 import SessionReportView from '../../components/session-reports/view'
 import SessionReportEdit from '../../components/session-reports/edit'
-import ExpenseClaimList from '../../components/expense-claims/list'
+import ExpenseClaimList from '../../components/expenses/list'
 
 import statusMixin from '../../components/status-box/mixin'
 
@@ -64,7 +64,8 @@ const Component = {
                         @clearSuccesses="clearSuccesses">
                     </status-box>   
                     <expense-claim-list 
-                        :expense-claims="associatedExpenseClaims" />
+                        :expense-claims="associatedExpenseClaims"
+                        @claimSelected="goToExpenseClaim" />
                 </div>
             </div>
         </div>
@@ -97,6 +98,10 @@ const Component = {
     methods: { 
         switchMode(mode) {
             this.mode = mode
+        },
+
+        goToExpenseClaim(claimId) {
+            this.$router.push({ name: 'expense-claims-view-one', params: { 'expenseClaimId': claimId } })
         },
         
         async tryInitialiseAssociatedExpenseClaims() {

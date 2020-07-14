@@ -84,7 +84,7 @@
                                 @foreach($mentors as $mentor)
                                     <tr>
                                         <td class="mentor-name">
-                                            <a href={{ route('reports.get', [ 'mentor_id'=>$mentor->mentor_id ]) }}>
+                                            <a href="/app#/session-reports/search?mentor_id={{$mentor->mentor_id}}">
                                                     {{ $mentor->mentor_name }}
                                             </a>
                                         </td>
@@ -131,7 +131,7 @@
                                         <td class="actual-session-count">{{ $mentor->session_count }}</td>
                                         <td class="total-session-length">{{ $mentor->session_length }}</td>
                                         <td class="expenses-total">
-                                            <a href={{ route('expense-claim.index', [ 'mentor_id'=>$mentor->mentor_id ]) }}>
+                                            <a href="/app#/expenses/search?mentor_id={{$mentor->mentor_id}}">
                                                 {{ $mentor->expenses_total }}
                                             </a>
                                         </td>

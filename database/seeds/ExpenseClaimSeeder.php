@@ -28,7 +28,6 @@ class ExpenseClaimSeeder extends Seeder
         $claim = $this->addExpenseClaim('mentor-1', 'mentee-1', $todaysDate, 'pending');
         $this->addExpense($claim, $todaysDate, 4.10);
         $this->addExpense($claim, $todaysDate, 3.10);
-        $this->processExpenseClaim($claim);
 
         // mentor 2
         $claim = $this->addExpenseClaim('mentor-2', 'mentee-2', $todaysDate, 'pending');

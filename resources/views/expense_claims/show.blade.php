@@ -36,7 +36,7 @@
                             <tr class="session">
                                 <td class="label">Session</td>
                                 <td class="value">
-                                    <a href="{{ url('/report/'.$expense_claim->report_id) }}">With {{ $expense_claim_report->mentee->name }} on {{ $expense_claim_report->session_date->toFormattedDateString() }}</a>
+                                    <a href="{{ url('/app#/session-reports/'.$expense_claim->report_id) }}">With {{ $expense_claim_report->mentee->name }} on {{ $expense_claim_report->session_date->toFormattedDateString() }}</a>
                                 </td>
                             </tr>
                             @if( $expense_claim->check_number && !Auth::user()->isMentor())
@@ -75,7 +75,7 @@
                             <tr>
                                 <td colspan="2">
                                     @foreach($expense_claim->receipts as $receipt)
-                                        <a class="receipt-link" href="{{ url('/receipt/' . $receipt->id) }}"><img class="preview-receipt" width="100" height="100" src="{{ url('/receipt/' . $receipt->id) }}"></a>
+                                        <a class="receipt-link" href="{{ url('/receipts/' . $receipt->id) }}"><img class="preview-receipt" width="100" height="100" src="{{ url('/receipts/' . $receipt->id) }}"></a>
                                     @endforeach
                                 </td>
                             </tr>

@@ -23,7 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         SupportContactConfiguration::sendSupportEmailsTo($this->sendSupportEmailsTo);
-
     }
     /**
      * Register any application services.

@@ -1,3 +1,5 @@
+export const SEARCH_DATE_FORMAT = 'DD-MM-YYYY'
+
 export const parseDate = (dateString) => {
     return moment(dateString)
 }

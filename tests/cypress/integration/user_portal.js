@@ -20,7 +20,7 @@ describe('Mentor portal index', () => {
     it('Can navigate to view session reports', () => {
         cy.get('.btn').contains(/View Reports/i).click()
 
-        cy.get('.session-report.list').should('exist')
+        cy.get('.session-report-list').should('exist')
     })
 
     it('Can navigate to submit an expense claim', () => {
@@ -32,7 +32,7 @@ describe('Mentor portal index', () => {
     it('Can navigate to view expense claims', () => {
         cy.get('.btn').contains(/View Expense Claims/i).click()
 
-        cy.get('.expense-claim.list').should('exist')
+        cy.get('.expense-claim-list').should('exist')
     })
 
     it('Can navigate to calendar', () => {
@@ -67,22 +67,22 @@ describe('Manager portal index', () => {
         cy.get('.link-panel').should('have.length', 8)
     })
 
-    it('Can navigate to view session reports (v1)', () => {
-        cy.get('.v1-session-reports').click()
-
-        cy.get('.session-report.list').should('exist')
-    })
-
     it('Can navigate to view session reports (v2)', () => {
         cy.get('.v2-session-reports').click()
 
         cy.get('.session-report-search').should('exist')
     })
 
-    it('Can navigate to expense claims', () => {
-        cy.get('.btn').contains(/Expense Claims/i).click()
+    it('Can navigate to expenses (v1)', () => {
+        cy.get('.btn').contains(/Expenses V1/i).click()
 
         cy.get('.expense-claim.list').should('exist')
+    })
+
+    it('Can navigate to expenses (vv)', () => {
+        cy.get('.btn').contains(/Expenses V2/i).click()
+
+        cy.get('.expense-claim-search').should('exist')
     })
 
     it('Can navigate to calendar', () => {
@@ -126,13 +126,7 @@ describe('Admin portal index', () => {
     })
 
     it('Has correct number of links', () => {
-        cy.get('.link-panel').should('have.length', 18)
-    })
-
-    it('Can navigate to view session reports (v1)', () => {
-        cy.get('.v1-session-reports').click()
-
-        cy.get('.session-report.list').should('exist')
+        cy.get('.link-panel').should('have.length', 17)
     })
 
     it('Can navigate to view session reports (v2)', () => {
@@ -141,10 +135,23 @@ describe('Admin portal index', () => {
         cy.get('.session-report-search').should('exist')
     })
 
-    it('Can navigate to expense claims', () => {
-        cy.get('.btn').contains(/Expense Claims/i).click()
+    it('Can navigate to expenses (v1)', () => {
+        cy.get('.btn').contains(/Expenses V1/i).click()
 
         cy.get('.expense-claim.list').should('exist')
+    })
+
+    it('Can navigate to expenses (v2)', () => {
+        cy.get('.btn').contains(/Expenses V2/i).click()
+
+        cy.get('.expense-claim-search').should('exist')
+    })
+
+    it('Can navigate to pending expense claims', () => {
+        cy.get('.btn').contains(/Pending Expense/i).click()
+
+        cy.get('.expense-claim-search').should('exist')
+        cy.url().should('contain', 'status=Pending')
     })
 
     it('Can navigate to calendar', () => {
@@ -175,18 +182,6 @@ describe('Admin portal index', () => {
         cy.get('.btn').contains(/Browse & Manage/i).click()
 
         cy.get('.documents-management').should('exist')
-    })
-
-    it('Can navigate to process expenses', () => {
-        cy.get('.btn').contains(/Process Expense/i).click()
-
-        cy.get('.expense-claim.processing').should('exist')
-    })
-
-    it('Can navigate to download expenses', () => {
-        cy.get('.btn').contains(/Download Expense/i).click()
-
-        cy.get('.expense-claim.export').should('exist')
     })
    
     it('Can navigate to reporting', () => {

@@ -15,8 +15,16 @@ export default {
             }
         },
 
+        isAdminUser() {
+            return this.user && ('admin' === this.user.role)
+        },
+
+        isManagerUser() {
+            return this.user && ('manager' === this.user.role)
+        },
+
         isInternalUser() {
-            return this.user && ('admin' === this.user.role || 'manager' === this.user.role)
+            return this.isAdminUser || this.isManagerUser
         }
     },
 

@@ -2,29 +2,27 @@
 
 namespace App\Domains\Expenses\Controllers;
 
-use App\Domains\Expenses\Models\Expense;
 use App\Domains\Expenses\Models\ExpenseClaim;
-use App\Domains\Expenses\Mail\ClaimProcessedToMentor;
-use App\Domains\Expenses\Mail\ClaimRejectedToMentor;
-use App\Domains\Expenses\Mail\ClaimSubmittedToMentor;
-use App\Domains\Expenses\Models\Receipt;
+use App\Domains\Expenses\Services\ExpenseClaimService;
 use App\Domains\SessionReports\Services\SessionReportService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseClaimController extends Controller {
 
-    private $sessionReportService;
+    private SessionReportService $sessionReportService;
+    private ExpenseClaimService $expenseClaimService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(SessionReportService $sessionReportService) {
+    public function __construct(SessionReportService $sessionReportService,
+                                ExpenseClaimService $expenseClaimService) {
         $this->sessionReportService = $sessionReportService;
+        $this->expenseClaimService = $expenseClaimService;
 
         $this->middleware('auth');
         $this->middleware('admin')->only('update');
@@ -91,22 +89,29 @@ class ExpenseClaimController extends Controller {
             'expenses.*.amount' => 'required|numeric',
             'expenses.*.description' => 'required',
             'receipts.*' => 'mimes:jpeg,png,gif,pdf,jpg|max:5000'
+        ], [
+            'expenses.*.date.before_or_equal' => "Expense item date should be before or equal to today"
         ]);
 
         // Validate user can actually save expense against session
         $report = $this->sessionReportService->getReport($request->report_id);
-        if (!$report) {
-            abort(401,'Unauthorized');
-        }
+        if (!$report) abort(401,'Unauthorized');
+        
+        $sessionDetails = [
+            'id' => $report->id,
+            'mentee_name' => $report->mentee->name,
+            'session_date' => $report->session_date
+        ];
 
-        // Save expense claim
-        $claim = $this->saveExpense($request);
+        // create claim
+        $claim = $this->expenseClaimService->createClaim(
+            Auth::user(),
+            $sessionDetails,
+            $request->expenses,
+            $request->receipts
+        );
 
-        // Send an Email to the Mentor
-        Mail::to($request->user())->send(
-            new ClaimSubmittedToMentor($claim, $report->mentee->name, $report->session_date->toFormattedDateString()));
-
-        return redirect('/expense-claim/'.$claim->id)->with('status','Expense Claim Submitted for Processing');
+        return redirect('/app#/expenses/'.$claim->id)->with('status','Expense Claim Submitted for Processing');
     }
 
     /**
@@ -121,40 +126,21 @@ class ExpenseClaimController extends Controller {
             'status' => 'required'
         ]);
 
-        // Get expense if allowed
-        if (!ExpenseClaim::find($id)) abort(404);
-        $claim = ExpenseClaim::canSee()->whereId($id)->first();
-        if (!$claim) abort(401,'Unauthorized');
-
-        // Update the Expense Claim with New Status
-        $claim->status = $request->status;
-
-        if ($request->status == 'rejected' || $request->status == 'processed'){
-            $claim->processed_by_id = $request->user()->id;
-            $claim->processed_at = Carbon::now();
-        }
-
-        if ($request->status == 'processed' && $request->check_number) {
-            $claim->check_number = $request->check_number;
-        }
-
-        // Save to Database
-        $claim->save();
-
-        // Send Emails
+        $claim = $this->expenseClaimService->getClaim($id);
         $report = $this->sessionReportService->getReport($claim->report_id);
+        $sessionDetails = [
+            'mentee_name' => $report->mentee->name,
+            'session_date' => $report->session_date
+        ];
 
         if ($request->status == 'processed'){
-            Mail::to($claim->mentor)->send(
-                new ClaimProcessedToMentor($claim, $report->mentee->name, $report->session_date->toFormattedDateString()));
-
+            $this->expenseClaimService->processClaim($id, Auth::user(), $sessionDetails, $request->check_number);
             return redirect('/expense-claim/'.$id)->with('status','Expense Claim Processed');
         }
 
         if ($request->status == 'rejected'){
-            Mail::to($claim->mentor)->send(new ClaimRejectedToMentor($claim));
-            
-            return redirect('/expense-claim')->with('status','Expense Claim Rejected');
+            $this->expenseClaimService->rejectClaim($id, Auth::user(), $sessionDetails);            
+            return redirect('/expense-claim/'.$id)->with('status','Expense Claim Rejected');
         }
     }
 
@@ -168,37 +154,6 @@ class ExpenseClaimController extends Controller {
         $claims = $query->get();
 
         return view('expense_claims.export')->with('expense_claims', $claims);
-    }
-
-    private function saveExpense(Request $request) {
-        $claim = new ExpenseClaim();
-        // should check report exists and owned by mentor
-        $claim->report_id = $request->report_id; 
-        $claim->mentor_id = $request->user()->id;
-        $claim->save();
-
-        // expense items
-        $expenseItems = collect($request->expenses)->map(function($expenseItem) use(&$claim) { return 
-            new Expense([
-                'expense_claim_id' => $claim->id,
-                'date' => Carbon::createFromFormat('d-m-Y',$expenseItem['date'])->setTime(0,0,0),
-                'description' => $expenseItem['description'],
-                'amount' => $expenseItem['amount']
-                ]
-            );
-        });
-        $claim->expenses()->saveMany($expenseItems);
-
-        // reciepts
-        $receipts = collect($request->receipts)->map(function($receipt) use(&$claim) { return
-            new Receipt([
-                'expense_claim_id' => $claim->id,
-                'path' => $receipt->store('receipts')
-            ]);
-        });
-        $claim->receipts()->saveMany($receipts);
-
-        return $claim;
     }
 
 }

@@ -20,8 +20,10 @@
                 <div class="col-md-4">
                     <div class="card link-panel">
                         <div class="card-body text-center">
-                            <i class="fas fa-search text-feature"></i>
-                            <a class="btn btn-primary btn-block btn-lg v1-session-reports" href="{{ url('/report') }}">Session Reports</a>
+                            <i class="fas fa-search-dollar text-feature"></i>
+                            <a class="btn btn-primary btn-block btn-lg v2-expenses" href="{{ url('/expenses') }}">
+                                <span class="fas fa-sun"></span> Expenses V2 <span class="fas fa-sun"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -29,7 +31,7 @@
                     <div class="card link-panel">
                         <div class="card-body text-center">
                             <i class="fas fa-search-dollar  text-feature"></i>
-                            <a class="btn btn-primary btn-block btn-lg" href="{{ url('/expense-claim') }}">Expense Claims</a>
+                            <a class="btn btn-secondary btn-block btn-lg" href="{{ url('/expense-claim') }}">Expenses V1 (Old)</a>
                         </div>
                     </div>
                 </div>

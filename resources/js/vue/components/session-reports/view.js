@@ -46,7 +46,7 @@ const Component = {
                             </span>
                         </td>
                     </tr>
-                    <tr class="mentor-name">
+                    <tr class="mentor-name" v-if="isInternalUser">
                         <td class="label">Mentor Name</td>
                         <td class="value">{{ sessionReport.mentor.name }}</td>
                     </tr>
