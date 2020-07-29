@@ -2,7 +2,6 @@
 
 namespace App\Domains\Expenses\Controllers;
 
-use App\Domains\Expenses\Models\ExpenseClaim;
 use App\Domains\Expenses\Services\ExpenseClaimService;
 use App\Domains\SessionReports\Services\SessionReportService;
 use App\Http\Controllers\Controller;
@@ -25,26 +24,7 @@ class ExpenseClaimController extends Controller {
         $this->expenseClaimService = $expenseClaimService;
 
         $this->middleware('auth');
-        $this->middleware('admin')->only('update');
-        $this->middleware('hasAnyOfRoles:admin,manager,mentor')->only('index','export', 'show');
         $this->middleware('mentor')->only('newExpenseClaim', 'store');
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request) {
-        $query = ExpenseClaim::canSee()->orderBy('created_at','desc');
-
-        if ($request->mentor_id) {
-            $query->whereMentorId($request->mentor_id);
-        }
-
-        $expenseClaims = $query->get();
-
-        return view('expense_claims.index')->with('expense_claims', $expenseClaims);
     }
 
     /**
@@ -58,22 +38,6 @@ class ExpenseClaimController extends Controller {
         return view('expense_claims.new')
             ->with('reports', $reports)
             ->with('claims', $request->user()->expense_claims()->orderBy('created_at','desc')->get() );
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        if (!ExpenseClaim::find($id)) abort(404);
-
-        $expense_claim = ExpenseClaim::canSee()->whereId($id)->first();
-        
-        if (!$expense_claim) abort(401,'Unauthorized');
-
-        return view('expense_claims.show')->with('expense_claim', $expense_claim);
     }
 
     /**
@@ -112,48 +76,6 @@ class ExpenseClaimController extends Controller {
         );
 
         return redirect('/app#/expenses/'.$claim->id)->with('status','Expense Claim Submitted for Processing');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id) {
-        $request->validate([
-            'status' => 'required'
-        ]);
-
-        $claim = $this->expenseClaimService->getClaim($id);
-        $report = $this->sessionReportService->getReport($claim->report_id);
-        $sessionDetails = [
-            'mentee_name' => $report->mentee->name,
-            'session_date' => $report->session_date
-        ];
-
-        if ($request->status == 'processed'){
-            $this->expenseClaimService->processClaim($id, Auth::user(), $sessionDetails, $request->check_number);
-            return redirect('/expense-claim/'.$id)->with('status','Expense Claim Processed');
-        }
-
-        if ($request->status == 'rejected'){
-            $this->expenseClaimService->rejectClaim($id, Auth::user(), $sessionDetails);            
-            return redirect('/expense-claim/'.$id)->with('status','Expense Claim Rejected');
-        }
-    }
-
-    public function export(Request $request){
-        $query = ExpenseClaim::canSee()->orderBy('created_at','desc');
-
-        if ($request->mentor_id) {
-            $query->whereMentorId($request->mentor_id);
-        }
-
-        $claims = $query->get();
-
-        return view('expense_claims.export')->with('expense_claims', $claims);
     }
 
 }

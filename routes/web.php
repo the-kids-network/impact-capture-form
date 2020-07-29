@@ -77,11 +77,7 @@ Route::redirect('/session-reports', '/app#/session-reports'); // redirect to vue
  * Expense Claims
  */
 // Expenses v1
-Route::get('/expense-claim/export','\App\Domains\Expenses\Controllers\ExpenseClaimController@export')->name('expense-claim.export');
 Route::get('/expense-claim/new','\App\Domains\Expenses\Controllers\ExpenseClaimController@newExpenseClaim');
-Route::resource('/expense-claim','\App\Domains\Expenses\Controllers\ExpenseClaimController');
-Route::get('/finance/expense-claim/export','\App\Domains\Expenses\Controllers\FinanceController@exportExpenseClaims');
-Route::get('/finance/process-expense-claims','\App\Domains\Expenses\Controllers\FinanceController@processExpenseClaims');
 // Receipts
 Route::get('/receipts/download-all','\App\Domains\Expenses\Controllers\ReceiptController@get')->name('receipts.download-all');
 Route::get('/receipts/{id}','\App\Domains\Expenses\Controllers\ReceiptController@getById');
