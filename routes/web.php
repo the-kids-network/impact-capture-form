@@ -24,9 +24,10 @@ Route::get('/login', '\App\Domains\UserManagement\Controllers\LoginController@sh
 Route::post('/login', '\App\Domains\UserManagement\Controllers\LoginController@login');
 Route::get('/logout', '\App\Domains\UserManagement\Controllers\LoginController@logout')->name('logout');
 // Password reset flow
-Route::get('/password/reset/{token?}', '\App\Domains\UserManagement\Controllers\PasswordResetController@showResetForm')->name('password.reset');
-Route::post('/password/reset/email', '\App\Domains\UserManagement\Controllers\PasswordResetController@sendResetLinkEmail');
-Route::post('/password/reset', '\App\Domains\UserManagement\Controllers\PasswordResetController@reset');
+Route::get('/password/reset', '\App\Domains\UserManagement\Controllers\ForgotPasswordController@showLinkRequestForm');
+Route::post('/password/reset/email', '\App\Domains\UserManagement\Controllers\ForgotPasswordController@sendResetLinkEmail');
+Route::get('/password/reset/{token}', '\App\Domains\UserManagement\Controllers\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('/password/reset', '\App\Domains\UserManagement\Controllers\ResetPasswordController@reset');
 // User profile
 Route::put('/users/{user_id}/password', '\App\Domains\UserManagement\Controllers\UserPasswordController@update');
 Route::put('/users/{user_id}/contact', '\App\Domains\UserManagement\Controllers\UserContactInformationController@update');
