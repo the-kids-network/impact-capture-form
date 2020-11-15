@@ -60,20 +60,17 @@ class PlannedSession extends Model
             if (!isset($this->last_email_reminder)) return false;
             $diff = $this->last_email_reminder->diff(Carbon::now());
             $emailSentToday = $diff->days == 0;
-            Log::debug("Has reminder email has already been sent today? --> ".var_export($emailSentToday, true));
             return $emailSentToday;
         };
 
         $atSpecificDaySincePlannedSessionDate = function() {
             $plannedSessionDate = $this->date->setTime(20,00);
             $diff = $plannedSessionDate->diff(Carbon::now());
-            Log::debug("Time since planned session date (in days) --> ".$diff->days);
             return $diff->days == 2 || $diff->days == 3 || $diff->days == 5;
         };
 
         $emailNeeeded = !$emailSentAlreadyToday() && $atSpecificDaySincePlannedSessionDate();
 
-        Log::debug("Reminder email required? --> ".var_export($emailNeeeded, true));
         return $emailNeeeded;
     }
 
@@ -82,7 +79,6 @@ class PlannedSession extends Model
         $diff = $plannedSessionDate->diff(Carbon::now());
         $result = $diff->days > 2;
 
-        Log::debug("Has been more than two days since planned session date? --> ".var_export($result, true));
         return $result;
     }
 

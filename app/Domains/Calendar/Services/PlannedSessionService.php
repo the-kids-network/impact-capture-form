@@ -110,15 +110,8 @@ class PlannedSessionService {
         if (!$plannedSession) throw new NotFoundException("Planned session not found");
         // check mentee and mentor is active
         if (!isset($plannedSession->mentee) || !isset($plannedSession->mentee->mentor)) {
-            Log::debug("Not sending as mentee or mentor is deactivated for planned session");
             return;
         }
-
-        // Logging
-        Log::debug("Attempting to send reminder email");
-        Log::debug("Planned session ID: ".$plannedSession->id);
-        Log::debug("Planned session date: ".$plannedSession->date);
-        Log::debug("Last reminder email sent: ".$plannedSession->last_email_reminder);
 
         // Send reminder email
         if ($plannedSession->isReminderEmailNeeded()) {
