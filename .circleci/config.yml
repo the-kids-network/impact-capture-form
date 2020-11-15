@@ -79,18 +79,6 @@ commands:
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
           environment:
             DOCKERIZE_VERSION: v0.6.1
-  install_chrome_driver:
-    steps:
-      - run: 
-          name: Install Chrome Driver
-          command: |
-            php artisan dusk:chrome-driver
-  start_chrome_driver:
-    steps:
-      - run:
-          name: Start Chrome Driver
-          command: ./vendor/laravel/dusk/bin/chromedriver-linux
-          background: true
   install_application_dependencies:
     steps:
       - restore_node_modules_cache
@@ -145,17 +133,12 @@ commands:
           command: vendor/bin/phpunit --log-junit tests/reports/unit/report.xml
   run_browser_tests:
     steps:
-      - install_chrome_driver
-      - start_chrome_driver
       - seed_database_with_test_data
       - start_application
       - run:
           name: Run Cypress Browser Tests
           command: |
             npm run cypress -- --reporter cypress-multi-reporters --reporter-options configFile=cypress-reporter-config.json
-      - run: 
-          name: Run Dusk Browser Tests
-          command: php artisan dusk --log-junit tests/reports/browser/report.xml
 
   # Main build top-level steps
   setup:
