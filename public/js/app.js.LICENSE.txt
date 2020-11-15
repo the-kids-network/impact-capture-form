@@ -1,11 +1,11 @@
 /*!
-  * Bootstrap v4.5.0 (https://getbootstrap.com/)
+  * Bootstrap v4.5.3 (https://getbootstrap.com/)
   * Copyright 2011-2020 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
-  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 
 /*!
-  * vue-scrollto v2.18.1
+  * vue-scrollto v2.20.0
   * (c) 2019 Randjelovic Igor
   * @license MIT
   */
@@ -85,8 +85,8 @@
  */
 
 /*!
- * Vue.js v2.6.11
- * (c) 2014-2019 Evan You
+ * Vue.js v2.6.12
+ * (c) 2014-2020 Evan You
  * Released under the MIT License.
  */
 
@@ -157,6 +157,8 @@ PERFORMANCE OF THIS SOFTWARE.
 
 /*! https://mths.be/punycode v1.4.0 by @mathias */
 
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
 /**
  * @license
  * Lodash <https://lodash.com/>
@@ -200,7 +202,5 @@ PERFORMANCE OF THIS SOFTWARE.
  */
 
 //! moment.js
-
-//! moment.js language configuration
 
 //! moment.js locale configuration
