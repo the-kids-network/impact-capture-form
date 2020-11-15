@@ -30,14 +30,6 @@
                 <div class="col-md-4">
                     <div class="card link-panel">
                         <div class="card-body text-center">
-                            <i class="fas fa-search-dollar  text-feature"></i>
-                            <a class="btn btn-secondary btn-block btn-lg" href="{{ url('/expense-claim') }}">Expenses V1 (Old)</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card link-panel">
-                        <div class="card-body text-center">
                             <i class="fa fa-calendar-alt text-feature"></i>
                             <a class="btn btn-primary btn-block btn-lg" href="{{ url('/calendar') }}">Calendar</a>
                         </div>
