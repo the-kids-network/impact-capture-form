@@ -25,7 +25,7 @@ class PasswordResetController extends Controller
         $this->middleware('guest');
 
         if (App::environment('production')) {
-            $this->middleware('throttle:3,1')->only('sendResetLinkEmail', 'reset');
+            $this->middleware('throttle:10,1')->only('sendResetLinkEmail', 'reset');
         }
     }
 
