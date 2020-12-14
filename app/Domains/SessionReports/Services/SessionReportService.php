@@ -118,7 +118,6 @@ class SessionReportService {
                                                 ->whereIn('role', ['manager', 'admin'])
                                                 ->get();
 
-            Log::info('Sending safeguarding email to: ' + $safeGuardingEmailRecipients);
             // $mail = ($report->mentor->manager) 
             //     ? Mail::to($report->mentor->manager)->cc(User::admin()->get())
             //     : Mail::to(User::admin()->get());
