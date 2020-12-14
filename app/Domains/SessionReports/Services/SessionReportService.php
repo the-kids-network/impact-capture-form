@@ -111,11 +111,17 @@ class SessionReportService {
         }
 
         // Send email if safeguarding concern
+        // temporary set of users to send safeguarding email to        
         if($report->safeguarding_concern){
-            $mail = ($report->mentor->manager) 
-                ? Mail::to($report->mentor->manager)->cc(User::admin()->get())
-                : Mail::to(User::admin()->get());
+            $safeGuardingEmailRecipients = User::whereIn('id', [70, 136, 261, 333, 1, 260, 81])
+                                                ->whereIn('role', ['manager', 'admin'])
+                                                ->get();
 
+            Log::info('Sending safeguarding email to: ' + $safeGuardingEmailRecipients);
+            // $mail = ($report->mentor->manager) 
+            //     ? Mail::to($report->mentor->manager)->cc(User::admin()->get())
+            //     : Mail::to(User::admin()->get());
+            $mail = Mail::to($safeGuardingEmailRecipients);
             $mail ->send(new SafeguardingConcernAlert($report));
         }
 
