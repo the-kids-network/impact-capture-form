@@ -35,7 +35,7 @@
     "popper.js": "^1.16.1",
     "promise": "^7.1.1",
     "sweetalert2": "^9.17.2",
-    "underscore": "^1.11.0",
+    "underscore": "^1.12.1",
     "urijs": "^1.19.2",
     "uuid": "^3.4.0",
     "vue": "^2.6.12",
