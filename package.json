@@ -36,7 +36,7 @@
     "promise": "^7.1.1",
     "sweetalert2": "^9.17.2",
     "underscore": "^1.11.0",
-    "urijs": "^1.19.2",
+    "urijs": "^1.19.9",
     "uuid": "^3.4.0",
     "vue": "^2.6.12",
     "vue-js-modal": "^2.0.0-rc.6",
